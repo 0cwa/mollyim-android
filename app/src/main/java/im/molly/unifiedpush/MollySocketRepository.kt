@@ -131,7 +131,9 @@ object MollySocketRepository {
 
   @Throws(IOException::class)
   fun removeDevice(device: MollySocketDevice) {
-    LinkDeviceRepository.removeDevice(device.deviceId)
+    if (!LinkDeviceRepository.removeDevice(device.deviceId)) {
+      throw IOException("Unable to remove MollySocket linked device ${device.deviceId}")
+    }
   }
 
   fun getDeviceStatus(device: MollySocketDevice): LinkStatus {
@@ -151,7 +153,10 @@ object MollySocketRepository {
   fun discoverMollySocketServer(url: HttpUrl): Boolean {
     try {
       val request = Request.Builder().url(url).build()
-      val client = AppDependencies.okHttpClient.newBuilder().build()
+      val client = AppDependencies.okHttpClient.newBuilder()
+        .followRedirects(false)
+        .followSslRedirects(false)
+        .build()
       client.newCall(request).execute().use { response ->
         if (!response.isSuccessful) {
           Log.d(TAG, "Unexpected code: $response")
@@ -192,7 +197,10 @@ object MollySocketRepository {
 
     val postBody = JsonUtils.toJson(requestData).toRequestBody(MEDIA_TYPE_JSON)
     val request = Request.Builder().url(url).post(postBody).build()
-    val client = AppDependencies.okHttpClient.newBuilder().build()
+    val client = AppDependencies.okHttpClient.newBuilder()
+      .followRedirects(false)
+      .followSslRedirects(false)
+      .build()
 
     client.newCall(request).execute().use { response ->
       if (!response.isSuccessful) {

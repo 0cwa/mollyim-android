@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import im.molly.unifiedpush.model.MollySocket
-import org.signal.core.util.Util.writeTextToClipboard
+import org.signal.core.util.Util.writeSensitiveTextToClipboard
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob
 import org.thoughtcrime.securesms.keyvalue.SignalStore
@@ -92,12 +92,12 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
 
   fun copyParamsToClipboard(context: Context) {
     val parameters = state.value?.serverParameters ?: ""
-    writeTextToClipboard(context, "Server parameters", parameters)
+    writeSensitiveTextToClipboard(context, "Server parameters", parameters)
   }
 
   fun copyAciToClipboard(context: Context) {
     val aci = state.value?.aci ?: ""
-    writeTextToClipboard(context, "Account ID", aci)
+    writeSensitiveTextToClipboard(context, "Account ID", aci)
   }
 
   class Factory(private val application: Application) : ViewModelProvider.Factory {

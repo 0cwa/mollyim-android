@@ -21,10 +21,13 @@ import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.ClipData;
+import android.content.ClipDescription;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
+import android.os.PersistableBundle;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.telephony.TelephonyManager;
@@ -423,6 +426,23 @@ public class Util {
     ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
     ClipData clip = ClipData.newPlainText(label, text);
     clipboard.setPrimaryClip(clip);
+  }
+
+  /** Copies a short-lived secret and suppresses Android's clipboard preview on supported versions. */
+  public static void writeSensitiveTextToClipboard(@NonNull Context context, @NonNull String label, @NonNull String text) {
+    ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+    ClipData clip = ClipData.newPlainText(label, text);
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+      PersistableBundle extras = new PersistableBundle();
+      extras.putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true);
+      clip.getDescription().setExtras(extras);
+    }
+    clipboard.setPrimaryClip(clip);
+
+    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+    Intent alarmIntent = new Intent(context, ClearClipboardAlarmReceiver.class);
+    PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntentFlags.mutable());
+    alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + TimeUnit.SECONDS.toMillis(60), pendingAlarmIntent);
   }
 
   public static int toIntExact(long value) {

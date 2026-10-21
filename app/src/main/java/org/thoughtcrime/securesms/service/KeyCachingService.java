@@ -82,6 +82,11 @@ public class KeyCachingService extends Service {
 
   public KeyCachingService() {}
 
+  /** Baseline-compatible lock-state adapter for push receivers. */
+  public static synchronized boolean isLocked() {
+    return isLocked(AppDependencies.application);
+  }
+
   public static synchronized boolean isLocked(Context context) {
     boolean locked = masterSecret == null && (!SignalStore.settings().getPassphraseDisabled() || SignalStore.settings().getScreenLockEnabled());
 
