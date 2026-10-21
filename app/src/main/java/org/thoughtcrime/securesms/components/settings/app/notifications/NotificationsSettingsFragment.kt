@@ -57,6 +57,7 @@ import org.signal.core.ui.compose.Rows
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.Texts
+import org.signal.core.ui.compose.Rows.TextAndLabel
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
@@ -658,29 +659,29 @@ fun NotificationsSettingsScreen(
         method != NotificationDeliveryMethod.UNIFIEDPUSH || !state.isLinkedDevice
       }
 
-      val notificationLabels = if (state.isLinkedDevice) {
-        arrayOf(
-          stringResource(NotificationDeliveryMethod.FCM.stringId),
-          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId)
-        )
-      } else {
-        arrayOf(
-          stringResource(NotificationDeliveryMethod.FCM.stringId),
-          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId),
-          stringResource(NotificationDeliveryMethod.UNIFIEDPUSH.stringId)
-        )
-      }
-      val deliveryServiceLabel = stringResource(R.string.NotificationsSettingsFragment__delivery_service)
-      val showAlertIcon = when (state.preferredNotificationMethod) {
-        NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
-        NotificationDeliveryMethod.WEBSOCKET -> false
-        NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
-      }
-
       item {
+        val notificationLabels = if (state.isLinkedDevice) {
+          arrayOf(
+            stringResource(NotificationDeliveryMethod.FCM.stringId),
+            stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId)
+          )
+        } else {
+          arrayOf(
+            stringResource(NotificationDeliveryMethod.FCM.stringId),
+            stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId),
+            stringResource(NotificationDeliveryMethod.UNIFIEDPUSH.stringId)
+          )
+        }
+        val deliveryServiceLabel = stringResource(R.string.NotificationsSettingsFragment__delivery_service)
+        val showAlertIcon = when (state.preferredNotificationMethod) {
+          NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
+          NotificationDeliveryMethod.WEBSOCKET -> false
+          NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
+        }
+
         Rows.RadioListRow(
           text = { selectedIndex ->
-            Rows.TextAndLabel(
+            TextAndLabel(
               text = deliveryServiceLabel,
               label = notificationLabels.getOrNull(selectedIndex)
             )
