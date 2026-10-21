@@ -7,6 +7,7 @@ package org.thoughtcrime.securesms.notifications
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import im.molly.unifiedpush.UnifiedPushDistributor
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
@@ -51,6 +52,10 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
 
   private fun checkHeuristics(): Single<State> {
     return Single.fromCallable {
+      if (SignalStore.unifiedpush.enabled && !UnifiedPushDistributor.checkIfActive()) {
+        return@fromCallable State.PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG
+      }
+
       val deviceSpecificCondition = SlowNotificationHeuristics.getDeviceSpecificShowCondition()
 
       val shouldShowDeviceSpecificDialog = SlowNotificationHeuristics.shouldShowDeviceSpecificDialog()
@@ -103,6 +108,7 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
 
   enum class State {
     NONE,
+    PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG,
     PROMPT_SPECIFIC_BATTERY_SAVER_DIALOG,
     PROMPT_GENERAL_BATTERY_SAVER_DIALOG,
     PROMPT_DEBUGLOGS_FOR_NOTIFICATIONS,
