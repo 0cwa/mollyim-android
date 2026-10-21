@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NotificationsSettingsFragment__push_notifications">התראות</string>
+    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">בחר בשירות המועדף להתראות. אם לא זמין, האפליקציה תשתמש בוובסוקט כדי לוודא שהתראות נשלחות.</string>
+    <string name="NotificationsSettingsFragment__delivery_service">שירות שליחה</string>
+</resources>

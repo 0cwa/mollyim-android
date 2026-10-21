@@ -6,12 +6,17 @@ import android.os.Build
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import im.molly.unifiedpush.UnifiedPushDistributor
+import im.molly.unifiedpush.components.settings.app.notifications.updateMollySocket
+import im.molly.unifiedpush.model.MollySocket
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.thoughtcrime.securesms.ApplicationContext
 import org.thoughtcrime.securesms.dependencies.AppDependencies
+import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfig
 import org.thoughtcrime.securesms.notifications.NotificationChannels
@@ -111,6 +116,22 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
     refresh()
   }
 
+  fun setPreferredNotificationMethod(method: NotificationDeliveryMethod) {
+    SignalStore.settings.preferredNotificationMethod = method
+    TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
+    ApplicationContext.getInstance(AppDependencies.application).updatePushNotificationServices()
+    AppDependencies.resetNetwork(true)
+    refresh()
+  }
+
+  fun selectFirstDistributor() {
+    UnifiedPushDistributor.selectFirstDistributor()
+  }
+
+  fun initializeMollySocket(mollySocket: MollySocket) {
+    SignalStore.unifiedpush.updateMollySocket(mollySocket)
+  }
+
   /**
    * @param currentState If provided and [calculateSlowNotifications] = false, then we will copy the slow notification state from it
    * @param calculateSlowNotifications If true, calculate the true slow notification state (this is not main-thread safe). Otherwise, it will copy from
@@ -143,6 +164,10 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
       ringtone = SignalStore.settings.callRingtone,
       vibrateEnabled = SignalStore.settings.isCallVibrateEnabled
     ),
+    isLinkedDevice = SignalStore.account.isLinkedDevice,
+    preferredNotificationMethod = SignalStore.settings.preferredNotificationMethod,
+    canReceiveFcm = SignalStore.account.canReceiveFcm,
+    canReceiveUnifiedPush = SignalStore.unifiedpush.isAvailableOrAirGapped,
     notifyWhenContactJoinsSignal = SignalStore.settings.isNotifyWhenContactJoinsSignal
   )
 

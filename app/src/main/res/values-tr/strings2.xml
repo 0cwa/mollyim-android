@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="NotificationsSettingsFragment__push_notifications">Anlık bildirimler</string>
+    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Anlık bildirimler için tercih ettiğiniz servisi seçin. Seçilen servis mevcut değilse uygulama, bildirimlerin gönderildiğinden emin olmak için otomatik olarak WebSocket servisine geçecektir.</string>
+    <string name="NotificationsSettingsFragment__delivery_service">Anlık bildirim servisi</string>
+    <string name="NotificationsSettingsFragment__configure_unifiedpush">UnifiedPush\'u yapılandır</string>
+    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">UnifiedPush servisini kullanmak için, Signal hesabınızı bağlamak adına bir MollySocket sunucusuna erişmeniz gerekmektedir.\n\nBaşlamak için sunucunuzdan verilen QR kodu tarayın.</string>
+    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket sunucusu</string>
+    <string name="NotificationsSettingsFragment__not_selected">Seçilmemiş</string>
+    <string name="UnifiedPushSettingsFragment__status">Durum</string>
+    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Panoya kopyalamak için dokunun</string>
+    <string name="UnifiedPushSettingsFragment__server_parameters">Sunucu parametreleri</string>
+    <string name="UnifiedPushSettingsFragment__test_configuration">Yapılandırmayı test et</string>
+    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">MollySocket servisi ile bildirim testi yapmak için dokunun</string>
+    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket URL\'si eksik</string>
+    <string name="UnifiedPushSettingsFragment__status_summary_pending">Beklemede</string>
+    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">MollySocket sunucusundan doğrulanma bekleniyor</string>
+</resources>

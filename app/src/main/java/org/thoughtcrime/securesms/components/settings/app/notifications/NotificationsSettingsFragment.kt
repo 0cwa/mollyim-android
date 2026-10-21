@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.launch
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,9 +38,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.withStateAtLeast
 import androidx.navigation.fragment.findNavController
 import androidx.preference.PreferenceManager
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import im.molly.unifiedpush.UnifiedPushDefaultDistributorLinkActivity
+import im.molly.unifiedpush.components.settings.app.notifications.MollySocketQrScannerActivity
 import kotlinx.coroutines.launch
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 import org.signal.core.ui.BottomSheetUtil
 import org.signal.core.ui.compose.ComposeFragment
 import org.signal.core.ui.compose.DayNightPreviews
@@ -52,8 +63,12 @@ import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
 import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRoute
 import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRouter
 import org.thoughtcrime.securesms.components.settings.models.Banner
+import org.thoughtcrime.securesms.conversation.v2.registerForLifecycle
+import org.thoughtcrime.securesms.events.PushServiceEvent
+import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.TurnOnNotificationsBottomSheet
+import org.thoughtcrime.securesms.util.CommunicationActions
 import org.thoughtcrime.securesms.util.RingtoneUtil
 import org.thoughtcrime.securesms.util.navigation.safeNavigate
 import org.thoughtcrime.securesms.util.viewModel
@@ -85,15 +100,26 @@ class NotificationsSettingsFragment : ComposeFragment() {
               findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_notificationProfilesFragment)
             }
 
+            AppSettingsRoute.NotificationsRoute.UnifiedPushSettings -> {
+              findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_unifiedPushFragment)
+            }
+
             else -> error("Unexpected route: ${it.javaClass.name}")
           }
         }
       }
     }
+
+    EventBus.getDefault().registerForLifecycle(subscriber = this, lifecycleOwner = viewLifecycleOwner)
   }
 
   override fun onResume() {
     super.onResume()
+    viewModel.refresh()
+  }
+
+  @Subscribe(threadMode = ThreadMode.MAIN)
+  fun onPushServiceEvent(event: PushServiceEvent) {
     viewModel.refresh()
   }
 
@@ -158,6 +184,31 @@ open class DefaultNotificationsSettingsCallbacks(
   private val notificationPrioritySelectionLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
     contract = NotificationPrioritySelectionContract(),
     callback = {}
+  )
+
+  private val linkDefaultDistributorLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
+    contract = UnifiedPushDefaultDistributorLinkActivity.Contract(),
+    callback = { success ->
+      if (success != true) {
+        viewModel.selectFirstDistributor()
+      }
+      activity.lifecycleScope.launch {
+        activity.lifecycle.withStateAtLeast(Lifecycle.State.RESUMED) {
+          onNavigationUnifiedPushSettings()
+        }
+      }
+    }
+  )
+
+  private val qrScanLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
+    contract = MollySocketQrScannerActivity.Contract(),
+    callback = { mollySocket ->
+      if (mollySocket != null) {
+        viewModel.initializeMollySocket(mollySocket)
+        viewModel.setPreferredNotificationMethod(NotificationDeliveryMethod.UNIFIEDPUSH)
+        linkDefaultDistributorLauncher.launch()
+      }
+    }
   )
 
   override fun onTurnOnNotificationsActionClick() {
@@ -263,6 +314,36 @@ open class DefaultNotificationsSettingsCallbacks(
   override fun setNotifyWhenContactJoinsSignal(enabled: Boolean) {
     viewModel.setNotifyWhenContactJoinsSignal(enabled)
   }
+
+  override fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) {
+    val (previousMethod, method) = fromToMethods
+    when (method) {
+      NotificationDeliveryMethod.FCM,
+      NotificationDeliveryMethod.WEBSOCKET -> viewModel.setPreferredNotificationMethod(method)
+
+      NotificationDeliveryMethod.UNIFIEDPUSH -> {
+        if (method != previousMethod) {
+          MaterialAlertDialogBuilder(activity)
+            .setTitle(R.string.NotificationsSettingsFragment__mollysocket_server)
+            .setMessage(R.string.NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server)
+            .setPositiveButton(R.string.AddLinkDeviceFragment__scan_qr_code) { _, _ ->
+              qrScanLauncher.launch()
+            }
+            .setNegativeButton(R.string.RegistrationActivity_cancel, null)
+            .setNeutralButton(R.string.LearnMoreTextView_learn_more) { _, _ ->
+              CommunicationActions.openBrowserLink(activity, activity.getString(R.string.mollysocket_setup_url))
+            }
+            .show()
+        } else {
+          onNavigationUnifiedPushSettings()
+        }
+      }
+    }
+  }
+
+  override fun onNavigationUnifiedPushSettings() {
+    appSettingsRouter.navigateTo(AppSettingsRoute.NotificationsRoute.UnifiedPushSettings)
+  }
 }
 
 interface NotificationsSettingsCallbacks {
@@ -286,6 +367,8 @@ interface NotificationsSettingsCallbacks {
   fun setCallVibrateEnabled(enabled: Boolean) = Unit
   fun onNavigationProfilesClick() = Unit
   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) = Unit
+  fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) = Unit
+  fun onNavigationUnifiedPushSettings() = Unit
 
   object Empty : NotificationsSettingsCallbacks
 }
@@ -527,6 +610,71 @@ fun NotificationsSettingsScreen(
           onCheckChanged = callbacks::setNotifyWhenContactJoinsSignal
         )
       }
+
+      item {
+        Dividers.Default()
+      }
+
+      item {
+        Texts.SectionHeader(stringResource(R.string.NotificationsSettingsFragment__push_notifications))
+      }
+
+      item {
+        Rows.TextRow(
+          text = {
+            Text(
+              text = stringResource(R.string.NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications),
+              style = MaterialTheme.typography.bodyMedium,
+              color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+          }
+        )
+      }
+
+      val notificationMethods = NotificationDeliveryMethod.values().filter { method ->
+        method != NotificationDeliveryMethod.UNIFIEDPUSH || !state.isLinkedDevice
+      }
+
+      val showAlertIcon = when (state.preferredNotificationMethod) {
+        NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
+        NotificationDeliveryMethod.WEBSOCKET -> false
+        NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
+      }
+
+      item {
+        Rows.RadioListRow(
+          text = stringResource(R.string.NotificationsSettingsFragment__delivery_service),
+          labels = notificationMethods.map { method -> stringResource(method.stringId) }.toTypedArray(),
+          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
+          selectedValue = state.preferredNotificationMethod.serialize(),
+          trailingIcon = if (showAlertIcon) {
+            {
+              Icon(
+                painter = painterResource(android.R.drawable.ic_dialog_alert),
+                contentDescription = null,
+                tint = colorResource(R.color.signal_alert_primary)
+              )
+            }
+          } else {
+            null
+          },
+          onSelected = { selected ->
+            callbacks.onNotificationMethodChanged(
+              state.preferredNotificationMethod to NotificationDeliveryMethod.deserialize(selected)
+            )
+          }
+        )
+      }
+
+      if (!state.isLinkedDevice) {
+        item {
+          Rows.TextRow(
+            text = stringResource(R.string.NotificationsSettingsFragment__configure_unifiedpush),
+            enabled = state.preferredNotificationMethod == NotificationDeliveryMethod.UNIFIEDPUSH,
+            onClick = callbacks::onNavigationUnifiedPushSettings
+          )
+        }
+      }
     }
   }
 }
@@ -602,6 +750,10 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
       ringtone = Uri.EMPTY,
       vibrateEnabled = true
     ),
+    isLinkedDevice = false,
+    preferredNotificationMethod = NotificationDeliveryMethod.FCM,
+    canReceiveFcm = true,
+    canReceiveUnifiedPush = false,
     notifyWhenContactJoinsSignal = true
   )
 }
