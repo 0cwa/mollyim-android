@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
 class UnifiedPushRefreshJob private constructor(
   private val testPing: Boolean,
   private val fromNewEndpoint: Boolean,
-  parameters: Parameters,
+  parameters: Parameters
 ) : BaseJob(parameters) {
 
   constructor() : this(testPing = false)
@@ -165,7 +165,7 @@ class UnifiedPushRefreshJob private constructor(
       url = mollySocketUrl!!,
       device = device,
       endpoint = endpoint,
-      ping = testPing,
+      ping = testPing
     )
 
     Log.d(TAG, "Registration result: $result")
@@ -250,7 +250,7 @@ class UnifiedPushRefreshJob private constructor(
       return UnifiedPushRefreshJob(
         testPing = data.getBoolean(KEY_PING),
         fromNewEndpoint = data.getBoolean(KEY_FROM_NEW_ENDPOINT),
-        parameters = parameters,
+        parameters = parameters
       )
     }
   }

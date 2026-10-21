@@ -52,7 +52,6 @@ class UnifiedPushNotificationBuilder(val context: Context) {
     notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_device_limit_hit, deviceLimit - 1))
   }
 
-
   fun setNotificationMollySocketForbiddenEndpoint() {
     notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint))
   }

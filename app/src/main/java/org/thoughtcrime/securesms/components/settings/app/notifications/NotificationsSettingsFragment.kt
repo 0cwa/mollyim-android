@@ -54,10 +54,10 @@ import org.signal.core.ui.compose.DayNightPreviews
 import org.signal.core.ui.compose.Dividers
 import org.signal.core.ui.compose.Previews
 import org.signal.core.ui.compose.Rows
+import org.signal.core.ui.compose.Rows.TextAndLabel
 import org.signal.core.ui.compose.Scaffolds
 import org.signal.core.ui.compose.SignalIcons
 import org.signal.core.ui.compose.Texts
-import org.signal.core.ui.compose.Rows.TextAndLabel
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.R
 import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment

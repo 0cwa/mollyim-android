@@ -32,7 +32,7 @@ class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
     get() {
       return MollySocketDevice(
         deviceId = getInteger(MOLLYSOCKET_DEVICE_ID, 0),
-        password = getString(MOLLYSOCKET_PASSWORD, null) ?: return null,
+        password = getString(MOLLYSOCKET_PASSWORD, null) ?: return null
       )
     }
     set(device) {
@@ -42,8 +42,7 @@ class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
         .apply()
     }
 
-  fun isMollySocketDevice(deviceId: Int): Boolean =
-    deviceId != 0 && getInteger(MOLLYSOCKET_DEVICE_ID, 0) == deviceId
+  fun isMollySocketDevice(deviceId: Int): Boolean = deviceId != 0 && getInteger(MOLLYSOCKET_DEVICE_ID, 0) == deviceId
 
   var registrationStatus: RegistrationStatus
     get() = RegistrationStatus.fromValue(getInteger(MOLLYSOCKET_STATUS, -1)) ?: RegistrationStatus.UNKNOWN
@@ -57,7 +56,7 @@ class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
 
   var mollySocketUrl: String? by stringValue(MOLLYSOCKET_URL, null)
 
-  var vapidPublicKey:  String? by stringValue(MOLLYSOCKET_VAPID, null)
+  var vapidPublicKey: String? by stringValue(MOLLYSOCKET_VAPID, null)
 
   var vapidKeySynced: Boolean by booleanValue(MOLLYSOCKET_VAPID_SYNCED, true)
 

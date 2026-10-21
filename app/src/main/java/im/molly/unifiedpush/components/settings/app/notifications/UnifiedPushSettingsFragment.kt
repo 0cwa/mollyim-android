@@ -53,7 +53,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
     return configure {
       textPref(
         title = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__status)),
-        summary = DSLSettingsText.from(getStatusSummary(state)),
+        summary = DSLSettingsText.from(getStatusSummary(state))
       )
 
       clickPref(
@@ -67,7 +67,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
         ),
         onClick = {
           qrScanLauncher.launch()
-        },
+        }
       )
 
       if (state.distributors.isEmpty()) {
@@ -82,7 +82,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
           selected = state.selected,
           onSelected = {
             viewModel.setUnifiedPushDistributor(state.distributors[it].applicationId)
-          },
+          }
         )
       }
 
@@ -96,7 +96,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
           isEnabled = state.serverParameters != null,
           onClick = {
             viewModel.copyParamsToClipboard(requireContext())
-          },
+          }
         )
       } else {
         val aciOrUnknown = state.aci ?: getString(R.string.Recipient_unknown)
@@ -108,7 +108,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
           isEnabled = state.aci != null,
           onClick = {
             viewModel.copyAciToClipboard(requireContext())
-          },
+          }
         )
 
         clickPref(
@@ -117,7 +117,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
           onClick = {
             viewModel.pingMollySocket()
             Toast.makeText(context, getString(R.string.UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments), Toast.LENGTH_SHORT).show()
-          },
+          }
         )
       }
     }

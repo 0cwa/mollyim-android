@@ -5,7 +5,7 @@ import im.molly.unifiedpush.model.RegistrationStatus
 
 data class Distributor(
   val applicationId: String,
-  val name: String,
+  val name: String
 )
 
 data class UnifiedPushSettingsState(
@@ -17,7 +17,7 @@ data class UnifiedPushSettingsState(
   val selected: Int,
   val selectedNotAck: Boolean,
   val endpoint: String?,
-  val mollySocketUrl: String?,
+  val mollySocketUrl: String?
 ) {
   val serverParameters: String?
     get() {

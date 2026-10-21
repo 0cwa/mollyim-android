@@ -2,7 +2,7 @@ package im.molly.unifiedpush.model
 
 data class MollySocketDevice(
   val deviceId: Int,
-  val password: String,
+  val password: String
 ) {
   override fun toString(): String {
     return "MollySocketDevice:$deviceId"
@@ -12,7 +12,7 @@ data class MollySocketDevice(
 enum class LinkStatus {
   LINKED,
   NOT_LINKED,
-  UNKNOWN,
+  UNKNOWN
 }
 
 enum class RegistrationStatus(val value: Int) {

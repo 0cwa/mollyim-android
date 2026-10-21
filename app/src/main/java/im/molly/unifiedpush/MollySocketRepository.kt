@@ -54,7 +54,7 @@ object MollySocketRepository {
 
     return MollySocketDevice(
       deviceId = deviceId,
-      password = password,
+      password = password
     )
   }
 
@@ -65,7 +65,8 @@ object MollySocketRepository {
 
     val registrationId = KeyHelper.generateRegistrationId(false)
     val encryptedDeviceName = DeviceNameCipher.encryptDeviceName(
-      DEVICE_NAME.toByteArray(), SignalStore.account.aciIdentityKey
+      DEVICE_NAME.toByteArray(),
+      SignalStore.account.aciIdentityKey
     )
 
     val deviceAttributes = DeviceAttributes(
@@ -112,7 +113,9 @@ object MollySocketRepository {
     val aciStore = AppDependencies.protocolStore.aci()
     val preKeys = NetworkResultUtil.toPreKeysLegacy(
       keysApi.getPreKeysSync(
-        destination = recipient, sealedSenderAccess = null, deviceId = deviceId
+        destination = recipient,
+        sealedSenderAccess = null,
+        deviceId = deviceId
       )
     )
     preKeys.forEach { preKey ->
@@ -181,14 +184,14 @@ object MollySocketRepository {
     url: HttpUrl,
     device: MollySocketDevice,
     endpoint: String,
-    ping: Boolean = false,
+    ping: Boolean = false
   ): ConnectionResult? {
     val requestData = ConnectionRequest(
       uuid = SignalStore.account.requireAci().toString(),
       deviceId = device.deviceId,
       password = device.password,
       endpoint = endpoint,
-      ping = ping,
+      ping = ping
     )
 
     val postBody = JsonUtils.toJson(requestData).toRequestBody(MEDIA_TYPE_JSON)

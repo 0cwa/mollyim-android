@@ -41,7 +41,8 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
       val name = try {
         val ai = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
           application.packageManager.getApplicationInfo(
-            appId, PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong())
+            appId,
+            PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong())
           )
         } else {
           application.packageManager.getApplicationInfo(appId, 0)
@@ -53,7 +54,7 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
 
       Distributor(
         applicationId = appId,
-        name = name,
+        name = name
       )
     }
 
@@ -68,7 +69,7 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
       selected = selected,
       selectedNotAck = !ack,
       endpoint = SignalStore.unifiedpush.endpoint,
-      mollySocketUrl = mollySocketUrl,
+      mollySocketUrl = mollySocketUrl
     )
   }
 

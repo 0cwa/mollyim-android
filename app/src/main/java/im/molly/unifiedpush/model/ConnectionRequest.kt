@@ -7,16 +7,16 @@ data class ConnectionRequest(
   @JsonProperty("device_id") val deviceId: Int,
   @JsonProperty("password") val password: String,
   @JsonProperty("endpoint") val endpoint: String,
-  @JsonProperty("ping") val ping: Boolean,
+  @JsonProperty("ping") val ping: Boolean
 )
 
 data class Response(
-  @JsonProperty("mollysocket") val mollySocket: ResponseMollySocket,
+  @JsonProperty("mollysocket") val mollySocket: ResponseMollySocket
 )
 
 data class ResponseMollySocket(
   @JsonProperty("version") val version: String,
-  @JsonProperty("status") val status: ConnectionResult?,
+  @JsonProperty("status") val status: ConnectionResult?
 )
 
 enum class ConnectionResult(private val formatted: String) {
