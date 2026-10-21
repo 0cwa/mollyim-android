@@ -121,6 +121,7 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
     TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
     ApplicationContext.getInstance(AppDependencies.application).updatePushNotificationServices()
     AppDependencies.resetNetwork()
+    AppDependencies.startNetwork()
     refresh()
   }
 
