@@ -422,6 +422,13 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
   @get:JvmName("isFcmEnabled")
   var fcmEnabled: Boolean by booleanValue(KEY_FCM_ENABLED, false)
 
+  val canReceiveFcm: Boolean
+    get() = fcmEnabled && fcmToken != null
+
+  @get:JvmName("isPushAvailable")
+  val pushAvailable: Boolean
+    get() = canReceiveFcm || SignalStore.unifiedpush.isAvailableOrAirGapped
+
   /** The FCM token, which allows the server to send us FCM messages. */
   var fcmToken: String?
     get() {

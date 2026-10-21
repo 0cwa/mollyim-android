@@ -42,6 +42,7 @@ import org.thoughtcrime.securesms.jobmanager.migrations.PushProcessMessageJobMig
 import org.thoughtcrime.securesms.jobmanager.migrations.RetrieveProfileJobMigration;
 import org.thoughtcrime.securesms.jobmanager.migrations.SendReadReceiptsJobMigration;
 import org.thoughtcrime.securesms.jobmanager.migrations.SenderKeyDistributionSendJobRecipientMigration;
+import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob;
 import org.thoughtcrime.securesms.migrations.AccountConsistencyMigrationJob;
 import org.thoughtcrime.securesms.migrations.AccountRecordMigrationJob;
 import org.thoughtcrime.securesms.migrations.AepMigrationJob;
@@ -178,6 +179,7 @@ public final class JobManagerFactories {
       put(E164FormattingJob.KEY,                       new E164FormattingJob.Factory());
       put(EmojiSearchIndexDownloadJob.KEY,             new EmojiSearchIndexDownloadJob.Factory());
       put(FcmRefreshJob.KEY,                           new FcmRefreshJob.Factory());
+      put(UnifiedPushRefreshJob.KEY,                   new UnifiedPushRefreshJob.Factory());
       put(FetchRemoteMegaphoneImageJob.KEY,            new FetchRemoteMegaphoneImageJob.Factory());
       put(FontDownloaderJob.KEY,                       new FontDownloaderJob.Factory());
       put(ForceUpdateGroupV2Job.KEY,                   new ForceUpdateGroupV2Job.Factory());

@@ -899,6 +899,17 @@
             android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
 
         <activity
+            android:name="im.molly.unifiedpush.components.settings.app.notifications.MollySocketQrScannerActivity"
+            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
+            android:exported="false"
+            android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
+
+        <activity
+            android:name="im.molly.unifiedpush.UnifiedPushDefaultDistributorLinkActivity"
+            android:exported="false"
+            android:theme="@style/TextSecure.DialogActivity" />
+
+        <activity
             android:name=".wallpaper.crop.WallpaperImageSelectionActivity"
             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
             android:exported="false"
@@ -1594,6 +1605,18 @@
         </receiver>
 
         <!-- ======================================= -->
+        <receiver
+            android:name="im.molly.unifiedpush.receiver.UnifiedPushReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="org.unifiedpush.android.connector.MESSAGE" />
+                <action android:name="org.unifiedpush.android.connector.UNREGISTERED" />
+                <action android:name="org.unifiedpush.android.connector.NEW_ENDPOINT" />
+                <action android:name="org.unifiedpush.android.connector.REGISTRATION_FAILED" />
+            </intent-filter>
+        </receiver>
+
         <!-- Providers                               -->
         <!-- ======================================= -->
         <provider

@@ -77,6 +77,7 @@ public final class SettingsValues extends SignalStoreValues {
   private static final String SCREEN_LOCK_TIMEOUT                     = "settings.screen.lock.timeout";
   private static final String AUTOMATIC_VERIFICATION_ENABLED          = "settings.automatic.verification.enabled";
   private static final String FORCE_WEBSOCKET_MODE                    = "settings.force.websocket.mode.2";
+  private static final String MOLLY_NOTIFICATION_METHOD               = "molly.notificationMethod";
 
   public static final int BACKUP_DEFAULT_HOUR   = 2;
   public static final int BACKUP_DEFAULT_MINUTE = 0;
@@ -571,6 +572,17 @@ public final class SettingsValues extends SignalStoreValues {
     putBoolean(AUTOMATIC_VERIFICATION_ENABLED, enabled);
   }
 
+  public @NonNull NotificationDeliveryMethod getPreferredNotificationMethod() {
+    if (getStore().containsKey(MOLLY_NOTIFICATION_METHOD)) {
+      return NotificationDeliveryMethod.deserialize(getString(MOLLY_NOTIFICATION_METHOD, "FCM"));
+    }
+    return SignalStore.account().isFcmEnabled() ? NotificationDeliveryMethod.FCM : NotificationDeliveryMethod.WEBSOCKET;
+  }
+
+  public void setPreferredNotificationMethod(@NonNull NotificationDeliveryMethod method) {
+    putString(MOLLY_NOTIFICATION_METHOD, method.serialize());
+  }
+
   public @NonNull ForceWebsocketMode getForceWebsocketMode() {
     if (getStore().containsKey(FORCE_WEBSOCKET_MODE)) {
       return ForceWebsocketMode.deserialize(getInteger(FORCE_WEBSOCKET_MODE, ForceWebsocketMode.DISABLED.serialize()));
@@ -676,4 +688,23 @@ public final class SettingsValues extends SignalStoreValues {
       }
     }
   }
+
+  public enum NotificationDeliveryMethod {
+    FCM, WEBSOCKET, UNIFIEDPUSH;
+
+    public @NonNull String serialize() { return name(); }
+
+    public static @NonNull NotificationDeliveryMethod deserialize(@NonNull String value) {
+      return NotificationDeliveryMethod.valueOf(value);
+    }
+
+    public int getStringId() {
+      return switch (this) {
+        case FCM -> R.string.NotificationDeliveryMethod__fcm;
+        case WEBSOCKET -> R.string.NotificationDeliveryMethod__websocket;
+        case UNIFIEDPUSH -> R.string.NotificationDeliveryMethod__unifiedpush;
+      };
+    }
+  }
+
 }

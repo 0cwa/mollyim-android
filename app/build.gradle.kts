@@ -664,6 +664,13 @@ kotlin {
 }
 
 dependencies {
+  implementation(libs.unifiedpush.connector) {
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+    exclude(group = "com.google.protobuf", module = "protobuf-java")
+  }
+  implementation(libs.unifiedpush.connector.ui) {
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+  }
   lintChecks(project(":lintchecks"))
   ktlintRuleset(libs.ktlint.twitter.compose)
   coreLibraryDesugaring(libs.android.tools.desugar)

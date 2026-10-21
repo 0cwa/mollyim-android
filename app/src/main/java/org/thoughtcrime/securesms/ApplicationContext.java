@@ -76,6 +76,7 @@ import org.thoughtcrime.securesms.jobs.CheckServiceReachabilityJob;
 import org.thoughtcrime.securesms.jobs.DownloadLatestEmojiDataJob;
 import org.thoughtcrime.securesms.jobs.EmojiSearchIndexDownloadJob;
 import org.thoughtcrime.securesms.jobs.FcmRefreshJob;
+import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob;
 import org.thoughtcrime.securesms.jobs.FontDownloaderJob;
 import org.thoughtcrime.securesms.jobs.GroupRingCleanupJob;
 import org.thoughtcrime.securesms.jobs.GroupV2UpdateSelfProfileKeyJob;
@@ -93,6 +94,7 @@ import org.thoughtcrime.securesms.jobs.RetrieveProfileJob;
 import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob;
 import org.thoughtcrime.securesms.jobs.StoryOnboardingDownloadJob;
 import org.thoughtcrime.securesms.keyvalue.KeepMessagesDuration;
+import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod;
 import org.thoughtcrime.securesms.keyvalue.SignalStore;
 import org.thoughtcrime.securesms.logging.CustomSignalProtocolLogger;
 import org.thoughtcrime.securesms.logging.PersistentLogger;
@@ -130,6 +132,7 @@ import org.thoughtcrime.securesms.util.SignalUncaughtExceptionHandler;
 import org.thoughtcrime.securesms.util.SqlCipherLogTarget;
 import org.thoughtcrime.securesms.util.SupportEmailUtil;
 import org.thoughtcrime.securesms.util.TextSecurePreferences;
+import im.molly.unifiedpush.UnifiedPushDistributor;
 import org.thoughtcrime.securesms.util.VersionTracker;
 import org.thoughtcrime.securesms.util.dynamiclanguage.DynamicLanguageContextWrapper;
 import org.whispersystems.signalservice.api.websocket.SignalWebSocket;
@@ -469,7 +472,41 @@ public class ApplicationContext extends Application implements AppForegroundObse
   }
 
   private void initializeFcmCheck() {
+    updatePushNotificationServices();
+  }
+
+  /** Reconcile the selected delivery method with FCM, UnifiedPush, and the message network. */
+  public void updatePushNotificationServices() {
     if (!SignalStore.account().isRegistered()) {
+      return;
+    }
+
+    NotificationDeliveryMethod method = SignalStore.settings().getPreferredNotificationMethod();
+    boolean useUnifiedPush = method == NotificationDeliveryMethod.UNIFIEDPUSH && !SignalStore.account().isLinkedDevice();
+
+    if (SignalStore.account().isFcmEnabled() && method != NotificationDeliveryMethod.FCM) {
+      SignalStore.account().setFcmEnabled(false);
+      AppDependencies.getJobManager().startChain(new FcmRefreshJob())
+                                      .then(new RefreshAttributesJob())
+                                      .enqueue();
+    }
+
+    if (SignalStore.unifiedpush().isEnabled() != useUnifiedPush) {
+      SignalStore.unifiedpush().setEnabled(useUnifiedPush);
+      if (useUnifiedPush) {
+        UnifiedPushDistributor.registerApp(SignalStore.unifiedpush().getVapidPublicKey());
+      } else if (!SignalStore.unifiedpush().getAirGapped()) {
+        UnifiedPushDistributor.unregisterApp();
+      }
+      AppDependencies.getJobManager().add(new UnifiedPushRefreshJob());
+    } else if (useUnifiedPush) {
+      AppDependencies.getJobManager().add(new UnifiedPushRefreshJob());
+    }
+
+    if (method != NotificationDeliveryMethod.FCM) {
+      AppDependencies.resetNetwork();
+      AppDependencies.startNetwork();
+      IncomingMessageObserver.stopForegroundService(this);
       return;
     }
 

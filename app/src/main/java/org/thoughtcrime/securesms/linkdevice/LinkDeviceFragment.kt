@@ -568,7 +568,7 @@ fun DeviceRow(device: Device, isInternalUser: Boolean, setDeviceToRemove: (Devic
           }
         )
 
-        DropdownMenus.Item(
+        if (device.canRename) DropdownMenus.Item(
           contentPadding = PaddingValues(0.dp),
           text = {
             Row(
