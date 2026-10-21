@@ -572,6 +572,10 @@ public final class SettingsValues extends SignalStoreValues {
     putBoolean(AUTOMATIC_VERIFICATION_ENABLED, enabled);
   }
 
+  public boolean hasPreferredNotificationMethod() {
+    return getStore().containsKey(MOLLY_NOTIFICATION_METHOD);
+  }
+
   public @NonNull NotificationDeliveryMethod getPreferredNotificationMethod() {
     if (getStore().containsKey(MOLLY_NOTIFICATION_METHOD)) {
       return NotificationDeliveryMethod.deserialize(getString(MOLLY_NOTIFICATION_METHOD, "FCM"));

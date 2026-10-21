@@ -481,7 +481,9 @@ public class ApplicationContext extends Application implements AppForegroundObse
       return;
     }
 
-    NotificationDeliveryMethod method = SignalStore.settings().getPreferredNotificationMethod();
+    NotificationDeliveryMethod method = SignalStore.settings().hasPreferredNotificationMethod()
+                                       ? SignalStore.settings().getPreferredNotificationMethod()
+                                       : NotificationDeliveryMethod.FCM;
     boolean useUnifiedPush = method == NotificationDeliveryMethod.UNIFIEDPUSH && !SignalStore.account().isLinkedDevice();
 
     if (SignalStore.account().isFcmEnabled() && method != NotificationDeliveryMethod.FCM) {
