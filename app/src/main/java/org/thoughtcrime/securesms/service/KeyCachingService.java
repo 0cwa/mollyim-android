@@ -84,7 +84,7 @@ public class KeyCachingService extends Service {
 
   /** Baseline-compatible lock-state adapter for push receivers. */
   public static synchronized boolean isLocked() {
-    return isLocked(AppDependencies.application);
+    return isLocked(AppDependencies.getApplication());
   }
 
   public static synchronized boolean isLocked(Context context) {
