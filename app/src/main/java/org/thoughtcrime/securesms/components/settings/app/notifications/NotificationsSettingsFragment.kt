@@ -635,6 +635,19 @@ fun NotificationsSettingsScreen(
         method != NotificationDeliveryMethod.UNIFIEDPUSH || !state.isLinkedDevice
       }
 
+      val notificationLabels = if (state.isLinkedDevice) {
+        arrayOf(
+          stringResource(NotificationDeliveryMethod.FCM.stringId),
+          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId)
+        )
+      } else {
+        arrayOf(
+          stringResource(NotificationDeliveryMethod.FCM.stringId),
+          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId),
+          stringResource(NotificationDeliveryMethod.UNIFIEDPUSH.stringId)
+        )
+      }
+      val deliveryServiceLabel = stringResource(R.string.NotificationsSettingsFragment__delivery_service)
       val showAlertIcon = when (state.preferredNotificationMethod) {
         NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
         NotificationDeliveryMethod.WEBSOCKET -> false
@@ -643,21 +656,23 @@ fun NotificationsSettingsScreen(
 
       item {
         Rows.RadioListRow(
-          text = stringResource(R.string.NotificationsSettingsFragment__delivery_service),
-          labels = notificationMethods.map { method -> stringResource(method.stringId) }.toTypedArray(),
-          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
-          selectedValue = state.preferredNotificationMethod.serialize(),
-          trailingIcon = if (showAlertIcon) {
-            {
+          text = { selectedIndex ->
+            Rows.TextAndLabel(
+              text = deliveryServiceLabel,
+              label = notificationLabels.getOrNull(selectedIndex)
+            )
+            if (showAlertIcon) {
               Icon(
                 painter = painterResource(android.R.drawable.ic_dialog_alert),
                 contentDescription = null,
                 tint = colorResource(R.color.signal_alert_primary)
               )
             }
-          } else {
-            null
           },
+          dialogTitle = deliveryServiceLabel,
+          labels = notificationLabels,
+          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
+          selectedValue = state.preferredNotificationMethod.serialize(),
           onSelected = { selected ->
             callbacks.onNotificationMethodChanged(
               state.preferredNotificationMethod to NotificationDeliveryMethod.deserialize(selected)
