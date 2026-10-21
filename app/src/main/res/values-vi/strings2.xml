@@ -39,4 +39,7 @@
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Xảy ra lỗi mạng. Hãy thử lại.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server">Máy chủ MollySocket</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Khoảng trống</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Hoạt động mới trong lúc khoá</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Nhận thông váo tin nhắn và cuộc gọi nhỡ khi ứng dụng bị khoá.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Xin lỗi, tính năng này cần dịch vụ thông báo đẩy như FCM hay UnifiedPush mà hiện tại không có.</string>
 </resources>

@@ -39,4 +39,7 @@
     <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket server niet gevonden op \'%s\'</string>
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Er is een netwerkfout opgetreden. Probeer het opnieuw.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Sorry, deze functie vereist pushberichten via FCM of UnifiedPush en deze zijn momenteel niet beschikbaar.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nieuwe activiteit tijdens lock</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Ontvang notificaties voor berichten en oproepen als de app gelockt is.</string>
 </resources>

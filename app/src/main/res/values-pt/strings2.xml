@@ -39,4 +39,7 @@
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Ocorreu um erro de rede. Tente novamente.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolado da rede</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Receber notificações de mensagens ou chamadas não atendidas quando a aplicação está bloqueada.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Lamentamos, mas esta funcionalidade requer notificações push entregues através de FCM ou UnifiedPush, que não estão atualmente disponíveis.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova atividade durante o bloqueio</string>
 </resources>

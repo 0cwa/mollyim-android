@@ -39,4 +39,7 @@
     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Jāmēģina nolasīt cits MollySocket kvadrātkodu saturošs attēls.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Nošķirts</string>
     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocket serveris atteica Tavam pašpiegādes serverim. Lūgums servera konfigurācijā pārbaudīt atļautos galamērķus.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Diemžēl šai iespējai ir nepieciešami pašpiegādes paziņojumi, kas tiek piegādāti ar FCM vai UnifiedPush, kas pašlaik nav pieejami.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Jauna darbība, kamēr aizslēgta</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Saņemt paziņojumus par ziņojumiem vai neatbildētiem zvaniem, kad lietotne ir aizslēgta.</string>
 </resources>

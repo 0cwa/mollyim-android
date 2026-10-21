@@ -39,4 +39,7 @@
     <string name="MollySocketLink_mollysocket_server_not_found_at_s">மோலிசாக்கெட் சேவையகம் \'%s\' இல் காணப்படவில்லை</string>
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">பிணைய பிழையை அனுபவித்தது. மீண்டும் முயற்சிக்கவும்.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server">மோலிச்கே சேவையகம்</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">பூட்டப்பட்டிருக்கும் போது புதிய செயல்பாடு</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">பயன்பாடு பூட்டப்படும்போது செய்திகள் அல்லது தவறவிட்ட அழைப்புகளுக்கான அறிவிப்புகளைப் பெறுங்கள்.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">மன்னிக்கவும், இந்த அம்சத்திற்கு FCM அல்லது UNIFIDEPUSH வழியாக வழங்கப்படும் புச் அறிவிப்புகள் தேவை, அவை தற்போது கிடைக்கவில்லை.</string>
 </resources>

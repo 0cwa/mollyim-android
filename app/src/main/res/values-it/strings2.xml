@@ -39,4 +39,7 @@
     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Il server push è stato rifiutato dal server MollySocket. Si prega di controllare i terminali consentiti nella configurazione del server.</string>
     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Questa è una notifica di prova dal server MollySocket.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Aria compressa</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Spiacenti, questa funzione richiede notifiche fornite tramite FCM o UnifiedPush, che attualmente non sono disponibili.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nuova attività quando bloccata</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Ricevi notifiche per messaggi o chiamate perse quando l\'applicazione è bloccata.</string>
 </resources>

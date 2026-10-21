@@ -39,4 +39,7 @@
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Došlo je do greške na mreži. Molimo vas, pokušajte ponovno.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Izolovan</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova aktivnost dok je aplikacija zaljučana</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Žao nam je, ova funkcija zahtijeva push obavještenja koja se isporučuju putem FCM ili UnifiedPush usluga koje trenutno nisu dostupne.</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Primaj obavještenja o porukama ili propuštenim pozivima kada je aplikacija zaključana.</string>
 </resources>

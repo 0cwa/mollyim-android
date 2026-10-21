@@ -15,4 +15,7 @@
     <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket URL\'si eksik</string>
     <string name="UnifiedPushSettingsFragment__status_summary_pending">Beklemede</string>
     <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">MollySocket sunucusundan doğrulanma bekleniyor</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Üzgünüz, bu özellik FCM veya UnifiedPush aracılığıyla gönderilen anlık bildirimler gerektirir ve şu anda kullanılamıyor.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Kilitliyken yeni etkinlik</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Uygulama kilitliyken mesajlar veya cevapsız aramalar için bildirimler alın.</string>
 </resources>

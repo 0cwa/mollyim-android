@@ -3,4 +3,7 @@
     <string name="NotificationsSettingsFragment__push_notifications">התראות</string>
     <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">בחר בשירות המועדף להתראות. אם לא זמין, האפליקציה תשתמש בוובסוקט כדי לוודא שהתראות נשלחות.</string>
     <string name="NotificationsSettingsFragment__delivery_service">שירות שליחה</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">פעילות חדשה בזמן נעילה</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">קבלת התראות להודעות או לשיחות שלא נענו כאשר היישומון נעול.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">היכולת הזאת צריכה להעביר הודעות בדחיפה דרך FCM או דרך UnifiedPush שאינן זמינות כרגע, עמך סליחה.</string>
 </resources>

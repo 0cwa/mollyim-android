@@ -39,4 +39,7 @@
     <string name="UnifiedPushNotificationBuilder__registration_failed">Помилка реєстрації у вашого дистриб’ютора UnifiedPush. Це може бути через проблему з мережею або відсутність вимоги від вашого дистриб’ютора.</string>
     <string name="MollySocketLink_scan_the_qr_code">Відскануйте QR-код, який відображається на домашній сторінці вашого сервера MollySocket або в консолі.</string>
     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Спробуйте відсканувати інше зображення, яке містить QR-код MollySocket.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Нова активність під час блокування</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Отримуйте сповіщення про повідомлення або пропущені дзвінки, коли додаток заблоковано.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Вибачте, ця функція вимагає push-сповіщень через FCM або UnifiedPush, які наразі недоступні.</string>
 </resources>

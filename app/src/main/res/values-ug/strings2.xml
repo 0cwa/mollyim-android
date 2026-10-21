@@ -39,4 +39,7 @@
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">تور خاتالىقىغا يولۇقتى. قايتا سىناڭ.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket مۇلازىمېتىر</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">فىزىكىلىق ئايرىلدى</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">قۇلۇپلانغان ۋاقىتتىكى يېڭى پائالىيەت</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">كەچۈرۈڭ، بۇ ئىقتىدار FCM ياكى UnifiedPush ئۇقتۇرۇش يەتكۈزۈش مۇلازىمىتى ئارقىلىق يوللىنىدۇ، نۆۋەتتە بۇلارنى ئىشلەتكىلى بولمايدۇ.</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">ئەپ قۇلۇپلانغاندا ئۇچۇر تاپشۇرۇۋېلىش ياكى ئالمىغان چاقىرىش ئۇقتۇرۇشى.</string>
 </resources>

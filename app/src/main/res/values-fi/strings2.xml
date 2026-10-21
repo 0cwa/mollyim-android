@@ -39,4 +39,7 @@
     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocket-palvelin hylkäsi työntöpalvelimesi. Tarkista sallitut päätepisteet palvelimen kokoonpanosta.</string>
     <string name="UnifiedPushNotificationBuilder__registration_failed">Rekisteröityminen UnifiedPush-jakelijallasi epäonnistui. Tämä voi johtua verkkoviasta tai jakelijan puuttuvasta vaatimuksesta.</string>
     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Tämä on testi-ilmoitus MollySocket-palvelimelta.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Valitettavasti tämä ominaisuus vaatii FCM:n tai UnifiedPush:n kautta toimitettuja työntöilmoituksia, jotka eivät ole tällä hetkellä saatavilla.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Uusi toiminta ollessa lukittuna</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Vastaanota ilmoituksia viesteistä tai vastaamattomista puheluista, kun sovellus on lukittu.</string>
 </resources>

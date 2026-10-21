@@ -24,4 +24,7 @@
     <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">클립보드에 복사하기</string>
     <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">UnifedPush 배포자 응답을 기다리는 중입니다</string>
     <string name="UnifiedPushSettingsFragment__status_summary_bad_response">서버의 잘못된 응답</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">잠겨 있는 동안의 새로운 활동</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">죄송합니다. 이 기능을 사용하려면 현재 사용할 수 없는 FCM 또는 UnifiedPush를 통해 푸시 알림을 전달해야 합니다.</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">앱이 잠겨있을 때 온 메시지나 부재중 전화의 알림을 받습니다.</string>
 </resources>

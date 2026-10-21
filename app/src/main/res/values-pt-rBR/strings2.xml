@@ -39,4 +39,7 @@
     <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Selecione seu serviço preferido para notificações push. Se ele não estiver disponível, o aplicativo usará automaticamente WebSocket para garantir a entrega das notificações.</string>
     <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nenhum distribuidor do UnifiedPush instalado</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolado da rede</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Desculpe, este recurso requer notificações push entregues por meio do FCM ou UnifiedPush, que no momento não estão disponíveis.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova atividade enquanto bloqueado</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Receber notificações de mensagens ou chamadas perdidas quando o aplicativo estiver bloqueado.</string>
 </resources>

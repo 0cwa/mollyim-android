@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="MollySocketLink_experienced_a_network_error_please_try_again">S\'ha produït un error de xarxa. Si us plau, torneu-ho a provar.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova activitat durant el bloqueig</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Rebre notificacions de missatges o trucades perdudes quan l\'aplicació està bloquejada.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Aquesta funció requereix notificacions lliurades a través de FCM o UnifiedPush, que actualment no estan disponibles.</string>
 </resources>

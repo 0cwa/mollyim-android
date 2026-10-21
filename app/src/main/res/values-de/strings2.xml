@@ -39,4 +39,7 @@
     <string name="NotificationsSettingsFragment__delivery_service">Push-Service</string>
     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Dein Konto wurde vom MollySocket-Server abgelehnt. Bitte überprüfe die zugelassenen UUIDs in der Serverkonfiguration.</string>
     <string name="UnifiedPushNotificationBuilder__registration_failed">Die Registrierung mit deinem UnifiedPush-Distributor ist fehlgeschlagen. Dies könnte an einem Netzwerkproblem oder einer nicht erfüllten Anforderung des UnifiedPush-Distributors liegen.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Leider erfordert diese Funktion Push-Benachrichtigungen über FCM oder UnifiedPush, die derzeit nicht verfügbar sind.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Neue Aktivität während der Sperrung</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Benachrichtigungen für Nachrichten oder verpasste Anrufe empfangen, während die App gesperrt ist.</string>
 </resources>

@@ -116,6 +116,11 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
     refresh()
   }
 
+  fun setNotifyWhileLocked(enabled: Boolean) {
+    TextSecurePreferences.setPassphraseLockNotificationsEnabled(AppDependencies.application, enabled)
+    refresh()
+  }
+
   fun setPreferredNotificationMethod(method: NotificationDeliveryMethod) {
     SignalStore.settings.preferredNotificationMethod = method
     TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
@@ -165,6 +170,8 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
       ringtone = SignalStore.settings.callRingtone,
       vibrateEnabled = SignalStore.settings.isCallVibrateEnabled
     ),
+    notifyWhileLocked = TextSecurePreferences.isPassphraseLockNotificationsEnabled(AppDependencies.application) && SignalStore.account.pushAvailable,
+    canEnableNotifyWhileLocked = SignalStore.account.pushAvailable,
     isLinkedDevice = SignalStore.account.isLinkedDevice,
     preferredNotificationMethod = SignalStore.settings.preferredNotificationMethod,
     canReceiveFcm = SignalStore.account.canReceiveFcm,

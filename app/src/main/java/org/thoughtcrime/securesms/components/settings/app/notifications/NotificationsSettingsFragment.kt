@@ -315,6 +315,17 @@ open class DefaultNotificationsSettingsCallbacks(
     viewModel.setNotifyWhenContactJoinsSignal(enabled)
   }
 
+  override fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) {
+    if (enabled && !isSupported) {
+      MaterialAlertDialogBuilder(activity)
+        .setMessage(R.string.NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush)
+        .setPositiveButton(android.R.string.ok, null)
+        .show()
+    } else {
+      viewModel.setNotifyWhileLocked(enabled)
+    }
+  }
+
   override fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) {
     val (previousMethod, method) = fromToMethods
     when (method) {
@@ -367,6 +378,7 @@ interface NotificationsSettingsCallbacks {
   fun setCallVibrateEnabled(enabled: Boolean) = Unit
   fun onNavigationProfilesClick() = Unit
   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) = Unit
+  fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) = Unit
   fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) = Unit
   fun onNavigationUnifiedPushSettings() = Unit
 
@@ -605,6 +617,17 @@ fun NotificationsSettingsScreen(
 
       item {
         Rows.ToggleRow(
+          text = stringResource(R.string.NotificationsSettingsFragment__new_activity_while_locked),
+          label = stringResource(R.string.NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked),
+          checked = state.notifyWhileLocked,
+          onCheckChanged = { enabled ->
+            callbacks.setNotifyNewActivityWhileLocked(enabled, state.canEnableNotifyWhileLocked)
+          }
+        )
+      }
+
+      item {
+        Rows.ToggleRow(
           text = stringResource(R.string.NotificationsSettingsFragment__contact_joins_signal),
           checked = state.notifyWhenContactJoinsSignal,
           onCheckChanged = callbacks::setNotifyWhenContactJoinsSignal
@@ -765,6 +788,8 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
       ringtone = Uri.EMPTY,
       vibrateEnabled = true
     ),
+    notifyWhileLocked = true,
+    canEnableNotifyWhileLocked = true,
     isLinkedDevice = false,
     preferredNotificationMethod = NotificationDeliveryMethod.FCM,
     canReceiveFcm = true,

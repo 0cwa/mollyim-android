@@ -39,4 +39,7 @@
     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Váš doručovací server byl odmítnut serverem MollySocket. Zkontrolujte prosím povolené endpointy v nastavení serveru.</string>
     <string name="UnifiedPushNotificationBuilder__registration_failed">Registrace s vaší doručovací službou UnitedPush selhala. Mohlo se tak stát z důvodu chyby sítě nebo chybějícího požadavku od doručovací služby.</string>
     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Zkuste naskenovat jiný obrázek obsahující QR kód MollySocket.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nová aktivita během uzamknutí</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Dostávat oznámení o nových zprávách a zmeškaných hovorech když je aplikace zamknutá.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Omlouváme se, tato funkce vyžaduje doručení oznámení skrz FCM nebo UnifiedPush, které nejsou aktuálně dostupné.</string>
 </resources>

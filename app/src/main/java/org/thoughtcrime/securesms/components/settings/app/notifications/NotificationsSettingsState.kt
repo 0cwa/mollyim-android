@@ -6,6 +6,8 @@ import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMe
 data class NotificationsSettingsState(
   val messageNotificationsState: MessageNotificationsState,
   val callNotificationsState: CallNotificationsState,
+  val notifyWhileLocked: Boolean,
+  val canEnableNotifyWhileLocked: Boolean,
   val isLinkedDevice: Boolean,
   val preferredNotificationMethod: NotificationDeliveryMethod,
   val canReceiveFcm: Boolean,

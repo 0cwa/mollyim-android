@@ -39,4 +39,7 @@
     <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">نقطة النهاية محظورة من قبل الخادم</string>
     <string name="UnifiedPushNotificationBuilder__registration_failed">فشل التسجيل مع موزع الدفع الموحد(UnifiedPush) الخاص بك. قد يكون ذلك بسبب مشكلة في الشبكة أو متطلبات مفقودة من موزعك.</string>
     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">هذا إشعار تجريبي من خادم مولي سوكيت(MollySocket).</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">نشاط جديد أثناء القفل</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">عذرًا، تتطلب هذه الميزة إرسال إشعارات Push عبر FCM أو UnifiedPush، وهي غير متوفرة حاليًا.</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">تلقي إشعارات للرسائل أو المكالمات الفائتة عندما يكون التطبيق مقفلاً.</string>
 </resources>

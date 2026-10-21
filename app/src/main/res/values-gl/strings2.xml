@@ -39,4 +39,7 @@
     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Intenta escanear outra imaxe que conteña un código QR de MollySocket.</string>
     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">O servidor MollySocket rexeitou o teu servidor push. Comproba os puntos de acceso permitidos na configuración do servidor.</string>
     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air gapped</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Recibir notificacións de mensaxes ou chamadas perdidas cando a app está bloqueada.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova actividade mentras en repouso</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Lamentámolo pero esta característica precisa que as notificacións push se entreguen usando FCM ou UnifiedPush, que non están dispoñibles.</string>
 </resources>

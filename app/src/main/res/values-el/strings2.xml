@@ -39,4 +39,7 @@
     <string name="UnifiedPushSettingsFragment__mollysocket_server">Διακομιστής MollySocket</string>
     <string name="UnifiedPushNotificationBuilder__registration_failed">Η εγγραφή με τον διανομέα UnifiedPush απέτυχε. Αυτό θα μπορούσε να οφείλεται σε ένα ζήτημα δικτύου ή σε μια αγνοούμενη απαίτηση από τον διανομέα σου.</string>
     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Προσπάθησε να σαρώσεις μια άλλη εικόνα που περιέχει έναν κωδικό MollySocket QR.</string>
+    <string name="NotificationsSettingsFragment__new_activity_while_locked">Νέα δραστηριότητα ενώ είναι κλειδωμένο</string>
+    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Λήψη ειδοποιήσεων για μηνύματα ή αναπάντητες κλήσεις όσο η εφαρμογή είναι κλειδωμένη.</string>
+    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Λυπούμαστε, αυτή η λειτουργία απαιτεί ειδοποιήσεις push που παραδίδονται μέσω FCM ή UnifiedPush, οι οποίες προς το παρόν δεν είναι διαθέσιμες.</string>
 </resources>
