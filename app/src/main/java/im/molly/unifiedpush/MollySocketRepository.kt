@@ -24,14 +24,13 @@ import org.thoughtcrime.securesms.AppCapabilities
 import org.thoughtcrime.securesms.crypto.ReentrantSessionLock
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.dependencies.AppDependencies.keysApi
-import org.thoughtcrime.securesms.keyvalue.PhoneNumberPrivacyValues.PhoneNumberDiscoverabilityMode
 import org.thoughtcrime.securesms.keyvalue.SignalStore
 import org.thoughtcrime.securesms.linkdevice.LinkDeviceRepository
 import org.thoughtcrime.securesms.push.AccountManagerFactory
 import org.thoughtcrime.securesms.recipients.Recipient
 import org.thoughtcrime.securesms.registration.data.RegistrationRepository
 import org.whispersystems.signalservice.api.NetworkResultUtil
-import org.whispersystems.signalservice.api.account.AccountAttributes
+import org.whispersystems.signalservice.api.account.DeviceAttributes
 import org.whispersystems.signalservice.api.crypto.SignalSessionBuilder
 import org.whispersystems.signalservice.api.push.SignalServiceAddress
 import org.whispersystems.signalservice.internal.push.DeviceLimitExceededException
@@ -69,20 +68,12 @@ object MollySocketRepository {
       DEVICE_NAME.toByteArray(), SignalStore.account.aciIdentityKey
     )
 
-    val notDiscoverable = SignalStore.phoneNumberPrivacy.phoneNumberDiscoverabilityMode == PhoneNumberDiscoverabilityMode.NOT_DISCOVERABLE
-
-    val accountAttributes = AccountAttributes(
-      signalingKey = null,
-      registrationId = registrationId,
+    val deviceAttributes = DeviceAttributes(
       fetchesMessages = true,
-      registrationLock = null,
-      unidentifiedAccessKey = null,
-      unrestrictedUnidentifiedAccess = true,
-      capabilities = AppCapabilities.getCapabilities(storageCapable = false),
-      discoverableByPhoneNumber = !notDiscoverable,
-      name = Base64.encodeWithPadding(encryptedDeviceName),
+      registrationId = registrationId,
       pniRegistrationId = SignalStore.account.pniRegistrationId,
-      recoveryPassword = null
+      name = Base64.encodeWithPadding(encryptedDeviceName),
+      capabilities = AppCapabilities.getCapabilities(storageCapable = false)
     )
 
     val aciPreKeyCollection = RegistrationRepository.generateSignedAndLastResortPreKeys(SignalStore.account.aciIdentityKey, SignalStore.account.aciPreKeys)
@@ -90,15 +81,20 @@ object MollySocketRepository {
 
     val accountManager = AccountManagerFactory.getInstance().createForDeviceLink(AppDependencies.application, password)
 
-    return accountManager.finishNewDeviceRegistration(
-      verificationCode.verificationCode,
-      accountAttributes,
-      aciPreKeyCollection, pniPreKeyCollection,
-      null
-    ).also { deviceId ->
-      SignalStore.account.isMultiDevice = true
-      loadPreKeys(deviceId)
-    }
+    val response = NetworkResultUtil.toBasicLegacy(
+      accountManager.registrationApi.registerAsSecondaryDevice(
+        verificationCode.verificationCode,
+        deviceAttributes,
+        aciPreKeyCollection,
+        pniPreKeyCollection,
+        null
+      )
+    )
+    val deviceId = response.deviceId.toInt()
+
+    SignalStore.account.isMultiDevice = true
+    loadPreKeys(deviceId)
+    return deviceId
   }
 
   /**
