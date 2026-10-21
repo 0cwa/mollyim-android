@@ -44,7 +44,7 @@ class UnifiedPushRefreshJob private constructor(
     testPing = testPing,
     fromNewEndpoint = fromNewEndpoint,
     parameters = Parameters.Builder()
-      .setQueue(FcmRefreshJob.QUEUE_KEY)
+      .setQueue(FcmRefreshJob.KEY)
       .addConstraint(NetworkConstraint.KEY)
       .setMaxAttempts(3)
       .setLifespan(TimeUnit.HOURS.toMillis(6))
@@ -102,7 +102,8 @@ class UnifiedPushRefreshJob private constructor(
         else -> throw IOException(t)
       }
     } finally {
-      AppDependencies.resetNetwork(restartMessageObserver = true)
+      AppDependencies.resetNetwork()
+      AppDependencies.startNetwork()
       EventBus.getDefault().post(PushServiceEvent)
     }
   }

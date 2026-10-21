@@ -79,7 +79,7 @@ class UnifiedPushReceiver : MessagingReceiver() {
       message.contains("\"urgent\":true") -> {
         if (TextSecurePreferences.isPassphraseLockNotificationsEnabled(context)) {
           Log.d(TAG, "New urgent message received while app is locked.")
-          FcmFetchManager.postMayHaveMessagesNotification(context)
+          FcmFetchManager.postMayHaveMessagesNotificationForLockedPush(context)
         }
       }
     }

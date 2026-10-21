@@ -13,6 +13,7 @@ import org.thoughtcrime.securesms.BuildConfig;
 import org.thoughtcrime.securesms.dependencies.AppDependencies;
 import org.thoughtcrime.securesms.util.RemoteConfig;
 import org.whispersystems.signalservice.api.SignalServiceAccountManager;
+import org.whispersystems.signalservice.api.push.SignalServiceAddress;
 
 public class AccountManagerFactory {
 
@@ -65,6 +66,21 @@ public class AccountManagerFactory {
         RemoteConfig.okHttpAutomaticRetry(),
         RemoteConfig.groupLimits().getHardLimit()
     );
+  }
+
+  /** Creates an authenticated account manager used only to link a device to the current account. */
+  public @NonNull SignalServiceAccountManager createForDeviceLink(@NonNull Context context,
+                                                                  @NonNull String password) {
+    return SignalServiceAccountManager.createWithStaticCredentials(
+        AppDependencies.getSignalServiceNetworkAccess().getConfiguration(null),
+        null,
+        null,
+        null,
+        SignalServiceAddress.DEFAULT_DEVICE_ID,
+        password,
+        BuildConfig.SIGNAL_AGENT,
+        RemoteConfig.okHttpAutomaticRetry(),
+        RemoteConfig.groupLimits().getHardLimit());
   }
 
 }

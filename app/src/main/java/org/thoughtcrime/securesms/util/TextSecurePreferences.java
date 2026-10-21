@@ -98,6 +98,8 @@ public class TextSecurePreferences {
   private static final String ATTACHMENT_ENCRYPTED_SECRET   = "pref_attachment_encrypted_secret";
   private static final String ATTACHMENT_UNENCRYPTED_SECRET = "pref_attachment_unencrypted_secret";
 
+  private static final String PASSPHRASE_LOCK_NOTIFICATIONS = "pref_passphrase_lock_notifications";
+
   public static final String CALL_NOTIFICATIONS_PREF = "pref_call_notifications";
   public static final String CALL_RINGTONE_PREF      = "pref_call_ringtone";
   public static final String CALL_VIBRATE_PREF       = "pref_call_vibrate";
@@ -253,6 +255,14 @@ public class TextSecurePreferences {
     if (NotificationChannels.supported()) {
       NotificationChannels.getInstance().updateMessageVibrate(SignalStore.settings().isMessageVibrateEnabled());
     }
+  }
+
+  public static boolean isPassphraseLockNotificationsEnabled(@NonNull Context context) {
+    return getBooleanPreference(context, PASSPHRASE_LOCK_NOTIFICATIONS, true);
+  }
+
+  public static void setPassphraseLockNotificationsEnabled(@NonNull Context context, boolean enabled) {
+    setBooleanPreference(context, PASSPHRASE_LOCK_NOTIFICATIONS, enabled);
   }
 
   public static void registerListener(@NonNull Context context, SharedPreferences.OnSharedPreferenceChangeListener listener) {

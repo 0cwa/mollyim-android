@@ -80,6 +80,10 @@ object FcmFetchManager {
     }
   }
 
+  fun postMayHaveMessagesNotificationForLockedPush(context: Context) {
+    postMayHaveMessagesNotification(context)
+  }
+
   private fun postMayHaveMessagesNotification(context: Context) {
     if (RemoteConfig.fcmMayHaveMessagesNotificationKillSwitch) {
       Log.w(TAG, "May have messages notification kill switch")
