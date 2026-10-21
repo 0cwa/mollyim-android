@@ -20,8 +20,10 @@ import org.thoughtcrime.securesms.jobs.MessageFetchJob
 import org.thoughtcrime.securesms.messages.WebSocketDrainer
 import org.thoughtcrime.securesms.notifications.NotificationChannels
 import org.thoughtcrime.securesms.notifications.NotificationIds
+import org.thoughtcrime.securesms.service.KeyCachingService
 import org.thoughtcrime.securesms.util.RemoteConfig
 import org.thoughtcrime.securesms.util.SignalLocalMetrics
+import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.thoughtcrime.securesms.util.concurrent.SerialMonoLifoExecutor
 import kotlin.time.Duration.Companion.minutes
 
@@ -85,6 +87,11 @@ object FcmFetchManager {
   }
 
   private fun postMayHaveMessagesNotification(context: Context) {
+    if (KeyCachingService.isLocked(context) && !TextSecurePreferences.isPassphraseLockNotificationsEnabled(context)) {
+      Log.i(TAG, "Suppressing locked notification because the user disabled them.")
+      return
+    }
+
     if (RemoteConfig.fcmMayHaveMessagesNotificationKillSwitch) {
       Log.w(TAG, "May have messages notification kill switch")
       return

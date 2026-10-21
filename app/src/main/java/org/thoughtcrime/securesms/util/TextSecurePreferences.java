@@ -164,6 +164,7 @@ public class TextSecurePreferences {
                                                               SHOW_UNIDENTIFIED_DELIVERY_INDICATORS,
                                                               UNIVERSAL_UNIDENTIFIED_ACCESS,
                                                               NOTIFICATION_PREF,
+                                                              PASSPHRASE_LOCK_NOTIFICATIONS,
                                                               VIBRATE_PREF,
                                                               IN_THREAD_NOTIFICATION_PREF,
                                                               CALL_NOTIFICATIONS_PREF,
