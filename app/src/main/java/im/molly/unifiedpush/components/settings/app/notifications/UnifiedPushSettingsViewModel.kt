@@ -39,7 +39,7 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
 
     val distributors = distributorIds.map { appId ->
       val name = try {
-        val ai = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        val ai = if (Build.VERSION.SDK_INT >= 33) {
           application.packageManager.getApplicationInfo(
             appId,
             PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong())

@@ -432,7 +432,7 @@ public class Util {
   public static void writeSensitiveTextToClipboard(@NonNull Context context, @NonNull String label, @NonNull String text) {
     ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
     ClipData clip = ClipData.newPlainText(label, text);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+    if (Build.VERSION.SDK_INT >= 33) {
       PersistableBundle extras = new PersistableBundle();
       extras.putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true);
       clip.getDescription().setExtras(extras);
