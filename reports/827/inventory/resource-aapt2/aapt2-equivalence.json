@@ -1,0 +1,112 @@
+{
+  "status": "PASS",
+  "method": "Compile each pinned resource XML input with SDK aapt2, link minimal fixture APK against Android API 36 android.jar, and compare named compiled string values from aapt2 dump resources.",
+  "resource_path": "app/src/main/res/values/strings2.xml",
+  "resource_name": "MollySocketLink_scan_the_qr_code",
+  "target_commit": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "candidate_source": "app/src/main/res/values/strings2.xml from current corrected candidate",
+  "target_source_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
+  "candidate_source_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
+  "target_element_xml_sha256": "0504e00ca26c672676ce733cde1fa6497bab9b0de29da49c01d4de9871fc43ab",
+  "candidate_element_xml_sha256": "e913acec30c69657c31d4cd765eabf876d39d05aecac87542ae8c2fd4273a722",
+  "target_raw_text": "\"Scan the QR code displayed on your MollySocket server's homepage or in the console.",
+  "candidate_raw_text": "\"Scan the QR code displayed on your MollySocket server's homepage or in the console.\"",
+  "compiled_runtime_text": "Scan the QR code displayed on your MollySocket server's homepage or in the console.",
+  "target_compiled_runtime_text_sha256": "f2b0f701b5560bc9ead7f21738c6378c856d323f32b2e71ffd1f5d554aae04ad",
+  "candidate_compiled_runtime_text_sha256": "f2b0f701b5560bc9ead7f21738c6378c856d323f32b2e71ffd1f5d554aae04ad",
+  "runtime_text_equal": true,
+  "aapt2_version": "Android Asset Packaging Tool (aapt) 2.20-13193326",
+  "android_jar": "/workspace/android-sdk/platforms/android-36/android.jar",
+  "android_api": 36,
+  "commands_target_and_candidate": [
+    [
+      "/workspace/android-sdk/build-tools/36.0.0/aapt2",
+      "compile",
+      "--dir",
+      "reports/827/inventory/resource-aapt2/fixture/target/res",
+      "-o",
+      "reports/827/inventory/resource-aapt2/outputs/target.zip"
+    ],
+    [
+      "/workspace/android-sdk/build-tools/36.0.0/aapt2",
+      "link",
+      "--manifest",
+      "reports/827/inventory/resource-aapt2/fixture/AndroidManifest.xml",
+      "-I",
+      "/workspace/android-sdk/platforms/android-36/android.jar",
+      "--min-sdk-version",
+      "23",
+      "--target-sdk-version",
+      "36",
+      "--version-code",
+      "1",
+      "--version-name",
+      "resource-parity",
+      "-o",
+      "reports/827/inventory/resource-aapt2/outputs/target.apk",
+      "reports/827/inventory/resource-aapt2/outputs/target.zip"
+    ],
+    [
+      "/workspace/android-sdk/build-tools/36.0.0/aapt2",
+      "dump",
+      "resources",
+      "reports/827/inventory/resource-aapt2/outputs/target.apk"
+    ],
+    [
+      "/workspace/android-sdk/build-tools/36.0.0/aapt2",
+      "compile",
+      "--dir",
+      "reports/827/inventory/resource-aapt2/fixture/candidate/res",
+      "-o",
+      "reports/827/inventory/resource-aapt2/outputs/candidate.zip"
+    ],
+    [
+      "/workspace/android-sdk/build-tools/36.0.0/aapt2",
+      "link",
+      "--manifest",
+      "reports/827/inventory/resource-aapt2/fixture/AndroidManifest.xml",
+      "-I",
+      "/workspace/android-sdk/platforms/android-36/android.jar",
+      "--min-sdk-version",
+      "23",
+      "--target-sdk-version",
+      "36",
+      "--version-code",
+      "1",
+      "--version-name",
+      "resource-parity",
+      "-o",
+      "reports/827/inventory/resource-aapt2/outputs/candidate.apk",
+      "reports/827/inventory/resource-aapt2/outputs/candidate.zip"
+    ],
+    [
+      "/workspace/android-sdk/build-tools/36.0.0/aapt2",
+      "dump",
+      "resources",
+      "reports/827/inventory/resource-aapt2/outputs/candidate.apk"
+    ]
+  ],
+  "fixtures": {
+    "manifest": "fixture/AndroidManifest.xml",
+    "target_dump": "outputs/target-dump.txt",
+    "candidate_dump": "outputs/candidate-dump.txt",
+    "compile_link_stdout_stderr": "outputs/",
+    "output_hashes": "output-sha256.txt"
+  },
+  "limitations": "Proves this named string compiles to equal runtime text in the pinned SDK toolchain fixture; it does not assert broader app resource or UI behavior.",
+  "fixture_source_files": [
+    "fixture/target/res/values/strings2.xml",
+    "fixture/candidate/res/values/strings2.xml",
+    "fixture/AndroidManifest.xml"
+  ],
+  "aapt2_version_file": "aapt2-version.txt",
+  "evidence_sha256": {
+    "fixture/AndroidManifest.xml": "388e0cf63ba16dae306795d43158a4b0323c7675c41dc829457698c58d66985d",
+    "aapt2-version.txt": "74356fd86dc621b0e73dd382120da390cd01024857fc1c81c2f4196b4d47f165",
+    "outputs/target-dump.txt": "96e33684eb560461e959d2c1c336ef633b5580a71a793ea3daadd1f411379d1f",
+    "outputs/candidate-dump.txt": "6e4cc4cebb47d501cb66cf071aeab60415cf1cda484ab82f4b65bf0e4ba0611f",
+    "outputs/target.apk": "a838c9d8b31c538f952ab4fcd31f118b518751e4854bf54c14870fe2d3027d8c",
+    "outputs/candidate.apk": "c389906282a208c210574ecc415fcd84dcdd64d8f15f1105e8d619abe9a81e8b",
+    "output-sha256.txt": "49341982b6e28ff8ba14d27afc5b6f2e267bd600e8cdac36cfa93e33156323fa"
+  }
+}

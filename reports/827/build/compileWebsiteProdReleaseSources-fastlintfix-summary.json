@@ -1,0 +1,24 @@
+{
+  "result": "PASS",
+  "source_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "task": ":Signal-Android:compileWebsiteProdReleaseSources",
+  "options": [
+    "--offline",
+    "--no-daemon",
+    "--max-workers=1",
+    "--dependency-verification=strict",
+    "-Dorg.gradle.jvmargs=-Xmx6g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3"
+  ],
+  "task_counts": {
+    "executed": 27,
+    "up_to_date": 204
+  },
+  "source_sha256": {
+    "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt": "25c809e9e1a5f96bbf3e1351e7e1f91e4df79cfdcc27fe2dbc6579d16d109df8",
+    "core/util/src/main/java/org/signal/core/util/Util.java": "0f0573d081b12464f5d21b7aaa3792764a5083f08cac2f0022abd3fddefbc29d",
+    "app/src/main/res/values/strings2.xml": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac"
+  },
+  "log": "reports/827/build/compileWebsiteProdReleaseSources-fastlintfix-20261024.log",
+  "log_sha256": "c02f238cd01e28c0311a9dba738aacec757fd45eddc18871b18cf5f6defb2cac",
+  "scope": "Recompiled WebsiteProdRelease app and core util Kotlin/Java source tasks after lint fixes; no APK assembly or signing."
+}

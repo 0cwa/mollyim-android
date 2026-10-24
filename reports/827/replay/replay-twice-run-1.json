@@ -3,11 +3,11 @@
   "schema_version": 2,
   "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
   "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
-  "worktree": "/tmp/molly827final22-run-1",
-  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
-  "expected_application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
-  "source_head_sha": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
-  "source_projected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "worktree": "/tmp/molly827-final23-run-1",
+  "expected_tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+  "expected_application_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "source_head_sha": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "source_projected_tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
   "metadata_exclusions": [
     ".github/workflows/827-poc.yml",
     "docs/827",
@@ -177,6 +177,13 @@
           "result": 0,
           "full_log": "reports/827/replay/replay-twice-run-1-logs/unifiedpush-19.git-am.log",
           "full_log_sha256": "09dbcb5a90b64412c7d39b4d6945fea514b3561de57e77127c518a61e8bba050"
+        },
+        {
+          "file": "unifiedpush/0020-Apply-FastLint-resource-fixes.patch",
+          "sha256": "71b2f58b87df3527c8b512f6376073403ed571dab74c3bcd0b033830de30f65a",
+          "result": 0,
+          "full_log": "reports/827/replay/replay-twice-run-1-logs/unifiedpush-20.git-am.log",
+          "full_log_sha256": "8dde7f683c6640f497fd110b77fc329ff8d80f3564975851bb8380ea5761bc96"
         }
       ],
       "parity_paths": [
@@ -369,12 +376,11 @@
         },
         {
           "path": "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt",
-          "expected_replay_sha256": "4b7f66472f1d637047faf9e1c8f47231893fec159c8b812a09b4ac318ea03538",
+          "expected_replay_sha256": "25c809e9e1a5f96bbf3e1351e7e1f91e4df79cfdcc27fe2dbc6579d16d109df8",
           "target_sha256": "80579ccfd6258de66ea492bc7d36d75a67b758aad98e693014c1b93404680377",
-          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "evidence": "Use the repository fast-lint numeric API-level convention (33 for Tiramisu); this is compile-time equivalent to Build.VERSION_CODES.TIRAMISU in the pinned SDK.",
           "tests": [
-            "reports/independent-review/SECURITY-REVIEW.md",
-            "reports/build/build-results.json"
+            "reports/827/build/fastLint-replay-fixes-20261024.log"
           ]
         },
         {
@@ -889,22 +895,21 @@
         },
         {
           "path": "app/src/main/res/values/strings2.xml",
-          "expected_replay_sha256": "80032346b80a9dff0127eabff100a7564e3209f328de51e1de03e686bcbe0b2a",
+          "expected_replay_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
           "target_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
-          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "evidence": "Balance the leading/trailing quote in the default MollySocket QR instruction. aapt2 comparison confirms the compiled runtime string equals the pinned target text.",
           "tests": [
-            "reports/independent-review/SECURITY-REVIEW.md",
-            "reports/build/build-results.json"
+            "reports/827/inventory/resource-parity.json",
+            "reports/827/build/fastLint-replay-fixes-20261024.log"
           ]
         },
         {
           "path": "core/util/src/main/java/org/signal/core/util/Util.java",
-          "expected_replay_sha256": "6f1ac5619ecab296f6c3de17c9ed71fb36a18040f87ebb4838e65a03bf9f54b2",
+          "expected_replay_sha256": "0f0573d081b12464f5d21b7aaa3792764a5083f08cac2f0022abd3fddefbc29d",
           "target_sha256": "35933afa49b566aaf29907be19ea39b3457ed9a4d25d2c88660fb0bc6e399d50",
-          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "evidence": "Use numeric API level 33 to satisfy the repository fast-lint rule; the pinned SDK maps this value to Build.VERSION_CODES.TIRAMISU.",
           "tests": [
-            "reports/independent-review/SECURITY-REVIEW.md",
-            "reports/build/build-results.json"
+            "reports/827/build/fastLint-replay-fixes-20261024.log"
           ]
         },
         {
@@ -1163,7 +1168,7 @@
       "unifiedpush:app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt"
     ]
   },
-  "tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
   "expected_tree_match": true,
   "source_projection_match": true,
   "changed_paths": [
@@ -1700,16 +1705,15 @@
       "match": "documented-adaptation",
       "target_sha256": "80579ccfd6258de66ea492bc7d36d75a67b758aad98e693014c1b93404680377",
       "expected_target_sha256": "80579ccfd6258de66ea492bc7d36d75a67b758aad98e693014c1b93404680377",
-      "replay_sha256": "4b7f66472f1d637047faf9e1c8f47231893fec159c8b812a09b4ac318ea03538",
-      "expected_replay_sha256": "4b7f66472f1d637047faf9e1c8f47231893fec159c8b812a09b4ac318ea03538",
+      "replay_sha256": "25c809e9e1a5f96bbf3e1351e7e1f91e4df79cfdcc27fe2dbc6579d16d109df8",
+      "expected_replay_sha256": "25c809e9e1a5f96bbf3e1351e7e1f91e4df79cfdcc27fe2dbc6579d16d109df8",
       "target_matches_evidence": true,
       "replay_matches_evidence": true,
       "target_parity": false,
       "whole_file_target_parity_claimed": false,
-      "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+      "evidence": "Use the repository fast-lint numeric API-level convention (33 for Tiramisu); this is compile-time equivalent to Build.VERSION_CODES.TIRAMISU in the pinned SDK.",
       "tests": [
-        "reports/independent-review/SECURITY-REVIEW.md",
-        "reports/build/build-results.json"
+        "reports/827/build/fastLint-replay-fixes-20261024.log"
       ],
       "residual_diff_artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/f888ff5e11b583e3.diff.gz"
     },
@@ -2688,16 +2692,16 @@
       "match": "documented-adaptation",
       "target_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
       "expected_target_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
-      "replay_sha256": "80032346b80a9dff0127eabff100a7564e3209f328de51e1de03e686bcbe0b2a",
-      "expected_replay_sha256": "80032346b80a9dff0127eabff100a7564e3209f328de51e1de03e686bcbe0b2a",
+      "replay_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
+      "expected_replay_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
       "target_matches_evidence": true,
       "replay_matches_evidence": true,
       "target_parity": false,
       "whole_file_target_parity_claimed": false,
-      "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+      "evidence": "Balance the leading/trailing quote in the default MollySocket QR instruction. aapt2 comparison confirms the compiled runtime string equals the pinned target text.",
       "tests": [
-        "reports/independent-review/SECURITY-REVIEW.md",
-        "reports/build/build-results.json"
+        "reports/827/inventory/resource-parity.json",
+        "reports/827/build/fastLint-replay-fixes-20261024.log"
       ],
       "residual_diff_artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/c5a596f47949ccd6.diff.gz"
     },
@@ -2707,16 +2711,15 @@
       "match": "documented-adaptation",
       "target_sha256": "35933afa49b566aaf29907be19ea39b3457ed9a4d25d2c88660fb0bc6e399d50",
       "expected_target_sha256": "35933afa49b566aaf29907be19ea39b3457ed9a4d25d2c88660fb0bc6e399d50",
-      "replay_sha256": "6f1ac5619ecab296f6c3de17c9ed71fb36a18040f87ebb4838e65a03bf9f54b2",
-      "expected_replay_sha256": "6f1ac5619ecab296f6c3de17c9ed71fb36a18040f87ebb4838e65a03bf9f54b2",
+      "replay_sha256": "0f0573d081b12464f5d21b7aaa3792764a5083f08cac2f0022abd3fddefbc29d",
+      "expected_replay_sha256": "0f0573d081b12464f5d21b7aaa3792764a5083f08cac2f0022abd3fddefbc29d",
       "target_matches_evidence": true,
       "replay_matches_evidence": true,
       "target_parity": false,
       "whole_file_target_parity_claimed": false,
-      "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+      "evidence": "Use numeric API level 33 to satisfy the repository fast-lint rule; the pinned SDK maps this value to Build.VERSION_CODES.TIRAMISU.",
       "tests": [
-        "reports/independent-review/SECURITY-REVIEW.md",
-        "reports/build/build-results.json"
+        "reports/827/build/fastLint-replay-fixes-20261024.log"
       ],
       "residual_diff_artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/cbee0a045daef4cb.diff.gz"
     },
@@ -2870,12 +2873,12 @@
     {
       "artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/f888ff5e11b583e3.diff.gz",
       "compressed_path": "reports/827/replay/replay-twice-run-1-residual-diffs/f888ff5e11b583e3.diff.gz",
-      "compressed_sha256": "fc1aedd914befafe18d541a4374ff2ded9cbe29810c65bbb33b22d7a727e79a5",
-      "compressed_bytes": 817,
-      "uncompressed_sha256": "43cfd9571497fd04477add6f2aba7736312201882152b921891cd7ce48f3846c",
-      "uncompressed_bytes": 2720,
-      "sha256": "43cfd9571497fd04477add6f2aba7736312201882152b921891cd7ce48f3846c",
-      "bytes": 2720,
+      "compressed_sha256": "fd0a72082f0fbdd595749b95218d2a90c81bde9a1ae46bafe5891a79915c49e4",
+      "compressed_bytes": 852,
+      "uncompressed_sha256": "26f409ec78a97cebb6111dc7890ed3a335c4a16f24992a4b16e0bcaf4200e734",
+      "uncompressed_bytes": 2830,
+      "sha256": "26f409ec78a97cebb6111dc7890ed3a335c4a16f24992a4b16e0bcaf4200e734",
+      "bytes": 2830,
       "empty": false,
       "compression": {
         "format": "gzip",
@@ -3806,12 +3809,12 @@
     {
       "artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/c5a596f47949ccd6.diff.gz",
       "compressed_path": "reports/827/replay/replay-twice-run-1-residual-diffs/c5a596f47949ccd6.diff.gz",
-      "compressed_sha256": "0245cff58a717583c205def03513369865be84620d00fcb61722f360e5316eb2",
-      "compressed_bytes": 4843,
-      "uncompressed_sha256": "f042ee09c080b34f7036abb600cf64cc97db1f5be65aef7a80cd8fd42f3cc102",
-      "uncompressed_bytes": 18088,
-      "sha256": "f042ee09c080b34f7036abb600cf64cc97db1f5be65aef7a80cd8fd42f3cc102",
-      "bytes": 18088,
+      "compressed_sha256": "c4d0d3a147a442041738faeb281c123c4be86979e1e638d65cb752b35cfd0765",
+      "compressed_bytes": 4849,
+      "uncompressed_sha256": "ad31113211478cd992227652596c52d4011ef836ec816e0780bd252769b4aa83",
+      "uncompressed_bytes": 18236,
+      "sha256": "ad31113211478cd992227652596c52d4011ef836ec816e0780bd252769b4aa83",
+      "bytes": 18236,
       "empty": false,
       "compression": {
         "format": "gzip",
@@ -3824,12 +3827,12 @@
     {
       "artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/cbee0a045daef4cb.diff.gz",
       "compressed_path": "reports/827/replay/replay-twice-run-1-residual-diffs/cbee0a045daef4cb.diff.gz",
-      "compressed_sha256": "39b178591c74978da89585b68232f71d48b869e6fe4463697b27fbdeadc5d4ce",
-      "compressed_bytes": 1717,
-      "uncompressed_sha256": "dd26957d17df9170d2116e829f36db33d6c161701dc90936dbe24e319f8eccbf",
-      "uncompressed_bytes": 4525,
-      "sha256": "dd26957d17df9170d2116e829f36db33d6c161701dc90936dbe24e319f8eccbf",
-      "bytes": 4525,
+      "compressed_sha256": "72127de86b35c8d0edbdf85e63c12468d2f1977063d611d389bb00c673f5a223",
+      "compressed_bytes": 1702,
+      "uncompressed_sha256": "19ee42f5e57680e7be5edea9c8ed122988c3d96a8641d233dac164a9964b8695",
+      "uncompressed_bytes": 4499,
+      "sha256": "19ee42f5e57680e7be5edea9c8ed122988c3d96a8641d233dac164a9964b8695",
+      "bytes": 4499,
       "empty": false,
       "compression": {
         "format": "gzip",

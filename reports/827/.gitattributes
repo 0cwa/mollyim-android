@@ -1,0 +1,3 @@
+# Keep machine-generated evidence available while focusing PR diffs on source and prose.
+**/* linguist-generated=true
+**/*.md -linguist-generated

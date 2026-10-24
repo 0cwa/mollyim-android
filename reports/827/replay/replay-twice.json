@@ -10,7 +10,7 @@
         "--manifest",
         "/workspace/work/p2-integration/candidate15-replay-1/patches/827/series.yaml",
         "--worktree",
-        "/tmp/molly827final22-run-1",
+        "/tmp/molly827-final23-run-1",
         "--report",
         "reports/827/replay/replay-twice-run-1.json"
       ],
@@ -18,7 +18,7 @@
       "report": "reports/827/replay/replay-twice-run-1.json",
       "log": "reports/827/replay/replay-twice-run-1.log",
       "status": "PASS",
-      "tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+      "tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
       "expected_tree_match": true,
       "error": null,
       "git_am_failure": null
@@ -32,7 +32,7 @@
         "--manifest",
         "/workspace/work/p2-integration/candidate15-replay-1/patches/827/series.yaml",
         "--worktree",
-        "/tmp/molly827final22-run-2",
+        "/tmp/molly827-final23-run-2",
         "--report",
         "reports/827/replay/replay-twice-run-2.json"
       ],
@@ -40,16 +40,16 @@
       "report": "reports/827/replay/replay-twice-run-2.json",
       "log": "reports/827/replay/replay-twice-run-2.log",
       "status": "PASS",
-      "tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+      "tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
       "expected_tree_match": true,
       "error": null,
       "git_am_failure": null
     }
   ],
   "tree_sha_equal": true,
-  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "expected_tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
   "worktrees_preserved": [
-    "/tmp/molly827final22-run-1",
-    "/tmp/molly827final22-run-2"
+    "/tmp/molly827-final23-run-1",
+    "/tmp/molly827-final23-run-2"
   ]
 }

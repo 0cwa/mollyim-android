@@ -1,11 +1,11 @@
 {
   "status": "PASS",
-  "method": "Compare named XML elements in pinned Signal baseline, pinned Molly target, and the manifest-pinned projected app tree. Candidate deltas must be a subset of target deltas with identical canonical tag/attributes/text/child markup; all other baseline value XML files remain byte-identical to Signal.",
+  "method": "Compare named XML elements in pinned Signal baseline, pinned Molly target, and the manifest-pinned projected app tree. Candidate deltas must be a subset of target deltas and equal canonical markup, except one explicitly hash-pinned string whose target/candidate runtime equivalence is independently proven by SDK aapt2 using fixture bytes verified against the pinned source blobs; all other baseline value XML files remain byte-identical to Signal.",
   "revisions": {
     "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
     "molly_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
-    "application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
-    "projected_tree": "26956e0f159c0b60719d4a20667aeef8913fa365"
+    "application_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+    "projected_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d"
   },
   "manifest_owned_resource_paths": 33,
   "changed_resource_paths": 33,
@@ -13,6 +13,27 @@
   "manifest_owned_changed_resource_keys": 1242,
   "manifest_owned_resource_key_set_sha256": "77d2347e80966b3dd9d82852407d853c3109c0b316d08c5bc3e9fe33e94276d5",
   "pinned_target_element_matches": 1242,
+  "raw_exact_element_matches": 1241,
+  "compiler_proven_runtime_equivalent_elements": 1,
+  "compiler_proven_runtime_equivalent_keys": [
+    [
+      "app/src/main/res/values/strings2.xml",
+      "string",
+      "MollySocketLink_scan_the_qr_code"
+    ]
+  ],
+  "compiler_equivalence_evidence": {
+    "report": "reports/827/inventory/resource-aapt2/aapt2-equivalence.json",
+    "report_sha256": "517f7c1eb11d1704569cb65b7d13b24ee8c4f9e00b65ca3633159e5a0820af3d",
+    "target_fixture": "reports/827/inventory/resource-aapt2/source/pinned-target/strings2.xml",
+    "target_fixture_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
+    "candidate_fixture": "reports/827/inventory/resource-aapt2/source/candidate/strings2.xml",
+    "candidate_fixture_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
+    "fixture_bytes_match_pinned_source_blobs": true,
+    "aapt2_version": "Android Asset Packaging Tool (aapt) 2.20-13193326",
+    "android_api": 36,
+    "runtime_text_sha256": "f2b0f701b5560bc9ead7f21738c6378c856d323f32b2e71ffd1f5d554aae04ad"
+  },
   "unique_selected_resource_names": 46,
   "selected_resource_names": [
     "MollySocketLink_experienced_a_network_error_please_try_again",
@@ -295,7 +316,7 @@
     {
       "path": "app/src/main/res/values/strings2.xml",
       "candidate_changed_elements": 46,
-      "pinned_target_matches": 46,
+      "pinned_target_matches": 45,
       "unrelated_baseline_elements_preserved": 0,
       "candidate_key_set_sha256": "9f68751f5a5b7d6aed56c53f460ca3e61fde2feb7fe5a96ea21aee95365b06ac"
     }

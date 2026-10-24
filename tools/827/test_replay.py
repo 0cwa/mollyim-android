@@ -11,6 +11,7 @@ import sys
 
 import replay
 import validate
+from check_resource_parity import verify_fixture_sources, AAPT_EQUIVALENCE
 from source_tree import project_tree
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -18,6 +19,22 @@ MANIFEST = ROOT / 'patches/827/series.yaml'
 
 
 class ReplaySafetyTests(unittest.TestCase):
+    def test_aapt2_fixtures_are_bound_to_source_blobs(self):
+        target = (ROOT / AAPT_EQUIVALENCE['target_fixture']).read_bytes()
+        candidate = (ROOT / AAPT_EQUIVALENCE['candidate_fixture']).read_bytes()
+        hashes = verify_fixture_sources(ROOT, target, candidate)
+        self.assertEqual(hashes['target'], AAPT_EQUIVALENCE['target_source_sha256'])
+        self.assertEqual(hashes['candidate'], AAPT_EQUIVALENCE['candidate_source_sha256'])
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp)
+            for key in ('target_fixture', 'candidate_fixture'):
+                destination = repo / AAPT_EQUIVALENCE[key]
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                source = (ROOT / AAPT_EQUIVALENCE[key]).read_bytes()
+                destination.write_bytes(source + b'<!-- modified fixture -->')
+            with self.assertRaisesRegex(ValueError, 'not byte-identical'):
+                verify_fixture_sources(repo, target, candidate)
+
     def test_source_projection_removes_only_declared_metadata_from_private_index(self):
         with tempfile.TemporaryDirectory() as temp:
             repo = Path(temp)

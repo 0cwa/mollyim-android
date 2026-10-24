@@ -1,0 +1,362 @@
+Binary APK
+Package name=org.example.resourceparity id=7f
+  type plurals id=01 entryCount=1
+    resource 0x7f010000 plurals/BioTextPreference_n_linked_devices
+      () (plurals) size=2
+        one="%d linked device"
+        other="%d linked devices"
+  type string id=02 entryCount=173
+    resource 0x7f020000 string/AccountSettingsFragment_pin_settings_cannot_be_changed_from_a_linked_device
+      () "PIN settings cannot be changed from a linked device"
+    resource 0x7f020001 string/AppProtectionPreferenceFragment_instant
+      () "Instant"
+    resource 0x7f020002 string/AppUpdatesSettingsFragment__last_checked_s
+      () "Last checked: %s"
+    resource 0x7f020003 string/ApplicationPreferencesActivity_network_summary
+      () "Proxy %1$s"
+    resource 0x7f020004 string/BackupsPreferenceFragment__change_schedule
+      () "Change schedule"
+    resource 0x7f020005 string/BackupsPreferenceFragment__number_of_backups_to_retain
+      () "Number of backups to retain"
+    resource 0x7f020006 string/BackupsPreferenceFragment__schedule
+      () "Schedule"
+    resource 0x7f020007 string/BioTextPreference_no_linked_devices
+      () "No linked devices"
+    resource 0x7f020008 string/BiometricDialogFragment__biometric_verification
+      () "Biometric verification"
+    resource 0x7f020009 string/BiometricDialogFragment__please_confirm_it_is_really_you_to_access_molly
+      () "Please confirm it is really you to use Molly"
+    resource 0x7f02000a string/BlockUnblockDialog_block_and_delete
+      () "Block and Delete"
+    resource 0x7f02000b string/BlockUnblockDialog_delete_this_contact
+      () "Delete this contact?"
+    resource 0x7f02000c string/BlockUnblockDialog_deleted_contacts_are_still_able_to_call_you_or_send_you_messages
+      () "Deleted contacts are still able to call you or send you messages, unless they are also blocked."
+    resource 0x7f02000d string/BlockUnblockDialog_your_chat_history_with_s_will_be_deleted
+      () "Your chat with %1$s will be deleted."
+    resource 0x7f02000e string/BlockUnblockDialog_your_chat_history_with_s_will_be_deleted_and_s_will_be_removed_from_your_phone_contacts
+      () "Your chat with %1$s will be deleted and %1$s will be removed from your device contacts."
+    resource 0x7f02000f string/ChangePassphraseDialogFragment_estimated_time_to_crack_suggestion
+      () "%1$s
+
+      Estimated time to crack: %2$s.
+
+      Suggestion: %3$s"
+    resource 0x7f020010 string/ChangePassphraseDialogFragment_generating_keys_this_may_take_a_while
+      () "Generating keys. This may take a while…"
+    resource 0x7f020011 string/ChangePassphraseDialogFragment_passphrase
+      () "Passphrase"
+    resource 0x7f020012 string/ChangePassphraseDialogFragment_please_choose_a_passphrase_that_will_be_used_to_locally_encrypt_your_data_this_should_be_a_strong_passphrase
+      () "Please choose a passphrase that will be used to locally encrypt your data.
+
+      This should be a strong passphrase."
+    resource 0x7f020013 string/ChangePassphraseDialogFragment_weak_passphrase
+      () "Weak passphrase!"
+    resource 0x7f020014 string/ConversationSettingsFragment__add_to_your_phones_contacts
+      () "Add to your device contacts"
+    resource 0x7f020015 string/DeviceAddFragment__link_without_scanning
+      () "Link without scanning"
+    resource 0x7f020016 string/DeviceListItem_device_d
+      () "Device #%d"
+    resource 0x7f020017 string/DeviceListItem_primary
+      () "Primary"
+    resource 0x7f020018 string/DeviceListItem_registered_s
+      () "Registered %s"
+    resource 0x7f020019 string/DeviceListItem_this_device
+      () "This device"
+    resource 0x7f02001a string/DonateMegaphone_molly_is_free_software
+      () "Molly is free software"
+    resource 0x7f02001b string/DonateMegaphone_we_maintain_molly_with_your_support_consider_donating_at_open_collective
+      () "We maintain Molly with your support! Consider donating at Open Collective."
+    resource 0x7f02001c string/DozeReminder_allow_molly_to_deliver_timely_notifications
+      () "Allow Molly to deliver timely notifications, even when your device is in standby."
+    resource 0x7f02001d string/DozeReminder_disable_battery_restrictions
+      () "Disable battery restrictions"
+    resource 0x7f02001e string/EnableAppUpdatesMegaphone_check_for_updates
+      () "Check for updates"
+    resource 0x7f02001f string/EnableAppUpdatesMegaphone_check_for_updates_automatically
+      () "Check for updates automatically?"
+    resource 0x7f020020 string/EnableAppUpdatesMegaphone_molly_can_periodically_check_for_new_releases_and_ask_you_to_install_them
+      () "Molly can periodically check for new releases and ask you to install them."
+    resource 0x7f020021 string/EnableAppUpdatesMegaphone_you_will_be_notified_when_updates_are_available
+      () "You will be notified when updates are available"
+    resource 0x7f020022 string/GcmRefreshJob_switch_to_an_alternative_push_service_in_settings_notifications
+      () "Switch to an alternative push service in Settings > Notifications or fix the issue with Play Services."
+    resource 0x7f020023 string/GcmRefreshJob_unable_to_register_with_Google_Play_Services
+      () "Unable to register with Play Services"
+    resource 0x7f020024 string/HelpSettingsFragment__molly_im_website
+      () "Molly.im website"
+    resource 0x7f020025 string/HelpSettingsFragment_disable_and_delete_debug_log
+      () "Delete and disable debug log?"
+    resource 0x7f020026 string/HelpSettingsFragment_for_updates_please_check_your_app_store
+      () "For updates, please check your app store. This version does not include an in-app updater."
+    resource 0x7f020027 string/IncomingMessageObserver_websocket_service
+      () "WebSocket Service"
+    resource 0x7f020028 string/LinkDeviceFragment__for_android_devices_visit_s_to_install_molly
+      () "For Android devices: Visit %s to install Molly."
+    resource 0x7f020029 string/LinkDeviceFragment__messaging_is_private_on_all_linked_devices
+      () "Messaging is private on all linked devices."
+    resource 0x7f02002a string/LinkDeviceFragment__molly_on_another_device
+      () "Molly on another device"
+    resource 0x7f02002b string/LinkDeviceFragment__molly_supports_linking_to_other_android_devices
+      () "Molly supports linking to other Android devices running Molly, as well as desktops and iPads running Signal."
+    resource 0x7f02002c string/LinkDeviceFragment__once_linked_new_messages_sync_across_devices
+      () "Once linked, new messages sync across devices, but previous message history will not be transferred."
+    resource 0x7f02002d string/LinkDeviceFragment__use_molly_on_another_devices
+      () "Use Molly on another device. Your messages will sync to your linked devices."
+    resource 0x7f02002e string/Megaphones_turn_on_stories
+      () "Turn on stories"
+    resource 0x7f02002f string/MessageRetrievalService_ready_to_receive_messages
+      () "Ready to receive messages"
+    resource 0x7f020030 string/MollySocketLink_experienced_a_network_error_please_try_again
+      () "Experienced a network error. Please try again."
+    resource 0x7f020031 string/MollySocketLink_mollysocket_server_not_found_at_s
+      () "MollySocket server not found at '%s'"
+    resource 0x7f020032 string/MollySocketLink_scan_the_qr_code
+      () "Scan the QR code displayed on your MollySocket server's homepage or in the console."
+    resource 0x7f020033 string/MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code
+      () "Try scanning another image containing a MollySocket QR code."
+    resource 0x7f020034 string/NetworkPreferenceFragment_a_valid_port_number_is_between_0_and_65535
+      () "A valid port number is between 0 and 65535"
+    resource 0x7f020035 string/NetworkPreferenceFragment_get_orbot
+      () "Get Orbot"
+    resource 0x7f020036 string/NetworkPreferenceFragment_missing_orbot_app
+      () "Missing Orbot app"
+    resource 0x7f020037 string/NetworkPreferenceFragment_molly_wont_connect_without_orbot_which_is_not_installed_on_this_device
+      () "Molly won't connect without Orbot, which is not installed on this device."
+    resource 0x7f020038 string/NetworkPreferenceFragment_the_host_you_typed_is_not_valid
+      () "The host you typed is not valid"
+    resource 0x7f020039 string/NewConversationActivity__s_is_not_registered_with_signal
+      () "%1$s is not registered with Signal"
+    resource 0x7f02003a string/NotificationDeliveryMethod__fcm
+      () "FCM (Google Play Services)"
+    resource 0x7f02003b string/NotificationDeliveryMethod__unifiedpush
+      () "UnifiedPush"
+    resource 0x7f02003c string/NotificationDeliveryMethod__websocket
+      () "WebSocket"
+    resource 0x7f02003d string/NotificationsSettingsFragment__an_error_occurred_while_registering_for_push_notifications_s
+      () "An error occurred while registering for push notifications. %s"
+    resource 0x7f02003e string/NotificationsSettingsFragment__configure_unifiedpush
+      () "Configure UnifiedPush"
+    resource 0x7f02003f string/NotificationsSettingsFragment__delivery_service
+      () "Delivery service"
+    resource 0x7f020040 string/NotificationsSettingsFragment__mollysocket_server
+      () "MollySocket server"
+    resource 0x7f020041 string/NotificationsSettingsFragment__new_activity_while_locked
+      () "New activity while locked"
+    resource 0x7f020042 string/NotificationsSettingsFragment__not_selected
+      () "Not selected"
+    resource 0x7f020043 string/NotificationsSettingsFragment__please_check_if_google_play_services_is_installed_and_enabled
+      () "Please check if Google Play Services is installed and enabled, or switch to an alternative push service."
+    resource 0x7f020044 string/NotificationsSettingsFragment__push_notifications
+      () "Push notifications"
+    resource 0x7f020045 string/NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked
+      () "Receive notifications for messages or missed calls when the app is locked."
+    resource 0x7f020046 string/NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications
+      () "Select your preferred service for push notifications. If unavailable, the app will automatically use WebSocket to ensure notifications are delivered."
+    resource 0x7f020047 string/NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush
+      () "Sorry, this feature requires push notifications delivered via FCM or UnifiedPush, which are currently unavailable."
+    resource 0x7f020048 string/NotificationsSettingsFragment__the_installed_version_of_google_play_services_on_this_device_is_outdated
+      () "The installed version of Google Play services on this device is outdated."
+    resource 0x7f020049 string/NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server
+      () "To use UnifiedPush, you need access to a MollySocket server to link your Signal account.
+
+      Start by scanning the QR code provided by your server."
+    resource 0x7f02004a string/PassphraseCreateActivity_now_you_can_set_a_passphrase_to_encrypt_the_database
+      () "Now you can set a passphrase to encrypt the database. Until it's unlocked, Molly cannot receive notifications or calls. This helps protect data on lost or stolen devices."
+    resource 0x7f02004b string/PassphraseCreateActivity_require_passphrase_to_unlock_molly
+      () "Require passphrase to unlock Molly?"
+    resource 0x7f02004c string/PassphraseCreateActivity_turn_on_database_encryption
+      () "Turn on database encryption"
+    resource 0x7f02004d string/PrivacySettingsFragment__lock_molly_access_with_fingerprint_or_face_recognition
+      () "Lock Molly access with fingerprint or face recognition"
+    resource 0x7f02004e string/PrivacySettingsFragment__no_biometric_features_available_on_this_device
+      () "No biometric features available on this device"
+    resource 0x7f02004f string/PrivacySettingsFragment__please_first_setup_your_biometrics_in_android_settings
+      () "Please set up your biometrics in Android settings first"
+    resource 0x7f020050 string/PrivacySettingsFragment_data_at_rest
+      () "Data at rest"
+    resource 0x7f020051 string/ProxyManager_successfully_started_orbot
+      () "Orbot started"
+    resource 0x7f020052 string/RegistrationActivity_copied_to_clipboard
+      () "Copied to clipboard"
+    resource 0x7f020053 string/RegistrationActivity_device_name_description
+      () "Device name"
+    resource 0x7f020054 string/RegistrationActivity_enter_a_name_for_this_device
+      () "Enter a name for this device"
+    resource 0x7f020055 string/RegistrationActivity_link
+      () "Link"
+    resource 0x7f020056 string/RegistrationActivity_link_device
+      () "Link to existing device"
+    resource 0x7f020057 string/RegistrationActivity_link_error
+      () "An error has occurred while trying to link the device. Check your network connectivity, and retry"
+    resource 0x7f020058 string/RegistrationActivity_link_retry
+      () "Retry linking"
+    resource 0x7f020059 string/RegistrationActivity_link_timeout
+      () "Timed out waiting for the primary device. Ready your device to scan the QR code, then try again"
+    resource 0x7f02005a string/RegistrationActivity_molly_needs_access_to_your_contacts_and_media_in_order_to_connect_with_friends
+      () "Molly needs the contacts and media permissions to help you find your friends and send messages. Your contacts are uploaded using Signal's private contact discovery, which means they are end-to-end encrypted and never visible to the Signal service."
+    resource 0x7f02005b string/RegistrationActivity_molly_needs_access_to_your_contacts_in_order_to_connect_with_friends
+      () "Molly needs the contacts permission to help you find your friends. Your contacts are uploaded using Signal's private contact discovery, which means they are end-to-end encrypted and never visible to the Signal service."
+    resource 0x7f02005c string/RegistrationActivity_network_settings
+      () "Network settings"
+    resource 0x7f02005d string/RegistrationActivity_provider_declined
+      () "The provider has declined to send you a verification code, likely due to fraud prevention rules."
+    resource 0x7f02005e string/RegistrationActivity_scan_this_qr_using_your_primary_device
+      () "Scan this QR code using your primary device"
+    resource 0x7f02005f string/TimeDurationPickerDialog_single_letter_second_abbreviation
+      () "s"
+    resource 0x7f020060 string/UnifiedPushNotificationBuilder__endpoint_changed_air_gapped
+      () "Your UnifiedPush endpoint has changed. You must update your connection on MollySocket."
+    resource 0x7f020061 string/UnifiedPushNotificationBuilder__mollysocket_device_limit_hit
+      () "You've reached the limit of %d linked devices. To link your MollySocket server, please remove a device first."
+    resource 0x7f020062 string/UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint
+      () "Your push server was refused by the MollySocket server. Please check the permitted endpoints in the server configuration."
+    resource 0x7f020063 string/UnifiedPushNotificationBuilder__mollysocket_forbidden_password
+      () "Your registration on MollySocket is no longer valid. Please remove the linked device and try registering again."
+    resource 0x7f020064 string/UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid
+      () "Your account was refused by the MollySocket server. Please check the allowed UUIDs in the server configuration."
+    resource 0x7f020065 string/UnifiedPushNotificationBuilder__registration_failed
+      () "Registration with your UnifiedPush distributor failed. This could be due to a network issue or a missing requirement from your distributor."
+    resource 0x7f020066 string/UnifiedPushNotificationBuilder__this_is_a_test_notification
+      () "This is a test notification from the MollySocket server."
+    resource 0x7f020067 string/UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments
+      () "A test notification should appear in a few moments…"
+    resource 0x7f020068 string/UnifiedPushSettingsFragment__account_id
+      () "Account ID"
+    resource 0x7f020069 string/UnifiedPushSettingsFragment__distributor_app
+      () "Distributor app"
+    resource 0x7f02006a string/UnifiedPushSettingsFragment__mollysocket_server
+      () "MollySocket server"
+    resource 0x7f02006b string/UnifiedPushSettingsFragment__mollysocket_server_air_gapped
+      () "Air gapped"
+    resource 0x7f02006c string/UnifiedPushSettingsFragment__none_available
+      () "None available"
+    resource 0x7f02006d string/UnifiedPushSettingsFragment__server_parameters
+      () "Server parameters"
+    resource 0x7f02006e string/UnifiedPushSettingsFragment__status
+      () "Status"
+    resource 0x7f02006f string/UnifiedPushSettingsFragment__status_summary_air_gapped_pending
+      () "Waiting for confirmation from the MollySocket server"
+    resource 0x7f020070 string/UnifiedPushSettingsFragment__status_summary_bad_response
+      () "Invalid response from server"
+    resource 0x7f020071 string/UnifiedPushSettingsFragment__status_summary_distributor_not_selected
+      () "No distributor app selected"
+    resource 0x7f020072 string/UnifiedPushSettingsFragment__status_summary_forbidden_endpoint
+      () "The endpoint is forbidden by the server"
+    resource 0x7f020073 string/UnifiedPushSettingsFragment__status_summary_forbidden_uuid
+      () "The account ID is refused by the server"
+    resource 0x7f020074 string/UnifiedPushSettingsFragment__status_summary_linked_device_error
+      () "Unable to create the linked device"
+    resource 0x7f020075 string/UnifiedPushSettingsFragment__status_summary_missing_endpoint
+      () "Waiting for UnifiedPush distributor response"
+    resource 0x7f020076 string/UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing
+      () "Missing MollySocket URL"
+    resource 0x7f020077 string/UnifiedPushSettingsFragment__status_summary_no_distributor
+      () "No UnifiedPush distributor installed"
+    resource 0x7f020078 string/UnifiedPushSettingsFragment__status_summary_pending
+      () "Pending"
+    resource 0x7f020079 string/UnifiedPushSettingsFragment__tap_to_copy_to_clipboard
+      () "Tap to copy to clipboard"
+    resource 0x7f02007a string/UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket
+      () "Tap to request a test notification from MollySocket"
+    resource 0x7f02007b string/UnifiedPushSettingsFragment__test_configuration
+      () "Test configuration"
+    resource 0x7f02007c string/WipeMemoryService_clearing_unencrypted_data_from_ram
+      () "Clearing unencrypted data from RAM"
+    resource 0x7f02007d string/WipeMemoryService_secure_wipe_in_progress
+      () "Secure wipe in progress"
+    resource 0x7f02007e string/app_icon_label_moon
+      () "Moon"
+    resource 0x7f02007f string/app_icon_label_music
+      () "Music"
+    resource 0x7f020080 string/app_icon_label_zen
+      () "Zen"
+    resource 0x7f020081 string/arrays__daily
+      () "Daily"
+    resource 0x7f020082 string/arrays__none
+      () "None"
+    resource 0x7f020083 string/arrays__on_inactivity_timeout
+      () "If you go a certain time without unlocking your device"
+    resource 0x7f020084 string/arrays__socks5
+      () "SOCKS5"
+    resource 0x7f020085 string/arrays__tor_via_orbot
+      () "Tor via Orbot"
+    resource 0x7f020086 string/arrays__weekly
+      () "Weekly"
+    resource 0x7f020087 string/enter_device_link_dialog__if_your_phone_cant_scan_the_qr_code_you_can_manually_enter_the_link_encoded_in_the_qr_code
+      () "If your device can’t scan the QR code, you can manually enter the link encoded in the QR code."
+    resource 0x7f020088 string/enter_device_link_dialog__url
+      () "sgnl://linkdevice?uuid=UUID&pub_key=PUBKEY"
+    resource 0x7f020089 string/mollysocket_setup_url
+      () "https://github.com/mollyim/mollysocket"
+    resource 0x7f02008a string/preferences__automatic_lockdown
+      () "Automatic lockdown"
+    resource 0x7f02008b string/preferences__autoupdate_molly
+      () "Auto-update Molly"
+    resource 0x7f02008c string/preferences__beta_versions_are_intended_for_testing_purposes_and_may_contain_bugs
+      () "Beta versions are intended for testing purposes and may contain bugs"
+    resource 0x7f02008d string/preferences__block_unknown
+      () "Block unknown"
+    resource 0x7f02008e string/preferences__block_users_youve_never_been_in_contact_with_and_who_are_not_saved_in_your_contacts
+      () "Block users you've never been in contact with and those not saved as contacts."
+    resource 0x7f02008f string/preferences__device_lock_timeout
+      () "Device lock timeout"
+    resource 0x7f020090 string/preferences__enable_debug_log
+      () "Enable debug log"
+    resource 0x7f020091 string/preferences__follow_system
+      () "Follow system"
+    resource 0x7f020092 string/preferences__include_beta_updates
+      () "Include beta updates"
+    resource 0x7f020093 string/preferences__map_hybrid
+      () "Hybrid"
+    resource 0x7f020094 string/preferences__map_none
+      () "None"
+    resource 0x7f020095 string/preferences__map_normal
+      () "Normal"
+    resource 0x7f020096 string/preferences__map_satellite
+      () "Satellite"
+    resource 0x7f020097 string/preferences__map_terrain
+      () "Terrain"
+    resource 0x7f020098 string/preferences__network
+      () "Network"
+    resource 0x7f020099 string/preferences__passphrase_changed
+      () "Passphrase changed"
+    resource 0x7f02009a string/preferences__passphrase_lock
+      () "Database encryption"
+    resource 0x7f02009b string/preferences__periodically_check_for_new_releases_and_ask_to_install_them
+      () "Periodically check for new releases and ask to install them"
+    resource 0x7f02009c string/preferences__protect_molly_database_with_a_passphrase
+      () "Protect Molly's database with a passphrase"
+    resource 0x7f02009d string/preferences_appearance__dynamic_colors
+      () "Dynamic Colors"
+    resource 0x7f02009e string/preferences_appearance__navigation_bar
+      () "Navigation bar"
+    resource 0x7f02009f string/preferences_appearance__show_calls
+      () "Show calls"
+    resource 0x7f0200a0 string/preferences_appearance__toggle_to_show_or_hide_the_icon_on_the_navigation_bar
+      () "Toggle to show or hide the icon on the navigation bar"
+    resource 0x7f0200a1 string/preferences_appearance__use_system_colors_for_the_app_theme
+      () "Use system colors for the app's theme"
+    resource 0x7f0200a2 string/preferences_network__check_connection
+      () "Check connection"
+    resource 0x7f0200a3 string/preferences_network__connecting
+      () "Connecting…"
+    resource 0x7f0200a4 string/preferences_network__connection
+      () "Connection"
+    resource 0x7f0200a5 string/preferences_network__host
+      () "Host"
+    resource 0x7f0200a6 string/preferences_network__hostname_or_ip_address
+      () "Hostname or IP address"
+    resource 0x7f0200a7 string/preferences_network__online
+      () "Online"
+    resource 0x7f0200a8 string/preferences_network__port
+      () "Port"
+    resource 0x7f0200a9 string/preferences_network__proxy
+      () "Proxy"
+    resource 0x7f0200aa string/preferences_network__tunnels_network_traffic
+      () "Tunnels network traffic"
+    resource 0x7f0200ab string/prompt_passphrase_activity__molly_is_locked
+      () "Molly is locked"
+    resource 0x7f0200ac string/website_url
+      () "https://molly.im"

@@ -1,0 +1,10 @@
+{
+  "run_id": 40108357095,
+  "job_id": 120914668447,
+  "run_url": "https://github.com/0cwa/mollyim-android/actions/runs/40108357095",
+  "checked_utc": "2026-10-24T16:09:30Z",
+  "endpoint": "/repos/0cwa/mollyim-android/actions/jobs/120914668447/logs",
+  "result": "signed result-storage redirect could not be read; blob request returned HTTP 403 Forbidden",
+  "partial_logs_available": false,
+  "note": "Read-only diagnostic only. No credentials or access settings were changed."
+}

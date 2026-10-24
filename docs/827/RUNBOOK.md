@@ -67,7 +67,7 @@ Run the full replay and retain the machine report, logs, and residual diffs unde
 python3 tools/827/replay_twice.py --repo . --manifest patches/827/series.yaml --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json
 ```
 
-The explicit `--repo .` is important: it uses this candidate checkout, not the checkout’s `origin` remote (which may point to a local source mirror). A PASS means both independent patch applications produced identical Git trees and the declared ownership checks passed. The first CI attempt passed manifest and inventory validation but returned `PATCH_FAILED` during replay 1, before Android checks. Its summarized log did not expose the per-patch `git am` diagnostic, so the exact cause remains unconfirmed. Replay now supplies explicit committer identity and disables commit signing; a fresh Git-config replay fixture passes. Separately, replay skips LFS smudging, so the workflow runs `git lfs checkout` and `git lfs fsck` in the replay worktree before screenshot validation/build. Corrected run 40108357095 passed source validation, inventory validation, both replays, and LFS hydration. Its Android build/test/lint step is still running; see the run link in `reports/827/acceptance.json`. It does not establish application behavior or a successful Android build until the run concludes. The per-run JSON and logs are in the same report directory. After preserving evidence, remove only the replay worktrees:
+The explicit `--repo .` is important: it uses this candidate checkout, not the checkout’s `origin` remote (which may point to a local source mirror). A PASS means both independent patch applications produced identical Git trees and the declared ownership checks passed. The first CI attempt passed manifest and inventory validation but returned `PATCH_FAILED` during replay 1, before Android checks. Its summarized log did not expose the per-patch `git am` diagnostic, so the exact cause remains unconfirmed. Replay now supplies explicit committer identity and disables commit signing; a fresh Git-config replay fixture passes. Separately, replay skips LFS smudging, so hydrate and verify LFS files in the replay worktree before build. CI run 40108357095 passed source validation, inventory validation, both replays, and LFS hydration, then failed `:fast-lint:fastLint` on three source findings. Patch 23 corrects those findings; rerun CI on the refreshed manifest before using its Android result. The per-run JSON and logs are in `reports/827/replay/` and `reports/827/ci/`. After preserving evidence, remove only the replay worktrees:
 
 ```sh
 git worktree remove --force /tmp/molly827-run-1
@@ -76,44 +76,63 @@ git worktree remove --force /tmp/molly827-run-2
 
 ## Android build and tests
 
-Inspect available tasks with `./gradlew tasks --all`. The project application module is `:Signal-Android`. The branch workflow runs the bounded CI checks and debug APK assembly with strict dependency verification:
+Inspect available tasks with `./gradlew tasks --all`. The project application module is `:Signal-Android`. **Run all Android Gradle checks from the reconstructed source worktree**, not from the metadata-rich primary checkout. Repository `fastLint` scans the source tree and will otherwise inspect evidence/log fixtures stored beside the primary source. Preserve the primary checkout path for the worker init script, then build from replay run 1:
 
 ```sh
-./gradlew --no-daemon --max-workers=2 --dependency-verification=strict \
-  --init-script tools/827/test-worker-heap.init.gradle \
-  -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
-  ciRemote :Signal-Android:assemblePlayProdDebug
+PRIMARY_CHECKOUT="$(pwd)"
+REPLAY_WORKTREE=/tmp/molly827-run-1
+git -C "$REPLAY_WORKTREE" lfs checkout
+git -C "$REPLAY_WORKTREE" lfs fsck
 ```
+
+The branch workflow runs bounded CI checks and debug APK assembly from that reconstructed source tree with strict dependency verification:
+
+```sh
+(cd "$REPLAY_WORKTREE" && ./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
+  --init-script "$PRIMARY_CHECKOUT/tools/827/test-worker-heap.init.gradle" \
+  -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
+  ciRemote :Signal-Android:assemblePlayProdDebug)
+```
+
+Run repository fast-lint from the replay worktree as well:
+
+```sh
+(cd "$REPLAY_WORKTREE" && ./gradlew --offline --no-daemon --max-workers=1 --dependency-verification=strict \
+  '-Dorg.gradle.jvmargs=-Xmx6g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
+  :fast-lint:fastLint)
+```
+
+After patch 23, this task passed on tree `e783cf54487a5b5d78c3241ec977fd8c8cd23f1d` with no findings; its log is `reports/827/build/fastLint-replay-fixes-20261024.log` (SHA-256 `cb512b8ec093c5b01024921f27ce5fd9c0ea93a7fbc7bc6d6a2f7664bd60a983`). The prior hosted run found the three source findings that patch 23 fixes. Final hosted CI and tests for the refreshed tree are still required.
 
 For the URI suffix, UnifiedPush receiver, and F5 endpoint retry tests:
 
 ```sh
-./gradlew --offline --no-daemon --max-workers=1 --dependency-verification=strict \
-  --init-script tools/827/test-worker-heap.init.gradle \
+(cd "$REPLAY_WORKTREE" && ./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
+  --init-script "$PRIMARY_CHECKOUT/tools/827/test-worker-heap.init.gradle" \
   -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
   :Signal-Android:testPlayStagingDebugUnitTest \
   --tests org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri \
-  --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest
+  --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest)
 ```
 
-The selected F5 working-tree run passed 25/25 tests (16 URI cases and 9 receiver cases). Source file hashes, JUnit XML, and log hash are recorded in `reports/827/build/focused-test-results/f5-2g-summary.json`. The F5 source change is included in patch 22 and the current projected replay tree. A clean online clone should omit `--offline`; this recorded run used the prepared dependency cache.
+The selected F5 predecessor-source run passed 25/25 tests (16 URI cases and 9 receiver cases) before patch 23's lint-only/API-constant and quote-balancing corrections. Its file hashes, JUnit XML, and log hash are recorded in `reports/827/build/focused-test-results/f5-2g-summary.json`. The F5 source change is included in the current patch series. A clean online clone should omit `--offline`; this recorded run used the prepared dependency cache. Repeat this command on the refreshed replay worktree before treating it as final-source evidence.
 
 Run the complete Play Staging Debug unit-test suite and app lint with the recorded single 2 GiB test worker:
 
 ```sh
-./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
-  --init-script tools/827/test-worker-heap.init.gradle \
+(cd "$REPLAY_WORKTREE" && ./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
+  --init-script "$PRIMARY_CHECKOUT/tools/827/test-worker-heap.init.gradle" \
   -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
-  :Signal-Android:testPlayStagingDebugUnitTest :Signal-Android:ktlintCheck
+  :Signal-Android:testPlayStagingDebugUnitTest :Signal-Android:ktlintCheck)
 ```
 
-App `:Signal-Android:ktlintCheck` passed on the formatted source (`reports/827/build/ktlint-f5-formatted-20261024.log`). The final unfiltered staging suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites; `:Signal-Android:ktlintCheck` passed. The exact log is `reports/827/build/testPlayStagingDebug-full-final-2g-ktlint-20261024.log` and per-suite receipts are in `reports/827/build/full-f5-test-results/summary.json`. Earlier 512 MiB and interrupted 2 GiB attempts remain historical failures. `tools/827/test-worker-heap.init.gradle` sets one test fork to 2 GiB; use it for full test runs.
+On predecessor source commit `36578d8bb7058f862d5dd379440a12c1fbd7f3af`, app `:Signal-Android:ktlintCheck` passed and the final unfiltered staging suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites. The exact log is `reports/827/build/testPlayStagingDebug-full-final-2g-ktlint-20261024.log` and per-suite receipts are in `reports/827/build/full-f5-test-results/summary.json`. Patch 23 only applies lint conventions and quote balancing; aapt2 verifies the compiled QR string remains equivalent. Rerun the complete suite and lint on the refreshed replay tree before claiming final-source validation. Earlier 512 MiB and interrupted 2 GiB attempts remain historical failures. `tools/827/test-worker-heap.init.gradle` sets one test fork to 2 GiB; use it for full test runs.
 
-The release-source compile task `:Signal-Android:compileWebsiteProdReleaseSources` also passed with strict dependency verification on source commit `36578d8bb7058f862d5dd379440a12c1fbd7f3af` (3 tasks executed, 228 up-to-date). Its report and log are `reports/827/build/compileWebsiteProdReleaseSources-summary.json` and `reports/827/build/compileWebsiteProdReleaseSources-final-20261024.log`. This compiles release sources only; it does not assemble or sign an APK.
+The release-source compile task `:Signal-Android:compileWebsiteProdReleaseSources` passed with strict dependency verification on refreshed source commit `d99876269eb6556e37bb2d584ba08e8334e8e5db` (27 tasks executed, 204 up-to-date). Its report and log are `reports/827/build/compileWebsiteProdReleaseSources-fastlintfix-summary.json` and `reports/827/build/compileWebsiteProdReleaseSources-fastlintfix-20261024.log` (SHA-256 `c02f238cd01e28c0311a9dba738aacec757fd45eddc18871b18cf5f6defb2cac`). The predecessor-source compile also passed with 3 tasks executed/228 up-to-date. This compiles release sources only; it does not assemble or sign an APK. The current-source full staging suite still needs a rerun.
 
-The earlier full project build at the audited source snapshot also stopped with exit 130 after disk exhaustion, reaching 15 of 23 variants and 14 test suites. It recorded 30 URI suffix fixture failures; the fixture is now adapted. That build did not cover the current 22-patch tree. See `/workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json` and `reports/827/build/history/attempt20-retry2/`. No full project build has passed for the current source.
+The earlier full project build at the audited source snapshot also stopped with exit 130 after disk exhaustion, reaching 15 of 23 variants and 14 test suites. It recorded 30 URI suffix fixture failures; the fixture is now adapted. That build did not cover the current 23-patch tree. See `/workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json` and `reports/827/build/history/attempt20-retry2/`. No full project build has passed for the current source.
 
-The first CI run (`40105996791`) passed manifest and inventory checks, then failed with `PATCH_FAILED` during replay before Android steps. The exact per-patch cause is unconfirmed. Replay now uses explicit Git committer identity and disables commit signing, backed by a fresh-config replay fixture. Separately, the workflow hydrates and checks LFS files in the replay worktree before screenshot validation. Corrected run 40108357095 has passed source validation, replay, and LFS hydration; its Android build/test/lint step is still running as of the latest check.
+The first CI run (`40105996791`) passed manifest and inventory checks, then failed with `PATCH_FAILED` during replay before Android steps. The exact per-patch cause is unconfirmed. Replay now uses explicit Git committer identity and disables commit signing, backed by a fresh-config replay fixture. Separately, the workflow hydrates and checks LFS files in the replay worktree before screenshot validation. Corrected run 40108357095 passed source validation, replay, and LFS hydration, then failed `:fast-lint:fastLint` on three candidate-added findings, now addressed by patch 23. Confirm them on the new source worktree before retrying the full CI workflow. Review the current status and caveats in `reports/827/acceptance.json`.
 
 ## Upgrade simulation
 

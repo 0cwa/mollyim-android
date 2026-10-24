@@ -1,0 +1,367 @@
+Picked up JAVA_TOOL_OPTIONS: -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Djavax.net.ssl.trustStoreType=JKS -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dmaven.repo.local=/workspace/work/p2-robolectric-cache
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :build-logic:plugins
+WARNING: Unsupported Kotlin plugin version.
+The `embedded-kotlin` and `kotlin-dsl` plugins rely on features of Kotlin `2.3.0` that might work differently than in the requested version `2.2.20`.
+Using the `kotlin-dsl` plugin together with a different Kotlin version (for example, by using the Kotlin Gradle plugin (`kotlin(jvm)`)) in the same project is not recommended.
+
+See https://docs.gradle.org/9.4.1/userguide/kotlin_dsl.html#sec:kotlin-dsl_plugin for more details on how the `kotlin-dsl` plugin works (same applies to `embedded-kotlin`).
+It applies a certain version of the `org.jetbrains.kotlin.jvm` plugin and also add a dependency on the Kotlin Standard Library.
+
+Applying other version of the `org.jetbrains.kotlin.jvm` plugin in the build and/or adding dependencies to different versions of the Kotlin Standard Library can cause incompatibilities.
+See https://docs.gradle.org/9.4.1/userguide/kotlin_dsl.html#sec:kotlin
+
+> Task :build-logic:plugins:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:tools:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :build-logic:tools:compileKotlin UP-TO-DATE
+> Task :build-logic:tools:compileJava NO-SOURCE
+> Task :build-logic:tools:processResources NO-SOURCE
+> Task :build-logic:tools:classes UP-TO-DATE
+> Task :build-logic:tools:jar UP-TO-DATE
+> Task :build-logic:plugins:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :build-logic:plugins:extractPluginRequests NO-SOURCE
+> Task :build-logic:plugins:generatePluginAdapters NO-SOURCE
+> Task :build-logic:plugins:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :build-logic:plugins:compilePluginsBlocks UP-TO-DATE
+> Task :build-logic:plugins:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :build-logic:plugins:generateScriptPluginAdapters UP-TO-DATE
+> Task :build-logic:plugins:compileKotlin UP-TO-DATE
+> Task :build-logic:plugins:compileJava NO-SOURCE
+> Task :build-logic:plugins:compileGroovy NO-SOURCE
+> Task :build-logic:plugins:compileGroovyPlugins NO-SOURCE
+> Task :build-logic:plugins:pluginDescriptors UP-TO-DATE
+> Task :build-logic:plugins:processResources UP-TO-DATE
+> Task :build-logic:plugins:classes UP-TO-DATE
+> Task :build-logic:plugins:jar UP-TO-DATE
+
+> Configure project :baseline-profile
+WARNING: The option setting 'android.experimental.enableScreenshotTest=true' is experimental.
+The current default is 'false'.
+WARNING: The option setting 'android.experimental.enableTestFixturesKotlinSupport=true' is experimental.
+The current default is 'false'.
+WARNING: The option setting 'android.disallowKotlinSourceSets=false' is experimental.
+The current default is 'true'.
+
+> Configure project :microbenchmark
+WARNING: BuildType 'debug' is both debuggable and has 'isMinifyEnabled' set to true.
+All code optimizations and obfuscation are disabled for debuggable builds.
+
+> Task :core:models-jvm:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:util-jvm:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:util-jvm:generateMainProtos UP-TO-DATE
+> Task :core:util-jvm:compileKotlin UP-TO-DATE
+> Task :core:util-jvm:compileJava UP-TO-DATE
+> Task :core:models-jvm:compileKotlin UP-TO-DATE
+> Task :core:models-jvm:compileJava NO-SOURCE
+> Task :core:network:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:network:generateMainProtos UP-TO-DATE
+> Task :core:network:compileKotlin UP-TO-DATE
+> Task :core:network:compileJava UP-TO-DATE
+> Task :core:serialization:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :core:serialization:compileKotlin UP-TO-DATE
+> Task :core:serialization:compileJava NO-SOURCE
+> Task :lib:libsignal-service:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :lib:libsignal-service:generateMainProtos UP-TO-DATE
+> Task :lib:libsignal-service:compileKotlin UP-TO-DATE
+> Task :lib:libsignal-service:compileJava UP-TO-DATE
+> Task :lib:network:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :lib:network:compileKotlin UP-TO-DATE
+> Task :lib:network:compileJava NO-SOURCE
+> Task :lib:network:processResources NO-SOURCE
+> Task :lib:network:classes UP-TO-DATE
+> Task :lib:network:jar UP-TO-DATE
+> Task :lib:libsignal-service:processResources UP-TO-DATE
+> Task :lib:libsignal-service:classes UP-TO-DATE
+> Task :lib:libsignal-service:jar UP-TO-DATE
+> Task :core:models-jvm:processResources NO-SOURCE
+> Task :core:models-jvm:classes UP-TO-DATE
+> Task :core:models-jvm:jar UP-TO-DATE
+> Task :core:network:processResources NO-SOURCE
+> Task :core:network:classes UP-TO-DATE
+> Task :core:network:jar UP-TO-DATE
+> Task :core:util-jvm:processResources NO-SOURCE
+> Task :core:util-jvm:classes UP-TO-DATE
+> Task :core:util-jvm:jar UP-TO-DATE
+> Task :Signal-Android:preBuild UP-TO-DATE
+> Task :Signal-Android:preWebsiteProdReleaseBuild UP-TO-DATE
+> Task :Signal-Android:dataBindingMergeDependencyArtifactsWebsiteProdRelease UP-TO-DATE
+> Task :Signal-Android:generateWebsiteProdReleaseResources
+> Task :core:models:preBuild UP-TO-DATE
+> Task :core:models:preReleaseBuild UP-TO-DATE
+> Task :core:models:generateReleaseResources UP-TO-DATE
+> Task :core:models:packageReleaseResources UP-TO-DATE
+> Task :core:ui:preBuild UP-TO-DATE
+> Task :core:ui:preReleaseBuild UP-TO-DATE
+> Task :core:ui:generateReleaseResources UP-TO-DATE
+> Task :core:ui:packageReleaseResources UP-TO-DATE
+> Task :core:util:preBuild UP-TO-DATE
+> Task :core:util:preReleaseBuild UP-TO-DATE
+> Task :core:util:generateReleaseResources UP-TO-DATE
+> Task :core:util:packageReleaseResources UP-TO-DATE
+> Task :feature:camera:preBuild UP-TO-DATE
+> Task :feature:camera:preReleaseBuild UP-TO-DATE
+> Task :feature:camera:generateReleaseResources UP-TO-DATE
+> Task :feature:camera:packageReleaseResources UP-TO-DATE
+> Task :feature:media-send:preBuild UP-TO-DATE
+> Task :feature:media-send:preReleaseBuild UP-TO-DATE
+> Task :feature:media-send:generateReleaseResources UP-TO-DATE
+> Task :feature:media-send:packageReleaseResources UP-TO-DATE
+> Task :feature:registration:preBuild UP-TO-DATE
+> Task :feature:registration:preReleaseBuild UP-TO-DATE
+> Task :feature:registration:generateReleaseResources UP-TO-DATE
+> Task :feature:registration:packageReleaseResources UP-TO-DATE
+> Task :lib:apng:preBuild UP-TO-DATE
+> Task :lib:apng:preReleaseBuild UP-TO-DATE
+> Task :lib:apng:generateReleaseResources UP-TO-DATE
+> Task :lib:apng:packageReleaseResources UP-TO-DATE
+> Task :lib:archive:preBuild UP-TO-DATE
+> Task :lib:archive:preReleaseBuild UP-TO-DATE
+> Task :lib:archive:generateReleaseResources UP-TO-DATE
+> Task :lib:archive:packageReleaseResources UP-TO-DATE
+> Task :lib:billing:preBuild UP-TO-DATE
+> Task :lib:billing:preReleaseBuild UP-TO-DATE
+> Task :lib:billing:generateReleaseResources UP-TO-DATE
+> Task :lib:billing:packageReleaseResources UP-TO-DATE
+> Task :lib:blurhash:preBuild UP-TO-DATE
+> Task :lib:blurhash:preReleaseBuild UP-TO-DATE
+> Task :lib:blurhash:generateReleaseResources UP-TO-DATE
+> Task :lib:blurhash:packageReleaseResources UP-TO-DATE
+> Task :lib:contacts:preBuild UP-TO-DATE
+> Task :lib:contacts:preReleaseBuild UP-TO-DATE
+> Task :lib:contacts:generateReleaseResources UP-TO-DATE
+> Task :lib:contacts:packageReleaseResources UP-TO-DATE
+> Task :lib:debuglogs-viewer:preBuild UP-TO-DATE
+> Task :lib:debuglogs-viewer:preReleaseBuild UP-TO-DATE
+> Task :lib:debuglogs-viewer:generateReleaseResources UP-TO-DATE
+> Task :lib:debuglogs-viewer:packageReleaseResources UP-TO-DATE
+> Task :lib:device-transfer:preBuild UP-TO-DATE
+> Task :lib:device-transfer:preReleaseBuild UP-TO-DATE
+> Task :lib:device-transfer:generateReleaseResources UP-TO-DATE
+> Task :lib:device-transfer:packageReleaseResources UP-TO-DATE
+> Task :lib:donations:preBuild UP-TO-DATE
+> Task :lib:donations:preReleaseBuild UP-TO-DATE
+> Task :lib:donations:generateReleaseResources UP-TO-DATE
+> Task :lib:donations:packageReleaseResources UP-TO-DATE
+> Task :lib:glide:preBuild UP-TO-DATE
+> Task :lib:glide:preReleaseBuild UP-TO-DATE
+> Task :lib:glide:generateReleaseResources UP-TO-DATE
+> Task :lib:glide:packageReleaseResources UP-TO-DATE
+> Task :lib:image-editor:preBuild UP-TO-DATE
+> Task :lib:image-editor:preReleaseBuild UP-TO-DATE
+> Task :lib:image-editor:generateReleaseResources UP-TO-DATE
+> Task :lib:image-editor:packageReleaseResources UP-TO-DATE
+> Task :lib:paging:preBuild UP-TO-DATE
+> Task :lib:paging:preReleaseBuild UP-TO-DATE
+> Task :lib:paging:generateReleaseResources UP-TO-DATE
+> Task :lib:paging:packageReleaseResources UP-TO-DATE
+> Task :lib:photoview:preBuild UP-TO-DATE
+> Task :lib:photoview:preReleaseBuild UP-TO-DATE
+> Task :lib:photoview:generateReleaseResources UP-TO-DATE
+> Task :lib:photoview:packageReleaseResources UP-TO-DATE
+> Task :lib:qr:preBuild UP-TO-DATE
+> Task :lib:qr:preReleaseBuild UP-TO-DATE
+> Task :lib:qr:generateReleaseResources UP-TO-DATE
+> Task :lib:qr:packageReleaseResources UP-TO-DATE
+> Task :lib:sticky-header-grid:preBuild UP-TO-DATE
+> Task :lib:sticky-header-grid:preReleaseBuild UP-TO-DATE
+> Task :lib:sticky-header-grid:generateReleaseResources UP-TO-DATE
+> Task :lib:sticky-header-grid:packageReleaseResources UP-TO-DATE
+> Task :lib:video:preBuild UP-TO-DATE
+> Task :lib:video:preReleaseBuild UP-TO-DATE
+> Task :lib:video:generateReleaseResources UP-TO-DATE
+> Task :lib:video:packageReleaseResources UP-TO-DATE
+> Task :Signal-Android:mergeWebsiteProdReleaseResources
+> Task :Signal-Android:packageWebsiteProdReleaseResources
+> Task :core:models:processReleaseNavigationResources UP-TO-DATE
+> Task :core:ui:processReleaseNavigationResources UP-TO-DATE
+> Task :core:util:processReleaseNavigationResources UP-TO-DATE
+> Task :feature:camera:processReleaseNavigationResources UP-TO-DATE
+> Task :feature:media-send:processReleaseNavigationResources UP-TO-DATE
+> Task :feature:registration:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:apng:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:archive:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:billing:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:blurhash:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:contacts:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:debuglogs-viewer:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:device-transfer:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:donations:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:glide:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:image-editor:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:paging:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:photoview:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:qr:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:sticky-header-grid:processReleaseNavigationResources UP-TO-DATE
+> Task :lib:video:processReleaseNavigationResources UP-TO-DATE
+> Task :Signal-Android:processWebsiteProdReleaseNavigationResources
+> Task :Signal-Android:parseWebsiteProdReleaseLocalResources
+> Task :core:models:parseReleaseLocalResources UP-TO-DATE
+> Task :core:models:generateReleaseRFile UP-TO-DATE
+> Task :core:ui:parseReleaseLocalResources UP-TO-DATE
+> Task :core:ui:generateReleaseRFile UP-TO-DATE
+> Task :core:util:parseReleaseLocalResources UP-TO-DATE
+> Task :core:util:generateReleaseRFile UP-TO-DATE
+> Task :feature:camera:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:camera:generateReleaseRFile UP-TO-DATE
+> Task :feature:media-send:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:media-send:generateReleaseRFile UP-TO-DATE
+> Task :feature:registration:parseReleaseLocalResources UP-TO-DATE
+> Task :feature:registration:generateReleaseRFile UP-TO-DATE
+> Task :lib:apng:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:apng:generateReleaseRFile UP-TO-DATE
+> Task :lib:archive:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:archive:generateReleaseRFile UP-TO-DATE
+> Task :lib:billing:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:billing:generateReleaseRFile UP-TO-DATE
+> Task :lib:blurhash:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:blurhash:generateReleaseRFile UP-TO-DATE
+> Task :lib:contacts:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:contacts:generateReleaseRFile UP-TO-DATE
+> Task :lib:debuglogs-viewer:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:debuglogs-viewer:generateReleaseRFile UP-TO-DATE
+> Task :lib:device-transfer:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:device-transfer:generateReleaseRFile UP-TO-DATE
+> Task :lib:donations:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:donations:generateReleaseRFile UP-TO-DATE
+> Task :lib:glide:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:glide:generateReleaseRFile UP-TO-DATE
+> Task :lib:image-editor:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:image-editor:generateReleaseRFile UP-TO-DATE
+> Task :lib:paging:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:paging:generateReleaseRFile UP-TO-DATE
+> Task :lib:photoview:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:photoview:generateReleaseRFile UP-TO-DATE
+> Task :lib:qr:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:qr:generateReleaseRFile UP-TO-DATE
+> Task :lib:sticky-header-grid:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:sticky-header-grid:generateReleaseRFile UP-TO-DATE
+> Task :lib:video:parseReleaseLocalResources UP-TO-DATE
+> Task :lib:video:generateReleaseRFile UP-TO-DATE
+> Task :Signal-Android:dataBindingGenBaseClassesWebsiteProdRelease UP-TO-DATE
+> Task :Signal-Android:generateSafeArgsWebsiteProdRelease UP-TO-DATE
+> Task :Signal-Android:generateWebsiteProdReleaseBuildConfig
+> Task :Signal-Android:generateWebsiteProdReleaseProtos UP-TO-DATE
+> Task :Signal-Android:generateWebsiteProdReleaseRFile UP-TO-DATE
+> Task :core:models:compileReleaseKotlin UP-TO-DATE
+> Task :core:models:javaPreCompileRelease UP-TO-DATE
+> Task :core:models:compileReleaseJavaWithJavac NO-SOURCE
+> Task :core:models:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :core:util:generateReleaseProtos UP-TO-DATE
+> Task :core:util:compileReleaseKotlin
+> Task :core:util:javaPreCompileRelease UP-TO-DATE
+
+> Task :core:util:compileReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :core:util:bundleLibCompileToJarRelease
+> Task :core:ui:compileReleaseKotlin
+> Task :core:ui:javaPreCompileRelease UP-TO-DATE
+> Task :core:ui:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :core:ui:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:blurhash:compileReleaseKotlin UP-TO-DATE
+> Task :lib:blurhash:javaPreCompileRelease UP-TO-DATE
+> Task :lib:blurhash:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:blurhash:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:glide:kspReleaseKotlin
+> Task :lib:glide:compileReleaseKotlin
+> Task :lib:glide:javaPreCompileRelease UP-TO-DATE
+> Task :lib:glide:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:glide:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :feature:camera:compileReleaseKotlin
+> Task :feature:camera:javaPreCompileRelease UP-TO-DATE
+> Task :feature:camera:compileReleaseJavaWithJavac NO-SOURCE
+> Task :feature:camera:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:image-editor:compileReleaseKotlin
+> Task :lib:image-editor:javaPreCompileRelease UP-TO-DATE
+> Task :lib:image-editor:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:image-editor:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:video:compileReleaseKotlin
+> Task :lib:video:javaPreCompileRelease UP-TO-DATE
+> Task :lib:video:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:video:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :feature:media-send:compileReleaseKotlin
+> Task :feature:media-send:javaPreCompileRelease UP-TO-DATE
+> Task :feature:media-send:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :feature:media-send:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :core:serialization:processResources NO-SOURCE
+> Task :core:serialization:classes UP-TO-DATE
+> Task :core:serialization:jar UP-TO-DATE
+> Task :feature:registration:generateReleaseBuildConfig UP-TO-DATE
+> Task :feature:registration:generateReleaseProtos UP-TO-DATE
+> Task :lib:archive:generateReleaseProtos UP-TO-DATE
+> Task :lib:archive:compileReleaseKotlin
+> Task :lib:archive:javaPreCompileRelease UP-TO-DATE
+> Task :lib:archive:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lib:archive:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:device-transfer:compileReleaseKotlin NO-SOURCE
+> Task :lib:device-transfer:javaPreCompileRelease UP-TO-DATE
+> Task :lib:device-transfer:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:device-transfer:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :feature:registration:compileReleaseKotlin
+> Task :feature:registration:javaPreCompileRelease UP-TO-DATE
+> Task :feature:registration:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :feature:registration:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:apng:compileReleaseKotlin
+> Task :lib:apng:javaPreCompileRelease UP-TO-DATE
+> Task :lib:apng:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lib:apng:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:billing:compileReleaseKotlin
+> Task :lib:billing:javaPreCompileRelease UP-TO-DATE
+> Task :lib:billing:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lib:billing:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:contacts:compileReleaseKotlin
+> Task :lib:contacts:javaPreCompileRelease UP-TO-DATE
+> Task :lib:contacts:compileReleaseJavaWithJavac NO-SOURCE
+> Task :lib:contacts:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:debuglogs-viewer:generateReleaseBuildConfig UP-TO-DATE
+> Task :lib:debuglogs-viewer:compileReleaseKotlin
+> Task :lib:debuglogs-viewer:javaPreCompileRelease UP-TO-DATE
+> Task :lib:debuglogs-viewer:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:debuglogs-viewer:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:donations:generateReleaseBuildConfig UP-TO-DATE
+> Task :lib:donations:compileReleaseKotlin
+> Task :lib:donations:javaPreCompileRelease UP-TO-DATE
+> Task :lib:donations:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:donations:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:paging:compileReleaseKotlin
+> Task :lib:paging:javaPreCompileRelease UP-TO-DATE
+> Task :lib:paging:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:paging:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:photoview:compileReleaseKotlin NO-SOURCE
+> Task :lib:photoview:javaPreCompileRelease UP-TO-DATE
+> Task :lib:photoview:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:photoview:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:qr:compileReleaseKotlin
+> Task :lib:qr:javaPreCompileRelease UP-TO-DATE
+> Task :lib:qr:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:qr:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :lib:sticky-header-grid:compileReleaseKotlin NO-SOURCE
+> Task :lib:sticky-header-grid:javaPreCompileRelease UP-TO-DATE
+> Task :lib:sticky-header-grid:compileReleaseJavaWithJavac UP-TO-DATE
+> Task :lib:sticky-header-grid:bundleLibCompileToJarRelease UP-TO-DATE
+> Task :Signal-Android:compileWebsiteProdReleaseKotlin
+> Task :Signal-Android:javaPreCompileWebsiteProdRelease UP-TO-DATE
+
+> Task :Signal-Android:compileWebsiteProdReleaseJavaWithJavac
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+
+> Task :Signal-Android:compileWebsiteProdReleaseSources
+
+[Incubating] Problems report is available at: file:///workspace/work/p2-integration/candidate15-replay-1/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.4.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 4m
+231 actionable tasks: 27 executed, 204 up-to-date

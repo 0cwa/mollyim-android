@@ -35,13 +35,27 @@
     "manifest_owned_changed_resource_keys": 1242,
     "candidate_changed_elements": 1242,
     "pinned_target_element_matches": 1242,
+    "raw_exact_element_matches": 1241,
+    "compiler_proven_runtime_equivalent_elements": 1,
+    "compiler_equivalence_evidence": {
+      "report": "reports/827/inventory/resource-aapt2/aapt2-equivalence.json",
+      "report_sha256": "517f7c1eb11d1704569cb65b7d13b24ee8c4f9e00b65ca3633159e5a0820af3d",
+      "target_fixture": "reports/827/inventory/resource-aapt2/source/pinned-target/strings2.xml",
+      "target_fixture_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
+      "candidate_fixture": "reports/827/inventory/resource-aapt2/source/candidate/strings2.xml",
+      "candidate_fixture_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
+      "fixture_bytes_match_pinned_source_blobs": true,
+      "aapt2_version": "Android Asset Packaging Tool (aapt) 2.20-13193326",
+      "android_api": 36,
+      "runtime_text_sha256": "f2b0f701b5560bc9ead7f21738c6378c856d323f32b2e71ffd1f5d554aae04ad"
+    },
     "unrelated_baseline_xml_files_checked": 112,
     "unrelated_baseline_xml_files_unchanged": 112,
     "candidate_delta_outside_target_delta": 0,
     "value_mismatches": 0
   },
   "sha256": {
-    "resource_parity": "5298e0c5b65a4acab76d3012c9af187405b22f68afea7ff926e5261c91050814",
+    "resource_parity": "38e683c7be5f2355fc5141386e5c821054edb8a56a103b86af2ed9c3cca1da1c",
     "full_tree_classification": "c7bdadf85ebec702d52eabb04fa94b74e91e24577b2ef0ae4b071ab43b1f9551",
     "feature_inventory": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f",
     "selected_hunks": "93da33d854b59a92761416856f58f19ac3a4d4658a910f927040e32de07f24df"

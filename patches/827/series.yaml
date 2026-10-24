@@ -228,6 +228,16 @@
           "mailbox_commit_sha": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
           "source_commit_shas": [],
           "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0020-Apply-FastLint-resource-fixes.patch",
+          "sha256": "71b2f58b87df3527c8b512f6376073403ed571dab74c3bcd0b033830de30f65a",
+          "depends_on": [
+            "unifiedpush/0019-Invalidate-stale-registration-on-endpoint-rotation.patch"
+          ],
+          "mailbox_commit_sha": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
         }
       ],
       "parity_paths": [
@@ -420,12 +430,11 @@
         },
         {
           "path": "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt",
-          "expected_replay_sha256": "4b7f66472f1d637047faf9e1c8f47231893fec159c8b812a09b4ac318ea03538",
+          "expected_replay_sha256": "25c809e9e1a5f96bbf3e1351e7e1f91e4df79cfdcc27fe2dbc6579d16d109df8",
           "target_sha256": "80579ccfd6258de66ea492bc7d36d75a67b758aad98e693014c1b93404680377",
-          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "evidence": "Use the repository fast-lint numeric API-level convention (33 for Tiramisu); this is compile-time equivalent to Build.VERSION_CODES.TIRAMISU in the pinned SDK.",
           "tests": [
-            "reports/independent-review/SECURITY-REVIEW.md",
-            "reports/build/build-results.json"
+            "reports/827/build/fastLint-replay-fixes-20261024.log"
           ]
         },
         {
@@ -940,22 +949,21 @@
         },
         {
           "path": "app/src/main/res/values/strings2.xml",
-          "expected_replay_sha256": "80032346b80a9dff0127eabff100a7564e3209f328de51e1de03e686bcbe0b2a",
+          "expected_replay_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac",
           "target_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
-          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "evidence": "Balance the leading/trailing quote in the default MollySocket QR instruction. aapt2 comparison confirms the compiled runtime string equals the pinned target text.",
           "tests": [
-            "reports/independent-review/SECURITY-REVIEW.md",
-            "reports/build/build-results.json"
+            "reports/827/inventory/resource-parity.json",
+            "reports/827/build/fastLint-replay-fixes-20261024.log"
           ]
         },
         {
           "path": "core/util/src/main/java/org/signal/core/util/Util.java",
-          "expected_replay_sha256": "6f1ac5619ecab296f6c3de17c9ed71fb36a18040f87ebb4838e65a03bf9f54b2",
+          "expected_replay_sha256": "0f0573d081b12464f5d21b7aaa3792764a5083f08cac2f0022abd3fddefbc29d",
           "target_sha256": "35933afa49b566aaf29907be19ea39b3457ed9a4d25d2c88660fb0bc6e399d50",
-          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "evidence": "Use numeric API level 33 to satisfy the repository fast-lint rule; the pinned SDK maps this value to Build.VERSION_CODES.TIRAMISU.",
           "tests": [
-            "reports/independent-review/SECURITY-REVIEW.md",
-            "reports/build/build-results.json"
+            "reports/827/build/fastLint-replay-fixes-20261024.log"
           ]
         },
         {
@@ -1030,7 +1038,7 @@
       "added_paths": []
     }
   ],
-  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "expected_tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
   "patch_provenance": "mailbox_commit_sha identifies the local reconstructed patch commit in the From header. source_commit_shas identifies original Molly upstream commits explicitly referenced inside that patch; an empty list with provenance_kind poc-adaptation means the patch is a Signal compatibility or PoC correction and makes no claim of a matching Molly source commit.",
   "expected_validation_commands": [
     "python3 tools/827/validate.py --repo . --manifest patches/827/series.yaml",
@@ -1039,10 +1047,10 @@
   ],
   "known_intentional_target_differences": [
     "Signal API adaptation in UnifiedPush shared integration points is declared through integration/adaptation checks; this is not a claim of whole-application Molly parity.",
-    "Validation overlays add a UnifiedPush F4/F5 regression test, use flavor-aware URI test fixtures, and pin the Gradle distribution checksum; these additions are not present in the pinned Molly application tree."
+    "Validation overlays add UnifiedPush F4/F5 regression tests, flavor-aware URI test fixtures, a pinned Gradle distribution checksum, and source compatibility/quote corrections; these changes and test-only paths are absent from the pinned Molly application tree."
   ],
-  "patch_count": 22,
-  "expected_application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "patch_count": 23,
+  "expected_application_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
   "metadata_exclusions": [
     ".github/workflows/827-poc.yml",
     "docs/827",
