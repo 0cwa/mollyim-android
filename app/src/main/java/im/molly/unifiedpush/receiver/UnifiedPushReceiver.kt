@@ -4,9 +4,12 @@ import android.content.Context
 import androidx.core.os.bundleOf
 import com.google.firebase.messaging.RemoteMessage
 import im.molly.unifiedpush.UnifiedPushNotificationBuilder
+import im.molly.unifiedpush.model.RegistrationStatus
+import org.greenrobot.eventbus.EventBus
 import org.signal.core.util.concurrent.SignalExecutors
 import org.signal.core.util.logging.Log
 import org.thoughtcrime.securesms.dependencies.AppDependencies
+import org.thoughtcrime.securesms.events.PushServiceEvent
 import org.thoughtcrime.securesms.gcm.FcmFetchManager
 import org.thoughtcrime.securesms.gcm.FcmReceiveService
 import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob
@@ -33,7 +36,9 @@ class UnifiedPushReceiver : MessagingReceiver() {
 
   override fun onNewEndpoint(context: Context, endpoint: PushEndpoint, instance: String) {
     Log.i(TAG, "onNewEndpoint($instance)")
-    if (!appLocked) {
+    if (appLocked) {
+      invalidateAvailability()
+    } else {
       if (refreshEndpoint(endpoint.url) && SignalStore.unifiedpush.airGapped) {
         updateLastReceivedTime(0)
         UnifiedPushNotificationBuilder(context).setNotificationEndpointChangedAirGapped()
@@ -44,7 +49,9 @@ class UnifiedPushReceiver : MessagingReceiver() {
   override fun onRegistrationFailed(context: Context, reason: FailedReason, instance: String) {
     // called when the registration is not possible, eg. no network
     Log.w(TAG, "onRegistrationFailed($instance)")
-    if (!appLocked) {
+    val locked = appLocked
+    invalidateAvailability()
+    if (!locked) {
       // TODO when `reason` is INTERNAL_ERROR, try to register again _one time_
       // TODO when `reason` is ACTION_REQUIRED, tell the distributor requires a user interaction
       // TODO when `reason` is NETWORK, tell to try again when network is back, or implement it.
@@ -57,8 +64,12 @@ class UnifiedPushReceiver : MessagingReceiver() {
     // isPushAvailable becomes false => The websocket starts
     Log.i(TAG, "onUnregistered($instance)")
     UnifiedPush.forceRemoveDistributor(context)
-    if (!appLocked) {
-      refreshEndpoint(null)
+    val wasAvailable = SignalStore.unifiedpush.registrationStatus == RegistrationStatus.REGISTERED
+    SignalStore.unifiedpush.registrationStatus = RegistrationStatus.UNKNOWN
+    if (appLocked) {
+      if (wasAvailable) restartNetwork()
+    } else if (!refreshEndpoint(null) && wasAvailable) {
+      restartNetwork()
     }
   }
 
@@ -106,6 +117,19 @@ class UnifiedPushReceiver : MessagingReceiver() {
 
   private fun updateLastReceivedTime(timestamp: Long) {
     SignalStore.unifiedpush.lastReceivedTime = timestamp
+  }
+
+  /** Invalidate routing state without opening message or device credential state. */
+  private fun invalidateAvailability() {
+    val wasAvailable = SignalStore.unifiedpush.registrationStatus == RegistrationStatus.REGISTERED
+    SignalStore.unifiedpush.registrationStatus = RegistrationStatus.UNKNOWN
+    if (wasAvailable) restartNetwork()
+  }
+
+  private fun restartNetwork() {
+    AppDependencies.resetNetwork()
+    AppDependencies.startNetwork()
+    EventBus.getDefault().post(PushServiceEvent)
   }
 
   /**
