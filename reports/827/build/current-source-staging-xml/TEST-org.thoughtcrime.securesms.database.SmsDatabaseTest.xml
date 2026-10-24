@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.SmsDatabaseTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:04:46.880Z" hostname="4f1d1be5db40" time="0.837">
+  <properties/>
+  <testcase name="hasMeaningfulMessage when no messages, return false" classname="org.thoughtcrime.securesms.database.SmsDatabaseTest" time="0.142"/>
+  <testcase name="hasMeaningfulMessage when normal message, return true" classname="org.thoughtcrime.securesms.database.SmsDatabaseTest" time="0.14"/>
+  <testcase name="hasMeaningfulMessage when GV2 create message only, return true" classname="org.thoughtcrime.securesms.database.SmsDatabaseTest" time="0.137"/>
+  <testcase name="hasMeaningfulMessage when empty and then with ignored types, always return false" classname="org.thoughtcrime.securesms.database.SmsDatabaseTest" time="0.138"/>
+  <testcase name="getThreadIdForMessage when no message absent for id, return -1" classname="org.thoughtcrime.securesms.database.SmsDatabaseTest" time="0.14"/>
+  <testcase name="getThreadIdForMessage when message present for id, return thread id" classname="org.thoughtcrime.securesms.database.SmsDatabaseTest" time="0.138"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

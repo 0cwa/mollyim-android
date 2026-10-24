@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.jobs.JobManagerFactoriesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:11.709Z" hostname="4f1d1be5db40" time="0.123">
+  <properties/>
+  <testcase name="test_MmsSendJob_is_retired" classname="org.thoughtcrime.securesms.jobs.JobManagerFactoriesTest" time="0.122"/>
+  <testcase name="test_AttachmentUploadJob_is_retired" classname="org.thoughtcrime.securesms.jobs.JobManagerFactoriesTest" time="0.001"/>
+  <testcase name="test_PushContentReceiveJob_is_retired" classname="org.thoughtcrime.securesms.jobs.JobManagerFactoriesTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

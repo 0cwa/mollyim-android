@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.jobs.FastJobStorageTest" tests="82" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:05:50.255Z" hostname="4f1d1be5db40" time="0.335">
+  <properties/>
+  <testcase name="getJobsInQueue - single job" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.175"/>
+  <testcase name="updateJobAfterRetry - memory-only job does not write to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.004"/>
+  <testcase name="getNextEligibleJob - complex global priority" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.006"/>
+  <testcase name="getNextEligibleJob - after updateJobs to be invalid, no longer is in eligible list" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.003"/>
+  <testcase name="getNextEligibleJob - jobs with initial delay will not run until after the delay" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="getNextEligibleJob - after marked running, no longer is in eligible list" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="getNextEligibleJob - memory job remains eligible after cache eviction" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.064"/>
+  <testcase name="getNextEligibleJob - after deleted, next item in queue is eligible" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="getNextEligibleJob - first item in queue with queue priority" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="areFactoriesEmpty - migration queue jobs counted in factory index" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - none when dependent on another job" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="deleteJobs - memory-only job does not write to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - multiple jobs same factory complex lifecycle" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="getNextEligibleJob - updating job to have a higher global priority replaces lower priority in queue" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateJobAfterRetry - state updated" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - updating job to have a queue priority replaces lower priority in queue" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="getDependencySpecsThatDependOnJob - start of chain" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - empty set parameter" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - only return first eligible migration job" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateAllJobsToBePending - all are pending" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - running migration blocks later migration jobs" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areQueuesEmpty - all non-empty" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateAllJobsToBePending - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getEligibleJobCount - general" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="getNextEligibleJob - after deleted, no longer is in eligible list" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - single eligible job" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="deleteJobs - memory-only job remains in mostEligibleJobForQueue after deleting other job in same queue" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="getNextEligibleJob - global priority beats queue priority" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="insertJobs - memory-only job does not write to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.004"/>
+  <testcase name="areFactoriesEmpty - factory key change via transformJobs maintains correct counts" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="init - removes circular dependencies" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getDependencySpecsThatDependOnJob - end of chain" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="getNextEligibleJob - after deleted, next item in queue is eligible, with queue priorities" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - migration job takes precedence" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="insertJobs - individual job can be found" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - factory key change via updateJobs maintains correct counts" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - newly-inserted higher-global-priority job in queue replaces old" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="deleteJobs - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - queue does not exist" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getJobsInQueue - empty" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - updating job to have an older createTime replaces newer in queue" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="getNextEligibleJob - none when earlier item in queue is running" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="getNextEligibleJob - none when all jobs are running" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - memory-only jobs affect factory counts correctly" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - migration job that isn't scheduled to run yet blocks later migration jobs" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - newly-inserted higher-priority job does not replace running job in same queue" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="init - all stored data available" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - after invalid then marked pending, is in eligible list" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - after deleted, next item in queue is eligible, with global priorities" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="getNextEligibleJob - first item in queue with global priority" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="transformJobs - updates all fields" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="insertJobs - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="transformJobs - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - atomic counter behavior edge cases" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getJobCountForFactoryAndQueue - general" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - newly-inserted higher-queue-priority job in queue replaces old" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="getNextEligibleJob - same queue, with dependency, with later job having a higher global priority" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="insertJobs - data can be found" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="markJobAsRunning - state updated" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - unrelated operations dont affect factory counts" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - first item in queue" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="markJobAsRunning - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateJobs - updates all fields" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getJobCountForFactory - general" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - job chain with same createTime processes in correct order" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateJobAfterRetry - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - single eligible job in mixed list" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - lastRunAttemptTime in the future runs right away" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areQueuesEmpty - queue does not exist" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateJobs - writes to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getDependencySpecsThatDependOnJob - mid-chain" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - multiple eligible jobs" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - running migration blocks normal jobs" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - mixed empty" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="insertJobs - depends on memory-only job" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.002"/>
+  <testcase name="areFactoriesEmpty - all non-empty" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <testcase name="deleteJobs - deletes all relevant pieces" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="updateJobs - memory-only job does not write to database" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - after updateJobAfterRetry to be invalid, no longer is in eligible list" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areFactoriesEmpty - factory count consistency after complex operations" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="getNextEligibleJob - none when next run time is after current time" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.001"/>
+  <testcase name="areQueuesEmpty - mixed empty" classname="org.thoughtcrime.securesms.jobs.FastJobStorageTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

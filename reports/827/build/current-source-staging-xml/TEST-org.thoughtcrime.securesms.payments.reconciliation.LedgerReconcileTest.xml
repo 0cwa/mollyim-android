@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:52.017Z" hostname="4f1d1be5db40" time="0.009">
+  <properties/>
+  <testcase name="single_spend_payment_that_can_be_found_on_ledger_reconstructed_receipt" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.007"/>
+  <testcase name="single_spent_transaction_on_ledger" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="unknown_payment_remains_in_place_behind_known_alternative_block_order" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.001"/>
+  <testcase name="unmatched_payment_remains_in_place_behind_matched" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="single_receipt_payment_that_can_be_found_on_ledger_reconstructed_spend_but_not_with_change_due_to_block" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="single_receipt_payment_that_can_be_found_on_ledger_reconstructed_spend" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="one_received_and_one_spent_transaction_on_ledger_only_different_blocks" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="single_receipt_payment_that_can_be_found_on_ledger_reconstructed_spend_with_change" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.001"/>
+  <testcase name="single_unspent_transaction_on_ledger_only" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="empty_lists" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="unknown_payment_is_first_in_list" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <testcase name="one_received_and_one_spent_transaction_on_ledger_only_same_block_is_treated_as_change" classname="org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

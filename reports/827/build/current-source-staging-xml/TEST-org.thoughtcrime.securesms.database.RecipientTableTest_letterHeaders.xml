@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.RecipientTableTest_letterHeaders" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:04:44.523Z" hostname="4f1d1be5db40" time="2.355">
+  <properties/>
+  <testcase name="every visible letter section has a header anchor" classname="org.thoughtcrime.securesms.database.RecipientTableTest_letterHeaders" time="0.635"/>
+  <testcase name="hidden contact is not a letter header anchor" classname="org.thoughtcrime.securesms.database.RecipientTableTest_letterHeaders" time="0.567"/>
+  <testcase name="letter header anchors are always in getSignalContacts" classname="org.thoughtcrime.securesms.database.RecipientTableTest_letterHeaders" time="0.597"/>
+  <testcase name="blocked contact is not a letter header anchor" classname="org.thoughtcrime.securesms.database.RecipientTableTest_letterHeaders" time="0.554"/>
+  <system-out><![CDATA[w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (c7d91f28-51f2-4819-8f40-188b03ff688c, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (0b4f3474-416a-4f31-882c-238d5c2bd4c8, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (79d2f9c5-f69d-4fed-bb99-d799389368ac, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::4
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (66cee2cb-b710-4adc-b375-fcf2c4d33c35, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::5
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (c775a10d-aead-4dc9-82c8-acde2cf5edc6, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::6
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (e1d7fc68-3260-4d5a-86a0-427dc0c108d0, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (8b375c3a-3b57-44bd-a042-f120654f9b19, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (b24ce119-5a4f-402c-b7e6-5c24bba5b8e1, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::4
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (8c363439-0bc5-46a2-8236-8f8c53ae901e, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (1e28ef1c-5da7-4342-8add-7c017ab02116, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (196892ab-6b40-45dd-bec1-c8726b6fba71, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::4
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (f6cc0b49-bd72-43e4-acf0-d0999d57b634, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::5
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (7713b6dc-a496-4a43-941d-0013ae4d2dfd, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::6
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (c61935df-33dc-4cab-9660-d4a177d101ac, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (f0813cd7-0b4a-4051-921f-6d453cb52947, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (0e6a8d6b-a227-46dd-a03b-2d097f253128, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::4
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+]]></system-out>
+  <system-err><![CDATA[java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

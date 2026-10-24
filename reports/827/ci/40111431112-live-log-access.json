@@ -1,0 +1,8 @@
+{
+  "run_id": 40111431112,
+  "job_id": 120923803186,
+  "recorded_utc": "2026-10-24T17:10:40.118455+00:00",
+  "attempt": "gh api repos/0cwa/mollyim-android/actions/jobs/120923803186/logs",
+  "result": "live log endpoint redirected to Actions result storage; read returned HTTP 403 Forbidden",
+  "live_logs_available_before_completion": false
+}

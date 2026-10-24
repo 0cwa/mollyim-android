@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "assessment": "The refreshed 23-patch manifest and two independent replays pass for projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d; resource parity, current-source fast-lint, and WebsiteProdRelease source compilation pass. Focused/full staging test receipts are green on predecessor source 36578d8; current-source test and hosted CI reruns remain unverified. Full all-variant build, behavior evidence for every adaptation, and live runtime remain unproven.",
+  "assessment": "The refreshed 23-patch manifest, two replays, inventory/resource checks, current-source fast-lint and ktlint, WebsiteProdRelease compile, full staging suite, and hosted CI all pass. The full all-variant build, behavior evidence for every adaptation, and live runtime remain unproven.",
   "scope": "Molly #827 external local proof of concept: launcher artwork and selected UnifiedPush/MollySocket feature ports",
   "source_pins": {
     "audited_poc_head": "b8d5375b3fb6013f7939935ce73e250b53515381",
@@ -9,25 +9,19 @@
     "expected_replay_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
     "patch_count": 23,
     "feature_source_head": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
-    "handoff_head": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
-    "metadata_handoff_commit": "d514f38b2cba0f0f3dd0fcd0e58801fb86735631",
-    "f5_working_tree_files": {
-      "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
-      "app/src/test/java/org/thoughtcrime/securesms/util/UriUtilTest_isValidExternalUri.java": "b8095173443a1633ed28ad64f7a7d7de9a2964ad30b7ee003932568466dd0ab9",
-      "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt": "31befa0f5dd6e540efb38f1b4d224ead5a10bfd2fd81e2711694d4fb544687fa"
-    },
-    "f5_worktree_base": "908db1de74a9937c2b9bc1a0f4ac446f8faef914"
+    "tested_ci_head": "38457dd629d55547066fa77e8f9c0a4820f6f152",
+    "current_source_receipt": "reports/827/build/full-staging-d998-20261024-final-source-sha256.txt"
   },
   "criteria": [
     {
       "id": "patch_manifest_and_provenance",
       "status": "PASS",
-      "evidence": "Current validation report reports/827/replay/validation.json passes for all 23 ordered mailbox patches, checksums, dependencies, and provenance; projected tree is e783cf54487a5b5d78c3241ec977fd8c8cd23f1d."
+      "evidence": "Current validation report reports/827/replay/validation.json passes for all 23 ordered mailbox patches, checksums, dependencies, and provenance. All 19 replay/tool tests pass, including the fixture-source tamper-negative test. Evidence: reports/827/independent/manifest-validation-final.json and reports/827/independent/INDEPENDENT-REVIEW.md."
     },
     {
       "id": "deterministic_replay",
       "status": "PASS",
-      "evidence": "Current two-run report reports/827/replay/replay-twice.json records identical projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d, matching source commit d99876269eb6556e37bb2d584ba08e8334e8e5db; both independent replays pass source projection with zero unowned changes."
+      "evidence": "Current independent two-run report reports/827/independent/replay-frozen-final.json records identical projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d, matching source commit d99876269eb6556e37bb2d584ba08e8334e8e5db; both independent runs pass source projection with zero unowned changes. Residual artifacts were independently hash/size/timestamp verified."
     },
     {
       "id": "target_parity",
@@ -47,27 +41,27 @@
     {
       "id": "f5_working_tree_patch_integration",
       "status": "PASS",
-      "evidence": "F5 endpoint rotation/failure handling remains in the current patch series and projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d. Focused tests passed on predecessor source 36578d8; final-source regression rerun is pending."
+      "evidence": "F5 endpoint rotation/failure handling remains in the current 23-patch series and projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d. The final-source unfiltered staging suite passed all 9 UnifiedPushReceiverAvailabilityTest cases, including changed-endpoint failure fallback and same-endpoint idempotence; hosted CI also passed the focused receiver regression step."
     },
     {
-      "id": "full_android_build_and_tests",
+      "id": "all_variant_build_matrix",
       "status": "BLOCKED",
-      "evidence": "On current source commit d99876269eb6556e37bb2d584ba08e8334e8e5db, :Signal-Android:compileWebsiteProdReleaseSources passed strict dependency verification (27 tasks executed, 204 up-to-date; reports/827/build/compileWebsiteProdReleaseSources-fastlintfix-summary.json). Current-source :fast-lint:fastLint also passed. The full staging suite and ktlint passed on predecessor commit 36578d8 (2,800 tests, 0 failures/errors, 78 skipped); final-source test rerun remains pending. No full project build across all variants has passed; the earlier audited-snapshot attempt exited 130 after disk exhaustion at 15/23 variants and 14 suites. See current and predecessor receipts under reports/827/build/."
+      "evidence": "On current source commit d99876269eb6556e37bb2d584ba08e8334e8e5db/projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d, the unfiltered Play Staging Debug unit suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites. App ktlint and :fast-lint:fastLint pass. :Signal-Android:compileWebsiteProdReleaseSources passed strict dependency verification (27 tasks executed, 204 up-to-date). Hosted run 40111431112 passed ciRemote and :Signal-Android:assemblePlayProdDebug on final source. A full project build across every variant has not been performed; the earlier audited-snapshot matrix exited 130 after disk exhaustion at 15/23 variants and 14 suites. Evidence is in reports/827/build/ and reports/827/ci/40111431112.log."
     },
     {
       "id": "final_head_focused_regression_tests",
-      "status": "BLOCKED",
-      "evidence": "Predecessor source commit 36578d8 passed selected F4/F5/F6 and URI tests 25/25 (16 UriUtilTest_isValidExternalUri and 9 UnifiedPushReceiverAvailabilityTest), with hashes/receipts in reports/827/build/focused-test-results/f5-2g-summary.json. Patch 23 applies lint-convention/resource quote fixes; repeat the focused tests on refreshed source commit d99876269eb6556e37bb2d584ba08e8334e8e5db before claiming final-head validation."
+      "status": "PASS",
+      "evidence": "The current-source unfiltered staging run includes org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri (16/16 passed) and org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest (9/9 passed), for 25/25 focused cases. XML SHA-256 values: 189d770c848e6f9ce56f8d644aa20bb0765cda671835fd4be596166c3abd805c and 9230769d69947733d238f1721df1d88196bd5bda4b3f8f87d081bff532b10958. Overall suite receipt: reports/827/build/full-staging-d998-20261024-final-summary.json; source hashes are in full-staging-d998-20261024-final-source-sha256.txt."
     },
     {
       "id": "full_staging_suite_and_app_lint",
-      "status": "BLOCKED",
-      "evidence": "Predecessor source commit 36578d8 passed unfiltered :Signal-Android:testPlayStagingDebugUnitTest (2,800 tests, 0 failures/errors, 78 skipped across 251 suites) and :Signal-Android:ktlintCheck. Patch 23 updates lint conventions and a QR resource quote proven equivalent by aapt2; rerun on refreshed source commit d99876269eb6556e37bb2d584ba08e8334e8e5db. Receipts: reports/827/build/full-f5-test-results/summary.json and reports/827/build/ktlint-f5-formatted-20261024.log."
+      "status": "PASS",
+      "evidence": "On current source commit 38457dd629d55547066fa77e8f9c0a4820f6f152 (application source d99876269eb6556e37bb2d584ba08e8334e8e5db; projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d), the unfiltered :Signal-Android:testPlayStagingDebugUnitTest suite passed 2,800 tests, 0 failures/errors, and 78 skipped across 251 suites. :Signal-Android:ktlintCheck passed. Staging log SHA-256 221f5e7509a1e971c07489a313be48d6b6aa4b50b792e74a235a3ba50732fb52; suite summary reports/827/build/full-staging-d998-20261024-final-summary.json. Ktlint log SHA-256 6b0258f51b1fdd54dd40cf5e3476fa71f06c935d76eef2db45bbc4f9b81e5fa9."
     },
     {
       "id": "focused_local_android_flows",
-      "status": "PASS",
-      "evidence": "Historical local API 30 synthetic flows passed for selected paths on prior replay tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3. They predate the F4 locked callback change and do not establish that behavior."
+      "status": "BLOCKED",
+      "evidence": "Historical local API 30 synthetic flows passed selected paths on prior replay tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3, but predate the F4 locked callback change. Final-source JVM/CI tests pass; current-source Android runtime flows on a device or emulator have not been demonstrated."
     },
     {
       "id": "live_service_and_device_behavior",
@@ -77,22 +71,116 @@
     {
       "id": "security_review",
       "status": "PASS",
-      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the selected F5 working-tree run (9 receiver tests; 25 total with 16 URI cases). Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested. A separate inherited F7 availability risk remains: remote linked-device registration may succeed before local prekey loading fails, leaving an orphan server-side device; a recoverable provisioning/cleanup follow-up is recommended."
+      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the current-source staging suite (9 receiver tests; 25 total with 16 URI cases); hosted CI also passed focused URI/UnifiedPush regressions. Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested. A separate inherited F7 availability risk remains: remote linked-device registration may succeed before local prekey loading fails, leaving an orphan server-side device; a recoverable provisioning/cleanup follow-up is recommended."
     },
     {
       "id": "ci_validation",
-      "status": "BLOCKED",
-      "evidence": "Prior corrected CI run 40108357095 at head d4ded37c5c0a763ac1f26819bcb36024019b295e passed source pins, manifest/inventory, replay, capacity, and LFS checks, then failed :fast-lint:fastLint on three candidate-added findings. Patch 23 addresses the two API constants and quote balance; current-source :fast-lint:fastLint and :Signal-Android:compileWebsiteProdReleaseSources now pass in the replay worktree. No new hosted run has completed; final CI and tests on refreshed source remain unverified. Prior log and summary: reports/827/ci/40108357095.log and reports/827/ci/40108357095-summary.json."
+      "status": "PASS",
+      "evidence": "Final-source GitHub Actions run 40111431112 passed on metadata head 38457dd629d55547066fa77e8f9c0a4820f6f152, application source d99876269eb6556e37bb2d584ba08e8334e8e5db, projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d. Source pins, 23-patch manifest/inventory, two replays, capacity capture, LFS hydration/fsck, ciRemote, :Signal-Android:assemblePlayProdDebug, and focused URI/UnifiedPush regression step all completed successfully; fast-lint reported no issues. Run: https://github.com/0cwa/mollyim-android/actions/runs/40111431112. Full job log: reports/827/ci/40111431112.log (SHA-256 18909e79879137a94aeb4e4f499bc3e322b1a0986c5102268bb4243f67d1751c); summary: reports/827/ci/40111431112-summary.json (SHA-256 a3dd841d5f66945b55b0a70004849ad33cc426683f2cf37b77a93f1fa023b674)."
+    },
+    {
+      "id": "dependency_verification",
+      "status": "PASS",
+      "evidence": "Strict Gradle dependency verification passed in hosted CI on a fresh runner for `ciRemote :Signal-Android:assemblePlayProdDebug` and the focused staging regression command; both commands include `--dependency-verification=strict`. The clean replay runbook documents the same strict mode for build, unit-test, lint, and release-source compilation. CI command/results: reports/827/ci/40111431112-summary.json and reports/827/ci/40111431112.log."
+    },
+    {
+      "id": "untested_behavior_disclosure",
+      "status": "PASS",
+      "evidence": "The handoff and acceptance report explicitly identify untested live Signal/MollySocket service behavior, API 33+ notification privacy, current-source device/emulator flows, complete all-variant coverage, and per-adaptation behavioral proof. This PASS records completeness of disclosure only; it does not claim those behaviors were tested. See docs/827/SECURITY.md, docs/827/PARITY.md, docs/827/RUNBOOK.md, and the BLOCKED runtime/parity criteria in this report. Required behavior-by-behavior coverage is recorded in reports/827/behavior-coverage.json."
+    },
+    {
+      "id": "maintainer_reproducibility",
+      "status": "PASS",
+      "evidence": "A clean hosted runner reproduced source pin checks, the manifest/inventory validation, two independent patch replays with matching projected tree, LFS validation, strict-dependency Android build/tests/lint, and focused regressions. The commands, SDK/JDK setup, upgrade/conflict procedure, evidence locations, and cleanup are documented in docs/827/RUNBOOK.md. Independent replay and hosted receipts: reports/827/independent/replay-frozen-final.json and reports/827/ci/40111431112-summary.json. This verifies the documented supported proof path, not every flavor/device combination."
     },
     {
       "id": "upstream_and_release_safety",
       "status": "PASS",
-      "evidence": "No upstream pull request, merge, production keys, production signing, or publishing action occurred. The development branch may be pushed for review."
+      "evidence": "The development branch is pushed to the review remote. No upstream pull request, merge, production keys, production signing, or publishing action occurred."
+    }
+  ],
+  "user_acceptance_item_mapping": [
+    {
+      "item": 1,
+      "criterion_ids": [
+        "patch_manifest_and_provenance",
+        "deterministic_replay"
+      ],
+      "status": "PASS"
+    },
+    {
+      "item": 2,
+      "criterion_ids": [
+        "deterministic_replay"
+      ],
+      "status": "PASS"
+    },
+    {
+      "item": 3,
+      "criterion_ids": [
+        "target_parity"
+      ],
+      "status": "BLOCKED",
+      "note": "Hash/path parity passes for declared scope; behavioral evidence for every adaptation is incomplete."
+    },
+    {
+      "item": 4,
+      "criterion_ids": [
+        "ci_validation"
+      ],
+      "status": "PASS"
+    },
+    {
+      "item": 5,
+      "criterion_ids": [
+        "ownership_inventory"
+      ],
+      "status": "PASS"
+    },
+    {
+      "item": 6,
+      "criterion_ids": [
+        "dependency_verification"
+      ],
+      "status": "PASS"
+    },
+    {
+      "item": 7,
+      "criterion_ids": [
+        "security_review"
+      ],
+      "status": "PASS",
+      "note": "Recorded security tests and dispositions include residual F7 risk and recommended recovery follow-up."
+    },
+    {
+      "item": 8,
+      "criterion_ids": [
+        "untested_behavior_disclosure",
+        "focused_local_android_flows",
+        "live_service_and_device_behavior",
+        "all_variant_build_matrix"
+      ],
+      "status": "PASS",
+      "note": "Disclosure is complete; current-source device/live behavior and the full variant matrix remain untested (BLOCKED)."
+    },
+    {
+      "item": 9,
+      "criterion_ids": [
+        "maintainer_reproducibility"
+      ],
+      "status": "PASS"
+    },
+    {
+      "item": 10,
+      "criterion_ids": [
+        "upstream_and_release_safety"
+      ],
+      "status": "PASS"
     }
   ],
   "overall_success": "BLOCKED",
   "must_not_claim": [
-    "full Android build or complete test matrix passed",
+    "full all-variant Android build matrix passed",
     "behavioral proof for every adaptation or full Molly target parity",
     "live UnifiedPush or MollySocket acceptance",
     "API 33 lock-screen privacy acceptance",
@@ -102,6 +190,7 @@
     "production readiness or production-signed artifact"
   ],
   "human_review_gates": "Waived by user for this external local research effort; no maintainer approval is claimed.",
-  "publication": "No upstream pull request or merge, production key use, signing, or publishing. The development branch may be pushed to a review remote.",
-  "overall_status": "BLOCKED"
+  "publication": "The development branch is pushed to the review remote. No upstream pull request or merge, production key use, signing, or publishing occurred.",
+  "overall_status": "BLOCKED",
+  "behavior_coverage_report": "reports/827/behavior-coverage.json"
 }

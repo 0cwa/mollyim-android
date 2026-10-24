@@ -1,0 +1,519 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" tests="34" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:06:26.474Z" hostname="4f1d1be5db40" time="45.231">
+  <properties/>
+  <testcase name="Given IdentityMismatch, when run, then record mismatched identity and mark failed, return success" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="2.008"/>
+  <testcase name="Given a successful send, when run, then mark sent, write to log, update thread, return success" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.305"/>
+  <testcase name="Given a successful send and an expiring message, when run, then start expiration timer" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.352"/>
+  <testcase name="Given NotRegistered, when run, then mark failed and enqueue DirectoryRefreshJob, return success" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.305"/>
+  <testcase name="Given a successful send and a view-once message, when run, then delete attachment files" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.278"/>
+  <testcase name="Given ChallengeRequired and handler says retry now, when run, then retry with zero backoff" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.378"/>
+  <testcase name="Given recipient is unregistered, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.299"/>
+  <testcase name="Given signed prekey age is too old, when run, then trigger PreKeysSyncJob and continue on success" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.34"/>
+  <testcase name="Given SessionAttemptsExhausted, when run, then return retry" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.373"/>
+  <testcase name="Given a UD send to unknown sealed-sender-mode recipient with no profile key, when run, then mark UNRESTRICTED" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.319"/>
+  <testcase name="Given a non-UD send to an enabled recipient, when run, then mark DISABLED" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.398"/>
+  <testcase name="Given signed prekey age is too old and refresh fails, when run, then retry" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.369"/>
+  <testcase name="Given self is not registered, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.339"/>
+  <testcase name="Given message is already sent, when run, then return success without sending" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.292"/>
+  <testcase name="Given toDataMessage fails, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.296"/>
+  <testcase name="Given ContentTooLarge, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.265"/>
+  <testcase name="Given ChallengeRequired and handler says retry later, when run, then retry with backoff" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.311"/>
+  <testcase name="Given multi-device, when send succeeds, then also send a sync transcript" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.286"/>
+  <testcase name="Given body exceeds inline size limit, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.282"/>
+  <testcase name="Given a send needs PNI signature, when send succeeds, then write a pending PNI signature record" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.371"/>
+  <testcase name="Given message record is missing, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.384"/>
+  <testcase name="Given an edit of an already-edited message, when run, then target the edited revision's dateSent" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.289"/>
+  <testcase name="Given ApplicationError with a non-RuntimeException, when run, then return retry" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.264"/>
+  <testcase name="Given RateLimited, when run, then return retry" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.254"/>
+  <testcase name="Given a self-send, when run, then wrap content in a SyncMessage and use ContentHint IMPLICIT" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.269"/>
+  <testcase name="Given ServerRejected, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.328"/>
+  <testcase name="Given client is deprecated, when run, then return failure and skip send" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.244"/>
+  <testcase name="Given recipient has no service id, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.243"/>
+  <testcase name="Given Unauthorized, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.265"/>
+  <testcase name="Given ApplicationError with a RuntimeException, when run, then return fatal failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.3"/>
+  <testcase name="Given PreKeyUnavailable, when run, then return retry" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.309"/>
+  <testcase name="Given outgoing message is missing, when run, then return failure" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.344"/>
+  <testcase name="Given NetworkError, when run, then return retry" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.282"/>
+  <testcase name="Given a UD send to unknown sealed-sender-mode recipient with profile key, when run, then mark ENABLED" classname="org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test" time="1.276"/>
+  <system-out><![CDATA[w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Identity mismatch for 00000000-0000-4000-8000-000000000002 UntrustedIdentityException:
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Recipient not registered NotRegistered:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Challenge required (options=[CAPTCHA]) ChallengeRequired:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [1700000000000][42] Recipient RecipientId::2 not registered; failing.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [?][42] It's been too long since rotating our signed prekeys. Attempting to rotate now.
+i[IndividualSendJobV2] [?][42] Successfully refreshed prekeys. Continuing.
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Exhausted device-resolution attempts. Retrying SessionAttemptsExhausted:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [?][42] It's been too long since rotating our signed prekeys. Attempting to rotate now.
+w[IndividualSendJobV2] [?][42] Failed to refresh prekeys; retrying. State: <empty>
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [?][42] Self is not registered; failing.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [1700000000000][42] Message was already sent. Ignoring.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [1700000000000][42] Failed to create a data message! Reason: MissingAttachmentRemoteFields
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Content too large (9999 > 256 bytes). Failing. ContentTooLarge:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Challenge required (options=[]) ChallengeRequired:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [1700000000000][42] Body size exceeds limit of 2048 bytes; failing.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Including PNI signature.
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [1700000000000][42] No message record found for id; failing.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: 1700000010000
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Application error Exception:eventually retryable
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Rate limited, retryAfter=10m, using backoff=600000ms RateLimited:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::1, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Note to self. Skipping primary send.
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Server rejected the send ServerRejected:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [?][42] Client is deprecated (build 1792859077000); failing message.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [1700000000000][42] Recipient RecipientId::2 has no serviceId; failing.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Unauthorized send Unauthorized:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+e[IndividualSendJobV2] [1700000000000][42] Encountered a fatal application error. Crash imminent. IllegalStateException:nope
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Prekey unavailable: no signed prekey PreKeyUnavailable:null
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[IndividualSendJobV2] [?][42] No outgoing message found for id; failing.
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+w[IndividualSendJobV2] [1700000000000][42] Network error IOException:boom
+w[RemoteConfig] Tried to read android.defaultMaxBackoff before initialization. Initializing now.
+i[RemoteConfig] init() {}
+i[IndividualSendJobV2] [1700000000000][42] Sending message. Recipient: RecipientId::2, Thread: 17, Attachments: , Editing: N/A
+i[IndividualSendJobV2] [1700000000000][42] Sent message.
+]]></system-out>
+  <system-err><![CDATA[org.signal.network.service.MessageService$SendError$NotRegistered
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given NotRegistered, when run, then mark failed and enqueue DirectoryRefreshJob, return success(IndividualSendJobV2Test.kt:520)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+ChallengeRequired(token=tok, options=[CAPTCHA], retryAfter=1s)
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given ChallengeRequired and handler says retry now, when run, then retry with zero backoff(IndividualSendJobV2Test.kt:544)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+org.signal.network.service.MessageService$SendError$SessionAttemptsExhausted
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given SessionAttemptsExhausted, when run, then return retry(IndividualSendJobV2Test.kt:604)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+ContentTooLarge(size=9999, maxAllowed=256)
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given ContentTooLarge, when run, then return failure(IndividualSendJobV2Test.kt:593)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+ChallengeRequired(token=tok, options=[], retryAfter=null)
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given ChallengeRequired and handler says retry later, when run, then retry with backoff(IndividualSendJobV2Test.kt:563)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Exception: eventually retryable
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given ApplicationError with a non-RuntimeException, when run, then return retry(IndividualSendJobV2Test.kt:659)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+RateLimited(retryAfter=10m)
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given RateLimited, when run, then return retry(IndividualSendJobV2Test.kt:626)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+org.signal.network.service.MessageService$SendError$ServerRejected
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given ServerRejected, when run, then return failure(IndividualSendJobV2Test.kt:582)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+org.signal.network.service.MessageService$SendError$Unauthorized
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given Unauthorized, when run, then return failure(IndividualSendJobV2Test.kt:533)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.IllegalStateException: nope
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given ApplicationError with a RuntimeException, when run, then return fatal failure(IndividualSendJobV2Test.kt:648)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+PreKeyUnavailable(reason=no signed prekey)
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given PreKeyUnavailable, when run, then return retry(IndividualSendJobV2Test.kt:615)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.io.IOException: boom
+	at org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.Given NetworkError, when run, then return retry(IndividualSendJobV2Test.kt:637)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.emoji.EmojiSourceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:05:14.711Z" hostname="4f1d1be5db40" time="0.003">
+  <properties/>
+  <testcase name="Given a bunch of data pages with max value 100100, when I get the maxEmojiLength, then I expect 6" classname="org.thoughtcrime.securesms.emoji.EmojiSourceTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

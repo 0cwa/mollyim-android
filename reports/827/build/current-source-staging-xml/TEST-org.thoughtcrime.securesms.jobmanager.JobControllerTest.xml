@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.jobmanager.JobControllerTest" tests="25" skipped="25" failures="0" errors="0" timestamp="2026-10-24T17:05:42.816Z" hostname="4f1d1be5db40" time="0.005">
+  <properties/>
+  <testcase name="submitJobs handles empty list after filtering" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onRunnerTerminated - decrements active runners" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onSuccess deletes job and updates tracker" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="pullNextEligibleJobForExecution marks job as running and tracks it" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="maybeScaleUpRunners - does not exceed max runners" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="init updates all jobs to pending" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="maybeScaleUpRunners - creates runners to satisfy demand" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="startJobRunners - creates runners to satisfy demand" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="submitJobWithExistingDependencies handles failed dependencies" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="pullNextEligibleJobForExecution with timeout returns null when no jobs available" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.001">
+    <skipped/>
+  </testcase>
+  <testcase name="cancelJob handles unknown job" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onFailure deletes job and all dependents" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="cancelAllInQueue cancels all jobs in specified queue" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="startJobRunners - creates minimum number of runners, even with no eligible jobs" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onRetry updates job with backoff and schedules retry" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="submitJobs filters out jobs that exceed maximum instances" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="cancelJob handles job not found gracefully" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onFailure handles cascading failures correctly" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onFailure handles null job specs in dependency chain" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="startJobRunners - does not exceed max runners" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="submitNewJobChain inserts jobs and schedules them" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="submitNewJobChain handles chain that exceeds maximum instances" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="onSuccess with output data updates dependent jobs" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="findJobs returns filtered results from storage" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="pullNextEligibleJobForExecution publishes empty callback when no running jobs" classname="org.thoughtcrime.securesms.jobmanager.JobControllerTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

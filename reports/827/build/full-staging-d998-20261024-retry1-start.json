@@ -1,0 +1,27 @@
+{
+  "kind": "actual-build-start",
+  "recorded_utc": "2026-10-24T16:56:31.940056+00:00",
+  "head": "38457dd629d55547066fa77e8f9c0a4820f6f152",
+  "tree": "cae9fcf1fdbb7c85cd62362626825290fdf7887a",
+  "source_hash_receipt": "reports/827/build/full-staging-d998-20261024-retry1-source-sha256.txt",
+  "command": [
+    "env",
+    "GRADLE_USER_HOME=/workspace/gradle-home",
+    "JAVA_TOOL_OPTIONS=-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/cacerts -Djavax.net.ssl.trustStoreType=JKS -Dhttp.proxyHost=proxy -Dhttp.proxyPort=8080 -Dhttps.proxyHost=proxy -Dhttps.proxyPort=8080 -Dmaven.repo.local=/workspace/work/p2-robolectric-cache",
+    "./gradlew",
+    "--offline",
+    "--no-daemon",
+    "--max-workers=1",
+    "--dependency-verification=strict",
+    "--init-script",
+    "tools/827/test-worker-heap.init.gradle",
+    "-Dorg.gradle.jvmargs=-Xmx6g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3",
+    ":Signal-Android:testPlayStagingDebugUnitTest"
+  ],
+  "resource_controls": {
+    "max_workers": 1,
+    "test_heap": "2g",
+    "test_forks": 1,
+    "gradle_heap": "6g"
+  }
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.rx.RxStoreTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:35.774Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="Given an initial state, when I observe, then I expect my initial state" classname="org.thoughtcrime.securesms.util.rx.RxStoreTest" time="0.002"/>
+  <testcase name="Given immediate observation, when I update, then I expect both states" classname="org.thoughtcrime.securesms.util.rx.RxStoreTest" time="0.0"/>
+  <testcase name="Given late observation after several updates, when I observe, then I expect latest state" classname="org.thoughtcrime.securesms.util.rx.RxStoreTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

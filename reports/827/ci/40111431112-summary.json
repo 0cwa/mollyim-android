@@ -1,0 +1,69 @@
+{
+  "run_id": 40111431112,
+  "url": "https://github.com/0cwa/mollyim-android/actions/runs/40111431112",
+  "head": "38457dd629d55547066fa77e8f9c0a4820f6f152",
+  "projected_source_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+  "conclusion": "success",
+  "job": {
+    "name": "replay-and-android-checks",
+    "started_at_utc": "2026-10-24T16:24:43Z",
+    "completed_at_utc": "2026-10-24T17:11:16Z",
+    "duration": "46m33s"
+  },
+  "replay_validation": {
+    "source_pins": "PASS",
+    "manifest_and_patch_ownership": "PASS",
+    "replay_twice_and_tree_resource_parity": "PASS",
+    "lfs_checkout_and_fsck": "PASS"
+  },
+  "android_build": {
+    "command": "./gradlew --no-daemon --max-workers=1 --dependency-verification=strict --init-script \"$GITHUB_WORKSPACE/tools/827/test-worker-heap.init.gradle\" -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' ciRemote :Signal-Android:assemblePlayProdDebug",
+    "result": "PASS",
+    "duration": "36m27s",
+    "tasks": "1222 actionable: 1011 executed, 210 from cache, 1 up-to-date",
+    "observed_tasks": [
+      ":Signal-Android:testPlayProdDebugUnitTest",
+      ":fast-lint:fastLint",
+      ":fast-lint:test",
+      ":ciRemote",
+      ":Signal-Android:assemblePlayProdDebug"
+    ],
+    "fast_lint": "3,362 Kotlin + 1,715 Java + 2,531 XML scanned; No issues found",
+    "dependency_verification": "strict",
+    "workdir": "${RUNNER_TEMP}/molly-827-replay-run-1"
+  },
+  "focused_regressions": {
+    "command": "./gradlew --no-daemon --max-workers=1 --dependency-verification=strict --init-script \"$GITHUB_WORKSPACE/tools/827/test-worker-heap.init.gradle\" -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' :Signal-Android:testPlayStagingDebugUnitTest --tests org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest",
+    "result": "PASS",
+    "duration": "6m34s",
+    "tasks": "425 actionable: 30 executed, 5 from cache, 390 up-to-date",
+    "workdir": "${RUNNER_TEMP}/molly-827-replay-run-1"
+  },
+  "artifact": {
+    "id": 12567833521,
+    "name": "molly-827-poc-validation-40111431112",
+    "size_bytes": 559618854,
+    "sha256": "42e6d1240fc1a664b1d935268ed54ef62748be27621317c92feacf236b843516",
+    "uploaded": "PASS",
+    "sha256_source": "GitHub upload-artifact log (reported digest; not locally verified)",
+    "download_result": "HTTP 403 Forbidden; zero bytes downloaded; no local checksum",
+    "access_receipt": "reports/827/ci/40111431112-artifact-access.json"
+  },
+  "log": {
+    "path": "reports/827/ci/40111431112.log",
+    "sha256": "18909e79879137a94aeb4e4f499bc3e322b1a0986c5102268bb4243f67d1751c",
+    "size_bytes": 680388,
+    "lines": 4402
+  },
+  "api_note": "GitHub run/job API showed completed success but stale in_progress/pending step fields; retrieved complete log proves both Gradle commands BUILD SUCCESSFUL, artifact upload finalized. Artifact download itself returned 403, so artifact digest remains GitHub-reported only.",
+  "source_pins": {
+    "workflow_head": "38457dd629d55547066fa77e8f9c0a4820f6f152",
+    "application_source_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+    "projected_source_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+    "manifest_sha256": "683a0257adfe0cbcb3e86e961ed4bf8db26d0a6ae28144377e45a26bfca75dca",
+    "workflow_sha256": "087f4dbbe0bf8534b900b5ae94f055cc78fb624cf4117caf1ca6b8ca252c2095",
+    "lint_kotlin_sha256": "25c809e9e1a5f96bbf3e1351e7e1f91e4df79cfdcc27fe2dbc6579d16d109df8",
+    "lint_java_sha256": "0f0573d081b12464f5d21b7aaa3792764a5083f08cac2f0022abd3fddefbc29d",
+    "resource_xml_sha256": "7e0f9b9033e9ca7b3d50650fa7cd89fcff867ae0abdb4ce9d259bbc5b334b3ac"
+  }
+}

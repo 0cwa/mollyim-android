@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.paypal.PayPalConfirmationResultTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:37.767Z" hostname="4f1d1be5db40" time="0.029">
+  <properties/>
+  <testcase name="givenATestUrl_whenIFromUri_thenIExpectCorrectResult" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.paypal.PayPalConfirmationResultTest" time="0.015"/>
+  <testcase name="givenATestUrlWithMissingField_whenIFromUri_thenIExpectNull" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.paypal.PayPalConfirmationResultTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

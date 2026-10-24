@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.stories.StoriesTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:49.725Z" hostname="4f1d1be5db40" time="0.67">
+  <properties/>
+  <testcase name="Given a MessageRecord with an attachment, when I enqueueAttachmentsFromStoryForDownload, then I enqueue once" classname="org.thoughtcrime.securesms.stories.StoriesTest" time="0.374"/>
+  <testcase name="Given a MessageRecord with no attachments and a LinkPreview with a thumbnail, when I enqueueAttachmentsFromStoryForDownload, then I enqueue once" classname="org.thoughtcrime.securesms.stories.StoriesTest" time="0.148"/>
+  <testcase name="Given a MessageRecord with no attachments and a LinkPreview without a thumbnail, when I enqueueAttachmentsFromStoryForDownload, then I enqueue nothing" classname="org.thoughtcrime.securesms.stories.StoriesTest" time="0.147"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

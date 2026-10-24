@@ -1,0 +1,71 @@
+{
+  "application_source_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "projected_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+  "purpose": "Required behavior coverage disclosure. Evidence is scoped to the stated unit or historical synthetic checks; no complete live/device scenario is claimed.",
+  "historical_android_tree": "24a27bf3ddf2f23593f5a11e3230b66b335bc2a3",
+  "current_local_test_report": "reports/827/build/current-source-staging-xml/index.json",
+  "current_ci": "https://github.com/0cwa/mollyim-android/actions/runs/40111431112",
+  "scenarios": [
+    {
+      "required_behavior": "Initial FCM selection and WebSocket fallback",
+      "available_evidence": "Preference/availability policy, historical API30 preference fallback and missing-VAPID job transition; current account availability tests pass.",
+      "untested": "Live FCM token acquisition and delivery; physical-device fallback/reconnect."
+    },
+    {
+      "required_behavior": "Selecting UnifiedPush",
+      "available_evidence": "Enum/preference policy and current receiver/availability tests; historical connector registration.",
+      "untested": "Final-source device UI selection with a real distributor."
+    },
+    {
+      "required_behavior": "QR provisioning and distributor selection",
+      "available_evidence": "Historical QR clipboard payload/expiry and local fake-distributor activation/registration; DTO/source contract probes.",
+      "untested": "Live Signal linking, QR provisioning through MollySocket, and real distributor selection."
+    },
+    {
+      "required_behavior": "Endpoint registration and ping",
+      "available_evidence": "Historical fake REGISTER/NEW_ENDPOINT; current changed-endpoint PENDING/IOException fallback and same-endpoint idempotence tests.",
+      "untested": "Successful deployed MollySocket registration/ping, endpoint rotation and recovery."
+    },
+    {
+      "required_behavior": "Message-delivery notification triggering",
+      "available_evidence": "Historical API30 fake MESSAGE reached actual app callback and NotificationManager; current locked callback tests.",
+      "untested": "Final-source device notification from live Signal/MollySocket push."
+    },
+    {
+      "required_behavior": "Offline and reconnection",
+      "available_evidence": "Actual queued refresh-job IOException path keeps push unavailable and preserves device; historical missing-VAPID fallback.",
+      "untested": "Network loss/reconnection, repeated real HTTP failure/retry timing and process-death recovery on final source."
+    },
+    {
+      "required_behavior": "Air-gapped MollySocket mode",
+      "available_evidence": "Mode/request source and serialization reviewed; explicit limitations retained.",
+      "untested": "Manual air-gapped provisioning/delivery and endpoint recovery end-to-end."
+    },
+    {
+      "required_behavior": "Disabling or uninstalling a distributor",
+      "available_evidence": "Historical unsolicited UNREGISTERED cleanup; current locked/unlocked unregister callback state tests.",
+      "untested": "Actual disable/uninstall/package-removal behavior on final-source devices."
+    },
+    {
+      "required_behavior": "Locked-state notification privacy",
+      "available_evidence": "Current urgent-notice preference gate, malformed/test payload and protected-property boundary tests pass.",
+      "untested": "Physical lock-screen presentation; Molly encrypted database/master-secret locking; credential erasure."
+    },
+    {
+      "required_behavior": "Device linking and removal",
+      "available_evidence": "Pinned Signal-Server DTO contract; compiled remove-device success/failure probes.",
+      "untested": "Live device limits, signed/last-resort prekey initialization, interrupted provisioning/orphan cleanup, missing-device and server recovery."
+    },
+    {
+      "required_behavior": "Switching back from UnifiedPush",
+      "available_evidence": "Delivery/preference state and availability policy evidence.",
+      "untested": "Final-source UI switching to live FCM/WebSocket and remote registration cleanup."
+    }
+  ],
+  "additional_limits": [
+    "API33+ clipboard UI/sensitive metadata and device-idle expiry timing were not tested.",
+    "Signal Firebase/Google dependencies are retained.",
+    "Inherited F7 provisioning can leave an orphan linked device when post-registration prekey initialization fails."
+  ],
+  "next_capability": "Use a disposable isolated Signal account, test MollySocket/distributor endpoints, and a final-source device installation for the remaining live tests; no production account or signing keys were used."
+}

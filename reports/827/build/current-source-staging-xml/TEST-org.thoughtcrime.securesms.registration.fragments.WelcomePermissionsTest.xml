@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" tests="22" skipped="22" failures="0" errors="0" timestamp="2026-10-24T17:07:41.718Z" hostname="4f1d1be5db40" time="0.005">
+  <properties/>
+  <testcase name="givenApi29Plus_whenIGetWelcomePermissionsAndSelectionRequired_thenIExpectNoPhoneStorage[29]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi29Plus_whenIGetWelcomePermissionsAndSelectionRequired_thenIExpectNoPhoneStorage" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.001">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectReadPhoneState[23]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectReadPhoneState[26]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectReadPhoneState[29]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectReadPhoneState" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApiUnder26_whenIGetWelcomePermissions_thenIExpectNoReadPhoneNumbers" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi26Plus_whenIGetWelcomePermissions_thenIExpectReadPhoneNumbers[26]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi26Plus_whenIGetWelcomePermissions_thenIExpectReadPhoneNumbers[29]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi26Plus_whenIGetWelcomePermissions_thenIExpectReadPhoneNumbers" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApiUnder33_whenIGetWelcomePermissions_thenIExpectNoPostNotifications[23]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApiUnder33_whenIGetWelcomePermissions_thenIExpectNoPostNotifications[26]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApiUnder33_whenIGetWelcomePermissions_thenIExpectNoPostNotifications" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectContacts[23]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectContacts[26]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectContacts[29]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenAnyApi_whenIGetWelcomePermissions_thenIExpectContacts" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApiUnder29_whenIGetWelcomePermissions_thenIExpectPhoneStorage[23]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApiUnder29_whenIGetWelcomePermissions_thenIExpectPhoneStorage" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi33_whenIGetWelcomePermissions_thenIExpectPostNotifications" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi29Plus_whenIGetWelcomePermissionsAndSelectionNotRequired_thenIExpectPhoneStorage[29]" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="givenApi29Plus_whenIGetWelcomePermissionsAndSelectionNotRequired_thenIExpectPhoneStorage" classname="org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

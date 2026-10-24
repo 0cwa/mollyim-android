@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:48.612Z" hostname="4f1d1be5db40" time="0.612">
+  <properties/>
+  <testcase name="Given recentsWHeader and individualsWHeaderWExpand, when I size, then I expect 15" classname="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" time="0.513"/>
+  <testcase name="Given only arbitrary elements, when I load 1, then I expect 1" classname="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" time="0.028"/>
+  <testcase name="Given recentsWHeader and individualsWHeaderWExpand, when I load 12, then I expect properly structured output" classname="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" time="0.017"/>
+  <testcase name="Given storiesWithHeaderAndExtras, when I load 11, then I expect properly structured output" classname="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" time="0.022"/>
+  <testcase name="Given only arbitrary elements, when I size, then I expect 3" classname="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" time="0.013"/>
+  <testcase name="Given recentsWHeader and individualsWHeaderWExpand, when I load 10 with offset 5, then I expect properly structured output" classname="org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

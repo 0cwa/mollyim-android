@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" tests="30" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:39.150Z" hostname="4f1d1be5db40" time="2.925">
+  <properties/>
+  <testcase name="gallery pending non-playable is centered with item count" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.24"/>
+  <testcase name="upload that is transmitting with no pending compression shows Bytes" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.092"/>
+  <testcase name="download label denominator is ciphertext size derived from slide, not network total" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.095"/>
+  <testcase name="upload while still compressing shows Processing" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.089"/>
+  <testcase name="awaiting primary gallery is corner indeterminate" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.093"/>
+  <testcase name="getTransferState prefers pending over done" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.093"/>
+  <testcase name="awaiting primary single item is centered indeterminate non-cancelable" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.097"/>
+  <testcase name="gallery pending playable is corner without item count" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.094"/>
+  <testcase name="not visible is Gone" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.09"/>
+  <testcase name="gallery failed download is retry" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.087"/>
+  <testcase name="pending hides size text when showSecondaryText is false" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.089"/>
+  <testcase name="single image uploading is corner in-progress upload" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.097"/>
+  <testcase name="getTransferState all permanent failures is permanent failure" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.091"/>
+  <testcase name="playable video pending download shows play button in corner" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.094"/>
+  <testcase name="all done is Gone" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.089"/>
+  <testcase name="gallery downloading at zero progress is not cancelable" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.087"/>
+  <testcase name="download label clamps completed to ciphertext total" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.092"/>
+  <testcase name="awaiting primary still Gone when not visible" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.089"/>
+  <testcase name="playable video downloading shows play button in corner" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.096"/>
+  <testcase name="gallery downloading is corner in-progress" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.095"/>
+  <testcase name="single image failed download is retry download" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.095"/>
+  <testcase name="single image pending download is centered pending" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.084"/>
+  <testcase name="awaiting primary yields to download progress once the re-download starts" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.087"/>
+  <testcase name="single image failed upload is retry upload" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.089"/>
+  <testcase name="upload with no bytes sent shows Processing" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.089"/>
+  <testcase name="empty slides is Gone" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.088"/>
+  <testcase name="calculateProgress weights compression three to one against network" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.095"/>
+  <testcase name="upload label uses network total, not pre-transcode slide size" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.12"/>
+  <testcase name="single image downloading is centered in-progress cancelable" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.095"/>
+  <testcase name="gallery pending size is remaining network bytes" classname="org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest" time="0.091"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

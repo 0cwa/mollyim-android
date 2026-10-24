@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.camera.OrderEnforcerTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:50.937Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="markCompleted_singleEntry_waterfall" classname="org.thoughtcrime.securesms.camera.OrderEnforcerTest" time="0.0"/>
+  <testcase name="markCompleted_singleEntry" classname="org.thoughtcrime.securesms.camera.OrderEnforcerTest" time="0.0"/>
+  <testcase name="markCompleted_multipleEntriesPerStage_waterfall" classname="org.thoughtcrime.securesms.camera.OrderEnforcerTest" time="0.0"/>
+  <testcase name="run_alreadyCompleted" classname="org.thoughtcrime.securesms.camera.OrderEnforcerTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:05:42.913Z" hostname="4f1d1be5db40" time="0.023">
+  <properties/>
+  <testcase name="given an un-migrated ASDF, when I migrate, then I expect unchanged job data" classname="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" time="0.013"/>
+  <testcase name="given an un-migrated GroupCallPeekJob, when I migrate, then I expect updated data" classname="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" time="0.007"/>
+  <testcase name="given an un-migrated job without data, when I migrate, then I expect unchanged job data" classname="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" time="0.0"/>
+  <testcase name="given an un-migrated GroupCallPeekWorkerJob, when I migrate, then I expect updated data" classname="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" time="0.0"/>
+  <testcase name="given an un-migrated job with incorrect data, when I migrate, then I expect unchanged job data" classname="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" time="0.0"/>
+  <testcase name="given an un-migrated job with un-deserializable data, when I migrate, then I expect unchanged job data" classname="org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

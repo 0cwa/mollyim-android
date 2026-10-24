@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:29.461Z" hostname="4f1d1be5db40" time="0.033">
+  <properties/>
+  <testcase name="given US region formatted number with local code, when I originalToTransformed index 7, then I expect index 11" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.032"/>
+  <testcase name="given US region, when I enter 555012, then I expect 555-012" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.0"/>
+  <testcase name="given US region formatted number, when I originalToTransformed index 6, then I expect index 7" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.0"/>
+  <testcase name="given US region, when I enter 5550123, then I expect 555-0123" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.0"/>
+  <testcase name="given US region formatted number, when I originalToTransformed index 0, then I expect index 0" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.0"/>
+  <testcase name="given US region formatted number, when I transformedToOriginal index 7, then I expect index 6" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.0"/>
+  <testcase name="given US region formatted number, when I transformedToOriginal index 0, then I expect index 0" classname="org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

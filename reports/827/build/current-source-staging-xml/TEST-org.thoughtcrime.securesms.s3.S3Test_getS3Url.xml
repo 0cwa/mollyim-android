@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.s3.S3Test_getS3Url" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:43.688Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="invalidRelative" classname="org.thoughtcrime.securesms.s3.S3Test_getS3Url" time="0.001"/>
+  <testcase name="validS3Urls" classname="org.thoughtcrime.securesms.s3.S3Test_getS3Url" time="0.001"/>
+  <testcase name="invalid" classname="org.thoughtcrime.securesms.s3.S3Test_getS3Url" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

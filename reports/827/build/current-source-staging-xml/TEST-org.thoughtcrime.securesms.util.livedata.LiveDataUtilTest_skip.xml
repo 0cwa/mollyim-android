@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:35.772Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="skip_same_value_with_zero_skip" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.001"/>
+  <testcase name="skip_no_value" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.0"/>
+  <testcase name="skip_third_and_fourth_value_with_skip_two" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.0"/>
+  <testcase name="skip_set_one_before_then_skip" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.0"/>
+  <testcase name="skip_no_value_with_skip" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.0"/>
+  <testcase name="skip_set_two_before_then_skip" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.0"/>
+  <testcase name="skip_second_value_with_skip_one" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

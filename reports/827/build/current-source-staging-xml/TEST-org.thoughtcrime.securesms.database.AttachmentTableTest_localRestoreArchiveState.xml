@@ -1,0 +1,1036 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:03:10.032Z" hostname="4f1d1be5db40" time="2.666">
+  <properties/>
+  <testcase name="hasArchiveFinishedLocalBackupMedia_trueForFinishedLocalBackupMedia" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState" time="0.582"/>
+  <testcase name="hasArchiveFinishedLocalBackupMedia_falseWhenFinishedButNotFromLocalBackup" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState" time="0.573"/>
+  <testcase name="hasArchiveFinishedLocalBackupMedia_falseOnceLocalBackupMediaIsNoLongerFinished" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState" time="0.506"/>
+  <testcase name="givenLocallyImportedMediaThatCarriesAnArchiveCdn_whenInserted_thenIExpectArchiveStateFinished" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState" time="0.506"/>
+  <testcase name="givenLocallyImportedMediaThatCarriesNoArchiveCdn_whenInserted_thenIExpectArchiveStateNone" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState" time="0.495"/>
+  <system-out><![CDATA[w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (635c805d-c43f-4308-bd21-55f11cdb53b7, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (1a24d556-0587-444d-9ccf-6d222acb4be8, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[LiveRecipient] [Resolve][MAIN] RecipientId::3 Throwable:null
+w[LiveRecipient] [Refresh][MAIN] RecipientId::3 Throwable:null
+d[AttachmentTable] [insertAttachmentsForMessage] insertParts(1)
+d[AttachmentTable] [insertArchivedAttachment] Inserting attachment for messageId 1.
+i[AttachmentTable] [insertAttachmentsForMessage] Inserted attachment at AttachmentId::1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (d0dbd2e7-2406-4b2d-8f11-d009157c082b, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (66bb5ff2-3625-4d31-bcfc-0aaab9d014cf, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[LiveRecipient] [Resolve][MAIN] RecipientId::3 Throwable:null
+w[LiveRecipient] [Refresh][MAIN] RecipientId::3 Throwable:null
+d[AttachmentTable] [insertAttachmentsForMessage] insertParts(1)
+d[AttachmentTable] [insertArchivedAttachment] Inserting attachment for messageId 1.
+i[AttachmentTable] [insertAttachmentsForMessage] Inserted attachment at AttachmentId::1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (75275ec8-7d5f-47be-87c1-d967506b9290, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (0b149be8-7cdd-4cb2-815e-3aad7f71a14b, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[LiveRecipient] [Resolve][MAIN] RecipientId::3 Throwable:null
+w[LiveRecipient] [Refresh][MAIN] RecipientId::3 Throwable:null
+d[AttachmentTable] [insertAttachmentsForMessage] insertParts(1)
+d[AttachmentTable] [insertArchivedAttachment] Inserting attachment for messageId 1.
+i[AttachmentTable] [insertAttachmentsForMessage] Inserted attachment at AttachmentId::1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (1ffd7348-8639-4062-9759-ffbe1f5ddf2a, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (31ae1314-8208-458b-aabf-1e991ac8eccf, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[LiveRecipient] [Resolve][MAIN] RecipientId::3 Throwable:null
+w[LiveRecipient] [Refresh][MAIN] RecipientId::3 Throwable:null
+d[AttachmentTable] [insertAttachmentsForMessage] insertParts(1)
+d[AttachmentTable] [insertArchivedAttachment] Inserting attachment for messageId 1.
+i[AttachmentTable] [insertAttachmentsForMessage] Inserted attachment at AttachmentId::1
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+w[RemoteConfig] Tried to read android.collapseEvents.2 before initialization. Initializing now.
+i[RemoteConfig] init() {}
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (cf67080d-7859-47a3-a60b-f9f6b14546e4, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::2
+w[LiveRecipient] [Resolve][MAIN] RecipientId::2 Throwable:null
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [getAndPossiblyMerge] Requires a transaction.
+i[RecipientTable] [getAndPossiblyMerge] (fd6f06a2-776c-4894-a84c-add068645c26, null, null) BreadCrumbs: [NothingMatches], Operations: [], RequiredInsert: true, FinalId: RecipientId::3
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+d[RecipientTable] [rotateStorageId] updateCount: 1
+w[LiveRecipient] [Resolve][MAIN] RecipientId::3 Throwable:null
+w[LiveRecipient] [Refresh][MAIN] RecipientId::3 Throwable:null
+d[AttachmentTable] [insertAttachmentsForMessage] insertParts(1)
+d[AttachmentTable] [insertArchivedAttachment] Inserting attachment for messageId 1.
+i[AttachmentTable] [insertAttachmentsForMessage] Inserted attachment at AttachmentId::1
+]]></system-out>
+  <system-err><![CDATA[java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.live(Recipient.kt:932)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.resolved(Recipient.kt:951)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.hasArchiveFinishedLocalBackupMedia_trueForFinishedLocalBackupMedia(AttachmentTableTest_localRestoreArchiveState.kt:71)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:170)
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:154)
+	at org.thoughtcrime.securesms.database.ThreadTable.createThreadForRecipient(ThreadTable.kt:227)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdResultFor(ThreadTable.kt:1471)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1458)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1454)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1450)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.hasArchiveFinishedLocalBackupMedia_trueForFinishedLocalBackupMedia(AttachmentTableTest_localRestoreArchiveState.kt:71)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.live(Recipient.kt:932)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.resolved(Recipient.kt:951)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.hasArchiveFinishedLocalBackupMedia_falseWhenFinishedButNotFromLocalBackup(AttachmentTableTest_localRestoreArchiveState.kt:78)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:170)
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:154)
+	at org.thoughtcrime.securesms.database.ThreadTable.createThreadForRecipient(ThreadTable.kt:227)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdResultFor(ThreadTable.kt:1471)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1458)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1454)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1450)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.hasArchiveFinishedLocalBackupMedia_falseWhenFinishedButNotFromLocalBackup(AttachmentTableTest_localRestoreArchiveState.kt:78)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.live(Recipient.kt:932)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.resolved(Recipient.kt:951)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.hasArchiveFinishedLocalBackupMedia_falseOnceLocalBackupMediaIsNoLongerFinished(AttachmentTableTest_localRestoreArchiveState.kt:85)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:170)
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:154)
+	at org.thoughtcrime.securesms.database.ThreadTable.createThreadForRecipient(ThreadTable.kt:227)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdResultFor(ThreadTable.kt:1471)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1458)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1454)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1450)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.hasArchiveFinishedLocalBackupMedia_falseOnceLocalBackupMediaIsNoLongerFinished(AttachmentTableTest_localRestoreArchiveState.kt:85)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.live(Recipient.kt:932)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.resolved(Recipient.kt:951)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.givenLocallyImportedMediaThatCarriesAnArchiveCdn_whenInserted_thenIExpectArchiveStateFinished(AttachmentTableTest_localRestoreArchiveState.kt:53)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:170)
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:154)
+	at org.thoughtcrime.securesms.database.ThreadTable.createThreadForRecipient(ThreadTable.kt:227)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdResultFor(ThreadTable.kt:1471)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1458)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1454)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1450)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.givenLocallyImportedMediaThatCarriesAnArchiveCdn_whenInserted_thenIExpectArchiveStateFinished(AttachmentTableTest_localRestoreArchiveState.kt:53)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getSelf(LiveRecipientCache.java:215)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.self(Recipient.kt:1149)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId(RecipientTable.kt:4112)
+	at org.thoughtcrime.securesms.database.RecipientTable.rotateStorageId$default(RecipientTable.kt:4111)
+	at org.thoughtcrime.securesms.database.RecipientTable.setProfileName(RecipientTable.kt:2048)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient(RecipientTestRule.kt:185)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule.insertRecipient$default(RecipientTestRule.kt:183)
+	at org.thoughtcrime.securesms.testutil.RecipientTestRule$extras$1.before(RecipientTestRule.kt:82)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:50)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.resolve(LiveRecipient.java:144)
+	at org.thoughtcrime.securesms.recipients.LiveRecipientCache.getLive(LiveRecipientCache.java:89)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.live(Recipient.kt:932)
+	at org.thoughtcrime.securesms.recipients.Recipient$Companion.resolved(Recipient.kt:951)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.givenLocallyImportedMediaThatCarriesNoArchiveCdn_whenInserted_thenIExpectArchiveStateNone(AttachmentTableTest_localRestoreArchiveState.kt:62)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.lang.Throwable
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:170)
+	at org.thoughtcrime.securesms.recipients.LiveRecipient.refresh(LiveRecipient.java:154)
+	at org.thoughtcrime.securesms.database.ThreadTable.createThreadForRecipient(ThreadTable.kt:227)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdResultFor(ThreadTable.kt:1471)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1458)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1454)
+	at org.thoughtcrime.securesms.database.ThreadTable.getOrCreateThreadIdFor(ThreadTable.kt:1450)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.insertArchivedAttachment(AttachmentTableTest_localRestoreArchiveState.kt:95)
+	at org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.givenLocallyImportedMediaThatCarriesNoArchiveCdn_whenInserted_thenIExpectArchiveStateNone(AttachmentTableTest_localRestoreArchiveState.kt:62)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.RunRules.evaluate(RunRules.java:20)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

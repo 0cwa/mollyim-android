@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:55.424Z" hostname="4f1d1be5db40" time="0.264">
+  <properties/>
+  <testcase name="Given onResume not invoked, then I expect zero invocations of onTick" classname="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" time="0.151"/>
+  <testcase name="Given no time has passed after onResume is invoked, then I expect no invocations of onTick" classname="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" time="0.016"/>
+  <testcase name="Given onResume then onPause is invoked, when timeout passes, then I expect no invocation of onTick" classname="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" time="0.035"/>
+  <testcase name="Given onResume is invoked, when half timeout passes, then I expect no invocations of onTick" classname="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" time="0.023"/>
+  <testcase name="Given onResume is invoked, when timeout passes, then I expect one invocation of onTick" classname="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" time="0.016"/>
+  <testcase name="Given onResume is invoked, when timeout passes five times, then I expect five invocations of onTick" classname="org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest" time="0.016"/>
+  <system-out><![CDATA[i[ConversationUpdateTick] No time since last tick. Initialising and posting update in 60000 ms
+i[ConversationUpdateTick] No time since last tick. Initialising and posting update in 60000 ms
+i[ConversationUpdateTick] No time since last tick. Initialising and posting update in 60000 ms
+i[ConversationUpdateTick] No time since last tick. Initialising and posting update in 60000 ms
+i[ConversationUpdateTick] No time since last tick. Initialising and posting update in 60000 ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

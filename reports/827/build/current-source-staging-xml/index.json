@@ -1,0 +1,2026 @@
+{
+  "status": "PASS",
+  "application_source_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "projected_source_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+  "source_run_receipt": "reports/827/build/full-staging-d998-20261024-final-summary.json",
+  "original_xml_directory": "app/build/test-results/testPlayStagingDebugUnitTest",
+  "copied_xml_directory": "reports/827/build/current-source-staging-xml",
+  "copy_byte_equality_verified": true,
+  "suite_count": 251,
+  "totals": {
+    "tests": 2800,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 78
+  },
+  "files": [
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-o-DILQADTN85MGE.thoughtcrime.securesms.components.settings.app.subscription.RecurringInAppPaymentRepositoryTest.xml",
+      "sha256": "1ba4bcd019fbba68997ec24adf76da81633fde06a537e826581a049f84ead99b",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-o-GAB8HKHT400FO.thoughtcrime.securesms.jobmanager.migrations.SenderKeyDistributionSendJobRecipientMigrationTest.xml",
+      "sha256": "b7027d16c99434dbc2bd8b13216cfb5c331c287d923a360c779587ee70b34983",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-or-H4RB5MEE7KJJ6.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherTest.xml",
+      "sha256": "9732b9250c6fa612718ab59fe3b7acf33c787417ae5e26be077b8642f6ae4f52",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org-2NG5TC84OMV2C.securesms.components.settings.app.subscription.donate.card.CreditCardTextWatcherBackspaceTest.xml",
+      "sha256": "f2458070f0154e5571ac7741c4a79d98ea179c8f0e1160dab3c2e9e45ecec82d",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org-FIE3TRS432AKO.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherBackspaceTest.xml",
+      "sha256": "188688f8b9be6e6d0441de1a789eed61fb4358916e5c0c0accb3b96adc607fd3",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.-G8MMB56QTDAC6.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationValidatorTest.xml",
+      "sha256": "7e3303afd77da0d190a2aadcc59f37c2fc6f4a72ae8f41d613ec472ca771e230",
+      "tests": 72,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.th-J35DP43NLBTSK.components.settings.app.subscription.currency.SetCurrencyViewModel__CurrencyComparatorTest.xml",
+      "sha256": "59adf4b085b361f51d566eb9e94d4511247c9efc714181f38814386fcb622192",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.tho-501LV0I8J34F4.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest.xml",
+      "sha256": "29311bb21dc3315eca174abe7a5fde33dc424591c2e77d811226b87ffe26c3ad",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 5
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.tho-9LA2RUR60VA9G.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest.xml",
+      "sha256": "5796ee6119e985cc54b50bfce781c6a5ce04cc3a4d43d451afcd85d584c78a12",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.tho-DC8BOG11U94BA.securesms.components.settings.app.subscription.donate.paypal.PayPalConfirmationResultTest.xml",
+      "sha256": "7c2ace05d0a5c0ddfdcc4deaf0dcd525066e0bcf633a475aea49d4e6738e51e7",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.tho-QJRL0J15LJO3E.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload.xml",
+      "sha256": "c233fc3608c732746627ffa08295c66bebadced9b4d3d91066113a59f793bfdd",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.tho-RUQR08BRTGCQ4.securesms.components.settings.app.subscription.SubscriptionsConfigurationExtensionsKtTest.xml",
+      "sha256": "8866ed5a3b69a940ec7625a09efb54e6b50406a0d6b8aea7f0cb5e886578dff8",
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thou-AL7VUGI7JSUN8.securesms.database.model.MessageRecordTest_createNewContextWithAppendedDeleteJoinRequest.xml",
+      "sha256": "18f7639270e66c6748b0dcc4b5b20d7c6eb76501663909336869088973863a2a",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thou-KNS0E9QMJ466K.securesms.components.settings.app.subscription.donate.card.CreditCardNumberValidatorTest.xml",
+      "sha256": "81e17cb9c398c9a60cad8afbdf99d14e1cd2868decb5281c7ae6216cdaa1cc6d",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thou-V4AIH2JTNUJ98.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest.xml",
+      "sha256": "247289f1b4f06130c8231fc1e37123e1ee667745b68f69dd08c0d0fd0df7714d",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoug-D8MC74S4RP2H0.securesms.components.settings.conversation.permissions.PermissionsSettingsViewModelTest.xml",
+      "sha256": "3a45f3dd25aafba598fa23161cd366c173d51507b9e81607287e8b105f3ef3d5",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.though-6OENBCPF9CGNG.securesms.components.settings.app.subscription.permits.NetworkDonationPermitIssuerTest.xml",
+      "sha256": "7311fef9d2b08e39efb2002ea9ce9e94a6776596b21960f2b24e9399c7211b7d",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.though-TU027BJLERPUG.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest.xml",
+      "sha256": "0b88e306707d159a847e495cc01288e40df71bb06da94af86058db3aabc2a1f1",
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtc-EKQSFL84QNA1C.securesms.components.settings.app.subscription.donate.card.CreditCardTextWatcherTest.xml",
+      "sha256": "49beed2cd86a3254d327e3e9062a8a81be4a4c5be39716ddc13be200703d7bf2",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtc-KVGQKKTDG0M8K.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest.xml",
+      "sha256": "0a68e2cf888e16c303ef957d8302ec9ec46aa551c873aecbccf8898f82bd2fd1",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.attachments.AttachmentSaverTest.xml",
+      "sha256": "89c24686e8d417f3df03051c15d44692bd54fc8317e075354602a0023e5f86c6",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans.xml",
+      "sha256": "721a9916c2479c7e49663a6ec9a6dd72a8673f711abf908d349678c28e353840",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.ArchiveUploadProgressTest.xml",
+      "sha256": "796583cbe4c0189698e926147eb8a4cbafaa6c76fda8fea2a5ecc4a204f2f472",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.FullBackupExporterTest.xml",
+      "sha256": "92681e1b602b409e2651465971a6a331714e4bc68cccaef0573fcfeb5f9b40a8",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.FullBackupImporterTest.xml",
+      "sha256": "13d740ce15a05a8bf0bf27adaf0509de51f36a2036b30b61553515542d9b2935",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.v2.ArchiveDatabaseExecutorTest.xml",
+      "sha256": "544149ae25503d31dc72e9b39596cf8beb1d477c55911972c3222393cae97bc6",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.v2.ArchivedMediaObjectIteratorTest.xml",
+      "sha256": "9a095c8a039e034c89d7f51fe357932788cf57589990a2b9858b3c894d1d69cb",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest.xml",
+      "sha256": "be60af3af08a7837d2f78942d6a0a7fd4bcfb87a75da82b2eb4fcbe0368418de",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.v2.local.LocalArchiverTest.xml",
+      "sha256": "73273074f1d12263a1613df9c148275a28680e2bcb8e2ed978e589254b9c7b4f",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest.xml",
+      "sha256": "087d11a78b1cd6ac727252111ded5925dc6a98e97cb1f4505ccaf119935d119f",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest.xml",
+      "sha256": "d14894680e22eb61cfc4e78d100e61380477f912f586397c05fa16246b5e8a09",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.calls.log.CallEventCacheTest.xml",
+      "sha256": "e01636356832ff241d168af455874c47620a6f243a7d45cd1b5d935e740e5234",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.camera.OrderEnforcerTest.xml",
+      "sha256": "0e2a30230b704ec88b068a031a9be56d2ac6f4d2dd0dd53550557ce1bba5430d",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.ComposeTextTest.xml",
+      "sha256": "cf2208f7645d25df313d4a4d6364a9e55d461a4d253c1a75902910f62636cd43",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.emoji.EmojiUtilTest_isEmoji.xml",
+      "sha256": "2ae3760a3646db24930832716503d5ff564a17c449de9396651b88fcc6d714f9",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.account.AccountSettingsScreenTest.xml",
+      "sha256": "b361b12ba00cf31dd33032999c00c74332e5574ced7a408e810978ff326a58de",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 19
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.account.export.ExportAccountDataTest.xml",
+      "sha256": "8009cdabf080daa9c273e80d5166b0db9c033aaf26063c712af5725d2b4c2e00",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.subscription.InAppPaymentsRepositoryTest.xml",
+      "sha256": "d9a805565e784fd85a95dffa397182f7d92d2d9e59182f833e87d69f492089dc",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest.xml",
+      "sha256": "b0d6fcf90410224fca962a746c7dc5e4aaec5d33a2bece5b390a973d57836913",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter.xml",
+      "sha256": "77ff88962bbb920ac988f94ede0e0fb7b01c61211d59f02de12c13f83fae27c7",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardTypeTest.xml",
+      "sha256": "962ff80d039a59193e323cb2840d9359e13a515055bab550f4be97c1cf7a6b5e",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.app.subscription.permits.DonationPermitsTest.xml",
+      "sha256": "c500bd7056852e87c00595b7ca11f1e0d89978281c0d5f67f18f85d34138a89d",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.conversation.GroupCapacityResultTest.xml",
+      "sha256": "26cda8b036d209ce4d3865e51419763b9059f45cb9e8fa6fe70948e47cad9f26",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.settings.conversation.GroupSettingsStateTest.xml",
+      "sha256": "9b73ff185ae647929e02c36f07e05ff527099110df199ff1f3538ec14a43a732",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest.xml",
+      "sha256": "09a9e7d83f06947d9315612b93826588fb65484151c1da8b98cdc65a36d93202",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.transfercontrols.TransferControlsTest.xml",
+      "sha256": "eac32d17969a2a5317cc56e53f7474864bbe22f8226be0f22dd2902e9d453905",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.voice.VoiceNotePlayerCallbackTest.xml",
+      "sha256": "7708e46d8c17df5d0157716ceff72140cddc5142a269bd59f6455768e1be7659",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest.xml",
+      "sha256": "b1764fb532b2b0b9154b17b546849c08bcba25500135a621764a504dc83d52d9",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.components.webrtc.WebRtcAudioPicker31Test.xml",
+      "sha256": "40b8885fe6c77de7da4408342809e9f5e0e4e8e2c3d4e053c3ff0da3f41f0175",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.SelectedContactSetTest.xml",
+      "sha256": "b955c5ef7f47ba0909415d9616d099d9642bf087c1da8cf8afcdff49618609c3",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest.xml",
+      "sha256": "a11380090de07f2d1a9e787b87b47c8b48d97746a298619a1073424a8ddcf4bd",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.paged.ContactSearchPagedDataSourceTest_letterHeaders.xml",
+      "sha256": "2d96e1148f20acfe2590fe16d8d98120204d331cf34c51dfaee6597426f66879",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest.xml",
+      "sha256": "ac91c3627215f0d92067fe9fe9ef1f2c86338f94cb4e866af7e0edb4d92010ed",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.paged.WrapAroundCursorTest.xml",
+      "sha256": "3d504aca831e8f039c797fa052d8cef03b6ed7d1533f25b51479887ccc7ec2e9",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest.xml",
+      "sha256": "6fc104b23c3ccb4897f0a974db5d0a730afe54fed17a797cb3177ffffb3a44a1",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.sync.ArgentinaFuzzyMatcherTest.xml",
+      "sha256": "29392972f81bf7617b18e9a18d899a0dca1831113523a8a8bb85a7f4689ddc8f",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.sync.BeninFuzzyMatcherTest.xml",
+      "sha256": "9455fb5cfd5dc37afdb4035350238c99df088c991ab9c64ed2d09dee30a00556",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.sync.FuzzyPhoneNumberHelperTest.xml",
+      "sha256": "960e9b6cad8e8c9cf3db136d11594f53aed46830d759e4b0e749373839b4628a",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contacts.sync.MexicoFuzzyMatcherTest.xml",
+      "sha256": "e7d26ad01bf9622bb306cca05086ac14f685a9370730aa87bf214dc321f503a1",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.contactshare.ContactUtilTest_getPrettyPhoneNumber.xml",
+      "sha256": "cf72e36683f7a85f1c3d42d4b035576f2b72f5ffbcff258c4737408343595dea",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversation.ConversationDataTest.xml",
+      "sha256": "ec30246827105f84d1014b04d0680d14ce7a13eda629beae8f89b78ab65e0a2e",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversation.ConversationUpdateTickTest.xml",
+      "sha256": "63579813ce9536f56c283a984d30e982306afbb314d98c2737e7d67a5eeabadd",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversation.MessageStylerTest.xml",
+      "sha256": "e9100924b7ac52b8bf83f2f058de75c67ce16f624a0e4dad5edd9244410723ac",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversation.colors.AvatarColorHashTest.xml",
+      "sha256": "9333e896a5204fb75cd8f7dca50ef929f20ae4507ecd24d0d910a1ff71585bb1",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversation.plaintext.PlaintextExportRepositoryTest.xml",
+      "sha256": "4f3f351b2e9a5bd9b38fba7b0fab707e04650228aaa4b0667fc2e851bda843b5",
+      "tests": 41,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversation.v2.JumpToDateValidatorTest.xml",
+      "sha256": "61056aa29427ea6f052e1f94481f89f27ccdb7f103f4e9d318e6d8ec4b5270e6",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest.xml",
+      "sha256": "b4c02b549ef4547d62e4850a2eb47f254cbb1bdc3205b4a024c90eea97f142a8",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversationlist.chatfilter.ProgressVelocityTrackerTest.xml",
+      "sha256": "84c0f69b5e3f0c85ad7d711e40c08decb0253643b24cdc4e7395c286e56c2762",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.conversationlist.chatfilter.RingBufferTest.xml",
+      "sha256": "2da1ae51c6dc19f6c1c422a2f75217f051f71598694214e166266646f33f18c2",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.crash.CrashConfigTest.xml",
+      "sha256": "b1d845005a8bc9dfb399ea358983e8c15ab3942ed65910614b5cdae4ed1aa98a",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.crypto.storage.SignalBaseIdentityKeyStoreTest.xml",
+      "sha256": "50d12ca66ecc720aab2ff0306851ac61fbe7107cf01ee8f40d0b68b1b46aab10",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.AttachmentDatabaseTransformPropertiesTest.xml",
+      "sha256": "36793bd31a69da2a87ed0daeca63bca8cc1a08791248a6ca657e6512c9682833",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.AttachmentTableTest_deleteAttachmentsForMessage.xml",
+      "sha256": "bcc5f1a61e340463b356d4e89227d5efd845f211f584379ee37ddeea8953b884",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.AttachmentTableTest_localRestoreArchiveState.xml",
+      "sha256": "5f21a36c7e121b1931f86b5c0fed6788fce0997fca2a918d0487db735c6a8742",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest.xml",
+      "sha256": "f1efd8f2b666321458c8c6bafcc23034d5afe6d14983d0e37418a67ea1804fab",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.BodyRangeUtilTest.xml",
+      "sha256": "db313591332a2052b36ad0a92b1b2538ecbebb2f14f59a455a64b223de146893",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.ChatFolderTablesTest.xml",
+      "sha256": "b189a33572c76615c3a7304a135986aca71a8a1e4bd6ebbc55e1c8895337c546",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.CollapsingMessagesTests.xml",
+      "sha256": "bf52fe90794f0ac7c02d079c91d62ead82f08dfcd9dc4665153281df1fb86888",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.ContactSearchSelectionBuilderTest.xml",
+      "sha256": "76802618e9221e04725d072fb8f1d188899737d126805b87c62949778d83d869",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.CursorRecyclerViewAdapterTest.xml",
+      "sha256": "33e583419f7cdbfbc2893fcb4da930e37ecc93752bf573208f0d55304b02682a",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.DatabaseConsistencyTest.xml",
+      "sha256": "67fecec10b4d3b360ee9933ae809ff4f96d234dba1765aa61bb7a9b0ccbf341a",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.DistributionListTablesTest.xml",
+      "sha256": "4ac3c22c998758a70d2891c690186b332b20283e077e4392ebbc00a9209e56f1",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.EditMessageRevisionTest.xml",
+      "sha256": "2027875b716a79aef0a8489121edf2034afb1816f3e26a8da90b3a00571b3009",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.GroupTableTest.xml",
+      "sha256": "7edbefe4d1f917bfcb88615354875876ed801d2b0679cb3d7f8e4184ba5f043f",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.InAppPaymentSubscriberTableTest.xml",
+      "sha256": "425e27709537ad9b1fe7f9bd588e8e99a8a575e9790fd0ac91c88d6f27f3d3d7",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.InAppPaymentTableTest.xml",
+      "sha256": "ccd33ad61ce4e399ed10a275d774a651bf1b798bfcf454f6f63d9e8bd54b731a",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.IssueTableTest.xml",
+      "sha256": "aa51fe1ef410ae08e5b7ccbf9add66865357ed60f6a5517760db3743a8b624d8",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.KyberPreKeyTableTest.xml",
+      "sha256": "5f1510ed5974311a0eb0173e8c387059e3ba8d4c0a9ba7ebb1f52a132adf109b",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MegaphoneDatabaseTest.xml",
+      "sha256": "d64da34bb1944717df655467c16433f19d0c2015de041783fd15800af8a68d69",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MentionUtilTest.xml",
+      "sha256": "4cf7e8909854b6547b2c2211d6a243e6f7cb8408daf6b1fa2998ffb056c8dc85",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MentionUtilTest_updateBodyAndMentionsWithPlaceholders.xml",
+      "sha256": "14945f2097e639bada007f74cef6f515fdfc885ed79df7ae4f72676ec50977fc",
+      "tests": 28,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MessageTableTest_gifts.xml",
+      "sha256": "9e34a9a201f9e3113c84360b85fe9547735a2c33debb88b2e7d5c2927b1979ef",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MessageTableTest_oldestUnread.xml",
+      "sha256": "7dbc8627d1ca5b1d49a67e4624c411778d88b10be53980d7e0bfddc50699062b",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MessageTableTest_stories.xml",
+      "sha256": "bedd3e202cbbd71ec11566bf7f434a3b533a5cef85280109cb7f46b20d24dba8",
+      "tests": 24,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MmsDatabaseTest.xml",
+      "sha256": "b97a48524d5c70d70e9bc032200ca353f0c30a4737e60891972204f70724ee67",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.MmsSmsDatabaseTest.xml",
+      "sha256": "59009d31f4e6b028c08924717e644536469c2679cda9dc1ead3d094de8c8ff9b",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.NameCollisionTablesTest.xml",
+      "sha256": "375499ba7b44b8edc2cb6b01862e22556f0910eb82f08128cf44a113e174a4d7",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.NotificationProfileTablesTest.xml",
+      "sha256": "6e5d9effdd6eba979d64ec39d7b6aec9af6edde1e628b0df015950d2f05d8cd1",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.OneTimePreKeyTableTest.xml",
+      "sha256": "c84448308b748c5a95a79fad42528754c12fa121a2594e6692325186dc70a9d3",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.PaymentMetaDataUtilTest.xml",
+      "sha256": "6dab33bc2dd989a37e71140a7ff4f6f81557e7029d6e4141dffb1bb5b1008883",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.PollTablesTest.xml",
+      "sha256": "995e735913fd176654b7457e1b1f40bfcae33864b28ebef8e6e862ec4632d258",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.RecipientTableTest.xml",
+      "sha256": "482bd06998c9e1d46de39a0e3097496a42f7944253517a33580406dbc1f074c8",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.RecipientTableTest_letterHeaders.xml",
+      "sha256": "70a02c7c3207ac161b243d7bb38a467278b8e4a604889dd1dd4755fe03023071",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.SmsDatabaseTest.xml",
+      "sha256": "1d4dc4208a444408f9e9d6e0703f3b9fdf620fa30276301603eb8785ad0569a0",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.SmsDatabaseTest_collapseJoinRequestEventsIfPossible.xml",
+      "sha256": "e3a2159b5676e52bbf6d8c395853e44cb5f6c0790d187669fbea0ad7b6a02fbe",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.SqliteCapabilityTest.xml",
+      "sha256": "e32171ab0391325c2f8a7e973e28ba8e99bc39d6955241321e4cf9b3e60da0d2",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.StorySendTableTest.xml",
+      "sha256": "7aa758265ef8841abd964d6015072b38113f101351f88b17d37cf9e0581ded42",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.ThreadTableTest_active.xml",
+      "sha256": "8505936b5afebaaed810e2daff00e6f2c834069729a4b35b7b856a68ecd9e105",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.ThreadTableTest_pinned.xml",
+      "sha256": "ce137c04ae2a5c5c79761eb4f8fba6a7cb4cdfffb8c539d9b017266e2bf4b58d",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.ThreadTableTest_recents.xml",
+      "sha256": "b9584e2bf1e4037ea9cc482cd00803ce68d9ade24ea25b81569092bce9117966",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.helpers.migration.MyStoryMigrationTest.xml",
+      "sha256": "23a197b218a2f95c55e5f52e37f49232f325374b8972cd4d706d0e0d3c7d1713",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.helpers.migration.V287_FixInvalidArchiveStateTest.xml",
+      "sha256": "900175c7660153c11b67158aa4a4b211a598e008cb01961a10c8de5ae47aa139",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.helpers.migration.V288_AddQuoteTargetContentTypeColumnTest.xml",
+      "sha256": "6311f6f4bf705331e972ccfb63e4db408e435f84c05d33334e9df1cab7602586",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.helpers.migration.V288_CopyStickerDataHashStartToEndTest.xml",
+      "sha256": "c9f84707286b2ac9bc8605f82dd2154f9172954f04d6bf5f6f46b30f90ff57a3",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.helpers.migration.V298_DoNotBackupReleaseNotesTest.xml",
+      "sha256": "c45d45ee4ba2cbd08f586c445cadd01f2cc0ac8ccd1fb715036441f55f36a822",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.model.GroupsV2UpdateMessageProducerTest.xml",
+      "sha256": "ab6bb06b07e0e45ed97bc7f3d737ec89dcd5ada6f9e30893f68f8a272c66d56e",
+      "tests": 134,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.database.model.UpdateDescriptionTest.xml",
+      "sha256": "7d1d99eb3906b629e65e540921d2b3eed6943a40bec4fa0965c877e7fe3b26cd",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.emoji.EmojiJsonParserTest.xml",
+      "sha256": "57ef2736d96eeec3b60e6830917082ee3a29e65579bce4e419cfadb5e4893670",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.emoji.EmojiSourceTest.xml",
+      "sha256": "b505980060f88f8464a96cfefc599ac5d585e00624b5195d06ef156a6536333a",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.fonts.TextToScriptTest.xml",
+      "sha256": "b5d5d8f6c7cfce1edfdbbef34dba0b59e5197f997363fd2349b93a3d08ddd2cd",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.giph.mp4.GiphyMp4PlaybackControllerRangeComparatorTest.xml",
+      "sha256": "626097896012852fbc9808b025edd4b57f2c35e1599b729eb55c658940fc5d7a",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.giph.mp4.GiphyMp4PlaybackPolicyEnforcerTest.xml",
+      "sha256": "5ccb32ac2a106600fbfe2c76a9d6f9e411993568327464066710e00d94b06985",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.GroupIdTest.xml",
+      "sha256": "79a5af112121c9729bcca797239d30aa3ac7145d52e86c2c50e985f54e495def",
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.GroupId_v1_v2_migration_derivation_Test.xml",
+      "sha256": "7effdd1c772f034f26bb839ffea6939422fe8f15400a57c990b339162e347308",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit.xml",
+      "sha256": "60be2bcb4b93d2920f93e036cf4ba392a1ff41bc72cb2d4821a7b1b6c747644f",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.memberlabel.MemberLabelEmojiValidationTest.xml",
+      "sha256": "f9e197ca0c79abd4f334cba94d71f30ede97679b1006aa205f01e147e3278dce",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest.xml",
+      "sha256": "6673c0bbee60efbe3242892051a74da8a7368d77cfae2bdfc87a8038f2144abe",
+      "tests": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest.xml",
+      "sha256": "3984a09e132bb9dbd7c219c50000b1cbc9552aad4f896c1f0c21a8deb6d0ca88",
+      "tests": 37,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrlTest.xml",
+      "sha256": "9493c3fce3a814f1cd91998ad172d43d89d83f1934aff7bf386c976e27febf4c",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test.xml",
+      "sha256": "ecfc7e49c835cf081b8798eb53dc72f0c1b1295b3a72912a3405ef0c2c6c6bd1",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.v2.ProfileKeySetTest.xml",
+      "sha256": "41ae836bc0ebfc75f92295f30f36df352c59a7b4deb2c21951ba6aaaed9f1270",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.v2.processing.GroupStatePatcherTest.xml",
+      "sha256": "ef4625e59c6364ce9ad873d733ba4594dac5e48be583b36d1d7e04732eadebf2",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.v2.processing.GroupsV2StateProcessorTest.xml",
+      "sha256": "91c0f25f13e080c235ff51221bf3a0b0142c53fc7335602f97430d3c041fc0de",
+      "tests": 38,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.groups.v2.processing.StateChainTest.xml",
+      "sha256": "2d4103d841ed874bc9563fc2ec107fff3a5bbada81fa04c9304c86a43b87eadc",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobmanager.JobControllerTest.xml",
+      "sha256": "0d664a4c59e564c8fb131bc153620329e89d046faf374a200d944fef4f2be892",
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 25
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobmanager.JobMigratorTest.xml",
+      "sha256": "04d81590175fd15b68243743ba8807b6cf6765f2ad6e8c322a68d8b7bd0aa8cd",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobmanager.impl.JsonJobDataTest.xml",
+      "sha256": "5936832f8619aa49615ded630b378edaed07bf0e1b713a49a918e8e3e49ffe9a",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobmanager.migrations.GroupCallPeekJobDataMigrationTest.xml",
+      "sha256": "8fca59f01393b2e6930d2e81742669580789a38665f97ee84aa1c2201d0c3e38",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobmanager.migrations.SendReadReceiptsJobMigrationTest.xml",
+      "sha256": "f54f44e81d788c29f591d2f124fa438bb9770661a7e275730603d5950adb3afb",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.AttachmentBackfillTest.xml",
+      "sha256": "6edbc12cd9f140b6cb6241f8493d859e78ea838c41c8a8a1ddd8b23340dc388b",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.FastJobStorageTest.xml",
+      "sha256": "a650289aaf7713297f06809d6b1c1177bd7abd61afe681dde99c606b4c979be9",
+      "tests": 82,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJobTest.xml",
+      "sha256": "21fa5942e82a5ddbe340a70e8b3ac6e6df5eb1952b3151669cc2ea2394f6f9bf",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.InAppPaymentOneTimeContextJobTest.xml",
+      "sha256": "ebe07f34660d0837616669020cfb7f044bfa04c01889d96d2c832ed76a33a389",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.InAppPaymentRecurringContextJobTest.xml",
+      "sha256": "b8bda6d022241c6b4ae37e591cacb2de4b4cda6b8406fc178e60c0b224dc4d6d",
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.InAppPaymentRedemptionJobTest.xml",
+      "sha256": "2156ab0efcce6bfc9668712e14d973320c14797e6d2907b8bf58334022ae1100",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.IndividualSendJobV2Test.xml",
+      "sha256": "322c2e8e4b5dcf438cf4f72127a0e3c2954f4e5d949d14a136924af8056217ff",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.JobManagerFactoriesTest.xml",
+      "sha256": "3d4cb82cb412688f970fd38735d820ff18ea94c49bcd453d59931abb4438b640",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.jobs.PreKeysSyncJobTest.xml",
+      "sha256": "6ae1a6c33f7018fea1e1134933546b3fef6d2abf0f6cb5c948ca3947c62600c6",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.keyvalue.BackupDownloadNotifierUtilTest.xml",
+      "sha256": "545df35c19127aade3b3f58a20227697f4dffcc7ff5acb4763858d9abf1b46a5",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.keyvalue.KeyValueDataSetTest.xml",
+      "sha256": "5c99dcbf2f52df795dad98e0380936ca50a7182ee17fefa082b27f3091927810",
+      "tests": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.keyvalue.PaymentsValuesTest.xml",
+      "sha256": "7c12cb90b1695bd4b41ac67bbc8d7efa484c41e523e240f89149604a3583366c",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest.xml",
+      "sha256": "9230769d69947733d238f1721df1d88196bd5bda4b3f8f87d081bff532b10958",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.l10n.LanguageResourcesTest.xml",
+      "sha256": "7f8fe2cefe02f8746bbb0e9cd4e2ece35bfc00c4939d76c67117c98f99744a69",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.l10n.SupportArticleTest.xml",
+      "sha256": "53e276beea47cf67b0a927fbde398efc2ade98daa4bce3ab492b4e79be9eb224",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls.xml",
+      "sha256": "6fe8842d79052fa8aa9ce22765b88a9bda5d98009661967f02439132ca0d37b9",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields.xml",
+      "sha256": "a6527aacef9b66a7ce18f94fd86af7413a1b422960d77c77cf46925747c3d0a7",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.mediasend.MediaRepositoryTest.xml",
+      "sha256": "4189892878345a07c6b35bc4d5ab075b3922c9258270d3bd552d3b221250fd11",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.megaphone.BackupUpsellScheduleTest.xml",
+      "sha256": "c9a6feb390147914bb91ea12b548f9c750ea1dd235739f3161b7481635b44594",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest.xml",
+      "sha256": "d4238f704689f2144ca55c0c9b134d188423d09d689f918c19b43a02378e4862",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.messages.NetworkConnectionListenerTest.xml",
+      "sha256": "b722bf8f7d20eb1f8c3ea6db1cd0c7e3f090bc9006896a6c7195d85c457b872b",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.migrations.LocalArchiveReconciliationMigrationJobTest.xml",
+      "sha256": "7c32fab800afc9e2263099b87dab86c6f0da15c7a5ab596341c9e587354a480b",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.net.HttpErrorTrackerTest.xml",
+      "sha256": "e4e1a6b0a82ab9286149a7c3086a9a6a0c3b3b40291ebb66052d8d4fe2aa962c",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest.xml",
+      "sha256": "232b9afc0cf2bbb41ea5cda4ffd2e96a413e8d69d8fbcd5034cba112556bb447",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.notifications.MarkReadReceiverTest.xml",
+      "sha256": "078bb5e948b8d246ac1af081c1905206eee9d19d88496e8b809710078eebe247",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest.xml",
+      "sha256": "7bbab4e5ac0fa36f7e7947074023e736298e3e0dc533ad894338ae9b3f5d909c",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.notifications.profiles.NotificationProfilesTest.xml",
+      "sha256": "6318e1d77a63e51e0690a758b55cd966de2a8fa51f412bd510f3e83c942b461a",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test.xml",
+      "sha256": "438823eeb2edf032188e47ddb4e8caa616a2b2cc58f9c57f69257ce6e831784a",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.GeographicalRestrictionsTest.xml",
+      "sha256": "e794804883582129213b05cc1ee2344747870cff5c6cc880241ed49efda92c0e",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.MobileCoinPublicAddressProfileUtilTest.xml",
+      "sha256": "0ebbaebef28fb70cc4341544b89c2fc08e2960c061d981f855c0d0f4c5255a14",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.MoneyViewTest.xml",
+      "sha256": "5f2e81dc9c295001e521b4b86e0fb9a09ca865fac31b2642bfbdb826ae6658f3",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.currency.CurrencyUtilTest_getCurrencyByE164.xml",
+      "sha256": "fa4b85596237d7de55e7f505d2d3c4b9f274e427d227cfab8bcf2a9a183ca0be",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange.xml",
+      "sha256": "53e028ce57f0d77b97821d896ef723ba0f80a98a749ee09d173826c17bcaf37d",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.history.BlockTransactionReconstructionTests.xml",
+      "sha256": "f04e4fe7c3a12c3889040cd6e70494af99e27462d504edb9d12438a487dcc513",
+      "tests": 95,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.reconciliation.LedgerReconcileTest.xml",
+      "sha256": "a0bb776d681839dc61672eddcb1494c188e9f1273270c400150b78b677635bac",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.payments.reconciliation.ZipListTest.xml",
+      "sha256": "6bdb15ac3c63bb470b4a2fc96820d3c327e24348d7bbf53794d00adae3644873",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.phonenumbers.PhoneNumberVisualTransformationTest.xml",
+      "sha256": "0f8181662e02b15b70451c5acb27bd68048f01d7857b2c6912209e91795282a8",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.profiles.ProfileNameTest.xml",
+      "sha256": "1bd1e3ebd9fc019949e79b9daf23168c8d8cd638beb3b539d44fb5f24145744a",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.profiles.manage.UsernameEditStateMachineTest.xml",
+      "sha256": "428c15f7da552bb433644d79545dcd605c7b5963f0397e174306e36fde1b1e1e",
+      "tests": 34,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.reactions.ReactionsViewModelTest.xml",
+      "sha256": "55273e07b45d959ea8a62af8351a9a64e4817c116a89b2a7f9a749344aaeb8fb",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.recipients.RecipientExporterTest.xml",
+      "sha256": "196c6fdf5cc260fbe76196974845dfe78d16b274a44515fb6def5b9e9a44b6d4",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.recipients.RecipientIdCacheTest.xml",
+      "sha256": "4656267d7cec1d6ca6bb07fb81723d3fe22975593a4b1948d793aec6fb379768",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.recipients.RecipientIdSerializationTest.xml",
+      "sha256": "ef8e20cf5220489f74166746faea124e9bcf59be14934b45c4881d3ff4ebe3e3",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.recipients.RecipientUtilTest.xml",
+      "sha256": "ee2904c8d833231aed9920a5cb66c819e83ca4f0cc89f687aea184e5dfbed47a",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 4
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.recipients.Recipient_getChatColorsTest.xml",
+      "sha256": "5d7967d6c7f7c895647bd46707e493fc346ece9d4825dbce56f6b5e3ef4f0718",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest.xml",
+      "sha256": "aa3c8606394a61c5d5c802b7c1801ed1096ef910dced9646221d5281315f2c5f",
+      "tests": 13,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.fcm.PushChallengeRequestTest.xml",
+      "sha256": "1728c88d91063692185898ec1695c73a5657ff4d93ac12aa0d510a97acfb5b8e",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.fragments.WelcomePermissionsTest.xml",
+      "sha256": "0dca2da449a5ecb7106d2dcfb071debae3e0098a1e62df02171b9f24c9a95056",
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 22
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest.xml",
+      "sha256": "4c2c336262aa7bc189084cf73cea6bc1ddc979d26ad1de601a9872f2f9b910f0",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest.xml",
+      "sha256": "8f0aa9dc48c3247293e62751d3dc019a33d25282acd6195c4e36acea1183172a",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.util.RegistrationUtilTest.xml",
+      "sha256": "c94be483334c102495a5b5d0d6a182925ecafe83ee9d712e98308447e98dd0c4",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.v2.PinHashKbsDataTest.xml",
+      "sha256": "b7bc9b45966d39298cebd45458798a9b26e875622bda58bedc80fc4456af2cbf",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.v2.PinHashUtil_normalize_Test.xml",
+      "sha256": "a0ebcae0a3a3af08cd76d473ec71983fad497ac81f5a80e733dad018c69ed4e3",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.registration.v2.PinValidityChecker_validity_Test.xml",
+      "sha256": "90daa124e9d7d76fa5732f743966455dde3ab741c5468a73d702fe6b0d34da5b",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.s3.S3Test_getS3Url.xml",
+      "sha256": "a8886ecb4deb7e3b9535132944e7c6421de1b355aa7340d0ea55d98ee4888185",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.search.SearchRepositoryTest.xml",
+      "sha256": "752ca3f22ce27d29d866ce8b7e5404539f07ed91e54de01ba200e07c2589b457",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.service.MessageBackupListenerTest.xml",
+      "sha256": "a1d3dad59387aded3e01b6cb5304de2f14b0037acd0777aeb3a67439b464aa15",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.service.VerificationCodeParserTest.xml",
+      "sha256": "e0510530177cd4eb9426b51759ee56659b9a4d003ff1c07004b8fe8e09e249f0",
+      "tests": 57,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest.xml",
+      "sha256": "c8d59fdac094d9d1c508954ab0cc3a048ab89e9decbafea5ada4a3757df426ce",
+      "tests": 15,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.service.webrtc.collections.ParticipantCollectionTest.xml",
+      "sha256": "010269e7fa957716f23f7682807c40943c7eae9e42431b07694facfda329c1ec",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.sharing.DistributionListMultiShareTimestampProviderTest.xml",
+      "sha256": "db1db277b6f8e4c785571d889c07d0e507ed281ee5dfb0b69fd721b9da7211c2",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.sms.GroupV2UpdateMessageUtilTest.xml",
+      "sha256": "3baa58e02dacaa3b4ade170a9b9621b3fbad7599e0d2b121bfd87ce985aaba3a",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.sms.UploadDependencyGraphTest.xml",
+      "sha256": "455dea6e6678e9eb9a48821179ef51ca649f948f78be13f3b8bbfb4c0f6ef6fa",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.CallLinkRecordProcessorTest.xml",
+      "sha256": "5e9f1839e508394a879379bd5f33c6b618b3059ef102fca0080bb2f597d74f75",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.ChatFolderRecordProcessorTest.xml",
+      "sha256": "8e2063b87f1291ac400765ec622dc3f14650193ace65e47a8c574dac888edbdb",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.ContactRecordProcessorTest.xml",
+      "sha256": "79a7f63fa2e4ab7b752a7eea736321c517ae4add37fd942ba23fe4b229ff014b",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest.xml",
+      "sha256": "f94ba386c00adce486dcf9b0a940b84247bb65af3c448d887a51b5d10a6b2c62",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.NotificationProfileRecordProcessorTest.xml",
+      "sha256": "f673ca1f4033a45a1bf471b7a357180a46e61eed6ce29b4d53f1e85be8dae3de",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.StorageRecordTest.xml",
+      "sha256": "e3d3a11d6c1e191d45f0dd4c3381cc833e023c01018efd89e4583871497ac0dc",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.StorageSyncHelperTest.xml",
+      "sha256": "b9ed82f848170382ac591e4cfbeacfac4951896b538f48ccdb5562266b0f1e4b",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.storage.StoryDistributionListRecordProcessorTest.xml",
+      "sha256": "8b3abb7cfdff4d3c155466c8d9a79c91ddc4dc4b471267390732c16341e69c7d",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.stories.StoriesTest.xml",
+      "sha256": "a265a268180fc512bbe7b0abf88be2bc02c75c4bf20e28afb678e994aefa370d",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.stories.StoryFirstTimeNavigationViewTest.xml",
+      "sha256": "d354748af600a2a6dc7a73bf8db79a504264e8f4f5974618a0724be5a6978621",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.stories.dialogs.StoryContextMenuTest.xml",
+      "sha256": "bf1c0d6b23bf9d44aa671d49f5e792df2a310f05359d4a77d5af33abbb9986a5",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.stories.viewer.StoryViewerViewModelTest.xml",
+      "sha256": "f077c6b0fb3ff8af25af3975bca84f15d6217e6b4d6b9489f788bd04171f04cb",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest.xml",
+      "sha256": "769f7d8c48f5a3a49b7c5e0989e4e5ef5aef010d62d45a706bda9d283da8e253",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.stories.viewer.page.StoryViewerPageViewModelTest.xml",
+      "sha256": "bf90ac663d988b0413d621894403e31fad9d5c55014b88a9337651ea71fda7ab",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.AttachmentUtilTest.xml",
+      "sha256": "dccc2e113c60c604273b6c901cc9a973aecbe86dd577bf6331b14bec2990f7c9",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.BackupUtilTest.xml",
+      "sha256": "0e30e1c143f20a07a81968725243a02ae7d6fb1e68ab7cf36e6bf8bd1c925042",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.DeferredTest.xml",
+      "sha256": "5a4a379eca1c789dbd5edab7f8d2e536cf45ecb8c4aeacf79d6ffb16c9887966",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.DiffHelperTest.xml",
+      "sha256": "7f1bf39dce4433d52f2a9d4fe3bb50218b994e737bce5cf7bf2a2340b1cf380a",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.ExpirationUtilTest.xml",
+      "sha256": "fe7ad86cba9cc0986c2bdac3226b1e8d4ae95f3cdc0f1c28b44efc829b580b63",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.LinkUtilTest_isLegal.xml",
+      "sha256": "8de434137d21d3acda9f219ad52dbd04e73c7dfa8abe03a4653b750f694e4d08",
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.LinkUtilTest_isValidPreviewUrl.xml",
+      "sha256": "3fe5bf19767ef2cafdc3068c9068b9498e143e24b0458f21f16f97763af33f38",
+      "tests": 54,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.ListPartitionTest.xml",
+      "sha256": "7a80bbb33c13dfec9c6e1c3932be6bf5cd662c4f7ccbf1d84231a38ecec46ad9",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue.xml",
+      "sha256": "451fbbb95b73f0b52c357a09f91dd40413fe6fc0e5e931d14257817533c804b8",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues.xml",
+      "sha256": "bc0c89a35560065a37f7a79472c419c9d0f0da36448c1698278aba35caed7ba8",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.LocaleRemoteConfig_isEnabled.xml",
+      "sha256": "b4bb7824f1e09b6861edcbb45f333e6262b74f71d748466309e3656aa0423a2d",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.NameUtil_getAbbreviation.xml",
+      "sha256": "ecbfe77d343509b8b4cdd1c1cc42661dffe529f9dd8a6179b58937428742f94a",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.RemoteConfigTest.xml",
+      "sha256": "76a28f5ab5b4983470022e0d80ed222570d1d2882983df02c963a6dad13f7b27",
+      "tests": 26,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.RemoteConfig_StaticValuesTest.xml",
+      "sha256": "f17ce6b1740231af537ba3c4d04352e6c24c2832a6b24ab0aee3d4d997653e21",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.RemoteExpirationTest_getTimeUntilDeprecation.xml",
+      "sha256": "34e862fbdaa736248491d24c3945b0f6d5db174137841aca9d621be25182e7c5",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.Rfc5724UriTest.xml",
+      "sha256": "3886b7e1440fbfd67193526a72b90b2522210c2fc65aa39b9c3556b27a17e655",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.ScreenDensityTest.xml",
+      "sha256": "70ac602f4e0a06d2f6c10b98859f0a26e1d9ffad7c5e8cb573d88e0155ded71f",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.SearchUtilTest.xml",
+      "sha256": "68a7b81ab868aa089b3836a4954b3898a6ef0ed181ced807f805a9e39278cf35",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.SignalE164UtilTest.xml",
+      "sha256": "5bc60e8787612122b197ece59bd4402725924c2b2e5864f21d2c1bfbf3658cdf",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.SignalMeUtilText_parseE164FromLink.xml",
+      "sha256": "27c9aabf71823d8366cc7e2636fc513103e78d6e4c42d3acf6209a249c9a0dee",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.SignalProxyUtilText_convertUserEnteredAddressToHost.xml",
+      "sha256": "8c24623a675c12d4acd7ac7013172fea1b70200514ec48dea459a5b68215089e",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.SignalProxyUtilText_generateProxyUrl.xml",
+      "sha256": "c24021bcb813df62082b00404543df5d28710cf2fd7fd2a0fd12087efc1aeea8",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.SignalProxyUtilText_parseHostFromProxyDeepLink.xml",
+      "sha256": "d6e328524ab89fe0ae91ccea7c771c28f31b52357611c794e4c5b338f35d311f",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri.xml",
+      "sha256": "189d770c848e6f9ce56f8d644aa20bb0765cda671835fd4be596166c3abd805c",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.UsernameUtilTest.xml",
+      "sha256": "1f34ce25ac15678cee24f604cdbe9501bc5e7979eb2dc90308ee6699da3bef14",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest.xml",
+      "sha256": "f3a6a9152f4137ebcd185c0cf9311b1b8b0dcb9f11310fd657c1b36ea3e729a1",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.dynamiclanguage.LanguageStringTest.xml",
+      "sha256": "b8aaaffc5774af033d18222d35f625668e74d31a4848e8d9815eb65cb19c9c8b",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.dynamiclanguage.LocaleParserTest.xml",
+      "sha256": "195ae5404fa7df92bde39a9781204f481ef7084fc385246239fa179aebf0f1f6",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_combineLatest.xml",
+      "sha256": "e1e238d79b7fca9d47b487175bfe6984a9077236c2c96e8873849d5486e4df09",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge.xml",
+      "sha256": "f81e5bca1415ac679ee55708394bc0f7d6dbdd407e6845fa622a688a60e7b16c",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_skip.xml",
+      "sha256": "70612d3c0bd65fdca24a481e2cf491783fd8d606146ddde45f918f8bea274cb8",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.util.rx.RxStoreTest.xml",
+      "sha256": "f48cd6d5209d49ee46c1b7497d5b95056f3dd0716bb4d0ae5efe48b6fa93e8f1",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.video.exo.ExoPlayerPoolTest.xml",
+      "sha256": "67f34710f9972c7fd51a28d2a6c82e33e4ba1f9f11b91b0fdf0f3eca6679ab44",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest.xml",
+      "sha256": "29eb4c2acedb1fe18a2a35061232e2bf687cb9b51804ade9989b4745f6c4dff4",
+      "tests": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "reports/827/build/current-source-staging-xml/TEST-org.thoughtcrime.securesms.webrtc.audio.FullSignalAudioManagerApi31Test.xml",
+      "sha256": "a45f18a1319cb3c9882a1a573fd098f0ebbb6273e51df3a78d5b959f2482b554",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.MmsSmsDatabaseTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:04:19.629Z" hostname="4f1d1be5db40" time="0.427">
+  <properties/>
+  <testcase name="getConversationSnippet when single normal MMS then GV2 leave update message, return MMS message id and transport as true both times" classname="org.thoughtcrime.securesms.database.MmsSmsDatabaseTest" time="0.137"/>
+  <testcase name="getConversationSnippet when single normal MMS, return MMS message id and transport as true" classname="org.thoughtcrime.securesms.database.MmsSmsDatabaseTest" time="0.137"/>
+  <testcase name="getConversationSnippet when single normal SMS, return SMS message id and transport as false" classname="org.thoughtcrime.securesms.database.MmsSmsDatabaseTest" time="0.151"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

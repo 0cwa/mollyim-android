@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:36.143Z" hostname="4f1d1be5db40" time="14.403">
+  <properties/>
+  <testcase name="ignore unknown" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="1.084"/>
+  <testcase name="reference" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.907"/>
+  <testcase name="overrides" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.894"/>
+  <testcase name="check compressed" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.899"/>
+  <testcase name="invalid config" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.911"/>
+  <testcase name="bail early" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.89"/>
+  <testcase name="custom hardware aec block list" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.827"/>
+  <testcase name="empty config" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.83"/>
+  <testcase name="api override" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.807"/>
+  <testcase name="hardware aec block list" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.799"/>
+  <testcase name="hardware aec block list wildcard" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.779"/>
+  <testcase name="invalid json" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.791"/>
+  <testcase name="custom exclude wildcard" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.78"/>
+  <testcase name="custom device" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.769"/>
+  <testcase name="targeted device" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.777"/>
+  <testcase name="flip all" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.851"/>
+  <testcase name="custom excluded device" classname="org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfigTest" time="0.8"/>
+  <system-out><![CDATA[w[AudioDeviceConfig] Device does not implement AcousticEchoCanceler, overriding config!
+w[AudioDeviceConfig] Device does not implement NoiseSuppressor, overriding config!
+w[AudioDeviceConfig] Device does not implement FEATURE_AUDIO_LOW_LATENCY, overriding config!
+w[AudioDeviceConfig] Failed to parse callingAudioDeviceConfig json! Using default. Unrecognized token 'bad': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"bad"; line: 1, column: 4]
+w[AudioDeviceConfig] No RemoteConfig.callingAudioDeviceConfig found! Using default.
+w[AudioDeviceConfig] Device is less than API level 29, forcing software AEC/NS!
+w[AudioDeviceConfig] Failed to parse callingAudioDeviceConfig json! Using default. Cannot deserialize value of type `boolean` from Object value (token `JsonToken.START_OBJECT`)
+ at [Source: (String)"      [
+        {
+          "final": {
+            "unknown": true
+          }
+        }
+      ]"; line: 3, column: 20] (through reference chain: java.util.ArrayList[0]->org.thoughtcrime.securesms.webrtc.audio.AudioDeviceConfig$Rule["final"])
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

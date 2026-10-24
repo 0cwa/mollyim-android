@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:23.385Z" hostname="4f1d1be5db40" time="0.173">
+  <properties/>
+  <testcase name="link_trailing_slash_insensitivity_where_last_url_has_trailing_slash" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.046"/>
+  <testcase name="contains_a_link" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.014"/>
+  <testcase name="contains_two_links" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.014"/>
+  <testcase name="does_not_contain_link" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.019"/>
+  <testcase name="no_links" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.016"/>
+  <testcase name="multiple_trailing_slashes_are_not_stripped" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.013"/>
+  <testcase name="link_trailing_slash_insensitivity" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_findValidPreviewUrls" time="0.029"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

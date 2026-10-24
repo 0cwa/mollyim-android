@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:41.732Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="Given a backup key, ensure a space comes after every 4 characters" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.001"/>
+  <testcase name="Given a single entry, ensure offset mapping is 0" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.001"/>
+  <testcase name="When I transformedToOriginal, then I expect proper output" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.0"/>
+  <testcase name="Given output length, when I originalToTransformed, then I expect proper output" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.0"/>
+  <testcase name="Given a blank entry, ensure offset mapping is 0" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.0"/>
+  <testcase name="Given output length, when I transformedToOriginal, then I expect proper output" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.0"/>
+  <testcase name="Given display-equivalent characters, ensure characters are not swapped" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.0"/>
+  <testcase name="When I originalToTransformed, then I expect proper output" classname="org.thoughtcrime.securesms.registration.ui.restore.BackupKeyVisualTransformationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

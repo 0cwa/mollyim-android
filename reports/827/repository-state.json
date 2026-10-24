@@ -1,0 +1,23 @@
+{
+  "observed_utc": "2026-10-24T17:17:04.797028+00:00",
+  "repository": "https://github.com/0cwa/mollyim-android",
+  "development_branch": "dev/molly-827-reproducible-poc",
+  "observed_remote_refs": {
+    "refs/heads/dev/molly-827-reproducible-poc": "38457dd629d55547066fa77e8f9c0a4820f6f152",
+    "refs/heads/main": "892d6264ba007b5458a8b74cf9183c665f1f17a1",
+    "refs/heads/poc/molly-827-unifiedpush": "b8d5375b3fb6013f7939935ce73e250b53515381"
+  },
+  "main_unchanged": true,
+  "original_poc_unchanged": true,
+  "primary_checkout_clean": true,
+  "application_source_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "application_projected_tree": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+  "tested_ci_head": "38457dd629d55547066fa77e8f9c0a4820f6f152",
+  "ci_url": "https://github.com/0cwa/mollyim-android/actions/runs/40111431112",
+  "ci_conclusion": "success",
+  "production_keys_supplied": false,
+  "production_release_signing_run": false,
+  "upstream_pr_submitted": false,
+  "upstream_merge_performed": false,
+  "note": "Final metadata/evidence commits do not alter the application projection or retrigger Android CI. Remote development ref here is the tested head observed before final metadata publication."
+}

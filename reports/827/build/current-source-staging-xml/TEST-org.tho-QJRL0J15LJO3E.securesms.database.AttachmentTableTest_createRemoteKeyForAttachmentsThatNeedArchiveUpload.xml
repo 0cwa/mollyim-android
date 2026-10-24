@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:03:07.737Z" hostname="4f1d1be5db40" time="1.751">
+  <properties/>
+  <testcase name="whenMultipleEligibleAttachments_returnsCorrectCountAndCreatesKeys" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.146"/>
+  <testcase name="whenMultipleMatchesExist_reusesFromLatestMatch" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.131"/>
+  <testcase name="whenAttachmentMissingDataFile_returnsZero" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.124"/>
+  <testcase name="whenMixedScenarios_returnsCorrectCount" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.14"/>
+  <testcase name="whenMatchingDataFileAndHashExists_reusesRemoteKey" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.132"/>
+  <testcase name="whenTransferStateNotDone_returnsZero" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.163"/>
+  <testcase name="whenTwoAttachmentsShareDataFileAndBothNeedNewKey_bothGetSameKey" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.139"/>
+  <testcase name="whenAttachmentAlreadyHasRemoteKey_returnsZero" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.124"/>
+  <testcase name="whenSourceHasNoRemoteData_generatesNewKey" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.135"/>
+  <testcase name="whenAttachmentHasArchiveTransferStateInProgress_returnsZero" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.13"/>
+  <testcase name="whenOneEligibleAttachment_returnsOneAndCreatesRemoteKey" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.132"/>
+  <testcase name="whenCalledTwice_secondCallReturnsZero" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.124"/>
+  <testcase name="whenNoEligibleAttachments_returnsZero" classname="org.thoughtcrime.securesms.database.AttachmentTableTest_createRemoteKeyForAttachmentsThatNeedArchiveUpload" time="0.125"/>
+  <system-out><![CDATA[w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::1] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::2] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::3] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::3] Missing key but found same data file with remote data. Updating. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::1] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::2] Missing key but found same data file with remote data. Updating. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload] Generated new key for: AttachmentId::1, AttachmentId::2
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::1] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::2] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload] Generated new key for: AttachmentId::1, AttachmentId::2
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::1] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::2] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::1] Missing key. Assigning new one. isQuote:false isSticker:false
+w[AttachmentTable] [createRemoteKeyForAttachmentsThatNeedArchiveUpload][AttachmentId::1] Missing key. Assigning new one. isQuote:false isSticker:false
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

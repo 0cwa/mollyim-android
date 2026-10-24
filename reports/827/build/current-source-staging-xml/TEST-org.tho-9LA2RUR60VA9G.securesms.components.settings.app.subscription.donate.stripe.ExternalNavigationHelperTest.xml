@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:37.815Z" hostname="4f1d1be5db40" time="0.176">
+  <properties/>
+  <testcase name="parsed web intent URI loses explicit component after sanitization" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.012"/>
+  <testcase name="sanitizeWebIntent adds CATEGORY_BROWSABLE" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.01"/>
+  <testcase name="sanitizeWebIntent clears selector" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.045"/>
+  <testcase name="parsed web intent URI loses selector after sanitization" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.019"/>
+  <testcase name="sanitizeWebIntent preserves browser_fallback_url extra" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.016"/>
+  <testcase name="sanitizeWebIntent preserves unrelated flags" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.013"/>
+  <testcase name="sanitizeWebIntent clears explicit component" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.034"/>
+  <testcase name="sanitizeWebIntent strips URI permission grant flags" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.stripe.ExternalNavigationHelperTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

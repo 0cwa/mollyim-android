@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.fonts.TextToScriptTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:05:14.716Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="guessScript[0: guessLocale(..) = LATIN]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.001"/>
+  <testcase name="guessScript[1: guessLocale(..) = LATIN]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[2: guessLocale(..) = LATIN]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[3: guessLocale(..) = LATIN]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[4: guessLocale(..) = CYRILLIC]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[5: guessLocale(..) = CYRILLIC]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[6: guessLocale(..) = DEVANAGARI]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.001"/>
+  <testcase name="guessScript[7: guessLocale(..) = UNKNOWN_CJK]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[8: guessLocale(..) = UNKNOWN_CJK]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[9: guessLocale(..) = UNKNOWN_CJK]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[10: guessLocale(..) = JAPANESE]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[11: guessLocale(..) = ARABIC]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <testcase name="guessScript[12: guessLocale(..) = LATIN]" classname="org.thoughtcrime.securesms.fonts.TextToScriptTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

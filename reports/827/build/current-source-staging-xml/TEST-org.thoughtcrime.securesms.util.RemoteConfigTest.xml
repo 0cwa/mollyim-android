@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.RemoteConfigTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:52.315Z" hostname="4f1d1be5db40" time="0.004">
+  <properties/>
+  <testcase name="updateInternal_removeValue" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceValue_integer" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_stickyNotEnabled" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_newValue_hotSwap" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_newValue_ignoreNotInRemoteCapable" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceOneOfTwoValues" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_hotSwap_stickyNotEnabled" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="computeChanges_generic" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.001"/>
+  <testcase name="updateInternal_removeValue_hotSwap" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_stickyAlreadyEnabled" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_notRemoteCapable" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_hotSwap_stickyAlreadyEnabled_notRemoteCapable" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_typeMismatch_hotSwap" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_hotSwap_notRemoteCapable" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceValue_hotSwap_stickyChange" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.003"/>
+  <testcase name="updateInternal_newValue" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceValue_hotSwap_stickyIgnore_memoryAndDisk" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_newValue_hotSwap_sticky" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_newValue_hotSwap_integer" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_twoNewValues" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceValue_hotSwap" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceValue_hotSwa_integer" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_newValue_sticky" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_hotSwap_stickyAlreadyEnabled" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_removeValue_stickyNotEnabled_notRemoteCapable" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <testcase name="updateInternal_replaceValue" classname="org.thoughtcrime.securesms.util.RemoteConfigTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

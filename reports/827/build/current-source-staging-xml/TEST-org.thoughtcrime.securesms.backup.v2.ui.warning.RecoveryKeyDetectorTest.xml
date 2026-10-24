@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:08.733Z" hostname="4f1d1be5db40" time="0.007">
+  <properties/>
+  <testcase name="ordinary message is not a recovery key" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.003"/>
+  <testcase name="embedded in surrounding text is detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="embedded grouped display form is detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.002"/>
+  <testcase name="display form with substitution characters is detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="null or blank text is not a recovery key" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="a different valid recovery key is not detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="text shorter than a key is not a recovery key" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="exact storage form is detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="64 in-alphabet characters that are not the key are not detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="64 char sha256 hex digest is not detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="null recovery key is never detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="uppercase form is detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <testcase name="grouped with spaces is detected" classname="org.thoughtcrime.securesms.backup.v2.ui.warning.RecoveryKeyDetectorTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.RemoteConfig_StaticValuesTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:33.713Z" hostname="4f1d1be5db40" time="0.007">
+  <properties/>
+  <testcase name="Ensure there's no static values" classname="org.thoughtcrime.securesms.util.RemoteConfig_StaticValuesTest" time="0.007"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

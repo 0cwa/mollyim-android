@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest" tests="5" skipped="5" failures="0" errors="0" timestamp="2026-10-24T17:02:37.745Z" hostname="4f1d1be5db40" time="0.02">
+  <properties/>
+  <testcase name="when PayPal is clicked, PAYPAL_SELECTED event is emitted" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="when Google Pay is clicked, GOOGLE_PAY_SELECTED event is emitted" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="when Credit Card is clicked, CREDIT_CARD_SELECTED event is emitted" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="when SEPA is clicked, SEPA_SELECTED event is emitted" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="when iDEAL is clicked, IDEAL_SELECTED event is emitted" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.gateway.GatewaySelectorBottomSheetContentTest" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

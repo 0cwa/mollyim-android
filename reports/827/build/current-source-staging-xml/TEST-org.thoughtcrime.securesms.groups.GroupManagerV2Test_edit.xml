@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:05:14.731Z" hostname="4f1d1be5db40" time="5.105">
+  <properties/>
+  <testcase name="when you are the only admin, and then leave the group, server upgrades all other members to administrators and lets you leave" classname="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" time="1.367"/>
+  <testcase name="demoting an admin who has a label does not clear the label when label access is open to all members" classname="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" time="0.731"/>
+  <testcase name="demoting an admin who has a label clears the label when label access is restricted to only admins" classname="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" time="0.804"/>
+  <testcase name="restricting label access to admins only clears non-admins that have labels set" classname="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" time="0.723"/>
+  <testcase name="restricting label access to admins only does not modify labels of admins that have labels set" classname="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" time="0.726"/>
+  <testcase name="when admin terminates group, the group state is updated with terminated flag" classname="org.thoughtcrime.securesms.groups.GroupManagerV2Test_edit" time="0.748"/>
+  <system-out><![CDATA[i[libsignal] rust/bridge/jni/impl/src/logging.rs:185: Initializing libsignal version:0.96.3
+w[libsignal] rust/bridge/jni/impl/src/logging.rs:206: logging already initialized for libsignal; ignoring later call
+w[libsignal] rust/bridge/jni/impl/src/logging.rs:206: logging already initialized for libsignal; ignoring later call
+w[libsignal] rust/bridge/jni/impl/src/logging.rs:206: logging already initialized for libsignal; ignoring later call
+w[libsignal] rust/bridge/jni/impl/src/logging.rs:206: logging already initialized for libsignal; ignoring later call
+w[libsignal] rust/bridge/jni/impl/src/logging.rs:206: logging already initialized for libsignal; ignoring later call
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

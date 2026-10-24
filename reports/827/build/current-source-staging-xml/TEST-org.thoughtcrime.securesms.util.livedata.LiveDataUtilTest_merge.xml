@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:52.551Z" hostname="4f1d1be5db40" time="0.003">
+  <properties/>
+  <testcase name="value_on_first" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="value_on_third" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="on_a_set_before_combine" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="merge_nothing" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.001"/>
+  <testcase name="on_default_values" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="merge_one_is_a_no_op" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.001"/>
+  <testcase name="value_on_second" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="combined_same_instance" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="combined_same_instances_repeated" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="initially_no_value" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <testcase name="several_values_merged" classname="org.thoughtcrime.securesms.util.livedata.LiveDataUtilTest_merge" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
