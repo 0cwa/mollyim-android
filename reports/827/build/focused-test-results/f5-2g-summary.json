@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "total_tests": 25,
+  "total_failures": 0,
+  "source_snapshot_kind": "working tree with F5 endpoint retry changes, before the import-order-only formatting applied in final commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "source_file_sha256": {
+    "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
+    "app/src/test/java/org/thoughtcrime/securesms/util/UriUtilTest_isValidExternalUri.java": "b8095173443a1633ed28ad64f7a7d7de9a2964ad30b7ee003932568466dd0ab9",
+    "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt": "31befa0f5dd6e540efb38f1b4d224ead5a10bfd2fd81e2711694d4fb544687fa"
+  },
+  "classes": [
+    {
+      "class": "org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "xml": "app/build/test-results/testPlayStagingDebugUnitTest/TEST-org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri.xml",
+      "sha256": "49fe6de2656434708af766c48960224cf731433c0d76b7347a469620724fa0ae"
+    },
+    {
+      "class": "org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "xml": "app/build/test-results/testPlayStagingDebugUnitTest/TEST-org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest.xml",
+      "sha256": "402a674f55b16d309ef50f2cd5c9a5a72478be1b5ad690c8e397b586ca830d2c"
+    }
+  ],
+  "gradle_log": "reports/827/build/testPlayStagingDebug-focused-f5-2g-20261024.log",
+  "gradle_log_sha256": "a6f09908849cf3b2a452af3d84a3afccbe4abf9aae254d32a0f781415021a109",
+  "command": "./gradlew --offline --no-daemon --max-workers=1 --dependency-verification=strict --init-script tools/827/test-worker-heap.init.gradle :Signal-Android:testPlayStagingDebugUnitTest --tests org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest",
+  "source_commit_base": "908db1de74a9937c2b9bc1a0f4ac446f8faef914",
+  "final_formatted_source_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af"
+}

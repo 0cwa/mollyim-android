@@ -1,0 +1,148 @@
+{
+  "status": "APPLIED",
+  "scope": "old generated release/perf output only",
+  "preserved_apks": [
+    {
+      "path": "app/build/outputs/apk/playProd/benchmark/Signal-Android-play-prod-x86_64-benchmark-8.19.2.apk",
+      "bytes": 109315014,
+      "sha256": "d9f862681bd0afc44cc147f49a82c7480eb899176631ec90934e4f645abca434"
+    },
+    {
+      "path": "app/build/outputs/apk/playProd/debug/Signal-Android-play-prod-universal-debug-8.19.2.apk",
+      "bytes": 248095916,
+      "sha256": "cd81899b879502c573b731e40d5c6466d02609a1d70cb95ced5d29d9de77df38"
+    },
+    {
+      "path": "app/build/outputs/apk/websiteProd/release/Signal-Android-website-prod-arm64-v8a-release-unsigned-8.19.2.apk",
+      "bytes": 78152339,
+      "sha256": "5c681eb3ecbf0f3119eb86f886acf54bc090ca9395808bd53c9e52ff17c34389"
+    },
+    {
+      "path": "app/build/outputs/apk/websiteProd/release/Signal-Android-website-prod-armeabi-v7a-release-unsigned-8.19.2.apk",
+      "bytes": 75784879,
+      "sha256": "7e042afa8e7139312f848fb579569e8c7bdd0099a7f4ed09a6f736cdb4434dad"
+    },
+    {
+      "path": "app/build/outputs/apk/websiteProd/release/Signal-Android-website-prod-universal-release-unsigned-8.19.2.apk",
+      "bytes": 117430465,
+      "sha256": "dee5f006888490c64f4d4205640e48ce9b805254205fae15df6263f970c46d4d"
+    },
+    {
+      "path": "app/build/outputs/apk/websiteProd/release/Signal-Android-website-prod-x86-release-unsigned-8.19.2.apk",
+      "bytes": 79067027,
+      "sha256": "7550cb4f028aafaca8e9f46405ad11233ca1ae00074717e21ee8910b0ff96a11"
+    },
+    {
+      "path": "app/build/outputs/apk/websiteProd/release/Signal-Android-website-prod-x86_64-release-unsigned-8.19.2.apk",
+      "bytes": 79480291,
+      "sha256": "4dc9eba833b516f688fe70b763cf1af88ce88a0799b2eb44c0aeae36bfc24585"
+    }
+  ],
+  "removed_directories": [
+    {
+      "path": "app/build/outputs/mapping/githubProdRelease",
+      "file_count": 4,
+      "bytes": 108483879,
+      "files_sha256": "db59612314fa8573033562c6c68df124e8e1b0ddf9d26de48f067958b643b51d"
+    },
+    {
+      "path": "app/build/outputs/mapping/nightlyProdPerf",
+      "file_count": 4,
+      "bytes": 108509598,
+      "files_sha256": "f2c01569b973653d84ef804794bc158c7d33995ef4fb256a783ae5cacbcaadbc"
+    },
+    {
+      "path": "app/build/outputs/mapping/nightlyProdRelease",
+      "file_count": 4,
+      "bytes": 108484545,
+      "files_sha256": "cb6ace8b15469e5fae3281ab6e6c4b673ccd065a60a4b7c536fe91acbf40ca07"
+    },
+    {
+      "path": "app/build/outputs/mapping/nightlyStagingRelease",
+      "file_count": 4,
+      "bytes": 108485403,
+      "files_sha256": "7e232eeef22dbe9f721d69303e3c418828283cc254e6866b5d6b0d71b9280b13"
+    },
+    {
+      "path": "app/build/outputs/mapping/playProdMocked",
+      "file_count": 4,
+      "bytes": 108585072,
+      "files_sha256": "dc431359d66ac2d98c801553766cb5a64b56dcd0367598b4ba7f9d095139bd84"
+    },
+    {
+      "path": "app/build/outputs/mapping/playProdPerf",
+      "file_count": 4,
+      "bytes": 108509524,
+      "files_sha256": "98dadfad1c1be3ee5e59a00f208b6c8a56bf21d70beade845c12875bfa1a7d88"
+    },
+    {
+      "path": "app/build/outputs/mapping/playStagingPerf",
+      "file_count": 4,
+      "bytes": 108510315,
+      "files_sha256": "98ead904a09639599e12a9801fe85fce7fff22bf2a30209012210cb1ea292c2a"
+    },
+    {
+      "path": "app/build/outputs/mapping/websiteProdRelease",
+      "file_count": 4,
+      "bytes": 108484395,
+      "files_sha256": "3805ba366187e27f8fc420bbe89af953900bfc68a692689ca029be76fd1c815f"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/githubProdRelease",
+      "file_count": 1,
+      "bytes": 44741693,
+      "files_sha256": "c0b31dbf9e9f41787c17a9026db287b1d7e2aff71f4e76386730623586aadab5"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/nightlyProdPerf",
+      "file_count": 1,
+      "bytes": 66012518,
+      "files_sha256": "ff5aad3d991cda46c31e2d158208809c91fdce6125d87d4db5dbaecdce9c368e"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/nightlyProdRelease",
+      "file_count": 1,
+      "bytes": 44741693,
+      "files_sha256": "cfd07b3a0d150b4151dff80b3ff4b2f9c3ec75f1d39e95a4b3d6800c0e0dbdbc"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/nightlyStagingRelease",
+      "file_count": 1,
+      "bytes": 44741693,
+      "files_sha256": "4937933ed7b724fb67fcaf905f3560b731a9e33d6858014a2a42b81486703c4d"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/playProdMocked",
+      "file_count": 1,
+      "bytes": 66012518,
+      "files_sha256": "ca40897254c63cdb956a575dccad78a9f1a5393ea2ebd7839f8eaa30bd5ef6c4"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/playProdNonMinifiedMocked",
+      "file_count": 1,
+      "bytes": 66012518,
+      "files_sha256": "193f44e1551a15de4f2322c4b208a5c45071abb5bd7ac2e74b026f4fcabfea9f"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/playProdPerf",
+      "file_count": 1,
+      "bytes": 66012518,
+      "files_sha256": "5eb779112ed59fd260ccf6020e11c2c906f75cd79aa7e289b14b7f827449e97f"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/playStagingPerf",
+      "file_count": 1,
+      "bytes": 66012518,
+      "files_sha256": "7240871fbe7170c508155a23eda18d3246e85bc340c56b73e8ea66fe07b6cf6d"
+    },
+    {
+      "path": "app/build/outputs/native-debug-symbols/websiteProdRelease",
+      "file_count": 1,
+      "bytes": 44741693,
+      "files_sha256": "0701b54126ac44b35d0e4093906a4bc5ab4aa7ce3a5d47d458e0e9bd45a1753a"
+    }
+  ],
+  "preserved_apk_count": 7,
+  "removed_directory_count": 17,
+  "removed_bytes": 1377082093
+}

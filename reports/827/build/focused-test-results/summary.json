@@ -1,0 +1,25 @@
+{
+  "status": "PASS",
+  "total_tests": 23,
+  "total_failures": 0,
+  "classes": [
+    {
+      "file": "reports/827/build/focused-test-results/TEST-org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri.xml",
+      "class": "org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "d30921097ee999a92be1d99e9c6641fa6818102643a262255ff85d509a15d9cc"
+    },
+    {
+      "file": "reports/827/build/focused-test-results/TEST-org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest.xml",
+      "class": "org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "sha256": "62231dfd94c4bded321eea64d9d8e38c91d7a7b89a8d69be7c35843c90058aa3"
+    }
+  ],
+  "gradle_log": "reports/827/build/testPlayStagingDebug-focused-appdeps-static-final-20261024.log",
+  "source_snapshot": "reports/827/build/focused-source-snapshot-appdeps-static-final.json"
+}

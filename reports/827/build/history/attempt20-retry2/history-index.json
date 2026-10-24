@@ -1,0 +1,47 @@
+{
+  "attempt": "20-retry2-continue",
+  "status": "INCOMPLETE_RESOURCE_EXHAUSTION_INTERRUPTED",
+  "historical_head": "b8d5375b3fb6013f7939935ce73e250b53515381",
+  "historical_tree": "24a27bf3ddf2f23593f5a11e3230b66b335bc2a3",
+  "exact_task_request": "./gradlew --no-daemon --max-workers=1 --init-script /workspace/work/p2-baseline/test-worker-heap.init.gradle --init-script /workspace/work/p2-baseline/attempt20-retry2-capacity-ordering.init.gradle \"-Dorg.gradle.jvmargs=-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=2 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3 -XX:ActiveProcessorCount=4\" --continue build",
+  "exit_code": 130,
+  "execution_note": "Stopped after workspace reached 0 free bytes; Gradle then emitted broad downstream task failures. Build did not complete the requested 7108-task graph.",
+  "start_time": "2026-10-24T05:29:00Z",
+  "artifacts": {
+    "attempt20-retry2-build-evidence-summary.json": {
+      "sha256": "888a78c886c686c882612c1a7b947c9fd56c63bdd534f5e192c18cf01a1e9432",
+      "size_bytes": 85861
+    },
+    "attempt20-retry2-full-build.exit": {
+      "sha256": "f5bde7eb9f6c71611dc5726e8aca3eb4eba3e386da49e0a4ed5c295a90a73a0d",
+      "size_bytes": 4
+    },
+    "attempt20-retry2-full-build.stderr.log": {
+      "sha256": "73011a8ef5308d8368b76683c0fbbf622d63a56b5860b2ff8b00d81a10f071fa",
+      "size_bytes": 17115
+    },
+    "attempt20-retry2-full-build.stderr.log.gz": {
+      "sha256": "1e9a56286c058b4b8b408c0eeb119d30537e4bd2d57ea1b6f41efcae574aed32",
+      "size_bytes": 698,
+      "deterministic_gzip_of": "attempt20-retry2-full-build.stderr.log"
+    },
+    "attempt20-retry2-full-build.stdout.log": {
+      "sha256": "ddc9744669640ae4e94d404bcf58c0f904e5d901cdc392ad666616aa5dc66b35",
+      "size_bytes": 258302
+    },
+    "attempt20-retry2-full-build.stdout.log.gz": {
+      "sha256": "c3da90528a0046b083425c1d5a623ffde8e0e2d749916a2d8d2f8083505308c9",
+      "size_bytes": 21864,
+      "deterministic_gzip_of": "attempt20-retry2-full-build.stdout.log"
+    },
+    "run-attempt20-retry2-full-build.sh": {
+      "sha256": "cea153cd4f989a7967fff463048eab96b6b41da08d38e02e5d96a7f735b3ac0d",
+      "size_bytes": 2052
+    },
+    "patched-build-attempt-20-retry2.start.json": {
+      "sha256": "3c8d12ed7d0ab580c0956500edf0f9cb1d397145fe688a03d96893a395384aa4",
+      "size_bytes": 4324
+    }
+  },
+  "start_receipt": "patched-build-attempt-20-retry2.start.json"
+}
