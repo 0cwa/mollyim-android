@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:47.570Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="verifyAEPValid[data[0]: verify(&quot;&quot;, false, null) = (false, null)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.001"/>
+  <testcase name="verifyAEPValid[data[1]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd&quot;, false, null) = (true, null)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[2]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcda&quot;, true, null) = (false, TooLong(count=65, max=64))]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[3]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd&quot;, true, TooLong(count=65, max=64)) = (true, null)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[4]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd&quot;, false, Incorrect) = (true, Incorrect)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[5]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd&quot;, true, Incorrect) = (true, null)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[6]: verify(&quot;!@#$!@#!@#!@#%asdf#$@#$@#asdf++dabcdabcdabcdabcdabcdabcdabcdabcd&quot;, true, null) = (false, Invalid)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[7]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcd&quot;, true, Invalid) = (true, null)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[8]: verify(&quot;!@#$!@#!@#!@#%asdf#$@#$@#asdf++dabcdabcdabcdabcdabcdabcdabcdabcd&quot;, true, Invalid) = (false, Invalid)]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <testcase name="verifyAEPValid[data[9]: verify(&quot;abcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdabcdab&quot;, true, TooLong(count=65, max=64)) = (false, TooLong(count=66, max=64))]" classname="org.thoughtcrime.securesms.registration.ui.restore.AccountEntropyPoolVerificationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

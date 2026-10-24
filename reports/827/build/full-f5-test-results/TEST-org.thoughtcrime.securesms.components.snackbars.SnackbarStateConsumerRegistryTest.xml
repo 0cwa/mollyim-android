@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:38.569Z" hostname="4f1d1be5db40" time="0.191">
+  <properties/>
+  <testcase name="lifecycle observer disables consumer on pause" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.131"/>
+  <testcase name="register replaces existing registration for same host" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.002"/>
+  <testcase name="lifecycle observer unregisters consumer on destroy" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="emit skips disabled consumers and finds enabled fallback" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="emit routes to first enabled when no match and no fallback match" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="lifecycle observer enables consumer on resume" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="register with lifecycle starts disabled when not resumed" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.002"/>
+  <testcase name="emit routes to fallback when no matching host" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="emit does nothing when no enabled consumers" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="emit skips disabled matching and fallback, finds first enabled" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="register returns closeable that unregisters consumer" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="register with lifecycle starts enabled when resumed" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.001"/>
+  <testcase name="register with lifecycle throws when lifecycle not created" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.045"/>
+  <testcase name="emit routes to matching host" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.0"/>
+  <testcase name="emit does nothing when no consumers registered" classname="org.thoughtcrime.securesms.components.snackbars.SnackbarStateConsumerRegistryTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

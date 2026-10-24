@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:43.649Z" hostname="4f1d1be5db40" time="3.497">
+  <properties/>
+  <testcase name="Given a selected country, when I update it, then I expect the state to reflect it" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.302"/>
+  <testcase name="Given unknown phone lookup, when I click next, then I expect NotFound" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.357"/>
+  <testcase name="Given username mode, when I change user entry, then I expect unaltered value" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.147"/>
+  <testcase name="Given empty country filter, when I filter countries, then I expect empty countries list" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.266"/>
+  <testcase name="Given matching country code, when I filter countries, then I expect matched countries" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.269"/>
+  <testcase name="Given username fetch network error, when I click next, then I expect NetworkError" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.347"/>
+  <testcase name="Given empty phone number, when I click next, then I expect InvalidEntry" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.263"/>
+  <testcase name="Given matching country name, when I filter countries, then I expect matched countries" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.27"/>
+  <testcase name="Given valid username, when I click next, then I expect Success" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.43"/>
+  <testcase name="Given username not found, when I click next, then I expect NotFound" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.27"/>
+  <testcase name="Given phone number mode, when I change user entry, then I expect digits only" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.143"/>
+  <testcase name="Given invalid username, when I click next, then I expect InvalidEntry" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.144"/>
+  <testcase name="Given valid phone lookup, when I click next, then I expect Success" classname="org.thoughtcrime.securesms.recipients.ui.findby.FindByViewModelTest" time="0.287"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

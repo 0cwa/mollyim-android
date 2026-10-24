@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:57Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="determineCountEnabled[0]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <testcase name="determineCountEnabled[1]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <testcase name="determineCountEnabled[2]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <testcase name="determineCountEnabled[3]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <testcase name="determineCountEnabled[4]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <testcase name="determineCountEnabled[5]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <testcase name="determineCountEnabled[6]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_getCountryValue" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

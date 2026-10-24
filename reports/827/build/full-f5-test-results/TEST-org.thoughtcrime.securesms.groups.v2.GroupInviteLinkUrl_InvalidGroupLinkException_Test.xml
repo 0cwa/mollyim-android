@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:47:24.573Z" hostname="4f1d1be5db40" time="0.006">
+  <properties/>
+  <testcase name="bad_protobuf" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.003"/>
+  <testcase name="bad_base64" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="version_999_url" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.002"/>
+  <testcase name="empty_ref" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="wrong_scheme" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="not_a_url_string" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="empty_string" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="has_path" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="wrong_host" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <testcase name="bad_master_key_length" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.001"/>
+  <testcase name="missing_ref" classname="org.thoughtcrime.securesms.groups.v2.GroupInviteLinkUrl_InvalidGroupLinkException_Test" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

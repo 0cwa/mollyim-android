@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" tests="29" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.996Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="isLegal[0]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[1]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[2]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[3]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[4]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[5]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[6]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[7]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[8]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[9]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[10]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[11]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[12]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[13]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[14]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[15]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[16]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[17]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[18]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[19]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[20]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[21]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[22]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[23]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[24]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[25]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[26]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[27]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <testcase name="isLegal[28]" classname="org.thoughtcrime.securesms.util.LinkUtilTest_isLegal" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

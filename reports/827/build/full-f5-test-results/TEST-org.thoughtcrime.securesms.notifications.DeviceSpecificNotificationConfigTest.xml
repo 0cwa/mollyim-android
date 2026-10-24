@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:31.858Z" hostname="4f1d1be5db40" time="1.665">
+  <properties/>
+  <testcase name="manufacturer match" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.194"/>
+  <testcase name="no device match" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.16"/>
+  <testcase name="invalid config" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.156"/>
+  <testcase name="default fields is zero percent" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.155"/>
+  <testcase name="empty config" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.178"/>
+  <testcase name="complex wildcard device match" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.158"/>
+  <testcase name="device model is matched over device manufacturer" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.169"/>
+  <testcase name="simple wildcard device match" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.165"/>
+  <testcase name="simple device match" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.162"/>
+  <testcase name="complex device match" classname="org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest" time="0.165"/>
+  <system-out><![CDATA[w[DeviceSpecificNotificat] Failed to parse json! JsonParseException:Unrecognized token 'bad': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"bad"; line: 1, column: 4]
+]]></system-out>
+  <system-err><![CDATA[com.fasterxml.jackson.core.JsonParseException: Unrecognized token 'bad': was expecting (JSON String, Number, Array, Object or token 'null', 'true' or 'false')
+ at [Source: (String)"bad"; line: 1, column: 4]
+	at com.fasterxml.jackson.core.JsonParser._constructError(JsonParser.java:1922)
+	at com.fasterxml.jackson.core.base.ParserMinimalBase._reportError(ParserMinimalBase.java:720)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._reportInvalidToken(ReaderBasedJsonParser.java:2903)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser._handleOddValue(ReaderBasedJsonParser.java:1949)
+	at com.fasterxml.jackson.core.json.ReaderBasedJsonParser.nextToken(ReaderBasedJsonParser.java:781)
+	at com.fasterxml.jackson.databind.ObjectMapper._initForReading(ObjectMapper.java:4682)
+	at com.fasterxml.jackson.databind.ObjectMapper._readMapAndClose(ObjectMapper.java:4584)
+	at com.fasterxml.jackson.databind.ObjectMapper.readValue(ObjectMapper.java:3546)
+	at org.signal.core.util.JsonUtils.fromJsonArray(JsonUtils.java:46)
+	at org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfig.computeConfig(DeviceSpecificNotificationConfig.kt:64)
+	at org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfigTest.invalid config(DeviceSpecificNotificationConfigTest.kt:42)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

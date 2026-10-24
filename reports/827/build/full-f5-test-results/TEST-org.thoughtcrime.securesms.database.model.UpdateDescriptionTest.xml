@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.051Z" hostname="4f1d1be5db40" time="0.206">
+  <properties/>
+  <testcase name="stringFactory_cannot_call_static_string" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.059"/>
+  <testcase name="concat_dynamic_lines" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.03"/>
+  <testcase name="stringFactory_not_evaluated_until_getString" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.016"/>
+  <testcase name="concat_static_lines" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.014"/>
+  <testcase name="concat_dynamic_lines_and_static_lines" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.014"/>
+  <testcase name="concat_single_does_not_make_new_object" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.013"/>
+  <testcase name="stringFactory_reevaluated_on_every_call" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.013"/>
+  <testcase name="staticDescription_byGetStaticString" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.014"/>
+  <testcase name="staticDescription_has_empty_mentions" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.013"/>
+  <testcase name="staticDescription_byString" classname="org.thoughtcrime.securesms.database.model.UpdateDescriptionTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

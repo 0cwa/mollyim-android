@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" tests="32" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:27.746Z" hostname="4f1d1be5db40" time="2.588">
+  <properties/>
+  <testcase name="getValidity[0: getValidity(..) = , UNIONPAY, false, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.109"/>
+  <testcase name="getValidity[1: getValidity(..) = 1, UNIONPAY, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.079"/>
+  <testcase name="getValidity[2: getValidity(..) = 12, UNIONPAY, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.074"/>
+  <testcase name="getValidity[3: getValidity(..) = 123, UNIONPAY, false, FULLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.076"/>
+  <testcase name="getValidity[4: getValidity(..) = 1234, UNIONPAY, false, TOO_LONG]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.078"/>
+  <testcase name="getValidity[5: getValidity(..) = , OTHER, false, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.072"/>
+  <testcase name="getValidity[6: getValidity(..) = 1, OTHER, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.096"/>
+  <testcase name="getValidity[7: getValidity(..) = 12, OTHER, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.086"/>
+  <testcase name="getValidity[8: getValidity(..) = 123, OTHER, false, FULLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.085"/>
+  <testcase name="getValidity[9: getValidity(..) = 1234, OTHER, false, TOO_LONG]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.086"/>
+  <testcase name="getValidity[10: getValidity(..) = , AMERICAN_EXPRESS, false, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.083"/>
+  <testcase name="getValidity[11: getValidity(..) = 1, AMERICAN_EXPRESS, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.086"/>
+  <testcase name="getValidity[12: getValidity(..) = 12, AMERICAN_EXPRESS, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.09"/>
+  <testcase name="getValidity[13: getValidity(..) = 123, AMERICAN_EXPRESS, false, TOO_SHORT]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.093"/>
+  <testcase name="getValidity[14: getValidity(..) = 1234, AMERICAN_EXPRESS, false, FULLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.083"/>
+  <testcase name="getValidity[15: getValidity(..) = 12345, AMERICAN_EXPRESS, false, TOO_LONG]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.083"/>
+  <testcase name="getValidity[16: getValidity(..) = , UNIONPAY, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.082"/>
+  <testcase name="getValidity[17: getValidity(..) = 1, UNIONPAY, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.102"/>
+  <testcase name="getValidity[18: getValidity(..) = 12, UNIONPAY, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.08"/>
+  <testcase name="getValidity[19: getValidity(..) = 123, UNIONPAY, true, FULLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.074"/>
+  <testcase name="getValidity[20: getValidity(..) = 1234, UNIONPAY, true, TOO_LONG]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.078"/>
+  <testcase name="getValidity[21: getValidity(..) = , OTHER, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.07"/>
+  <testcase name="getValidity[22: getValidity(..) = 1, OTHER, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.069"/>
+  <testcase name="getValidity[23: getValidity(..) = 12, OTHER, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.068"/>
+  <testcase name="getValidity[24: getValidity(..) = 123, OTHER, true, FULLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.068"/>
+  <testcase name="getValidity[25: getValidity(..) = 1234, OTHER, true, TOO_LONG]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.068"/>
+  <testcase name="getValidity[26: getValidity(..) = , AMERICAN_EXPRESS, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.073"/>
+  <testcase name="getValidity[27: getValidity(..) = 1, AMERICAN_EXPRESS, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.078"/>
+  <testcase name="getValidity[28: getValidity(..) = 12, AMERICAN_EXPRESS, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.08"/>
+  <testcase name="getValidity[29: getValidity(..) = 123, AMERICAN_EXPRESS, true, POTENTIALLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.074"/>
+  <testcase name="getValidity[30: getValidity(..) = 1234, AMERICAN_EXPRESS, true, FULLY_VALID]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.076"/>
+  <testcase name="getValidity[31: getValidity(..) = 12345, AMERICAN_EXPRESS, true, TOO_LONG]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardCodeValidatorTest" time="0.083"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

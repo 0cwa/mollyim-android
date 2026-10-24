@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:54.972Z" hostname="4f1d1be5db40" time="0.01">
+  <properties/>
+  <testcase name="When I get size with header, then I expect size of filtered content plus header" classname="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" time="0.008"/>
+  <testcase name="Given I get second page with header, then I expect the corresponding values without 5" classname="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" time="0.001"/>
+  <testcase name="When I getSublist without 5, then I expect the corresponding values without 5" classname="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" time="0.001"/>
+  <testcase name="When I get size, then I expect size of filtered content" classname="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" time="0.0"/>
+  <testcase name="Given I got first page when I getSublist without 5, then I expect the corresponding values without 5" classname="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" time="0.0"/>
+  <testcase name="Given I get entire page with header, then I expect the corresponding values without 5" classname="org.thoughtcrime.securesms.contacts.paged.collections.ContactSearchCollectionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJobTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:47:53.701Z" hostname="4f1d1be5db40" time="2.195">
+  <properties/>
+  <testcase name="Given an unregistered local user, when I run, then I expect skip" classname="org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJobTest" time="0.763"/>
+  <testcase name="Given a past-due subscription with charge failure, when I run, then I do not write cancellation" classname="org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJobTest" time="0.72"/>
+  <testcase name="Given a canceled subscription, when I run, then I write cancellation and return early" classname="org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJobTest" time="0.709"/>
+  <system-out><![CDATA[w[InAppPaymentKeepAliveJo] [DONATION] User is not registered. Skipping.
+i[InAppPaymentKeepAliveJo] [DONATION] Clearing out old pending payments as required.
+i[InAppPaymentKeepAliveJo] [DONATION] Successful call to putSubscription
+i[InAppPaymentKeepAliveJo] [DONATION] Successful call to GET active subscription
+e[BaseJob] Encountered a fatal exception. Crash imminent. MockKException:no answer found for InAppPaymentTable(child of object Companion#19463).getByEndOfPeriod-HG0u8IE(RECURRING_DONATION, 3593489748000000000) among the configured answers: (InAppPaymentTable(child of object Companion#19463).insert-51bEbmg(any(), any(), any(), any(), any()))
+InAppPaymentTable(child of object Companion#19463).update(any()))
+InAppPaymentTable(child of object Companion#19463).getById(any()))
+InAppPaymentTable(child of object Companion#19463).getOldPendingPayments(any()))
+InAppPaymentTable(child of object Companion#19463).hasPrePendingRecurringTransaction(any())))
+i[InAppPaymentKeepAliveJo] [DONATION] Clearing out old pending payments as required.
+i[InAppPaymentKeepAliveJo] [DONATION] Successful call to putSubscription
+i[InAppPaymentKeepAliveJo] [DONATION] Successful call to GET active subscription
+i[InAppPaymentKeepAliveJo] [DONATION] Subscription is canceled. Writing cancellation to DB.
+]]></system-out>
+  <system-err><![CDATA[io.mockk.MockKException: no answer found for InAppPaymentTable(child of object Companion#19463).getByEndOfPeriod-HG0u8IE(RECURRING_DONATION, 3593489748000000000) among the configured answers: (InAppPaymentTable(child of object Companion#19463).insert-51bEbmg(any(), any(), any(), any(), any()))
+InAppPaymentTable(child of object Companion#19463).update(any()))
+InAppPaymentTable(child of object Companion#19463).getById(any()))
+InAppPaymentTable(child of object Companion#19463).getOldPendingPayments(any()))
+InAppPaymentTable(child of object Companion#19463).hasPrePendingRecurringTransaction(any())))
+	at io.mockk.impl.stub.MockKStub.defaultAnswer(MockKStub.kt:93)
+	at io.mockk.impl.stub.MockKStub.answer(MockKStub.kt:44)
+	at io.mockk.impl.recording.states.AnsweringState.call(AnsweringState.kt:16)
+	at io.mockk.impl.recording.CommonCallRecorder.call(CommonCallRecorder.kt:53)
+	at io.mockk.impl.stub.MockKStub.handleInvocation(MockKStub.kt:271)
+	at io.mockk.impl.instantiation.JvmMockFactoryHelper$mockHandler$1.invocation(JvmMockFactoryHelper.kt:24)
+	at io.mockk.proxy.jvm.advice.Interceptor.call(Interceptor.kt:21)
+	at org.thoughtcrime.securesms.database.InAppPaymentTable.getByEndOfPeriod-HG0u8IE(InAppPaymentTable.kt:298)
+	at org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJob.getActiveInAppPayment(InAppPaymentKeepAliveJob.kt:278)
+	at org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJob.doRun(InAppPaymentKeepAliveJob.kt:162)
+	at org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJob.onRun(InAppPaymentKeepAliveJob.kt:106)
+	at org.thoughtcrime.securesms.jobs.BaseJob.run(BaseJob.java:31)
+	at org.thoughtcrime.securesms.jobs.InAppPaymentKeepAliveJobTest.Given a past-due subscription with charge failure, when I run, then I do not write cancellation(InAppPaymentKeepAliveJobTest.kt:108)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

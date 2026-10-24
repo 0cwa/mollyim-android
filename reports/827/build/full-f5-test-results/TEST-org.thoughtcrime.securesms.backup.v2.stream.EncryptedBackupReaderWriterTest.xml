@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:08.715Z" hostname="4f1d1be5db40" time="0.198">
+  <properties/>
+  <testcase name="can write and read using BackupId for both - local" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.083"/>
+  <testcase name="can read back all of the frames we write" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.031"/>
+  <testcase name="padding limits number of sizes" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.003"/>
+  <testcase name="can read back all frames using BackupId directly - forward secrecy" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.028"/>
+  <testcase name="can read back all of the frames we write - forward secrecy" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.026"/>
+  <testcase name="using a different IV every time" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.002"/>
+  <testcase name="can read back all frames using BackupId directly - local" classname="org.thoughtcrime.securesms.backup.v2.stream.EncryptedBackupReaderWriterTest" time="0.025"/>
+  <system-out><![CDATA[25600
+25673
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

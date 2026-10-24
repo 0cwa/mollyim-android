@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:00.415Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="Given an aspect ratio, when I getStoryDisplay, then I expect correct size[0: displaySize(9, 20.1) = LARGE]" classname="org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest" time="0.001"/>
+  <testcase name="Given an aspect ratio, when I getStoryDisplay, then I expect correct size[1: displaySize(4, 3) = MEDIUM]" classname="org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest" time="0.0"/>
+  <testcase name="Given an aspect ratio, when I getStoryDisplay, then I expect correct size[2: displaySize(9, 18) = LARGE]" classname="org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest" time="0.0"/>
+  <testcase name="Given an aspect ratio, when I getStoryDisplay, then I expect correct size[3: displaySize(9, 17) = MEDIUM]" classname="org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest" time="0.0"/>
+  <testcase name="Given an aspect ratio, when I getStoryDisplay, then I expect correct size[4: displaySize(9, 16) = SMALL]" classname="org.thoughtcrime.securesms.stories.viewer.page.StoryDisplayTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

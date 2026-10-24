@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:51.124Z" hostname="4f1d1be5db40" time="3.363">
+  <properties/>
+  <testcase name="batchSafetyNumberCheckSync_batchOf10WithSmallBatchSize_noChanges" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.527"/>
+  <testcase name="batchSafetyNumberCheckSync_batchOf2_oneChange" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.534"/>
+  <testcase name="batchSafetyNumberCheckSync_serverError" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.384"/>
+  <testcase name="batchSafetyNumberCheckSync_batchOf1_oneChange" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.384"/>
+  <testcase name="batchSafetyNumberCheckSync_batchOf1_noChanges" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.374"/>
+  <testcase name="batchSafetyNumberCheckSync_badJson" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.371"/>
+  <testcase name="batchSafetyNumberCheckSync_networkError" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.378"/>
+  <testcase name="batchSafetyNumberCheckSync_batchOf1_abortOnPriorRecentCheck" classname="org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest" time="0.404"/>
+  <system-out><![CDATA[i[SafetyNumberRepository] Checking on 9 identities...
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 1, requests: 6, batch-fetches: 2, saving-identities: 0, total: 10
+i[SafetyNumberRepository] Checking on 2 identities...
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 2, batch-fetches: 1, saving-identities: 150, total: 153
+i[SafetyNumberRepository] Checking on 1 identities...
+w[SafetyNumberRepository] Unable to fetch identities NonSuccessfulResponseCodeException:StatusCode: 400
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 1, saving-identities: 0, total: 1
+i[SafetyNumberRepository] Checking on 1 identities...
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 0, saving-identities: 1, total: 2
+i[SafetyNumberRepository] Checking on 1 identities...
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 0, saving-identities: 0, total: 1
+i[SafetyNumberRepository] Checking on 1 identities...
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 0, saving-identities: 0, total: 1
+i[SafetyNumberRepository] Checking on 1 identities...
+w[SafetyNumberRepository] Unable to fetch identities IOException:null
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 0, saving-identities: 0, total: 1
+i[SafetyNumberRepository] Checking on 1 identities...
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 0, saving-identities: 0, total: 1
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, total: 0
+i[SafetyNumberRepository] Checking on 1 identities...
+d[SafetyNumberRepository] No identity key mismatches
+d[SafetyNumberRepository] [batch-snc] recipient-ids: 0, recipient-resolve: 0, requests: 1, batch-fetches: 0, saving-identities: 0, total: 1
+]]></system-out>
+  <system-err><![CDATA[org.signal.network.exceptions.NonSuccessfulResponseCodeException: StatusCode: 400
+	at org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest.batchSafetyNumberCheckSync_serverError(SafetyNumberRepositoryTest.kt:272)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+java.io.IOException
+	at org.thoughtcrime.securesms.contacts.paged.SafetyNumberRepositoryTest.batchSafetyNumberCheckSync_networkError(SafetyNumberRepositoryTest.kt:294)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.junit.internal.runners.statements.RunAfters.evaluate(RunAfters.java:27)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.junit.internal.runners.statements.RunBefores.evaluate(RunBefores.java:26)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

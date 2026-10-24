@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.MmsDatabaseTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:46:17.186Z" hostname="4f1d1be5db40" time="1.966">
+  <properties/>
+  <testcase name="Given unviewed incoming stories in database, when I getStoryViewState, then I expect UNVIEWED" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.178"/>
+  <testcase name="isGroupQuitMessage when GV2 leave update, return false" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.157"/>
+  <testcase name="isGroupQuitMessage when normal message, return false" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.166"/>
+  <testcase name="Given only outgoing story in database, when I getStoryViewState, then I expect VIEWED" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.16"/>
+  <testcase name="Given mix of viewed and unviewed incoming stories in database, when I getStoryViewState, then I expect UNVIEWED" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.168"/>
+  <testcase name="Given viewed incoming stories in database, when I getStoryViewState, then I expect VIEWED" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.161"/>
+  <testcase name="isGroupQuitMessage when legacy quit message, return true" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.169"/>
+  <testcase name="Given no stories in database, when I getStoryViewState, then I expect NONE" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.161"/>
+  <testcase name="getLatestGroupQuitTimestamp when legacy quit, return message timestamp" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.178"/>
+  <testcase name="getLatestGroupQuitTimestamp when GV2 leave update message, return -1" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.152"/>
+  <testcase name="Given stories in database not in thread 1, when I getStoryViewState for thread 1, then I expect NONE" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.151"/>
+  <testcase name="getLatestGroupQuitTimestamp when only normal message, return -1" classname="org.thoughtcrime.securesms.database.MmsDatabaseTest" time="0.162"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

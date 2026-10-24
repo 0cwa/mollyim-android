@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:07.644Z" hostname="4f1d1be5db40" time="0.15">
+  <properties/>
+  <testcase name="openForRestore isRootedAtSignalBackups is false when parent is named SignalBackups but contains a real SignalBackups subfolder" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.036"/>
+  <testcase name="openForRestore succeeds when given the parent directory" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.035"/>
+  <testcase name="openForRestore returns null for a directory named SignalBackups without expected structure" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.017"/>
+  <testcase name="openForRestore succeeds when given the SignalBackups directory directly" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.015"/>
+  <testcase name="openForRestore isRootedAtSignalBackups is false when given the parent directory" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.015"/>
+  <testcase name="openForRestore returns null for an unrelated directory" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.014"/>
+  <testcase name="openForRestore isRootedAtSignalBackups is true when given the SignalBackups directory directly" classname="org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystemTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

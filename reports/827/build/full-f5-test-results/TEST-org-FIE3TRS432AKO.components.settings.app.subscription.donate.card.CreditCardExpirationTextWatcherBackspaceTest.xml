@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherBackspaceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:30.350Z" hostname="4f1d1be5db40" time="0.08">
+  <properties/>
+  <testcase name="getTextWatcherOutput[0: getTextWatcherOutput(..) = 12/23, 12/2]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherBackspaceTest" time="0.029"/>
+  <testcase name="getTextWatcherOutput[1: getTextWatcherOutput(..) = 12/2, 12/]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherBackspaceTest" time="0.016"/>
+  <testcase name="getTextWatcherOutput[2: getTextWatcherOutput(..) = 12/, 1]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherBackspaceTest" time="0.014"/>
+  <testcase name="getTextWatcherOutput[3: getTextWatcherOutput(..) = 1, ]" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.card.CreditCardExpirationTextWatcherBackspaceTest" time="0.014"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

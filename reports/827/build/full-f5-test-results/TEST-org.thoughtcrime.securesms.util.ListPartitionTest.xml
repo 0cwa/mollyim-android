@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.ListPartitionTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.997Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="testPartitionEven" classname="org.thoughtcrime.securesms.util.ListPartitionTest" time="0.0"/>
+  <testcase name="testPathological" classname="org.thoughtcrime.securesms.util.ListPartitionTest" time="0.001"/>
+  <testcase name="testPartitionOdd" classname="org.thoughtcrime.securesms.util.ListPartitionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

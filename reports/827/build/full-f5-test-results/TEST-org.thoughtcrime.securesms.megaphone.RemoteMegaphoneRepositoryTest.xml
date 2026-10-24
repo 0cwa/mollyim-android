@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:30.242Z" hostname="4f1d1be5db40" time="0.195">
+  <properties/>
+  <testcase name="getRemoteMegaphoneToShow_oneMegaphone" classname="org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest" time="0.019"/>
+  <testcase name="getRemoteMegaphoneToShow_oldSnoozedMegaphone" classname="org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest" time="0.014"/>
+  <testcase name="getRemoteMegaphoneToShow_noMegaphones" classname="org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest" time="0.01"/>
+  <testcase name="getRemoteMegaphoneToShow_snoozedMegaphone" classname="org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest" time="0.01"/>
+  <testcase name="getRemoteMegaphoneToShow_multipleOldSnoozedMegaphone" classname="org.thoughtcrime.securesms.megaphone.RemoteMegaphoneRepositoryTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

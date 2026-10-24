@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.webrtc.audio.FullSignalAudioManagerApi31Test" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:55.074Z" hostname="4f1d1be5db40" time="0.408">
+  <properties/>
+  <testcase name="does not reassert when Android reports the same user selected communication device" classname="org.thoughtcrime.securesms.webrtc.audio.FullSignalAudioManagerApi31Test" time="0.345"/>
+  <testcase name="reasserts user selected device when Android reports a different communication device" classname="org.thoughtcrime.securesms.webrtc.audio.FullSignalAudioManagerApi31Test" time="0.059"/>
+  <system-out><![CDATA[i[SignalAudioManager31] OnCommunicationDeviceChangedListener: id: 20 type: BUILTIN_SPEAKER
+i[SignalAudioManager31] stop: playDisconnect: false currentState: UNINITIALIZED
+i[IncomingRinger] Cancelling vibrator
+i[SignalAudioManager31] stop: restoring mode to UNKNOWN(-2)
+d[SignalAudioManager31] Abandoned audio focus for VOICE_CALL streams
+d[SignalAudioManager31] Stopped
+i[SignalAudioManager] Shutting down command and control
+i[SignalAudioManager31] OnCommunicationDeviceChangedListener: id: 11 type: BUILTIN_EARPIECE
+w[SignalAudioManager31] OnCommunicationDeviceChangedListener: Device changed to 11 but user selected 10. Re-asserting user selection.
+w[SignalAudioManager31] OnCommunicationDeviceChangedListener: probableCause: mode_not_in_communication state: RUNNING mode: MODE_NORMAL defaultDevice: EARPIECE callbackDevice: 11:BUILTIN_EARPIECE:Phone earpiece userSelected: 10:BUILTIN_SPEAKER:Phone speaker currentDevice: 11:BUILTIN_EARPIECE:Phone earpiece availableDevices: [10:BUILTIN_SPEAKER:Phone speaker, 11:BUILTIN_EARPIECE:Phone earpiece]
+i[SignalAudioManager31] stop: playDisconnect: false currentState: UNINITIALIZED
+i[IncomingRinger] Cancelling vibrator
+i[SignalAudioManager31] stop: restoring mode to UNKNOWN(-2)
+d[SignalAudioManager31] Abandoned audio focus for VOICE_CALL streams
+d[SignalAudioManager31] Stopped
+i[SignalAudioManager] Shutting down command and control
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.crash.CrashConfigTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:45:03.611Z" hostname="4f1d1be5db40" time="2.71">
+  <properties/>
+  <testcase name="multiple configs" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.532"/>
+  <testcase name="simple name pattern" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.233"/>
+  <testcase name="simple stackTrace pattern" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.225"/>
+  <testcase name="ignore invalid json" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.206"/>
+  <testcase name="ignore empty json" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.211"/>
+  <testcase name="simple message pattern" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.221"/>
+  <testcase name="ignore configs without a pattern" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.214"/>
+  <testcase name="ignore zero percent" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.214"/>
+  <testcase name="all fields set" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.22"/>
+  <testcase name="empty fields are considered null" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.211"/>
+  <testcase name="not setting percent is the same as zero percent" classname="org.thoughtcrime.securesms.crash.CrashConfigTest" time="0.221"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

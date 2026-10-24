@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.DeferredTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.856Z" hostname="4f1d1be5db40" time="0.0">
+  <properties/>
+  <testcase name="givenSetDeferredFalse_whenIDeferARunnable_thenIExecuteImmediately" classname="org.thoughtcrime.securesms.util.DeferredTest" time="0.0"/>
+  <testcase name="givenADeferredRunnable_whenIDeferADifferentRunnableAndSetDeferredFalse_thenIExpectOnlySecondRunnableToExecute" classname="org.thoughtcrime.securesms.util.DeferredTest" time="0.0"/>
+  <testcase name="givenSetDeferredFalse_whenISetToTrueAndDeferRunnable_thenIDoNotExecute" classname="org.thoughtcrime.securesms.util.DeferredTest" time="0.0"/>
+  <testcase name="givenDeferredRunnable_whenIDeferNullAndSetDeferredFalse_thenIDoNotExecute" classname="org.thoughtcrime.securesms.util.DeferredTest" time="0.0"/>
+  <testcase name="givenANullRunnable_whenISetDeferredToFalse_thenIDoNotThrow" classname="org.thoughtcrime.securesms.util.DeferredTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.AttachmentUtilTest" tests="44" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:01.094Z" hostname="4f1d1be5db40" time="36.742">
+  <properties/>
+  <testcase name="video content type uses video setting" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="1.041"/>
+  <testcase name="untrusted conversation returns false" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.895"/>
+  <testcase name="long text within 64 KiB cap permitted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.882"/>
+  <testcase name="restore image permitted when allowed and not in call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.896"/>
+  <testcase name="outgoing message is trusted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.916"/>
+  <testcase name="null content type falls to documents setting" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.925"/>
+  <testcase name="restore image blocked when in call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.815"/>
+  <testcase name="null toRecipient falls to individual trust" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.809"/>
+  <testcase name="roaming network uses roaming allowed set" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.9"/>
+  <testcase name="unnamed audio without voice note flag uses audio setting" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.912"/>
+  <testcase name="ciphertext over 200MB rejects" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.811"/>
+  <testcase name="restore null attachment returns true" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.79"/>
+  <testcase name="long text exceeding 64 KiB cap rejected" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.812"/>
+  <testcase name="large voice note blocked when in call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.81"/>
+  <testcase name="group without profile sharing falls to individual trust" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.842"/>
+  <testcase name="deleteAttachment with single attachment deletes message and returns its record" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.871"/>
+  <testcase name="small voice note always permitted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.793"/>
+  <testcase name="zero size rejects" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.811"/>
+  <testcase name="no network yields empty allowed set" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.789"/>
+  <testcase name="document blocked when in call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.803"/>
+  <testcase name="restore null contentType returns false" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.802"/>
+  <testcase name="restore image blocked when type not allowed" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.801"/>
+  <testcase name="restore non-image returns false" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.789"/>
+  <testcase name="group with profile sharing is trusted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.806"/>
+  <testcase name="large voice note blocked when audio not allowed" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.824"/>
+  <testcase name="group without profile sharing and untrusted individual returns false" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.809"/>
+  <testcase name="image content type uses image setting" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.799"/>
+  <testcase name="mobile network uses mobile allowed set" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.81"/>
+  <testcase name="in-call blocks non-sticker paths" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.818"/>
+  <testcase name="video gif requires image allowed type" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.782"/>
+  <testcase name="null attachment returns true" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.8"/>
+  <testcase name="document content type uses documents setting" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.802"/>
+  <testcase name="named audio uses audio setting" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.807"/>
+  <testcase name="large sticker requires image allowed type" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.83"/>
+  <testcase name="small sticker always permitted regardless of allowed types or in-call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.897"/>
+  <testcase name="large sticker blocked when image type not allowed" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.819"/>
+  <testcase name="large voice note requires audio allowed type" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.815"/>
+  <testcase name="deleteAttachment with multiple attachments deletes only the attachment and returns null" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.825"/>
+  <testcase name="large sticker blocked when in call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.867"/>
+  <testcase name="release notes recipient is trusted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.842"/>
+  <testcase name="NoSuchMessageException treats as untrusted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.806"/>
+  <testcase name="profile sharing from recipient is trusted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.822"/>
+  <testcase name="self recipient is trusted" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.832"/>
+  <testcase name="video gif blocked when in call" classname="org.thoughtcrime.securesms.util.AttachmentUtilTest" time="0.812"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

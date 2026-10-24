@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:04.490Z" hostname="4f1d1be5db40" time="0.892">
+  <properties/>
+  <testcase name="givenFileOnDiskOnly_whenCleanOrphans_thenFileIsDeleted" classname="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" time="0.38"/>
+  <testcase name="givenOrphanFileAndOrphanDbRow_whenCleanOrphans_thenBothDeleted" classname="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" time="0.141"/>
+  <testcase name="givenInDatabaseOnly_whenCleanOrphans_thenDatabaseRowIsDeleted" classname="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" time="0.089"/>
+  <testcase name="givenFileOnDiskAndInDatabase_whenCleanOrphans_thenNothingIsDeleted" classname="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" time="0.099"/>
+  <testcase name="givenNoFilesAndNoDatabase_whenCleanOrphans_thenNothingExplodes" classname="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" time="0.09"/>
+  <testcase name="givenTextAvatarAndOrphanFile_whenCleanOrphans_thenOrphanFileDeletedAndTextAvatarUntouched" classname="org.thoughtcrime.securesms.avatar.AvatarPickerStorageTest_cleanOrphans" time="0.089"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

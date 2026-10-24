@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:50.448Z" hostname="4f1d1be5db40" time="0.154">
+  <properties/>
+  <testcase name="Given an empty collection, when I getUnresolvedPendingParticipants, then I expect an empty set" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.012"/>
+  <testcase name="Given a collection with 10 PENDING entries, when I getAllPendingParticipants, then I expect all entries" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.011"/>
+  <testcase name="Given a list of PENDING, when I withRecipients with empty list, then I clear the collection" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given an empty collection, when I getAllPendingParticipants, then I expect an empty set" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given a collection with 10 PENDING entries and duration in the past, when I getAllPendingParticipants, then I expect all entries" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.01"/>
+  <testcase name="Given a denied recipient with a state change before since, when I getAllPendingParticipants, then I do not expect the denied recipient" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.01"/>
+  <testcase name="Given a participant is denied once, when I withRecipients, then I expect the state to be changed to PENDING" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given a denied recipient, when I getUnresolvedPendingParticipants, then I do not expect the denied recipient" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given a mixed list, when I withRecipients with empty list, then I clear the PENDINGs" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.011"/>
+  <testcase name="Given an approved recipient, when I getUnresolvedPendingParticipants, then I do not expect the approved recipient" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given a collection with 10 PENDING entries and duration in the future, when I getAllPendingParticipants, then I expect all entries" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given a denied recipient with a state change after since, when I getAllPendingParticipants, then I expect denied recipient" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.012"/>
+  <testcase name="Given an empty collection, when I withRecipients, then I expect all recipients to be added" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.011"/>
+  <testcase name="Given an approved recipient with a state change before since, when I getAllPendingParticipants, then I do not expect the approved recipient" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.009"/>
+  <testcase name="Given an approved recipient with a state change after since, when I getAllPendingParticipants, then I expect approved recipient" classname="org.thoughtcrime.securesms.service.webrtc.PendingParticipantCollectionTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

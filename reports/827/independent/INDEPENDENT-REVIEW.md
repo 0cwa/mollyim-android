@@ -13,7 +13,8 @@ Source projection/replay tree: `26956e0f159c0b60719d4a20667aeef8913fa365`
 - **PASS — two independent final replays.** `python3 tools/827/replay_twice.py --repo . --manifest patches/827/series.yaml --worktree-prefix /tmp/codex-827-final-22patch --report reports/827/independent/replay-frozen-final.json` produced `26956e0f159c0b60719d4a20667aeef8913fa365` in both runs, matching the projected source tree. Each run reports 83 changed paths, zero unowned paths, 12/12 exact files, 12/12 anchored fragments, 62/62 adaptation hashes, one target-absent test, no whitespace errors, and no unmerged entries.
 - **PASS — compressed residuals.** All 70 gzip artifacts per run pass independent decompression, hash, and byte-count checks. Their timestamps are zero and corresponding compressed artifacts are byte-identical across runs. I removed my temporary worktrees; the source HEAD did not change.
 - **PASS — focused app tests and formatting.** Direct JUnit XML inspection confirms 9 receiver tests plus 16 URI tests passed with zero failures. The F5 changed-endpoint test verifies the refresh job’s failure path: stale availability becomes `UNKNOWN`, endpoint/device state remains intact, and network fallback restarts. A same-endpoint callback leaves registration and job scheduling unchanged. The formatted app ktlint run passed.
-- **PENDING — broad Android checks and CI.** The full staging suite has not completed. The prior full build ended in disk exhaustion with URI fixture failures; the URI regression now passes in focused tests, but a full current build has not passed. GitHub Actions run `40105996791` failed at patch application before Android checks. The corrected workflow has not yet produced a result.
+- **PASS — full staging tests and app lint.** On feature source commit `36578d8bb7058f862d5dd379440a12c1fbd7f3af`, the unfiltered staging unit task passed 2,800 tests across 251 XML suites, with zero failures/errors and 78 skipped. I independently checked that every JUnit XML count and SHA-256 matches the machine summary. The full test log hash is `229ad4620f493207925116bdb5937b0fc73e1eed462ab633cbaaacd649955a83`; the separate app ktlint log hash is `a5b47598a6eff3f286494d0e747569a53a94defd5afe0f2bb84f8202c`. Both logs contain `BUILD SUCCESSFUL`.
+- **PENDING — current-head CI and full build matrix.** The previous full Android build ended in disk exhaustion with historical URI fixture failures; the corrected URI tests and full staging suite now pass, but a current full project build/variant assembly has not passed. GitHub Actions run `40105996791` failed at patch application before Android checks. Run `40108357095` was still ongoing at the latest status; no final result was available for this review.
 
 ## Security and parity limits
 
@@ -27,4 +28,5 @@ The adaptation hashes and residual diffs show reproducibility, not semantic equi
 - `inventory-validation-final.json`
 - `replay-frozen-final.json` and its per-run reports/logs
 - `gzip-source-projection-final.json`
+- `full-staging-independent-check.json`
 - `reports/827/inventory/resource-parity.json`

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" tests="15" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.811Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="exchange[0]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.001"/>
+  <testcase name="exchange[1]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[2]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[3]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[4]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[5]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[6]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[7]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[8]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[9]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[10]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[11]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[12]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[13]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <testcase name="exchange[14]" classname="org.thoughtcrime.securesms.payments.currency.ExchangeRate_exchange" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

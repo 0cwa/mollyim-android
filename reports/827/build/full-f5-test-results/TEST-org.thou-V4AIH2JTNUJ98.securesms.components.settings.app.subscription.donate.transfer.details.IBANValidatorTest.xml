@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:37.876Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="Given a valid IBAN, when I validate, then I expect COMPLETELY_VALID" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.002"/>
+  <testcase name="Given an invalid country, when I validate, then I expect INVALID_COUNTRY" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <testcase name="Given too short and not focused, when I validate, then I expect TOO_SHORT" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <testcase name="Given a finnish IBAN, when I validate, then I expect POTENTIALLY_VALID" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <testcase name="Given a blank IBAN, when I validate, then I expect POTENTIALLY_VALID" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <testcase name="Given too long, when I validate, then I expect TOO_LONG" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <testcase name="Given an invalid IBAN, when I validate, then I expect INVALID_MOD_97" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <testcase name="Given too short and focused, when I validate, then I expect POTENTIALLY_VALID" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.transfer.details.IBANValidatorTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

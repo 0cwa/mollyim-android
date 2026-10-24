@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.search.SearchRepositoryTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:49.354Z" hostname="4f1d1be5db40" time="0.102">
+  <properties/>
+  <testcase name="makeSnippetReturnsShortBodyUnchanged" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.014"/>
+  <testcase name="tokenizeQueryEmptyForBlank" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.01"/>
+  <testcase name="makeSnippetDoesNotWrapStartWhenMatchAtBeginning" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.011"/>
+  <testcase name="makeSnippetFallbackTruncatesLongBodyWithNoMatch" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.01"/>
+  <testcase name="makeSnippetFallbackReturnsFullBodyUnderMaxSize" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.01"/>
+  <testcase name="tokenizeQuerySplitsOnWhitespaceAndDropsEmpties" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.025"/>
+  <testcase name="makeSnippetIsCaseInsensitive" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.012"/>
+  <testcase name="makeSnippetWrapsBothSidesForMatchInMiddle" classname="org.thoughtcrime.securesms.search.SearchRepositoryTest" time="0.009"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -10,6 +10,14 @@ cd molly-827-reproducible-poc
 
 If using an automated checkout action, set `fetch-depth: 0` and enable recursive submodules. Use a disposable checkout with enough disk space; the full Android build writes substantial temporary and APK output.
 
+Check that the checkout is on the review branch and clean before running the proof. The `origin` remote is expected to be the Molly repository in this clone; commands that replay patches explicitly use `--repo .` so they do not accidentally treat a source mirror as the working candidate.
+
+```sh
+git remote -v
+git switch dev/molly-827-reproducible-poc
+git status --short --branch
+```
+
 ## Toolchain
 
 The recorded environment used Gradle wrapper 9.4.1, JDK 21, Kotlin 2.2.20, Android Gradle Plugin 9.2.1, Android SDK API 36.1, Build Tools 36.0.0, and NDK 28.0.13004108. Install JDK 21 (for example, `openjdk-21-jdk` on Ubuntu), then install the Android packages through the SDK Manager. The wrapper pins Gradle; the project selects the matching SDK and NDK. For API 36.1 / Build Tools 36.0.0 / NDK 28.0.13004108, the command is:
@@ -59,7 +67,7 @@ Run the full replay and retain the machine report, logs, and residual diffs unde
 python3 tools/827/replay_twice.py --repo . --manifest patches/827/series.yaml --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json
 ```
 
-The explicit `--repo .` is important: it uses this candidate checkout, not the checkout’s `origin` remote (which may point to a local source mirror). A PASS means both independent patch applications produced identical Git trees and the declared ownership checks passed. The first CI attempt passed manifest and inventory validation but returned `PATCH_FAILED` during replay 1, before Android checks. Its summarized log did not expose the per-patch `git am` diagnostic, so the exact cause remains unconfirmed. Replay now supplies explicit committer identity and disables commit signing; a fresh Git-config replay fixture passes. Separately, replay skips LFS smudging, so the workflow runs `git lfs checkout` and `git lfs fsck` in the replay worktree before screenshot validation/build. The corrected current-head CI run is pending; see run 40105996791 for the initial failure. It does not establish application behavior or a successful Android build. The per-run JSON and logs are in the same report directory. After preserving evidence, remove only the replay worktrees:
+The explicit `--repo .` is important: it uses this candidate checkout, not the checkout’s `origin` remote (which may point to a local source mirror). A PASS means both independent patch applications produced identical Git trees and the declared ownership checks passed. The first CI attempt passed manifest and inventory validation but returned `PATCH_FAILED` during replay 1, before Android checks. Its summarized log did not expose the per-patch `git am` diagnostic, so the exact cause remains unconfirmed. Replay now supplies explicit committer identity and disables commit signing; a fresh Git-config replay fixture passes. Separately, replay skips LFS smudging, so the workflow runs `git lfs checkout` and `git lfs fsck` in the replay worktree before screenshot validation/build. Corrected run 40108357095 passed source validation, inventory validation, both replays, and LFS hydration. Its Android build/test/lint step is still running; see the run link in `reports/827/acceptance.json`. It does not establish application behavior or a successful Android build until the run concludes. The per-run JSON and logs are in the same report directory. After preserving evidence, remove only the replay worktrees:
 
 ```sh
 git worktree remove --force /tmp/molly827-run-1
@@ -88,13 +96,24 @@ For the URI suffix, UnifiedPush receiver, and F5 endpoint retry tests:
   --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest
 ```
 
-The selected F5 working-tree run passed 25/25 tests (16 URI cases and 9 receiver cases). Source file hashes, JUnit XML, and log hash are recorded in `reports/827/build/focused-test-results/f5-2g-summary.json`. The F5 source change is included in patch 22 and the current projected replay tree.
+The selected F5 working-tree run passed 25/25 tests (16 URI cases and 9 receiver cases). Source file hashes, JUnit XML, and log hash are recorded in `reports/827/build/focused-test-results/f5-2g-summary.json`. The F5 source change is included in patch 22 and the current projected replay tree. A clean online clone should omit `--offline`; this recorded run used the prepared dependency cache.
 
-App `:Signal-Android:ktlintCheck` passed on the formatted source (`reports/827/build/ktlint-f5-formatted-20261024.log`). The full staging unit suite has not completed. The first attempt ran with the default 512 MiB test worker and stopped with exit 130 after repeated heap exhaustion in AttachmentBackfill MockK setup. A second 2 GiB attempt was stopped before results while the patch set was being updated; the final source run is now active at `reports/827/build/testPlayStagingDebug-full-final-2g-ktlint-20261024.log`. `tools/827/test-worker-heap.init.gradle` sets one test fork to 2 GiB; use it for full test runs.
+Run the complete Play Staging Debug unit-test suite and app lint with the recorded single 2 GiB test worker:
+
+```sh
+./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
+  --init-script tools/827/test-worker-heap.init.gradle \
+  -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
+  :Signal-Android:testPlayStagingDebugUnitTest :Signal-Android:ktlintCheck
+```
+
+App `:Signal-Android:ktlintCheck` passed on the formatted source (`reports/827/build/ktlint-f5-formatted-20261024.log`). The final unfiltered staging suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites; `:Signal-Android:ktlintCheck` passed. The exact log is `reports/827/build/testPlayStagingDebug-full-final-2g-ktlint-20261024.log` and per-suite receipts are in `reports/827/build/full-f5-test-results/summary.json`. Earlier 512 MiB and interrupted 2 GiB attempts remain historical failures. `tools/827/test-worker-heap.init.gradle` sets one test fork to 2 GiB; use it for full test runs.
+
+The release-source compile task `:Signal-Android:compileWebsiteProdReleaseSources` also passed with strict dependency verification on source commit `36578d8bb7058f862d5dd379440a12c1fbd7f3af` (3 tasks executed, 228 up-to-date). Its report and log are `reports/827/build/compileWebsiteProdReleaseSources-summary.json` and `reports/827/build/compileWebsiteProdReleaseSources-final-20261024.log`. This compiles release sources only; it does not assemble or sign an APK.
 
 The earlier full project build at the audited source snapshot also stopped with exit 130 after disk exhaustion, reaching 15 of 23 variants and 14 test suites. It recorded 30 URI suffix fixture failures; the fixture is now adapted. That build did not cover the current 22-patch tree. See `/workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json` and `reports/827/build/history/attempt20-retry2/`. No full project build has passed for the current source.
 
-The first CI run (`40105996791`) passed manifest and inventory checks, then failed with `PATCH_FAILED` during replay before Android steps. The exact per-patch cause is unconfirmed. Replay now uses explicit Git committer identity and disables commit signing, backed by a fresh-config replay fixture. Separately, the workflow hydrates and checks LFS files in the replay worktree before screenshot validation. A corrected current-head CI run is pending.
+The first CI run (`40105996791`) passed manifest and inventory checks, then failed with `PATCH_FAILED` during replay before Android steps. The exact per-patch cause is unconfirmed. Replay now uses explicit Git committer identity and disables commit signing, backed by a fresh-config replay fixture. Separately, the workflow hydrates and checks LFS files in the replay worktree before screenshot validation. Corrected run 40108357095 has passed source validation, replay, and LFS hydration; its Android build/test/lint step is still running as of the latest check.
 
 ## Upgrade simulation
 

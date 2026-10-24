@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" tests="16" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.331Z" hostname="4f1d1be5db40" time="0.319">
+  <properties/>
+  <testcase name="parseOpenGraphFields[0]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.104"/>
+  <testcase name="parseOpenGraphFields[1]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.016"/>
+  <testcase name="parseOpenGraphFields[2]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.015"/>
+  <testcase name="parseOpenGraphFields[3]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.015"/>
+  <testcase name="parseOpenGraphFields[4]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.014"/>
+  <testcase name="parseOpenGraphFields[5]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.014"/>
+  <testcase name="parseOpenGraphFields[6]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.013"/>
+  <testcase name="parseOpenGraphFields[7]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.013"/>
+  <testcase name="parseOpenGraphFields[8]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.013"/>
+  <testcase name="parseOpenGraphFields[9]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.013"/>
+  <testcase name="parseOpenGraphFields[10]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.012"/>
+  <testcase name="parseOpenGraphFields[11]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.012"/>
+  <testcase name="parseOpenGraphFields[12]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.012"/>
+  <testcase name="parseOpenGraphFields[13]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.011"/>
+  <testcase name="parseOpenGraphFields[14]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.012"/>
+  <testcase name="parseOpenGraphFields[15]" classname="org.thoughtcrime.securesms.linkpreview.LinkPreviewUtilTest_parseOpenGraphFields" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

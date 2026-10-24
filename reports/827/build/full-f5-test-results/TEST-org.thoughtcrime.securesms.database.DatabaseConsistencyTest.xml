@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.DatabaseConsistencyTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:45:27.211Z" hostname="4f1d1be5db40" time="0.448">
+  <properties/>
+  <testcase name="testForeignKeyIndexCoverage" classname="org.thoughtcrime.securesms.database.DatabaseConsistencyTest" time="0.141"/>
+  <testcase name="testUpgradeConsistency" classname="org.thoughtcrime.securesms.database.DatabaseConsistencyTest" time="0.305"/>
+  <system-out><![CDATA[i[SignalDatabaseMigration] Running migration for version 182: V182_CallTableMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 182 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 183: V183_CallLinkTableMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 183 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 184: V184_CallLinkReplaceIndexMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 184 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 185: V185_MessageRecipientsAndEditMessageMigration. Foreign keys: false
+w[V185_MessageRecipientsA] Pre-KV database -- searching for ACI in shared prefs.
+w[V185_MessageRecipientsA] Failed to find by ACI! Will try by E164.
+w[V185_MessageRecipientsA] Pre-KV database -- searching for E164 in shared prefs.
+w[V185_MessageRecipientsA] Also failed to find by E164!
+i[V185_MessageRecipientsA] Could not find ourselves in the DB! Assuming this is an install that hasn't been registered yet.
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_read_and_notified_and_thread_id_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_type_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_date_sent_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_date_server_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_thread_date_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_reactions_unread_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_story_type_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_parent_story_id_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_thread_story_parent_story_scheduled_date_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS message_quote_id_quote_author_scheduled_date_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_exported_index
+d[V185_MessageRecipientsA] Executing: DROP index IF EXISTS mms_id_type_payment_transactions_index
+d[V185_MessageRecipientsA] Executing: DROP trigger IF EXISTS message_ai
+d[V185_MessageRecipientsA] Executing: DROP trigger IF EXISTS message_ad
+d[V185_MessageRecipientsA] Executing: DROP trigger IF EXISTS message_au
+d[V185_MessageRecipientsA] Executing: DROP trigger IF EXISTS msl_message_delete
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_read_and_notified_and_thread_id_index ON message (read, notified, thread_id)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_type_index ON message (type)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_date_sent_from_to_thread_index ON message (date_sent, from_recipient_id, to_recipient_id, thread_id)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_date_server_index ON message (date_server)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_thread_date_index ON message (thread_id, date_received)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_reactions_unread_index ON message (reactions_unread)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_story_type_index ON message (story_type)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_parent_story_id_index ON message (parent_story_id)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_thread_story_parent_story_scheduled_date_latest_revision_id_index ON message (thread_id, date_received, story_type, parent_story_id, scheduled_date, latest_revision_id)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_quote_id_quote_author_scheduled_date_index ON message (quote_id, quote_author, scheduled_date)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_exported_index ON message (exported)
+d[V185_MessageRecipientsA] Executing: CREATE INDEX message_id_type_payment_transactions_index ON message (_id,type) WHERE type & 12884901888 != 0
+d[V185_MessageRecipientsA] Executing: CREATE TRIGGER message_ai AFTER INSERT ON message BEGIN
+          INSERT INTO message_fts(rowid, body, thread_id) VALUES (new._id, new.body, new.thread_id);
+        END
+d[V185_MessageRecipientsA] Executing: CREATE TRIGGER message_ad AFTER DELETE ON message BEGIN
+          INSERT INTO message_fts(message_fts, rowid, body, thread_id) VALUES('delete', old._id, old.body, old.thread_id);
+        END
+d[V185_MessageRecipientsA] Executing: CREATE TRIGGER message_au AFTER UPDATE ON message BEGIN
+          INSERT INTO message_fts(message_fts, rowid, body, thread_id) VALUES('delete', old._id, old.body, old.thread_id);
+          INSERT INTO message_fts(rowid, body, thread_id) VALUES (new._id, new.body, new.thread_id);
+        END
+d[V185_MessageRecipientsA] Executing: CREATE TRIGGER msl_message_delete AFTER DELETE ON message 
+        BEGIN 
+        	DELETE FROM msl_payload WHERE _id IN (SELECT payload_id FROM msl_message WHERE message_id = old._id);
+        END
+d[V185_MessageRecipientsA] [migration] get-self: 3, drop-dependents: 1, create-table: 0, copy-data: 0, update-data: 0, drop-old-table: 0, rename-table: 1, recreate-dependents: 1, fk-check: 0, total: 6
+i[SignalDatabaseMigration] Successfully completed migration for version 185 in 7 ms
+i[SignalDatabaseMigration] Running migration for version 186: V186_ForeignKeyIndicesMigration. Foreign keys: false
+d[V186_ForeignKeyIndicesM] [migration] original_message_id: 0, latest_revision_id: 0, from_recipient_id: 0, to_recipient_id: 0, reaction_author: 0, message_fix: 0, analyze: 0, total: 0
+i[SignalDatabaseMigration] Successfully completed migration for version 186 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 187: V187_MoreForeignKeyIndexesMigration. Foreign keys: false
+d[V187_MoreForeignKeyInde] [migration] call_link: 0, call_peer: 0, dlist_member: 0, msl_payload: 0, total: 0
+i[SignalDatabaseMigration] Successfully completed migration for version 187 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 188: V188_FixMessageRecipientsAndEditMessageMigration. Foreign keys: false
+i[V188_FixMessageRecipien] Already performed the migration! No need to do this.
+i[SignalDatabaseMigration] Successfully completed migration for version 188 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 189: V189_CreateCallLinkTableColumnsAndRebuildFKReference. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 189 in 3 ms
+i[SignalDatabaseMigration] Running migration for version 190: V190_UniqueMessageMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 190 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 191: V191_UniqueMessageMigrationV2. Foreign keys: false
+d[V191_UniqueMessageMigra] [migration] fix-timers-errors: 0, dedupe: 0, dupe-purge: 0, fk-deletes: 0, index: 0, fk-check: 0, total: 1
+i[SignalDatabaseMigration] Successfully completed migration for version 191 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 192: V192_CallLinkTableNullableRootKeys. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 192 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 193: V193_BackCallLinksWithRecipient. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 193 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 194: V194_KyberPreKeyMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 194 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 195: V195_GroupMemberForeignKeyMigration. Foreign keys: false
+d[V195_GroupMemberForeign] [migration] create: 0, fix-remapping: 0, trim-bad-fk: 0, copy-data: 1, index: 0, fk-check: 0, total: 1
+i[SignalDatabaseMigration] Successfully completed migration for version 195 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 196: V196_BackCallLinksWithRecipientV2. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 196 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 197: V197_DropAvatarColorFromCallLinks. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 197 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 198: V198_AddMacDigestColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 198 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 199: V199_AddThreadActiveColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 199 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 200: V200_ResetPniColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 200 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 201: V201_RecipientTableValidations. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 201 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 202: V202_DropMessageTableThreadDateIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 202 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 203: V203_PreKeyStaleTimestamp. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 203 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 204: V204_GroupForeignKeyMigration. Foreign keys: false
+i[V204_GroupForeignKeyMig] There were 0 groups that referenced non-existent recipients.
+i[V204_GroupForeignKeyMig] There were 0 members that referenced non-existent groups.
+d[V204_GroupForeignKeyMig] [migration] groups-table: 0, membership-table: 1, membership-index: 2, fk-check: 0, total: 4
+i[SignalDatabaseMigration] Successfully completed migration for version 204 in 4 ms
+i[SignalDatabaseMigration] Running migration for version 205: V205_DropPushTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 205 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 206: V206_AddConversationCountIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 206 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 207: V207_AddChunkSizeColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 207 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 209: V209_ClearRecipientPniFromAciColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 209 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 210: V210_FixPniPossibleColumns. Foreign keys: false
+i[V210_FixPniPossibleColu] No local PNI, nothing to migrate
+i[SignalDatabaseMigration] Successfully completed migration for version 210 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 211: V211_ReceiptColumnRenames. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 211 in 10 ms
+i[SignalDatabaseMigration] Running migration for version 212: V212_RemoveDistributionListUniqueConstraint. Foreign keys: false
+d[V212_RemoveDistribution] [migration] main-table: 1, members-table: 1, fk-check: 0, total: 3
+i[SignalDatabaseMigration] Successfully completed migration for version 212 in 3 ms
+i[SignalDatabaseMigration] Running migration for version 213: V213_FixUsernameInE164Column. Foreign keys: true
+i[V213_FixUsernameInE164C] Deleted 0 username-only recipients.
+i[SignalDatabaseMigration] Successfully completed migration for version 213 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 214: V214_PhoneNumberSharingColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 214 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 215: V215_RemoveAttachmentUniqueId. Foreign keys: false
+d[V215_RemoveAttachmentUn] [migration] copy-data: 0.11, drop-old: 0.06, create-indexes: 0.11, total: 0.31
+i[SignalDatabaseMigration] Successfully completed migration for version 215 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 216: V216_PhoneNumberDiscoverable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 216 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 217: V217_MessageTableExtrasColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 217 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 218: V218_RecipientPniSignatureVerified. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 218 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 219: V219_PniPreKeyStores. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 219 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 220: V220_PreKeyConstraints. Foreign keys: false
+d[V220_PreKeyConstraints] [migration] signed-ec: 1.36, one-time-ec: 1.28, kyber: 1.46, total: 4.11
+i[SignalDatabaseMigration] Successfully completed migration for version 220 in 4 ms
+i[SignalDatabaseMigration] Running migration for version 221: V221_AddReadColumnToCallEventsTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 221 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 222: V222_DataHashRefactor. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 222 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 223: V223_AddNicknameAndNoteFieldsToRecipientTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 223 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 224: V224_AddAttachmentArchiveColumns. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 224 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 225: V225_AddLocalUserJoinedStateAndGroupCallActiveState. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 225 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 226: V226_AddAttachmentMediaIdIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 226 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 227: V227_AddAttachmentArchiveTransferState. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 227 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 228: V228_AddNameCollisionTables. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 228 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 229: V229_MarkMissedCallEventsNotified. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 229 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 230: V230_UnreadCountIndices. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 230 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 231: V231_ArchiveThumbnailColumns. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 231 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 232: V232_CreateInAppPaymentTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 232 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 233: V233_FixInAppPaymentTableDefaultNotifiedValue. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 233 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 234: V234_ThumbnailRestoreStateColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 234 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 235: V235_AttachmentUuidColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 235 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 236: V236_FixInAppSubscriberCurrencyIfAble. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 236 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 237: V237_ResetGroupForceUpdateTimestamps. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 237 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 238: V238_AddGroupSendEndorsementsColumns. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 238 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 239: V239_MessageFullTextSearchEmojiSupport. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 239 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 240: V240_MessageFullTextSearchSecureDelete. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 240 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 241: V241_ExpireTimerVersion. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 241 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 242: V242_MessageFullTextSearchEmojiSupportV2. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 242 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 243: V243_MessageFullTextSearchDisableSecureDelete. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 243 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 244: V244_AttachmentRemoteIv. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 244 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 245: V245_DeletionTimestampOnCallLinks. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 245 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 246: V246_DropThumbnailCdnFromAttachments. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 246 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 247: V247_ClearUploadTimestamp. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 247 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 250: V250_ClearUploadTimestampV2. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 250 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 251: V251_ArchiveTransferStateIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 251 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 252: V252_AttachmentOffloadRestoredAtColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 252 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 253: V253_CreateChatFolderTables. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 253 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 254: V254_AddChatFolderConstraint. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 254 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 255: V255_AddCallTableLogIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 255 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 256: V256_FixIncrementalDigestColumns. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 256 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 257: V257_CreateBackupMediaSyncTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 257 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 258: V258_FixGroupRevokedInviteeUpdate. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 258 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 259: V259_AdjustNotificationProfileMidnightEndTimes. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 259 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 260: V260_RemapQuoteAuthors. Foreign keys: false
+i[V260_RemapQuoteAuthors] No invalid quote authors, can skip migration.
+i[SignalDatabaseMigration] Successfully completed migration for version 260 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 261: V261_RemapCallRingers. Foreign keys: false
+i[V261_RemapCallRingers] No invalid call ringers, can skip migration.
+i[SignalDatabaseMigration] Successfully completed migration for version 261 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 263: V263_InAppPaymentsSubscriberTableRebuild. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 263 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 264: V264_FixGroupAddMemberUpdate. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 264 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 265: V265_FixFtsTriggers. Foreign keys: false
+d[V265_FixFtsTriggers] Already have all triggers, no need for corrective action.
+i[SignalDatabaseMigration] Successfully completed migration for version 265 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 266: V266_UniqueThreadPinOrder. Foreign keys: false
+d[V266_UniqueThreadPinOrd] [migration] nulls: 0, fix-dupes: 0, table-create: 0, table-copy: 0, replace: 1, indexes: 0, total: 2
+i[SignalDatabaseMigration] Successfully completed migration for version 266 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 267: V267_FixGroupInvitationDeclinedUpdate. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 267 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 268: V268_FixInAppPaymentsErrorStateConsistency. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 268 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 269: V269_BackupMediaSnapshotChanges. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 269 in 7 ms
+i[SignalDatabaseMigration] Running migration for version 270: V270_FixChatFolderColumnsForStorageSync. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 270 in 6 ms
+i[SignalDatabaseMigration] Running migration for version 271: V271_AddNotificationProfileIdColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 271 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 272: V272_UpdateUnreadCountIndices. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 272 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 273: V273_FixUnreadOriginalMessages. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 273 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 274: V274_BackupMediaSnapshotLastSeenOnRemote. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 274 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 275: V275_EnsureDefaultAllChatsFolder. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 275 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 276: V276_AttachmentCdnDefaultValueMigration. Foreign keys: false
+d[V276_AttachmentCdnDefau] [v276] fix-old-data: 0, create-new-table: 0, copy-data: 0, drop-table: 0, rename-table: 1, create-indexes: 0, create-triggers: 0, total: 2
+i[SignalDatabaseMigration] Successfully completed migration for version 276 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 277: V277_AddNotificationProfileStorageSync. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 277 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 278: V278_BackupSnapshotTableVersions. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 278 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 279: V279_AddNotificationProfileForeignKey. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 279 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 280: V280_RemoveAttachmentIv. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 280 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 281: V281_RemoveArchiveTransferFile. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 281 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 282: V282_AddSnippetMessageIdColumnToThreadTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 282 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 283: V283_ViewOnceRemoteDataCleanup. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 283 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 284: V284_SetPlaceholderGroupFlag. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 284 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 285: V285_AddEpochToCallLinksTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 285 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 286: V286_FixRemoteKeyEncoding. Foreign keys: false
+i[V286_FixRemoteKeyEncodi] Updated 0 attachment remote_keys
+i[SignalDatabaseMigration] Successfully completed migration for version 286 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 287: V287_FixInvalidArchiveState. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 287 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 288: V288_CopyStickerDataHashStartToEnd. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 288 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 289: V289_AddQuoteTargetContentTypeColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 289 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 290: V290_AddArchiveThumbnailTransferStateColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 290 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 291: V291_NullOutRemoteKeyIfEmpty. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 291 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 292: V292_AddPollTables. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 292 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 294: V294_RemoveLastResortKeyTupleColumnConstraintMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 294 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 295: V295_AddLastRestoreKeyTypeTableIfMissingMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 295 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 296: V296_RemovePollVoteConstraint. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 296 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 297: V297_AddPinnedMessageColumns. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 297 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 298: V298_DoNotBackupReleaseNotes. Foreign keys: false
+w[V298_DoNotBackupRelease] Pre-KV database, not doing anything.
+i[SignalDatabaseMigration] Successfully completed migration for version 298 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 299: V299_AddAttachmentMetadataTable. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 299 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 300: V300_AddKeyTransparencyColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 300 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 301: V301_RemoveCallLinkEpoch. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 301 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 302: V302_AddDeletedByColumn. Foreign keys: false
+d[V302_AddDeletedByColumn] [migration] add-column: 0.55, update-data: 0.04, create-index: 0.04, total: 0.62
+i[SignalDatabaseMigration] Successfully completed migration for version 302 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 303: V303_CaseInsensitiveUsernames. Foreign keys: false
+d[V303_CaseInsensitiveUse] [migration] dedupe: 0.04, create-index: 0.04, total: 0.08
+i[SignalDatabaseMigration] Successfully completed migration for version 303 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 304: V304_CallAndReplyNotificationSettings. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 304 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 305: V305_AddStoryArchivedColumn. Foreign keys: false
+i[V305_AddStoryArchivedCo] Added story_archived column and index.
+i[SignalDatabaseMigration] Successfully completed migration for version 305 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 306: V306_AddRemoteDeletedColumn. Foreign keys: false
+i[V306_AddRemoteDeletedCo] Already have remote deleted column!
+i[SignalDatabaseMigration] Successfully completed migration for version 306 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 308: V308_AddBackRemoteDeletedColumn. Foreign keys: false
+i[V308_AddBackRemoteDelet] Already have remote deleted column!
+i[SignalDatabaseMigration] Successfully completed migration for version 308 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 309: V309_GroupTerminatedColumnMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 309 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 310: V310_AddStarredColumn. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 310 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 311: V311_AddAttachmentMediaOverviewSizeIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 311 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 312: V312_RefactorNameCollisionTables. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 312 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 313: V313_AddCollapsingUpdateColumns. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 313 in 2 ms
+i[SignalDatabaseMigration] Running migration for version 314: V314_FixMessageRequestAcceptedToRecipient. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 314 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 315: V315_CleanupE164SenderKeyShared. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 315 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 316: V316_AddVerifiedGroupNameHashMigration. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 316 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 317: V317_AddMessageThreadDateReceivedUnreadIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 317 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 318: V318_AddMessageNotificationStateIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 318 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 319: V319_AddAttachmentAndMessageIndexes. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 319 in 0 ms
+i[SignalDatabaseMigration] Running migration for version 320: V320_AddAttachmentThumbnailFileAndUuidIndexes. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 320 in 1 ms
+i[SignalDatabaseMigration] Running migration for version 321: V321_AddScheduledMessageIndex. Foreign keys: false
+i[SignalDatabaseMigration] Successfully completed migration for version 321 in 0 ms
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

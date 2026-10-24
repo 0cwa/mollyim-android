@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:45:00.416Z" hostname="4f1d1be5db40" time="3.184">
+  <properties/>
+  <testcase name="givenNoConversations_whenIGetTotalCount_thenIExpectZero" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.319"/>
+  <testcase name="givenSingleUnpinnedAndArchivedConversations_whenIGetTotalCount_thenIExpectTwo" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.245"/>
+  <testcase name="givenHasArchivedAndLoadingLastPage_whenIGetCursor_thenIExpectProperOffsetAndCursorCount" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.259"/>
+  <testcase name="givenSinglePinnedAndSingleUnpinned_whenIGetTotalCount_thenIExpectTwo" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.227"/>
+  <testcase name="givenSinglePinnedAndSingleUnpinned_whenIGetCursor_thenIExpectTwo" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.241"/>
+  <testcase name="givenArchivedConversations_whenIGetCursor_thenIExpectOne" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.244"/>
+  <testcase name="givenSingleUnpinnedAndArchivedConversations_whenIGetCursor_thenIExpectTwo" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.242"/>
+  <testcase name="givenHasNoArchivedAndIsFiltered_whenIGetCursor_thenIExpectConversationFilterFooter" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.236"/>
+  <testcase name="givenNoConversations_whenIGetCursor_thenIExpectAnEmptyCursor" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.23"/>
+  <testcase name="givenLoadingSecondPage_whenIGetCursor_thenIExpectProperOffsetAndCursorCount" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.228"/>
+  <testcase name="givenSinglePinnedAndArchivedConversations_whenIGetCursor_thenIExpectTwo" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.231"/>
+  <testcase name="givenSinglePinnedAndArchivedConversations_whenIGetTotalCount_thenIExpectTwo" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.214"/>
+  <testcase name="givenArchivedConversations_whenIGetTotalCount_thenIExpectOne" classname="org.thoughtcrime.securesms.conversationlist.UnarchivedConversationListDataSourceTest" time="0.264"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

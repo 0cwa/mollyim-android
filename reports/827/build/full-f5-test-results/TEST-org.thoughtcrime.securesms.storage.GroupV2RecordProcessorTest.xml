@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:52.896Z" hostname="4f1d1be5db40" time="0.841">
+  <properties/>
+  <testcase name="merge returns remote instance when remote already matches merged" classname="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" time="0.155"/>
+  <testcase name="merge prefers remote hash when remote is non-empty" classname="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" time="0.144"/>
+  <testcase name="merge yields empty hash when both are empty" classname="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" time="0.139"/>
+  <testcase name="merge returns local instance when local already matches merged" classname="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" time="0.134"/>
+  <testcase name="merge keeps local hash when remote hash is empty" classname="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" time="0.137"/>
+  <testcase name="merge takes remote hash when local hash is empty" classname="org.thoughtcrime.securesms.storage.GroupV2RecordProcessorTest" time="0.132"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

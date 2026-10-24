@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:41.905Z" hostname="4f1d1be5db40" time="0.01">
+  <properties/>
+  <testcase name="givenOneEmptySet_thenExpectMultipleChanges" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.006"/>
+  <testcase name="whenRecipientExistsMultipleTimes_thenIExpectOneInstancePrimaryAndOthersSecondary" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.001"/>
+  <testcase name="givenOneSetWithSingleItemAndAnEmptySet_thenExpectSingleChange" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.0"/>
+  <testcase name="whenFirstListIsAdded_thenIExpectAnUpdateWithAllItemsFromListAdded" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.0"/>
+  <testcase name="whenPlaceholdersAreUsed_thenIExpectAnEmptyUpdate" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.001"/>
+  <testcase name="whenNewListIsAdded_thenIExpectAReducedUpdate" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.0"/>
+  <testcase name="whenSameListIsAddedTwiceInARowWithinTimeout_thenIExpectAnEmptyUpdate" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.0"/>
+  <testcase name="givenNoEmptySets_thenExpectMultipleChanges" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.0"/>
+  <testcase name="givenEmptySets_thenExpectNoChanges" classname="org.thoughtcrime.securesms.components.webrtc.CallParticipantListUpdateTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

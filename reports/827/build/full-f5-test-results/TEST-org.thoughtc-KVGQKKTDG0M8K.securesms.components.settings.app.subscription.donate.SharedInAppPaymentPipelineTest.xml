@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:22.455Z" hostname="4f1d1be5db40" time="5.281">
+  <properties/>
+  <testcase name="Given a recurring Stripe donation, when I awaitTransaction, then I expect to add InAppPaymentPayPalRecurringSetupJob" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.724"/>
+  <testcase name="Given long-running PENDING state that times out, when I awaitTransaction, then I expect DonationPending" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.486"/>
+  <testcase name="Given REQUIRES_ACTION state, when I awaitTransaction, then I expect re-trigger" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.442"/>
+  <testcase name="Given PENDING state that times out, when I awaitTransaction, then I expect TimeoutWaitingForTokenError" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.438"/>
+  <testcase name="Given END state with error, when I awaitTransaction, then I expect error" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.462"/>
+  <testcase name="Given a recurring PayPal donation, when I awaitTransaction, then I expect to add InAppPaymentPayPalRecurringSetupJob" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.469"/>
+  <testcase name="Given PENDING state transitions to END state with error, when I awaitTransaction, then I expect to complete" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.423"/>
+  <testcase name="Given PENDING state transitions to END state without error, when I awaitTransaction, then I expect to complete" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.465"/>
+  <testcase name="Given a one time Stripe donation, when I awaitTransaction, then I expect to add InAppPaymentPayPalOneTimeSetupJob" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.455"/>
+  <testcase name="Given a one time PayPal donation, when I awaitTransaction, then I expect to add InAppPaymentPayPalOneTimeSetupJob" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.468"/>
+  <testcase name="Given END state without error, when I awaitTransaction, then I expect error" classname="org.thoughtcrime.securesms.components.settings.app.subscription.donate.SharedInAppPaymentPipelineTest" time="0.439"/>
+  <system-out><![CDATA[w[SharedInAppPaymentPipel] Payment of type RECURRING_DONATION is pending. Awaiting completion.
+d[SharedInAppPaymentPipel] Payment of type RECURRING_DONATION requires user action to set up.
+w[SharedInAppPaymentPipel] Payment of type RECURRING_DONATION is pending. Awaiting completion.
+d[SharedInAppPaymentPipel] IAP error detected.
+w[SharedInAppPaymentPipel] Payment of type RECURRING_DONATION is pending. Awaiting completion.
+d[SharedInAppPaymentPipel] Failure during redemption chain: Error{type=REDEMPTION}
+w[SharedInAppPaymentPipel] Payment of type RECURRING_DONATION is pending. Awaiting completion.
+d[SharedInAppPaymentPipel] Unexpected early end state. Possible payment failure.
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

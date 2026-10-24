@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.groups.GroupIdTest" tests="37" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:56.260Z" hostname="4f1d1be5db40" time="0.007">
+  <properties/>
+  <testcase name="bad_encoding__bad_prefix__parse" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="inequality_with_null" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="bad_encoding__odd_hex__parseNullable" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.001"/>
+  <testcase name="can_create_for_gv2_from_GroupIdentifier" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="parse_bytes_to_v2_via_by_push" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="bad_encoding__bad_prefix__parseNullable" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_require_v2_of_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_require_v1_of_v2" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="parse_bytes_to_v1_via_push" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_create_v1_with_wrong_length" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="inequality_by_bytes" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_parse_null" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_create_v1_with_a_v2_length" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="require_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_require_v2_of_v1" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="equality" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="create_v1" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.004"/>
+  <testcase name="cannot_require_push_of_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="v1Exact_static_factory" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.001"/>
+  <testcase name="inequality_of_sms_and_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="get_bytes" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_create_for_gv2_from_GroupMasterKey" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="bad_encoding__gv2_prefix_with_wrong_length" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="create_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_parse_gv1" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_parse_gv2" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_parse_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="bad_encoding__odd_hex__parse" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.001"/>
+  <testcase name="bad_encoding__empty__parseNullable" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="require_v2_and_push" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_parse_gv1_with_parseNullable" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="require_v1_and_push" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_require_v1_of_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_create_for_gv1" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="can_create_for_mms" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="v1_static_factory" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <testcase name="cannot_create_v1_with_a_v2_length_assert" classname="org.thoughtcrime.securesms.groups.GroupIdTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

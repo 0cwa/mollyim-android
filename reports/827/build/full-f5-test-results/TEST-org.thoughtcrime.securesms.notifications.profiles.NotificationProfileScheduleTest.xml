@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:33.903Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="when time is outside enabled schedule 12am to 12am then return false" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.001"/>
+  <testcase name="when end time is midnight return midnight of next day from now" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.001"/>
+  <testcase name="when time is outside enabled with day wrapping schedule 10pm to 2am then return false" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when time is inside enabled schedule 12am to 12am then return true" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when time is within enabled schedule 9am to 5pm then return true" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when time is inside enabled schedule 12am to 10am then return true" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when time is inside enabled with day wrapping schedule 10pm to 2am then return true" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when time is outside enabled schedule 9am to 5pm then return false" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when enabled schedule 12am to 12am for all days then return true" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <testcase name="when disabled schedule 12am to 12am for all days then return false" classname="org.thoughtcrime.securesms.notifications.profiles.NotificationProfileScheduleTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

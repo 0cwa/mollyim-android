@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.conversation.colors.AvatarColorHashTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:55.512Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="hash test vector - GroupId" classname="org.thoughtcrime.securesms.conversation.colors.AvatarColorHashTest" time="0.001"/>
+  <testcase name="hash test vector - ACI" classname="org.thoughtcrime.securesms.conversation.colors.AvatarColorHashTest" time="0.0"/>
+  <testcase name="hash test vector - PNI" classname="org.thoughtcrime.securesms.conversation.colors.AvatarColorHashTest" time="0.001"/>
+  <testcase name="hash test vector - E164" classname="org.thoughtcrime.securesms.conversation.colors.AvatarColorHashTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

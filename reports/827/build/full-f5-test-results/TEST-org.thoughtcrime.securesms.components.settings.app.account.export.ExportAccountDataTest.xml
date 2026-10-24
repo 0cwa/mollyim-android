@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.account.export.ExportAccountDataTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:11.328Z" hostname="4f1d1be5db40" time="0.351">
+  <properties/>
+  <testcase name="Export json without text field" classname="org.thoughtcrime.securesms.components.settings.app.account.export.ExportAccountDataTest" time="0.136"/>
+  <testcase name="Failed download error flow" classname="org.thoughtcrime.securesms.components.settings.app.account.export.ExportAccountDataTest" time="0.208"/>
+  <system-out><![CDATA[e[ExportAccountDataViewMo] null IOException:null
+]]></system-out>
+  <system-err><![CDATA[java.io.IOException
+	at org.thoughtcrime.securesms.components.settings.app.account.export.ExportAccountDataTest.Failed_download_error_flow$lambda$0$1(ExportAccountDataTest.kt:108)
+	at io.reactivex.rxjava3.internal.operators.single.SingleCreate.subscribeActual(SingleCreate.java:40)
+	at io.reactivex.rxjava3.core.Single.subscribe(Single.java:4855)
+	at io.reactivex.rxjava3.internal.operators.single.SingleSubscribeOn$SubscribeOnObserver.run(SingleSubscribeOn.java:89)
+	at io.reactivex.rxjava3.core.Scheduler$DisposeTask.run(Scheduler.java:644)
+	at io.reactivex.rxjava3.schedulers.TestScheduler.triggerActions(TestScheduler.java:174)
+	at io.reactivex.rxjava3.schedulers.TestScheduler.triggerActions(TestScheduler.java:159)
+	at org.thoughtcrime.securesms.components.settings.app.account.export.ExportAccountDataTest.Failed download error flow(ExportAccountDataTest.kt:120)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at org.junit.runners.model.FrameworkMethod$1.runReflectiveCall(FrameworkMethod.java:59)
+	at org.junit.internal.runners.model.ReflectiveCallable.run(ReflectiveCallable.java:12)
+	at org.junit.runners.model.FrameworkMethod.invokeExplosively(FrameworkMethod.java:56)
+	at org.junit.internal.runners.statements.InvokeMethod.evaluate(InvokeMethod.java:17)
+	at org.junit.rules.ExternalResource$1.evaluate(ExternalResource.java:54)
+	at org.junit.runners.ParentRunner$3.evaluate(ParentRunner.java:306)
+	at org.robolectric.RobolectricTestRunner$HelperTestRunner$1.evaluate(RobolectricTestRunner.java:524)
+	at org.robolectric.internal.SandboxTestRunner.executeInSandbox(SandboxTestRunner.java:494)
+	at org.robolectric.internal.SandboxTestRunner.access$900(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$7.evaluate(SandboxTestRunner.java:442)
+	at org.junit.runners.BlockJUnit4ClassRunner$1.evaluate(BlockJUnit4ClassRunner.java:100)
+	at org.junit.runners.ParentRunner.runLeaf(ParentRunner.java:366)
+	at org.junit.runners.BlockJUnit4ClassRunner.runChild(BlockJUnit4ClassRunner.java:103)
+	at org.robolectric.internal.SandboxTestRunner.access$600(SandboxTestRunner.java:67)
+	at org.robolectric.internal.SandboxTestRunner$6.evaluate(SandboxTestRunner.java:333)
+	at org.robolectric.internal.SandboxTestRunner$3.evaluate(SandboxTestRunner.java:233)
+	at org.robolectric.internal.SandboxTestRunner$5.lambda$evaluate$0(SandboxTestRunner.java:317)
+	at org.robolectric.internal.bytecode.Sandbox.lambda$runOnMainThread$0(Sandbox.java:101)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1144)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:642)
+	at java.base/java.lang.Thread.run(Thread.java:1583)
+]]></system-err>
+</testsuite>

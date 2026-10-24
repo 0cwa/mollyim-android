@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.permits.DonationPermitsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:37.882Z" hostname="4f1d1be5db40" time="0.31">
+  <properties/>
+  <testcase name="the spent permit is base64 encoded" classname="org.thoughtcrime.securesms.components.settings.app.subscription.permits.DonationPermitsTest" time="0.206"/>
+  <testcase name="when a permit cannot be obtained then a non-success result is returned" classname="org.thoughtcrime.securesms.components.settings.app.subscription.permits.DonationPermitsTest" time="0.103"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

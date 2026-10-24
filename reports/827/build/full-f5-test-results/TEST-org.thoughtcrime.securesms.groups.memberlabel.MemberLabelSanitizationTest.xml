@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" tests="27" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:47:23.980Z" hostname="4f1d1be5db40" time="0.007">
+  <properties/>
+  <testcase name="sanitizeLabelText replaces carriage return newline with space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.003"/>
+  <testcase name="sanitizeLabelText replaces carriage return with space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="truncateLabelText preserves multiple spaces between words" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="trimToFit does not truncate when within limit" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText collapses multiple spaces into one" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText enforces byte limit" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.001"/>
+  <testcase name="trimToFit truncates ascii to byte limit" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText counts emoji as single grapheme" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.001"/>
+  <testcase name="sanitizeLabelText trims leading and trailing whitespace" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText replaces tab with space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText handles mix of ascii and emoji" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="trimToFit does not split multi-byte graphemes" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="displayText does not wrap ascii-only label text" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.001"/>
+  <testcase name="displayText balances unmatched opening BiDi character" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="displayText wraps non-ascii label text with BiDi isolation" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText does not exceed byte limit with large graphemes" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.001"/>
+  <testcase name="sanitizeLabelText collapses all-whitespace string" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText trims leading and trailing unicode whitespace characters" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText replaces newline with space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText truncates to 24 graphemes" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText collapses mixed whitespace into single space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="truncateLabelText preserves trailing space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText does not truncate short text" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="sanitizeLabelText preserves normal text" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="truncateLabelText truncates to 24 graphemes" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="truncateLabelText preserves leading space" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <testcase name="truncateLabelText enforces byte limit" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelSanitizationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

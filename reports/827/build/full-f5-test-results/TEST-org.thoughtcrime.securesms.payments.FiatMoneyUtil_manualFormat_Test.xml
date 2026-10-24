@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" tests="6" skipped="2" failures="0" errors="0" timestamp="2026-10-24T15:50:56.652Z" hostname="4f1d1be5db40" time="0.01">
+  <properties/>
+  <testcase name="eur_France" classname="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="cad_US" classname="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" time="0.001"/>
+  <testcase name="gbp_UK" classname="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" time="0.006"/>
+  <testcase name="usd_US" classname="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" time="0.0"/>
+  <testcase name="aud_France" classname="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" time="0.0">
+    <skipped/>
+  </testcase>
+  <testcase name="cad_Canada" classname="org.thoughtcrime.securesms.payments.FiatMoneyUtil_manualFormat_Test" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:45:11.669Z" hostname="4f1d1be5db40" time="1.908">
+  <properties/>
+  <testcase name="getMediaObjectsWithNonMatchingCdn_noMismatches" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.139"/>
+  <testcase name="givenAnEmptyTable_whenIWriteToTable_thenIExpectEmptyTable" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.146"/>
+  <testcase name="givenAFilledTable_whenIReinsertObjects_thenIExpectUncommittedOverrides" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.132"/>
+  <testcase name="getMediaObjectsLastSeenOnCdnBeforeSnapshotVersion_noneMarkedSeen" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.133"/>
+  <testcase name="givenAnEmptyTable_whenIWriteToTableAndCommit_thenIExpectFilledTableWithThumbnails" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.135"/>
+  <testcase name="getMediaObjectsWithNonMatchingCdn_oneMismatch" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.133"/>
+  <testcase name="getMediaObjectsThatCantBeFound_oneMissing" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.129"/>
+  <testcase name="getCurrentSnapshotVersion_singleCommit" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.131"/>
+  <testcase name="givenAnEmptyTable_whenIWriteToTableAndCommit_thenIExpectFilledTable" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.137"/>
+  <testcase name="getCurrentSnapshotVersion_emptyTable" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.131"/>
+  <testcase name="getMediaObjectsLastSeenOnCdnBeforeSnapshotVersion_someMarkedSeen" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.137"/>
+  <testcase name="getMediaObjectsThatCantBeFound_allFound" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.132"/>
+  <testcase name="givenAFilledTable_whenIInsertSimilarIdsAndCommitThenDelete_thenIExpectOnlyCommittedOverrides" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.137"/>
+  <testcase name="givenAFilledTable_whenIReinsertObjectsAndCommit_thenIExpectCommittedOverrides" classname="org.thoughtcrime.securesms.database.BackupMediaSnapshotTableTest" time="0.153"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

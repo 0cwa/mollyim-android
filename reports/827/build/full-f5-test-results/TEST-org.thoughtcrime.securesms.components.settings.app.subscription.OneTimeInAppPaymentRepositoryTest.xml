@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:12.391Z" hostname="4f1d1be5db40" time="5.619">
+  <properties/>
+  <testcase name="Given a throwable and not self, when I handleCreatePaymentIntentError, then I expect a GIFT error" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.793"/>
+  <testcase name="Given an unregistered individual, when I verifyRecipientIsAllowedToReceiveAGift, then I expect SelectedRecipientIsInvalid" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.454"/>
+  <testcase name="Given a call link, when I verifyRecipientIsAllowedToReceiveAGift, then I expect SelectedRecipientIsInvalid" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.472"/>
+  <testcase name="Given a registered non-self individual, when I verifyRecipientIsAllowedToReceiveAGift, then I expect no error" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.416"/>
+  <testcase name="Given a distribution list, when I verifyRecipientIsAllowedToReceiveAGift, then I expect SelectedRecipientIsInvalid" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.426"/>
+  <testcase name="Given a group, when I verifyRecipientIsAllowedToReceiveAGift, then I expect SelectedRecipientIsInvalid" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.45"/>
+  <testcase name="When I getBoosts, then I expect a filtered set of boost objects" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.491"/>
+  <testcase name="Given release notes, when I verifyRecipientIsAllowedToReceiveAGift, then I expect SelectedRecipientIsInvalid" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.436"/>
+  <testcase name="Given self, when I verifyRecipientIsAllowedToReceiveAGift, then I expect SelectedRecipientIsInvalid" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.431"/>
+  <testcase name="When I getBoostBadge, then I expect a boost badge" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.424"/>
+  <testcase name="Given a throwable and self, when I handleCreatePaymentIntentError, then I expect a ONE_TIME error" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.415"/>
+  <testcase name="When I getMinimumDonationAmounts, then I expect a map of 3 currencies" classname="org.thoughtcrime.securesms.components.settings.app.subscription.OneTimeInAppPaymentRepositoryTest" time="0.406"/>
+  <system-out><![CDATA[d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+w[OneTimeInAppPaymentRepo] Invalid badge recipient RecipientId::1. Verification failed.
+d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+w[OneTimeInAppPaymentRepo] Invalid badge recipient RecipientId::1. Verification failed.
+d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+w[OneTimeInAppPaymentRepo] Invalid badge recipient RecipientId::1. Verification failed.
+d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+w[OneTimeInAppPaymentRepo] Invalid badge recipient RecipientId::1. Verification failed.
+d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+w[OneTimeInAppPaymentRepo] Invalid badge recipient RecipientId::1. Verification failed.
+d[OneTimeInAppPaymentRepo] Verifying badge recipient RecipientId::1
+d[OneTimeInAppPaymentRepo] Cannot send a gift to self.
+d[Badges] Selected badge density mdpi
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

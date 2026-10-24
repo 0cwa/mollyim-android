@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:57.230Z" hostname="4f1d1be5db40" time="0.001">
+  <properties/>
+  <testcase name="givenOneNonCJKVChar_whenIsCJKV_thenIExpectFalse" classname="org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest" time="0.001"/>
+  <testcase name="givenAnEmptyString_whenIsCJKV_thenIExpectTrue" classname="org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest" time="0.0"/>
+  <testcase name="givenAllCJKVChars_whenIsCJKV_thenIExpectTrue" classname="org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest" time="0.0"/>
+  <testcase name="givenNoCJKVChars_whenIsCJKV_thenIExpectFalse" classname="org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest" time="0.0"/>
+  <testcase name="givenNull_whenIsCJKV_thenIExpectTrue" classname="org.thoughtcrime.securesms.util.cjkv.CJKVUtilTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

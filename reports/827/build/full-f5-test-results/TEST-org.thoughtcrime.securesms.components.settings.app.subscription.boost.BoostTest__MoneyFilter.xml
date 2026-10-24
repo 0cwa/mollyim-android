@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" tests="18" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:21.991Z" hostname="4f1d1be5db40" time="0.453">
+  <properties/>
+  <testcase name="Given JPY, when I enter 5, then I expect 5 from text change" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.036"/>
+  <testcase name="Given JPY, when I enter 5, then I expect successful filter" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.015"/>
+  <testcase name="Given MR and INR, when I enter 5dot55, then I expect localized" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.018"/>
+  <testcase name="Given JPY, when I enter 5dot, then I expect unsuccessful filter" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.013"/>
+  <testcase name="Given USD, when I enter dot1, then I expect 0dot1" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.013"/>
+  <testcase name="Given USD, when I enter 5dot00, then I expect successful filter" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.011"/>
+  <testcase name="Given USD, when I enter 1dot05, then I expect 1dot05" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.01"/>
+  <testcase name="Given USD, when I enter 0dot05, then I expect 0dot05" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.01"/>
+  <testcase name="Given USD, when I enter 5dot, then I expect successful filter" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.009"/>
+  <testcase name="Given RTL indicator, when I enter five, then I expect successful match" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.016"/>
+  <testcase name="Given MR and INR, when I enter dot, then I expect it to be retained in output" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.015"/>
+  <testcase name="Given USD, when I enter dot0, then I expect 0dot0" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.009"/>
+  <testcase name="Given USD, when I enter 00005dot00, then I expect 5 from text change" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.009"/>
+  <testcase name="Given USD, when I enter 5, then I expect $ 5" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.01"/>
+  <testcase name="Given JPY, when I enter 5, then I expect yen 5" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.01"/>
+  <testcase name="Given USD, when I enter 5dot00, then I expect 5 from text change" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.009"/>
+  <testcase name="Given USD, when I enter 5dot000, then I expect successful filter" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.009"/>
+  <testcase name="Given USD, when I enter 1000, then I expect successful filter" classname="org.thoughtcrime.securesms.components.settings.app.subscription.boost.BoostTest__MoneyFilter" time="0.228"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

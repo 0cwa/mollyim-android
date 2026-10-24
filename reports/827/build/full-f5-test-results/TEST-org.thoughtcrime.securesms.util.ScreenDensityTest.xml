@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.ScreenDensityTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:38.079Z" hostname="4f1d1be5db40" time="0.216">
+  <properties/>
+  <testcase name="get returns hdpi for density between mdpi and hdpi" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.209"/>
+  <testcase name="get returns xxxhdpi for density above DENSITY_XXXHIGH" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="get returns xxxhdpi for DENSITY_XXXHIGH" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="get returns ldpi for DENSITY_LOW" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="get returns mdpi for DENSITY_MEDIUM" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.0"/>
+  <testcase name="get returns xxhdpi for DENSITY_XXHIGH" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="get returns unknown for density below DENSITY_LOW" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="get returns hdpi for DENSITY_HIGH" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.0"/>
+  <testcase name="xhdpiRelativeDensityScaleFactor returns correct values" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.0"/>
+  <testcase name="get returns xhdpi for DENSITY_XHIGH" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="get returns xhdpi for density between hdpi and xhdpi" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.001"/>
+  <testcase name="toString contains bucket and density" classname="org.thoughtcrime.securesms.util.ScreenDensityTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

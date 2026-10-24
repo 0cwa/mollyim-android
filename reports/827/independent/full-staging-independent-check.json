@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "xml_suites": 251,
+  "xml_suite_count_matches_summary": true,
+  "tests": 2800,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 78,
+  "xml_count_and_sha256_match_summary": true,
+  "gradle_log_sha256": "229ad4620f493207925116bdb5937b0fc73e1eed462ab633cbaaacd649955a83",
+  "ktlint_log_sha256": "a5b47598a6eff3f2864940d1e720f0e747569a53a94defd5afe0f2bb84f8202c",
+  "gradle_log_has_build_successful": true,
+  "ktlint_log_has_build_successful": true
+}

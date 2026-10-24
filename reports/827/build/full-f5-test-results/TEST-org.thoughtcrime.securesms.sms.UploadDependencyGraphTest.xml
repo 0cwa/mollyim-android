@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:49:50.615Z" hostname="4f1d1be5db40" time="0.117">
+  <properties/>
+  <testcase name="Given a list of Uri attachments with same id but different transforms and a list of Messages, when I consumeDeferredQueue, then I expect one upload chain for each attachment and 5 copy jobs" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.027"/>
+  <testcase name="Given a list of Uri attachments and a list of Messages, when I get the dependencyMap, then I expect a times m results" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.012"/>
+  <testcase name="Given three Uri attachments with same id and two share transform properties and a list of Messages, when I executeDeferredQueue, then I expect two chains" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.012"/>
+  <testcase name="Given a list of Database attachments and a list of Messages, when I get the dependency map, then I expect a times m results" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.01"/>
+  <testcase name="Given a list of Uri attachments and a list of Messages, when I consumeDeferredQueue, then I expect one upload chain and one copy job for each attachment" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.016"/>
+  <testcase name="Given a list of attachments of the same uri with different transform props, when I consumeDeferredQueue, then I expect two chains" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.012"/>
+  <testcase name="Given a single Uri attachment with same id and a list of Messages, when I consumeDeferredQueue, then I expect one upload chain and one copy job" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.012"/>
+  <testcase name="Given a list of messages with unique ids, when I consumeDeferredQueue, then I expect no copy jobs" classname="org.thoughtcrime.securesms.sms.UploadDependencyGraphTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

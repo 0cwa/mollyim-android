@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:50:57.002Z" hostname="4f1d1be5db40" time="0.0">
+  <properties/>
+  <testcase name="parseCountryCounts[0]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[1]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[2]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[3]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[4]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[5]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[6]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[7]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <testcase name="parseCountryCounts[8]" classname="org.thoughtcrime.securesms.util.LocaleRemoteConfigTest_parseCountryValues" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:44:47.868Z" hostname="4f1d1be5db40" time="0.002">
+  <properties/>
+  <testcase name="remove_by_number" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.001"/>
+  <testcase name="remove_by_recipient_id" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.0"/>
+  <testcase name="add_with_recipient_ids" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.0"/>
+  <testcase name="remove_by_username" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.0"/>
+  <testcase name="add_without_recipient_ids" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.0"/>
+  <testcase name="remove_by_recipient_id_and_username" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.0"/>
+  <testcase name="add_with_same_recipient_id" classname="org.thoughtcrime.securesms.contacts.SelectedContactSetTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

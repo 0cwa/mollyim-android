@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" tests="37" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:47:23.989Z" hostname="4f1d1be5db40" time="0.583">
+  <properties/>
+  <testcase name="isSaveEnabled returns true when both emoji and label are modified" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.386"/>
+  <testcase name="isSaveEnabled returns false when the label and emoji are not changed" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.004"/>
+  <testcase name="isSaveEnabled returns true when text differs beyond whitespace" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="isSaveEnabled returns false when only emoji is changed without an existing label" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="isSaveEnabled returns true when clearLabel is called with existing label and emoji" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save calls setLabel when label change is valid" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.095"/>
+  <testcase name="onAboutOverrideSheetShown resets showAboutOverrideSheet" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.006"/>
+  <testcase name="onLabelTextChanged truncates at exactly 24 graphemes with emoji" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save does not call setLabel when label is less than 1 character" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="isSaveEnabled returns true when clearLabel is called with existing label without emoji" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="onLabelTextChanged counts emoji as single grapheme" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save does not show about override warning if the warning has been dismissed" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.004"/>
+  <testcase name="isSaveEnabled returns false when the only change is trailing whitespace" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save calls setLabel with truncated label when label exceeds max length" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.004"/>
+  <testcase name="isSaveEnabled returns false when clearLabel is called with no existing label" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="onAboutOverrideSheetDismissed sets saveState to Success" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save does not show about override warning when label is cleared" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="isSaveEnabled returns true when label text is different from the original value" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save does not call setLabel when isSaveEnabled is false" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save sets saveState to InsufficientRights when setLabel returns ApplicationError with GroupInsufficientRightsException" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="onAboutOverrideSheetDismissed does not mark about override warning as dismissed when dontShowAgain = false" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save sets saveState to NetworkError when setLabel returns NetworkResult NetworkError" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="remainingCharacters counts emoji as single grapheme" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="isSaveEnabled returns true when label text is valid and the emoji is different from the original value" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="isSaveEnabled returns false when label is too short" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save does not show about override warning when recipient has no about text or emoji" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="remainingCharacters counts mixed ascii and emoji correctly" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="isSaveEnabled returns false when the only change is leading whitespace" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save does not call setLabel when emoji is set with no label" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="save sets saveState to Success when setLabel returns NetworkResult Success" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save shows about override warning when recipient has about emoji and the warning hasn't been dismissed" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save calls setLabel with cleared values when clearLabel is called" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="save shows about override warning when recipient has about text and the warning hasn't been dismissed" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.003"/>
+  <testcase name="isSaveEnabled returns false when label text is the same as the original value" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="onAboutOverrideSheetDismissed marks about override warning as dismissed when dontShowAgain = true" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="onLabelTextChanged does not truncate text within grapheme limit" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.002"/>
+  <testcase name="isSaveEnabled returns false when the label and emoji are changed to the original value" classname="org.thoughtcrime.securesms.groups.memberlabel.MemberLabelViewModelTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

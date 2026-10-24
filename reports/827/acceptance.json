@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "assessment": "The current 22-patch series replays deterministically, inventory/resource parity checks pass, and focused F4/F5/F6+URI tests pass 25/25. Full staging tests, full project build, current-head CI, adaptation behavior evidence, and live runtime remain outstanding.",
+  "assessment": "The 22-patch replay/inventory/resource checks and 25 focused + 2,800 full staging tests/app ktlint pass. A full project build, current-head CI, behavior evidence for all adaptations, and live runtime remain outstanding.",
   "scope": "Molly #827 external local proof of concept: launcher artwork and selected UnifiedPush/MollySocket feature ports",
   "source_pins": {
     "audited_poc_head": "b8d5375b3fb6013f7939935ce73e250b53515381",
@@ -10,7 +10,7 @@
     "patch_count": 22,
     "feature_source_head": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
     "handoff_head": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
-    "metadata_handoff_commit": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
+    "metadata_handoff_commit": "d514f38b2cba0f0f3dd0fcd0e58801fb86735631",
     "f5_working_tree_files": {
       "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
       "app/src/test/java/org/thoughtcrime/securesms/util/UriUtilTest_isValidExternalUri.java": "b8095173443a1633ed28ad64f7a7d7de9a2964ad30b7ee003932568466dd0ab9",
@@ -52,7 +52,7 @@
     {
       "id": "full_android_build_and_tests",
       "status": "BLOCKED",
-      "evidence": "No full project build has passed on current 22-patch source. The prior full project attempt exited 130 after disk exhaustion at 15/23 variants and 14 suites; it recorded 30 URI suffix fixture failures later addressed. Current full staging suite remains incomplete. See /workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json and reports/827/build/history/attempt20-retry2/."
+      "evidence": "The full staging unit suite and app ktlint now pass on commit 36578d8. The requested :Signal-Android:compileWebsiteProdReleaseSources task passed on source commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af (3 tasks executed, 228 up-to-date; reports/827/build/compileWebsiteProdReleaseSources-summary.json). A full project build across all variants has not passed on the current 22-patch tree. The last full project attempt at the earlier audited snapshot exited 130 after disk exhaustion at 15/23 variants and 14 suites; it recorded 30 URI suffix fixture failures, later addressed. See /workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json and reports/827/build/history/attempt20-retry2/."
     },
     {
       "id": "final_head_focused_regression_tests",
@@ -61,8 +61,8 @@
     },
     {
       "id": "full_staging_suite_and_app_lint",
-      "status": "BLOCKED",
-      "evidence": "App ktlint passed on formatted source commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af; log reports/827/build/ktlint-f5-formatted-20261024.log. The full staging unit suite has not completed: a 512 MiB attempt OOMed in AttachmentBackfill setup, a 2 GiB attempt was interrupted before a result, and a final 2 GiB run on the final source is active at reports/827/build/testPlayStagingDebug-full-final-2g-ktlint-20261024.log."
+      "status": "PASS",
+      "evidence": "On feature source commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af, the unfiltered :Signal-Android:testPlayStagingDebugUnitTest suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites. :Signal-Android:ktlintCheck passed. Gradle log SHA-256 229ad4620f493207925116bdb5937b0fc73e1eed462ab633cbaaacd649955a83; full per-suite counts/hashes: reports/827/build/full-f5-test-results/summary.json."
     },
     {
       "id": "focused_local_android_flows",
@@ -77,12 +77,12 @@
     {
       "id": "security_review",
       "status": "PASS",
-      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the selected F5 working-tree run (9 receiver tests; 25 total with 16 URI cases). Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested."
+      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the selected F5 working-tree run (9 receiver tests; 25 total with 16 URI cases). Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested. A separate inherited F7 availability risk remains: remote linked-device registration may succeed before local prekey loading fails, leaving an orphan server-side device; a recoverable provisioning/cleanup follow-up is recommended."
     },
     {
       "id": "ci_validation",
       "status": "BLOCKED",
-      "evidence": "The first run 40105996791 failed during replay 1 with PATCH_FAILED before Android steps. Its run-level log did not expose the per-patch git-am diagnostic, and the Actions artifact could not be retrieved, so the cause is unconfirmed. Replay now sets explicit committer identity and disables commit signing; a fresh Git-config replay integration fixture passes. LFS hydration (`git lfs checkout`/`git lfs fsck`) is a separate proactive build-input step before screenshot validation. A corrected current-head CI run is pending."
+      "evidence": "Corrected GitHub Actions run 40108357095 at head d4ded37c5c0a763ac1f26819bcb36024019b295e has passed checkout, pinned source verification, manifest/inventory validation, two replays, build-capacity capture, and Git LFS hydration/fsck. `ciRemote` build/test/lint/dependency verification is currently in progress; no final CI conclusion is available yet. Run: https://github.com/0cwa/mollyim-android/actions/runs/40108357095."
     },
     {
       "id": "upstream_and_release_safety",
@@ -97,6 +97,7 @@
     "live UnifiedPush or MollySocket acceptance",
     "API 33 lock-screen privacy acceptance",
     "complete security signoff",
+    "a Google-free or FOSS build",
     "maintainer approval or upstream endorsement",
     "production readiness or production-signed artifact"
   ],
