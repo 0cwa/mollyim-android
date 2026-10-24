@@ -11,6 +11,7 @@ import android.net.Uri;
 
 import androidx.test.core.app.ApplicationProvider;
 
+import org.thoughtcrime.securesms.BuildConfig;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.ParameterizedRobolectricTestRunner;
@@ -28,7 +29,7 @@ public class UriUtilTest_isValidExternalUri {
   private final String  input;
   private final boolean output;
 
-  private static final String APPLICATION_ID = "org.thoughtcrime.securesms";
+  private static final String APPLICATION_ID = BuildConfig.APPLICATION_ID;
 
   @ParameterizedRobolectricTestRunner.Parameters
   public static Collection<Object[]> data() {
@@ -62,6 +63,7 @@ public class UriUtilTest_isValidExternalUri {
     Context context = ApplicationProvider.getApplicationContext();
     Uri     uri     = Uri.parse(input);
 
+    assertEquals(APPLICATION_ID, context.getPackageName());
     assertEquals(output, UriUtil.isValidExternalUri(context, uri));
   }
 }
