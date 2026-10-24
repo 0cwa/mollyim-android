@@ -1,0 +1,1025 @@
+{
+  "schema_version": 2,
+  "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+  "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "features": [
+    {
+      "id": "branding",
+      "patches": [
+        {
+          "path": "branding/0001-branding-default-launcher.patch",
+          "sha256": "5495da4af3342dbcf31968076a496cfc80dca3f8b6d67f1e1ae62b0f62d2513c",
+          "depends_on": [],
+          "mailbox_commit_sha": "ab2f6003d4d649050da47e78ac1d9f1b26d76ee1",
+          "source_commit_shas": [
+            "15aeb5bbc9b67723a2adac5ddeab12aaea9f9f6e",
+            "29cd5ad5dc35008bbfc9529cde1fe3e214b60aed"
+          ],
+          "provenance_kind": "upstream-source"
+        }
+      ],
+      "parity_paths": [
+        "app/src/main/res/drawable/ic_launcher_background.xml",
+        "app/src/main/res/drawable/ic_launcher_foreground.xml",
+        "app/src/main/res/drawable/ic_launcher_monochrome.xml"
+      ],
+      "dependencies": []
+    },
+    {
+      "id": "unifiedpush",
+      "patches": [
+        {
+          "path": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+          "sha256": "22142e1bbcfb73b5a65f6424af563f377855b8dc20551da1c8d85a1641344c4d",
+          "depends_on": [],
+          "mailbox_commit_sha": "cfec660c24d5a3427cc5d93b6b9bae68f45072ea",
+          "source_commit_shas": [
+            "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+            "d5c05fa94603addbaaccc9b63ca19a81520ba1c0",
+            "a688a8d09a5ed40a9d60d9b7d3011757b6dcd398",
+            "7fe38624aa096ae836120904012fc74735ecf965",
+            "3ba16299066e918304664790136a577b29f25203",
+            "6351f730a2c0acc2ab2e013e9a434f8c583e7435"
+          ],
+          "provenance_kind": "upstream-source"
+        },
+        {
+          "path": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+          "sha256": "7b3a02c86675b7b42ecff2498f8d9cf7950bb9c839a26345ba6b2470db0a9f9d",
+          "depends_on": [
+            "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch"
+          ],
+          "mailbox_commit_sha": "334914ce9fd01a40b948e80c8d0ab23ca26caa59",
+          "source_commit_shas": [
+            "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+            "60495667669377971dd19ae18cd04910c89cafcf",
+            "6351f730a2c0acc2ab2e013e9a434f8c583e7435"
+          ],
+          "provenance_kind": "upstream-source"
+        },
+        {
+          "path": "unifiedpush/0003-Add-UnifiedPush-distributor-recovery-prompt.patch",
+          "sha256": "b7fdac0339d9c41a0b4fd8fb879b7e75c0a2ef66d4c24fb89bbff1a88196830b",
+          "depends_on": [
+            "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch"
+          ],
+          "mailbox_commit_sha": "fbc906a655272ebef9915cfbeee07bb8719db5fd",
+          "source_commit_shas": [
+            "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c"
+          ],
+          "provenance_kind": "upstream-source"
+        },
+        {
+          "path": "unifiedpush/0004-Add-UnifiedPush-notification-settings-UI.patch",
+          "sha256": "b6015ffb68a91d85f9cb816e9f6c5cb5db61df581183825ecb6565824b46a5e7",
+          "depends_on": [
+            "unifiedpush/0003-Add-UnifiedPush-distributor-recovery-prompt.patch"
+          ],
+          "mailbox_commit_sha": "c4fe47a154591e3a5c596c8616f16976ecd2b914",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0005-Harden-UnifiedPush-network-and-secret-handling.patch",
+          "sha256": "08048cd9d174fbfb919545203645ef9e60a3094cdf72822f550ebd2fab97b2f1",
+          "depends_on": [
+            "unifiedpush/0004-Add-UnifiedPush-notification-settings-UI.patch"
+          ],
+          "mailbox_commit_sha": "fab10f9d41df35342d82b6a35cb0303c4591d8a2",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0006-Preserve-initial-FCM-availability-check.patch",
+          "sha256": "f822c8637bd6cd9f09d919865edb3794be566afbce71ea1a74beddb603646807",
+          "depends_on": [
+            "unifiedpush/0005-Harden-UnifiedPush-network-and-secret-handling.patch"
+          ],
+          "mailbox_commit_sha": "1e0f630490ed8cbde3623f6e2a1e40321e69770f",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0007-Fix-notification-delivery-settings-UI-compilation.patch",
+          "sha256": "468a71c529ed096e75191a08a30a1fa3a5eed535bfdc7255322421cc1caf04e8",
+          "depends_on": [
+            "unifiedpush/0006-Preserve-initial-FCM-availability-check.patch"
+          ],
+          "mailbox_commit_sha": "230b41c4f8656ebe986d0f0d81a3b84003fc1e72",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0008-Adapt-UnifiedPush-runtime-to-pinned-Signal-APIs.patch",
+          "sha256": "20f469d15ec82d0cee4f3647d87891fded3c2bc1e25d84a961ee4162a2d0182f",
+          "depends_on": [
+            "unifiedpush/0007-Fix-notification-delivery-settings-UI-compilation.patch"
+          ],
+          "mailbox_commit_sha": "18d276b317a28dbdff56d6a3fb8235515480f5df",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0009-Restart-network-after-notification-method-change.patch",
+          "sha256": "e8fefed05d2aa4801e7e1e59e86e60c35000115ce4175d619e3d0187705f31be",
+          "depends_on": [
+            "unifiedpush/0008-Adapt-UnifiedPush-runtime-to-pinned-Signal-APIs.patch"
+          ],
+          "mailbox_commit_sha": "7b096c75e39c89506153daf5dc4d8d76b61c570c",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0010-Adapt-linked-device-registration-to-Signal-Registrat.patch",
+          "sha256": "acc52a8bdfe1d37d24d9bbb8af971d4f4c464ca6436933f1caad1bb414926d7c",
+          "depends_on": [
+            "unifiedpush/0009-Restart-network-after-notification-method-change.patch"
+          ],
+          "mailbox_commit_sha": "1d647a4bbfb6f68c8989ab4957260b7e7adbc691",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0011-Restore-lock-screen-notification-privacy-control.patch",
+          "sha256": "e39ce0dcc2cab07f16337f685f7b1c7da5679eba4fd5291b9238276f2e638679",
+          "depends_on": [
+            "unifiedpush/0010-Adapt-linked-device-registration-to-Signal-Registrat.patch"
+          ],
+          "mailbox_commit_sha": "e60b61bfd190e97af4924dfa337ba2592bdfa45d",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0012-Fix-notification-settings-Compose-scope.patch",
+          "sha256": "c3b7a852274803bc9bd0cd6339ef36f81b840995a809d58a90c05ed3f355ecf6",
+          "depends_on": [
+            "unifiedpush/0011-Restore-lock-screen-notification-privacy-control.patch"
+          ],
+          "mailbox_commit_sha": "6787d617c5dd990e37ff7995c2dd73a32d3417d8",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0013-Honor-locked-notification-privacy-across-push-and-ba.patch",
+          "sha256": "b8ddd82d3c654d1be9b208b961a53dbccd2b010c7e56f951e9400cf1ab3d7014",
+          "depends_on": [
+            "unifiedpush/0012-Fix-notification-settings-Compose-scope.patch"
+          ],
+          "mailbox_commit_sha": "576af670416160386a6c038e17ea19c838cfe3fc",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0014-Use-Java-application-getter-in-lock-adapter.patch",
+          "sha256": "3e422833891291987e9840462877b954f4bd741314b998ca8eb3d99dac63adb2",
+          "depends_on": [
+            "unifiedpush/0013-Honor-locked-notification-privacy-across-push-and-ba.patch"
+          ],
+          "mailbox_commit_sha": "af892a60b24c5796db3b29c387c19dc2c7fec4d9",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0015-Pin-checksum-for-UnifiedPush-Tink-runtime-dependency.patch",
+          "sha256": "cbe9f2b742cb153a22d1090d3a85d58b12f8a80207bdd6453389c8e0784a2eea",
+          "depends_on": [
+            "unifiedpush/0014-Use-Java-application-getter-in-lock-adapter.patch"
+          ],
+          "mailbox_commit_sha": "0fa81df5d55a8a3f23810d7ee505fc284eff0654",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0016-Format-UnifiedPush-Kotlin-sources-with-ktlint.patch",
+          "sha256": "a9258404abe8cb6ca136294b9853f2dba4db3902ff3828ca5ff33b6d69163491",
+          "depends_on": [
+            "unifiedpush/0015-Pin-checksum-for-UnifiedPush-Tink-runtime-dependency.patch"
+          ],
+          "mailbox_commit_sha": "d538f378dd7b3aab4749eb0b65b2defcdf9376e6",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0017-Restore-locked-state-push-fallback.patch",
+          "sha256": "9aff3d2cb69bb882086b17ddc4ee9cf9e3e6830e41bafee16ae178b7f8446a28",
+          "depends_on": [
+            "unifiedpush/0016-Format-UnifiedPush-Kotlin-sources-with-ktlint.patch"
+          ],
+          "mailbox_commit_sha": "e46df7f69d75e67af4aaf50a50923311db1a9648",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        }
+      ],
+      "parity_paths": [
+        "app/src/main/java/im/molly/unifiedpush/UnifiedPushDistributor.kt",
+        "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanRepository.kt",
+        "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanScreen.kt",
+        "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerActivity.kt",
+        "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerViewModel.kt",
+        "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/QrScanResult.kt",
+        "app/src/main/java/im/molly/unifiedpush/model/MollySocket.kt",
+        "app/src/main/java/org/thoughtcrime/securesms/events/PushServiceEvent.kt",
+        "app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt"
+      ],
+      "integration_paths": [
+        {
+          "path": "app/build.gradle.kts",
+          "fragments": [
+            {
+              "id": "added-hook-1",
+              "start_anchor": "  implementation(libs.unifiedpush.connector) {\n    exclude(group = \"org.jetbrains.kotlin\", module = \"kotlin-stdlib\")\n    exclude(group = \"com.google.protobuf",
+              "end_anchor": "\", module = \"protobuf-java\")\n  }\n  implementation(libs.unifiedpush.connector.ui) {\n    exclude(group = \"org.jetbrains.kotlin\", module = \"kotlin-stdlib\")\n  }\n",
+              "target_sha256": "4d9c8e34454def762aea8651f1e67d89ae50c32a8c3a9105296cc6bb0199fa91",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "app/src/main/AndroidManifest.xml",
+          "fragments": [
+            {
+              "id": "added-hook-1",
+              "start_anchor": "        <activity\n            android:name=\"im.molly.unifiedpush.components.settings.app.notifications.MollySocketQrScannerActivity\"\n            android:configChanges=\"touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize\"\n            android:exported=\"false\"\n  ",
+              "end_anchor": "          android:theme=\"@style/Theme.Signal.DayNight.NoActionBar\" />\n\n        <activity\n            android:name=\"im.molly.unifiedpush.UnifiedPushDefaultDistributorLinkActivity\"\n            android:exported=\"false\"\n            android:theme=\"@style/TextSecure.DialogActivity\" />\n\n",
+              "target_sha256": "bcd234c2669eb2ac89080f902dc0b13529b43dd68b68488199e4b1b64b35ea39",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            },
+            {
+              "id": "added-hook-2",
+              "start_anchor": "        <receiver\n            android:name=\"im.molly.unifiedpush.receiver.UnifiedPushReceiver\"\n            android:enabled=\"true\"\n            android:exported=\"true\">\n            <intent-filter>\n                <action android:name=\"org.unifiedpush.android.connector.MESSAGE\" />\n                <actio",
+              "end_anchor": "n android:name=\"org.unifiedpush.android.connector.UNREGISTERED\" />\n                <action android:name=\"org.unifiedpush.android.connector.NEW_ENDPOINT\" />\n                <action android:name=\"org.unifiedpush.android.connector.REGISTRATION_FAILED\" />\n            </intent-filter>\n        </receiver>\n\n",
+              "target_sha256": "a890b5a1b5696dda750533299eed8899a685aaa525787b5354609d89b59915d5",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt",
+          "fragments": [
+            {
+              "id": "added-hook-10",
+              "start_anchor": "            AppSettingsRoute.NotificationsRoute.UnifiedPushSettings -> {\n              findNavContro",
+              "end_anchor": "ller().safeNavigate(R.id.action_notificationsSettingsFragment_to_unifiedPushFragment)\n            }\n\n",
+              "target_sha256": "9717184e7e3a86058f55cfbefc9b31d2c7a866d44c40495edbcc467ef1e180b3",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            },
+            {
+              "id": "added-hook-12",
+              "start_anchor": "  @Subscribe(threadMode = ThreadMode.MAIN)\n  fun onPushService",
+              "end_anchor": "Event(event: PushServiceEvent) {\n    viewModel.refresh()\n  }\n\n",
+              "target_sha256": "fe9912ad7097541519b739d838c10aa45af80501501da3c7d33ecd56f7ff0546",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            },
+            {
+              "id": "added-hook-15",
+              "start_anchor": "  fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) = Unit\n  fun onNotificationMethodChanged(fromTo",
+              "end_anchor": "Methods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) = Unit\n  fun onNavigationUnifiedPushSettings() = Unit\n",
+              "target_sha256": "e5950b36985f373529e7d13b44727d2d51132fa40d9a441dce7a9e709866d693",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            },
+            {
+              "id": "added-hook-16",
+              "start_anchor": "      item {\n        Rows.ToggleRow(\n          text = stringResource(R.string.NotificationsSettingsFragment__new_activity_while_locked),\n          label = stringResource(R.string.NotificationsSettingsFragment__receive_notifications_for_messages_or_m",
+              "end_anchor": "issed_calls_when_the_app_is_locked),\n          checked = state.notifyWhileLocked,\n          onCheckChanged = { enabled ->\n            callbacks.setNotifyNewActivityWhileLocked(enabled, state.canEnableNotifyWhileLocked)\n          }\n        )\n      }\n\n",
+              "target_sha256": "347616fa7f0932447457d90ed90d88d15591b33fbe5433c498d0bbdb0985804f",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt",
+          "fragments": [
+            {
+              "id": "added-hook-1",
+              "start_anchor": "  val canReceiveFcm: Boolean\n    get() = fcmEnabled && fcmToken != null\n\n  @get:JvmName(\"isPushAvailable\")",
+              "end_anchor": "\n  val pushAvailable: Boolean\n    get() = canReceiveFcm || SignalStore.unifiedpush.isAvailableOrAirGapped\n\n",
+              "target_sha256": "8d32279cc2beab1f0199d9bc3570c5bc706a5e745814c652639f3114392204f6",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/keyvalue/SignalStore.kt",
+          "fragments": [
+            {
+              "id": "added-hook-4",
+              "start_anchor": "    @JvmStatic\n    @get:JvmName(\"unifiedpush\")\n    val unifiedpus",
+              "end_anchor": "h: UnifiedPushValues\n      get() = instance!!.unifiedPushValues\n\n",
+              "target_sha256": "193e55850ca45a0f17b78861e8c674a5d9cf3493a10a52c6468f816db68da707",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt",
+          "fragments": [
+            {
+              "id": "added-hook-2",
+              "start_anchor": "      if (SignalStore.unifiedpush.enabled && !UnifiedPushDistributor.checkIfActive()) {\n",
+              "end_anchor": "        return@fromCallable State.PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG\n      }\n\n",
+              "target_sha256": "4b13e6ce16884ac763f58f2e665092ed5d768e254acf1958127b653527f0734a",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "app/src/main/res/navigation/app_settings_with_change_number.xml",
+          "fragments": [
+            {
+              "id": "added-hook-2",
+              "start_anchor": "    <fragment\n        android:id=\"@+id/notificationUnifiedPushFragment\"\n        android:name=",
+              "end_anchor": "\"im.molly.unifiedpush.components.settings.app.notifications.UnifiedPushSettingsFragment\" />\n\n",
+              "target_sha256": "816565ac636fd3cd39eb56b7db00b2d51cce926e2167bbe7e7d7c200ae33d662",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        },
+        {
+          "path": "gradle/verification-metadata.xml",
+          "fragments": [
+            {
+              "id": "added-hook-2",
+              "start_anchor": "      <component group=\"org.unifiedpush.android\" name=\"connector\" version=\"3.0.10\">\n         <artifact name=\"connector-3.0.10.aar\">\n            <sha256 value=\"8c72adba1bfb230bc823b19badbafe21d18a5db3c5f4e6da5b5305b4ec815717\" origin=\"Generated by Gradle\"/>\n         </artifact>\n         <artifact name=\"connector-3.0.10.module\">\n            <sha256 value=\"d23909376a7b6abd7c680b3862dcef71bcc2e773bd5152b40ed5bc5f24127c7b\" origin=\"Generated by Gradle\"/>\n         </artifact>\n      </component>\n      <co",
+              "end_anchor": "mponent group=\"org.unifiedpush.android\" name=\"connector-ui\" version=\"1.1.0-rc3\">\n         <artifact name=\"connector-ui-1.1.0-rc3.aar\">\n            <sha256 value=\"3aa84a57077765acb2bfbdbad1b2faed2094da4657bac2b6d0e8742cd0f2a599\" origin=\"Generated by Gradle\"/>\n         </artifact>\n         <artifact name=\"connector-ui-1.1.0-rc3.module\">\n            <sha256 value=\"849b1f68a7a774747ab02cb90550ff27d40cd4e7fc9c501bead50e1d7a87de7d\" origin=\"Generated by Gradle\"/>\n         </artifact>\n      </component>\n",
+              "target_sha256": "c6d35a0b213e7ed8885a32cb2f25db945aa1e090f4aa8ca0b43bd5981a197ed9",
+              "evidence": "Actual added UnifiedPush integration block from baseline-to-engineered diff, exact bytes independently present in pinned target; full residual target differences retained. See ownership and independent diff review."
+            }
+          ]
+        }
+      ],
+      "adaptation_paths": [
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt",
+          "expected_replay_sha256": "0a69ce6f92b7e7f8211f76e85fb2f49e8672a526e570e99557c0067959b21003",
+          "target_sha256": "dc9a760cbc3a8c9cd285ba49ef7a6e4219cfdaff9ccbbcc7e9656fdc0c832cfe",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt",
+          "expected_replay_sha256": "02cd167b9017a49d066e71fd646d89fb0a04b969ceea91e20e61cc76ad1264a1",
+          "target_sha256": "bedb2b1e36f2f0381816aa771fd7ef160a8b0ca81b0abcd8bbd1b05f9d60574b",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt",
+          "expected_replay_sha256": "a7eff27c0f0b7825f07e433534f2f37df497f30c683122146701fa14485deaa3",
+          "target_sha256": "7d1d958949da0bfb6e70109f297ddf48f7c349362612cc1aa539380ba192b4bf",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt",
+          "expected_replay_sha256": "d7f4d530008a29b506bcb863ae838fd0816bf051d4a746d2213077f7a52c17eb",
+          "target_sha256": "6f9715f41a0824c23ee0b141cbe9bf0ef4a1700dde4e868355d904756705c82e",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt",
+          "expected_replay_sha256": "423524c7fecca564c712239372561743f6c1f516b1b9fe5b0c083092579fcfb5",
+          "target_sha256": "1a80aafd8c1760d6c06ef95b57d8225503861ebe8e96cd33c4d4bc8ff194535e",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt",
+          "expected_replay_sha256": "4b7f66472f1d637047faf9e1c8f47231893fec159c8b812a09b4ac318ea03538",
+          "target_sha256": "80579ccfd6258de66ea492bc7d36d75a67b758aad98e693014c1b93404680377",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt",
+          "expected_replay_sha256": "ce9dc88ce05eddcfe08fe63ee204e5e90399b3ca5bfd97cbebf9538950ddd444",
+          "target_sha256": "bf734bb4ef6e27f8416cc179c48b32eab78f0c4ce47ffa3b66f1a6704bf248db",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt",
+          "expected_replay_sha256": "19fc767792f8b80eda350a342e6495a40e848feaef95ff8dcd1db1faf07681e6",
+          "target_sha256": "5fced099430f5792b0562b7a3438c9c95212c29ce2fe5c980c6181a02c78cd02",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt",
+          "expected_replay_sha256": "2a2cbed61ab7b275dc9493cda77b7c04c9ef9a3d7aabf8cec3d0dd802c5f2f21",
+          "target_sha256": "ec01adb4f7ca9ad2e0f7505538fd7af91620eaf70d383e6d60483205747d67a1",
+          "evidence": "Signal API adaptation plus locked-state availability invalidation; the locked path only changes registration status and restarts routing on availability transitions. Behavior is covered by the new availability regression test.",
+          "tests": [
+            "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
+            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java",
+          "expected_replay_sha256": "0ce09f02f4f058bb4f64c5cc91124302e22a0a1aa2c4bd44f263c2e87fdfe38f",
+          "target_sha256": "07a1a44c8cdf9ffe6f3b65cfdfe779fc4e225f0868542f45fe092dfd759ede14",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt",
+          "expected_replay_sha256": "473ab450942eaab4ac84e2276764fb819dd5dd4d2958f3973a1f68fa258a40da",
+          "target_sha256": "a33a967602d0eddccca51fea56937e201bd56045d015f7d8c045e41d25049b4b",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt",
+          "expected_replay_sha256": "3be3b991132c9c1d8c4490279be3a941e23bcceaa90aff053e8bd7ba54b21764",
+          "target_sha256": "b4482457bc36f36c79c494b6aa77154020b09116fe67694ca43d04b22a1ac6eb",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt",
+          "expected_replay_sha256": "c86131ac0deca82bc9cc87463485369a2a7a4ceb21fbb64cd69929d81f9c3336",
+          "target_sha256": "1ba3ec7afa5c41513021273b53290037bc1c5340231532b96d3403a5c0768705",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/components/settings/app/routes/AppSettingsRoute.kt",
+          "expected_replay_sha256": "3a5ff910c4ed3b19230d144378a5587ef7c877e644fed400253711fec4051f94",
+          "target_sha256": "bc3194d3513df5a4f0343d7b3768f1f4715bde970769b69ebaa27838744487ea",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt",
+          "expected_replay_sha256": "59ff6205d2934f160a8ada9fe3ebe8a52724ad25125411bdb688824bce0d30b8",
+          "target_sha256": "72a59f2a5df5187b8474e83ae12458f819b5d4cafef7b5a04cd98e8c90bc4c64",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java",
+          "expected_replay_sha256": "b8b4ec4d03ca20da691ed0d0565cd531eeb8d56ae1e1b49df8a105fbc12acf32",
+          "target_sha256": "b98e1084c8c83f663a432b5d9aff632c008c23b272db5baedc5ca5b64f2f7fce",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/jobs/JobManagerFactories.java",
+          "expected_replay_sha256": "e79c957d19e5f91177f83dacd3f71c3ab55827b5351a1d65fbe528fb4e69ab96",
+          "target_sha256": "066e520f9dffeca7d5269af6c15e67d750d4fb98c7e999e5cd39f2a1ac4f2f17",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt",
+          "expected_replay_sha256": "9d90deac49f6bbf2b716316edeb7f0613d3e8217e051352a77878ac4d588e7e9",
+          "target_sha256": "c638b88a14ae3c99392bcc4ae137fb58af701c19c44491d91513cc2f68524f4e",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java",
+          "expected_replay_sha256": "507b166fefe5734a22d3de229fd917b52be6cdca225280144fdaefe55dc2997b",
+          "target_sha256": "f4be528e2ad8a9073303bc4ae32d09b40ca0c43e544194829fcce434b68df748",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt",
+          "expected_replay_sha256": "2d3784e6185c7279eca39c92e0beebccd8dac5fbfd84202dfe349daad7f61922",
+          "target_sha256": "1497aa75a0d2f4a39aef7934530dd74cd6df4dbe654ec64a866f4496c9a30322",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceFragment.kt",
+          "expected_replay_sha256": "87f8ce2df849c6faddfd5f0c0eb2154cf317ff01f06b97d9023855fb7ffa71c3",
+          "target_sha256": "212d10b7fb3de026712e3b4f05892602472c7bb98f8af45ab7155849d64d2286",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceRepository.kt",
+          "expected_replay_sha256": "a2889556741d03989e11aab28429a3a031e4a051fddf834f5e97bb18b1b188a8",
+          "target_sha256": "102ad6b0e1492c6bc84b804b734eef95585817e9c83624da91d3226d891b3fcc",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java",
+          "expected_replay_sha256": "24dc28b1ec3c09957d024641da1ea6562b155834120309a14e88100da6c89668",
+          "target_sha256": "18832dd540f07570bbed7033f914ae25b55aeda1b8c316a8e4c77950c7605c70",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/service/KeyCachingService.java",
+          "expected_replay_sha256": "3e902469ef8b4415e75c38a913ce367a975b30aa70e27952351df5610b810eb2",
+          "target_sha256": "02d1aa398bca1ba55c25657207385cf5f39df073e7651291890df6a6de379031",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java",
+          "expected_replay_sha256": "a94bf5aaa22576ff87c63de035a42c5d10a49aaafaa2521d4657ae252eb1f3aa",
+          "target_sha256": "adfc73f12d877b0369cdbf4d8672d2ccbabe720ec8c9303d70d5ef64c7ba0ec8",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ar/strings2.xml",
+          "expected_replay_sha256": "e83c5af9ee44d204b6d9e1bd6d293fa44a71b5dbb1e774302756c736e97cefd7",
+          "target_sha256": "fd7b36543c732160b9742cd44b05d489b26d59e1172ea857ef587a601482e8c0",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-bs/strings2.xml",
+          "expected_replay_sha256": "518323c8ce5e7032cf8600e5ff972fc10788d7d9f8931ecb96d05e1b03b1d431",
+          "target_sha256": "937f00b71422b0dbae2e83533dd49081077f9c25f353867dd9a98188e440ebe7",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ca/strings2.xml",
+          "expected_replay_sha256": "651688d5d9e3f87982251db86b486f4c799d828bfd2b15494812bb111b1a884e",
+          "target_sha256": "c246c21bc4528e8154eb46ef3d105988e28fe816025b781ec0fb3040e74ab284",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-cs/strings2.xml",
+          "expected_replay_sha256": "fdd5997475e745fd037449f1e4590ec950438416f2909c1bb9fa9c2f4af9ada8",
+          "target_sha256": "fd4a02d7300ab8341333c4ffd251fdcdf5dbf58a56048a7fffadae5b958f2e1b",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-de/strings2.xml",
+          "expected_replay_sha256": "0203861d6ea0028290dc9aeb2d0fd532dc3504a15cf4724630724430fe4028e1",
+          "target_sha256": "3edd2190d1582e348bdfe2895c9f880ee927da45e7843a0ee7eab71d533d23e7",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-el/strings2.xml",
+          "expected_replay_sha256": "75dcd210af8d3ae34093f364df4a78d96751c245f9d28cb26c152ae9b90ad2da",
+          "target_sha256": "69e5bf88038c892031a13cd2ac1d21aecf16fda5f5fc54454e6c9097314f597b",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-es/strings2.xml",
+          "expected_replay_sha256": "48a81318802936dfca7ca397bfe6f3df821a998131ea0c41853dab328eebece7",
+          "target_sha256": "a053dc03c259bcc9107ed1de8b48d2ad4aa638a6b9a9abdd0fc0f22456b778d5",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-et/strings2.xml",
+          "expected_replay_sha256": "15c60ba4eedd2e23a54718a57650c2dd7a2f715d8f1a4e04a68aa15245f1be29",
+          "target_sha256": "b2c15ed1cf98f4978c470f7987b30630d1e2d1e50b034a8d6212171b4875aec3",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-fi/strings2.xml",
+          "expected_replay_sha256": "95740903bd3b3cfbdd69e067145b8e46ebcfe8bca396236ff1afe27c9945bd86",
+          "target_sha256": "e6de75805dedd1cd7a170b3f8adf07b99c1babfb047cd5ca9ecce353ded57f25",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-fr/strings2.xml",
+          "expected_replay_sha256": "cbefe50d9eb577932aa31af88b7768b1a85c877162c42af573c7809789473d62",
+          "target_sha256": "dd1cb287048aef43148a5c19f6076831e2135f67001ea8bbe194573f5ccb80e0",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ga/strings2.xml",
+          "expected_replay_sha256": "e0479e4e6443a55fd92df6a9bbedb264fff652bad02161bfc59cd0462818ab19",
+          "target_sha256": "30fd64968dab5915ef0652ce259da1fab1ce959053d4b5f2fcbd84ba3d2ad2f5",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-gl/strings2.xml",
+          "expected_replay_sha256": "ecfb96f477534739e5ee9576d5b8d512ed8234deffdde198899f8693550f5161",
+          "target_sha256": "3846dfb497ec74fec2451307f675465f51ab266c03a3f1eb2c50fcedaf5fa167",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-in/strings2.xml",
+          "expected_replay_sha256": "c107d4fdb8a664f36c236599057bcf2335cd6222c145f393219b2381b9251ae6",
+          "target_sha256": "107b1d522e1d81e9da64a611379a9c9cdf1092894724367ec646b50b04928bbd",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-it/strings2.xml",
+          "expected_replay_sha256": "0e1e3ca97a5cc5f723db76b3e33a0e3cd0646bedae8b33acd19fc1618ae2a871",
+          "target_sha256": "f1c69de095893d98ae45a265574e7160152d01a44dff06a72c47e3897384fd9e",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-iw/strings2.xml",
+          "expected_replay_sha256": "5df7689e5b8071601b28561ccb126b40e0a9d4841d2ffdd8ae0fbd12e0f2d482",
+          "target_sha256": "3227c90e7a0255ad23c4c29308c30e10a4b7be976b18c4855ff0a92c711b2b8b",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ko/strings2.xml",
+          "expected_replay_sha256": "a792519c356b1eeb28eb98499215f0f07fb486711061a82433de29fea9b026d0",
+          "target_sha256": "c51894bcddcb643371e38112c2f0b94247ceb54e4609faf9497871f6b5388c77",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-lv/strings2.xml",
+          "expected_replay_sha256": "2a521125900d45b56d71b2c993cfbab53378fec091a589778dc9d70bc55208b4",
+          "target_sha256": "5b1cda4c68550ae0ac5bb8d0b47b94267a42ae67d73971bd40ed81ff0303cb0d",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-nl/strings2.xml",
+          "expected_replay_sha256": "81beedf599754d01e768ade0d3380a9be5aa6dc0da8b376c1b3405128ca4cf65",
+          "target_sha256": "62fadcce96035fbfc1c9a80e27ea764110eaaef9e563045e324e7e4ddb945df4",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-pa/strings2.xml",
+          "expected_replay_sha256": "f4ffe2a4f176bd0a492b012710add611bc601fc895e98aad60bc26b1eb24b6a4",
+          "target_sha256": "b2fab8dc6f3d753de4bca6ea58077bf73cb9350930bba82a957b69f49ca2c174",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-pl/strings2.xml",
+          "expected_replay_sha256": "e0a3012be06474507f81b8d8103ae5cca209c8378cab64db953c904ccd12a23a",
+          "target_sha256": "5e0469b608591f87863443519b8b5c1a5a1d19a36f3ddd225f101ee27d3d2501",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-pt-rBR/strings2.xml",
+          "expected_replay_sha256": "032f6fbca8a00c0c9b2fd360274295dc25f71d6dc4e924b9a537b2a31dc63228",
+          "target_sha256": "ceedba19fce3ca9eb6cf994a1a93c7be024975d5295869c355759d4112b22ec3",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-pt/strings2.xml",
+          "expected_replay_sha256": "f452bbbc933a08f282580efc457ac28473fc4cecfd180167a6296bd03a2ca091",
+          "target_sha256": "2b76d6433fc6bca4b3eaacc6aa2a938b57cda806142ca60bb7919ecb160f7853",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ro/strings2.xml",
+          "expected_replay_sha256": "407d3082d967a7f4fc6fd358188207048e853822c4330bd9fbe5f5fd09e3a191",
+          "target_sha256": "ca55ebff78f0fac1bab95068036e61950a1e597490a0ad898d72024c6cd653cd",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ru/strings2.xml",
+          "expected_replay_sha256": "119f89949fd56f27a156bffc36eee26bde898b5644e2e4aecd4f9dbc369d4245",
+          "target_sha256": "26ea824ac78ae3e5636b1efd8cd151b2e09253ac73f3db1326a09f9e049789f0",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-sr/strings2.xml",
+          "expected_replay_sha256": "8f53025567c5e1aa3bf048565ae321dfcaa6176b8f5dcdc5a47dab61beac06de",
+          "target_sha256": "0ffe016a7abe41888ecb120a8e503cd7165830f9f6542ecfd1508229dbf58f93",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-sv/strings2.xml",
+          "expected_replay_sha256": "909f8a08aa04ea3e1413e0d54e0a53b140826164902fe9f58fcd8a5f5f935c08",
+          "target_sha256": "70f03e0ee8a98e729f09149f48b71b1b8dd41a85abc2d3a08039f8bbb7eb9ee0",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ta/strings2.xml",
+          "expected_replay_sha256": "22dfc1454c336004244f432e9fb2dc0dddf8bf25175e362a6dcf08aa2aa1535a",
+          "target_sha256": "c2376360762d9601f34f000d727649ac2def782479a4416e6b576ed152e5dd80",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-tr/strings2.xml",
+          "expected_replay_sha256": "44cc684f9fe8e2a7acf7c5996f73bb5f6aa1845cbeb90c71c88aa2d8c078f983",
+          "target_sha256": "6c74c6d75bfe748e40a235f49ea4295ebed1fd333114b564dad87d2715b1944e",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-ug/strings2.xml",
+          "expected_replay_sha256": "d7a958317adf97eccb4ebece7e07a1382aedd198d6254a4fc809551c0921d2f7",
+          "target_sha256": "4bdd66fa9af197b097a2c70009130e4a873f5c21dfa249ef0d36ac2fefdb974e",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-uk/strings2.xml",
+          "expected_replay_sha256": "0b0f12c6fa03589dbef96867f424969fee1d0058cb9ba6d3254b758697a43ed5",
+          "target_sha256": "609144c69e5404c6cabdd5578ba84298fd203732e81347fae062754975a75a64",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-vi/strings2.xml",
+          "expected_replay_sha256": "3058e65e4981c40b8c53347e26fb9a1c20a326b9d59abf58a48b67eacfe4a6fe",
+          "target_sha256": "676f0243c4a303dfaced99b8e2c096eef328341f07150005eeb0e93317a9ea47",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values-zh-rCN/strings2.xml",
+          "expected_replay_sha256": "1fb0622d3d01096dcf22a478e3d66a80e4b2fdc694d68286ca51910cf667b68b",
+          "target_sha256": "2438c26ba49cda12f7118867022505a990cd356ee499677d11664e752a60bc7f",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "app/src/main/res/values/strings2.xml",
+          "expected_replay_sha256": "80032346b80a9dff0127eabff100a7564e3209f328de51e1de03e686bcbe0b2a",
+          "target_sha256": "b48b08d61df2bcd73d778a43eabe891486dbc89fbe60cc40f6b20f915228fdf1",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "core/util/src/main/java/org/signal/core/util/Util.java",
+          "expected_replay_sha256": "6f1ac5619ecab296f6c3de17c9ed71fb36a18040f87ebb4838e65a03bf9f54b2",
+          "target_sha256": "35933afa49b566aaf29907be19ea39b3457ed9a4d25d2c88660fb0bc6e399d50",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        },
+        {
+          "path": "gradle/libs.versions.toml",
+          "expected_replay_sha256": "27224c30347b2d4aa82527471fe0e05e104efe52e237a1d282b73dcd04f74716",
+          "target_sha256": "670efa4e1287a3f0139d36f2dcc5edd25cf407d143e4a2d577334235207e1760",
+          "evidence": "Pinned Signal API compatibility, surgical UnifiedPush integration, or independently identified security correction. Exact target parity is intentionally not claimed; full delta and rationale require independent agent verification. See reports/independent-review and ownership ledger.",
+          "tests": [
+            "reports/independent-review/SECURITY-REVIEW.md",
+            "reports/build/build-results.json"
+          ]
+        }
+      ],
+      "dependencies": [],
+      "added_paths": [
+        {
+          "path": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
+          "expected_replay_sha256": "24a00ba7ad1d2c3726462b1fd11c925d3cdf05543dcbe10ed85b19bfc9add1d6",
+          "evidence": "New focused regression test exercises locked endpoint rotation and distributor removal and verifies fallback becomes available without opening protected message data.",
+          "tests": [
+            "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
+            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "build-validation",
+      "dependencies": [
+        "unifiedpush"
+      ],
+      "patches": [
+        {
+          "path": "build-validation/0001-Use-variant-application-ID-in-URI-safety-tests.patch",
+          "sha256": "fe3c15983df9ba3e300f061f3f66bdfef4bc3512bc35d342b3a3e58822d5ac19",
+          "depends_on": [],
+          "mailbox_commit_sha": "cb08c452a7e6f0817dd433884823b767d3b7bfb9",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "build-validation/0002-Verify-pinned-Gradle-distribution-checksum.patch",
+          "sha256": "892c0d950e0f8cc8cee0be2ea46ad6b7aaa363e76cbe980a8a5b81e1261a2c7e",
+          "depends_on": [],
+          "mailbox_commit_sha": "0e34c904f72fb899947967e5d2b37f78ca71b70e",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        }
+      ],
+      "parity_paths": [],
+      "integration_paths": [],
+      "adaptation_paths": [
+        {
+          "path": "app/src/test/java/org/thoughtcrime/securesms/util/UriUtilTest_isValidExternalUri.java",
+          "expected_replay_sha256": "b8095173443a1633ed28ad64f7a7d7de9a2964ad30b7ee003932568466dd0ab9",
+          "target_sha256": "00bde0a89339596edbbfcc705d6979efe967bf6cbf6a72085fd06adc8c66843e",
+          "evidence": "Flavor-aware application ID is used in URI-safety fixtures; pinned Molly target uses a hard-coded production package string. This is a test-only adaptation to the Signal variant matrix.",
+          "tests": [
+            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+          ]
+        },
+        {
+          "path": "gradle/wrapper/gradle-wrapper.properties",
+          "expected_replay_sha256": "fd87b6a2e9a78a5aa4ba15a9c276ea13eaac3fa7bdf9d90b780810447af17556",
+          "target_sha256": "3c19c46277fc420c0982e644181567251d857f0a5c3268fd29e9e8aa53c4ce38",
+          "evidence": "Adds the verified distributionSha256Sum for the pinned Gradle 9.4.1 distribution. The pinned Molly target file has no checksum field; this verification hardening is intentionally local to the patch reconstruction.",
+          "tests": [
+            "reports/827/build/gradle-distribution-checksum.json"
+          ]
+        }
+      ],
+      "added_paths": []
+    }
+  ],
+  "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "patch_provenance": "mailbox_commit_sha identifies the local reconstructed patch commit in the From header. source_commit_shas identifies original Molly upstream commits explicitly referenced inside that patch; an empty list with provenance_kind poc-adaptation means the patch is a Signal compatibility or PoC correction and makes no claim of a matching Molly source commit.",
+  "expected_validation_commands": [
+    "python3 tools/827/validate.py --repo . --manifest patches/827/series.yaml",
+    "python3 -m unittest discover -s tools/827 -p test_*.py",
+    "python3 tools/827/replay_twice.py --repo . --manifest patches/827/series.yaml --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json"
+  ],
+  "known_intentional_target_differences": [
+    "Signal API adaptation in UnifiedPush shared integration points is declared through integration/adaptation checks; this is not a claim of whole-application Molly parity.",
+    "Validation overlays add a UnifiedPush locked-state regression test, use flavor-aware URI test fixtures, and pin the Gradle distribution checksum; these additions are not present in the pinned Molly application tree."
+  ],
+  "patch_count": 20
+}

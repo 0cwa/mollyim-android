@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "review_scope": [
+    "locked UnifiedPush availability transitions",
+    "registration and network lifecycle",
+    "exported receiver and payload handling",
+    "MollySocket provisioning and secret handling"
+  ],
+  "findings": [
+    {
+      "id": "F4",
+      "status": "FIXED_PENDING_TEST_EXECUTION",
+      "summary": "Locked endpoint changes and distributor removal previously left registered availability stale; unregister with a null endpoint could also skip invalidation.",
+      "change": "Receiver callbacks set registrationStatus to UNKNOWN and restart the network when a REGISTERED state is invalidated. Locked paths do not access endpoint/device/VAPID values. The unlocked unregister path invalidates state even when refreshEndpoint(null) would be a no-op.",
+      "test": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
+      "historical_runtime": "PASS on API 30 for synthetic refresh-job missing-VAPID fallback on tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3; predates this fix and does not validate locked callbacks."
+    },
+    {
+      "id": "F5",
+      "status": "PARTIALLY_ADDRESSED",
+      "summary": "Stale availability after registration failure is now invalidated; retry cadence and duplicate network restarts remain source-reviewed only.",
+      "evidence": "UnifiedPushRefreshJob uses a six-hour lifespan, maximum three attempts, and maximum two factory instances. No live failure/recovery server test ran."
+    },
+    {
+      "id": "F6_RECEIVER_AUTH",
+      "status": "BOUNDED_TRUST_DEPENDENCY",
+      "summary": "The app receiver is exported without a signature permission; connector 3.0.10 gates callbacks on a stored registration token mapped to an instance, but does not authenticate the sender package.",
+      "evidence": "Compiled MessagingReceiver.onReceive bytecode retained in runtime/network-contracts/MessagingReceiverImpl.javap.txt and connector-classes.jar."
+    },
+    {
+      "id": "F6_LOCK_PRIVACY",
+      "status": "SOURCE_REVIEWED",
+      "summary": "Locked push handling can post only a generic may-have-messages notice, guarded by the existing preference. It does not deserialize or display protected contents.",
+      "evidence": "UnifiedPushReceiver.onMessageLocked and FcmFetchManager.postMayHaveMessagesNotificationForLockedPush. Payload classification is substring-based and can misclassify malformed content."
+    },
+    {
+      "id": "F7_LINK_ADAPTER",
+      "status": "SOURCE_CONTRACT_SUPPORTED_LIVE_SERVER_UNVERIFIED",
+      "summary": "Candidate DeviceAttributes serialization matches the five fields consumed by the examined dated Signal-Server linked-device request handler.",
+      "evidence": "DTO test output and server source snapshots in runtime/network-contracts; deployed server revision and live account registration remain unknown."
+    },
+    {
+      "id": "F7_INTERRUPTED_PROVISIONING",
+      "status": "RESIDUAL_RISK",
+      "summary": "If linked-device registration succeeds but prekey loading fails before the new local device record is saved, an orphan remote linked device can remain.",
+      "evidence": "Source path in MollySocketRepository.createDevice and verifyNewDevice; no live provisioning/failure injection ran."
+    },
+    {
+      "id": "F7_REDIRECT_AND_URL_USERINFO",
+      "status": "BOUNDED_TEST_PASS",
+      "summary": "Discovery and registration disable redirects; exact OkHttp 5.3.2 loopback probe found no Basic Authorization header from URL userinfo and did not send fragments.",
+      "evidence": "runtime/network-contracts/userinfo-probe.json and userinfo-probe.log; ignored URL components remain low-severity parser hygiene."
+    },
+    {
+      "id": "F7_CREDENTIAL_EXPORT",
+      "status": "INTENTIONAL_USER_ACTION_WITH_LIMITED_LIFETIME",
+      "summary": "Copying server parameters places device credentials and endpoint into clipboard through the sensitive clipboard helper; synthetic API 30 clipboard expiry was exercised.",
+      "evidence": "Historical API 30 run; API 33+ clipboard metadata remains untested."
+    }
+  ],
+  "limitations": [
+    "F4 regression tests have not yet completed in Gradle.",
+    "No live Signal account, Signal service, MollySocket, or real UnifiedPush distributor was used.",
+    "Android 13+ clipboard metadata and physical-device notification behavior were not tested.",
+    "Historical API 30 runtime evidence belongs to tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3, before the current source fix."
+  ]
+}

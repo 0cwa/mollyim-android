@@ -1,0 +1,44 @@
+From 1e0f630490ed8cbde3623f6e2a1e40321e69770f Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:16:31 +0000
+Subject: [PATCH 06/16] Preserve initial FCM availability check
+
+When no delivery preference has been persisted, retain the pinned Signal startup behavior that checks Play Services and can enable FCM. Explicit user-selected methods continue through the UnifiedPush dispatcher.
+---
+ .../java/org/thoughtcrime/securesms/ApplicationContext.java   | 4 +++-
+ .../org/thoughtcrime/securesms/keyvalue/SettingsValues.java   | 4 ++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
+index 2c950ce6017..8b167af4d13 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
+@@ -481,7 +481,9 @@ public class ApplicationContext extends Application implements AppForegroundObse
+       return;
+     }
+ 
+-    NotificationDeliveryMethod method = SignalStore.settings().getPreferredNotificationMethod();
++    NotificationDeliveryMethod method = SignalStore.settings().hasPreferredNotificationMethod()
++                                       ? SignalStore.settings().getPreferredNotificationMethod()
++                                       : NotificationDeliveryMethod.FCM;
+     boolean useUnifiedPush = method == NotificationDeliveryMethod.UNIFIEDPUSH && !SignalStore.account().isLinkedDevice();
+ 
+     if (SignalStore.account().isFcmEnabled() && method != NotificationDeliveryMethod.FCM) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java
+index 7cb034d0f32..f9a9a0d6ed5 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java
+@@ -572,6 +572,10 @@ public final class SettingsValues extends SignalStoreValues {
+     putBoolean(AUTOMATIC_VERIFICATION_ENABLED, enabled);
+   }
+ 
++  public boolean hasPreferredNotificationMethod() {
++    return getStore().containsKey(MOLLY_NOTIFICATION_METHOD);
++  }
++
+   public @NonNull NotificationDeliveryMethod getPreferredNotificationMethod() {
+     if (getStore().containsKey(MOLLY_NOTIFICATION_METHOD)) {
+       return NotificationDeliveryMethod.deserialize(getString(MOLLY_NOTIFICATION_METHOD, "FCM"));
+-- 
+2.52.0
+

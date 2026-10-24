@@ -1,0 +1,354 @@
+From d538f378dd7b3aab4749eb0b65b2defcdf9376e6 Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 03:26:29 +0000
+Subject: [PATCH 16/16] Format UnifiedPush Kotlin sources with ktlint
+
+---
+ .../im/molly/unifiedpush/MollySocketRepository.kt   | 13 ++++++++-----
+ .../UnifiedPushDefaultDistributorLinkActivity.kt    |  2 +-
+ .../unifiedpush/UnifiedPushNotificationBuilder.kt   |  1 -
+ .../notifications/UnifiedPushSettingsFragment.kt    | 12 ++++++------
+ .../app/notifications/UnifiedPushSettingsState.kt   |  4 ++--
+ .../notifications/UnifiedPushSettingsViewModel.kt   |  7 ++++---
+ .../im/molly/unifiedpush/model/ConnectionRequest.kt |  6 +++---
+ .../im/molly/unifiedpush/model/MollySocketDevice.kt |  4 ++--
+ .../java/org/thoughtcrime/securesms/MainActivity.kt |  2 +-
+ .../notifications/NotificationsSettingsFragment.kt  |  2 +-
+ .../securesms/jobs/UnifiedPushRefreshJob.kt         |  6 +++---
+ .../securesms/keyvalue/UnifiedPushValues.kt         |  7 +++----
+ 12 files changed, 34 insertions(+), 32 deletions(-)
+
+diff --git a/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt b/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt
+index a70d8470939..5e85bff4534 100644
+--- a/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt
++++ b/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt
+@@ -54,7 +54,7 @@ object MollySocketRepository {
+ 
+     return MollySocketDevice(
+       deviceId = deviceId,
+-      password = password,
++      password = password
+     )
+   }
+ 
+@@ -65,7 +65,8 @@ object MollySocketRepository {
+ 
+     val registrationId = KeyHelper.generateRegistrationId(false)
+     val encryptedDeviceName = DeviceNameCipher.encryptDeviceName(
+-      DEVICE_NAME.toByteArray(), SignalStore.account.aciIdentityKey
++      DEVICE_NAME.toByteArray(),
++      SignalStore.account.aciIdentityKey
+     )
+ 
+     val deviceAttributes = DeviceAttributes(
+@@ -112,7 +113,9 @@ object MollySocketRepository {
+     val aciStore = AppDependencies.protocolStore.aci()
+     val preKeys = NetworkResultUtil.toPreKeysLegacy(
+       keysApi.getPreKeysSync(
+-        destination = recipient, sealedSenderAccess = null, deviceId = deviceId
++        destination = recipient,
++        sealedSenderAccess = null,
++        deviceId = deviceId
+       )
+     )
+     preKeys.forEach { preKey ->
+@@ -181,14 +184,14 @@ object MollySocketRepository {
+     url: HttpUrl,
+     device: MollySocketDevice,
+     endpoint: String,
+-    ping: Boolean = false,
++    ping: Boolean = false
+   ): ConnectionResult? {
+     val requestData = ConnectionRequest(
+       uuid = SignalStore.account.requireAci().toString(),
+       deviceId = device.deviceId,
+       password = device.password,
+       endpoint = endpoint,
+-      ping = ping,
++      ping = ping
+     )
+ 
+     val postBody = JsonUtils.toJson(requestData).toRequestBody(MEDIA_TYPE_JSON)
+diff --git a/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt b/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt
+index 0d75931b935..418e61f7205 100644
+--- a/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt
++++ b/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt
+@@ -52,4 +52,4 @@ class UnifiedPushDefaultDistributorLinkActivity : AppCompatActivity() {
+     private const val KEY_FOUND = "found"
+     private const val TAG = "UnifiedPushDefaultDistributorLinkActivity"
+   }
+-}
+\ No newline at end of file
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt b/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt
+index 7a76c06c2a0..910bd85d8ae 100644
+--- a/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt
++++ b/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt
+@@ -52,7 +52,6 @@ class UnifiedPushNotificationBuilder(val context: Context) {
+     notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_device_limit_hit, deviceLimit - 1))
+   }
+ 
+-
+   fun setNotificationMollySocketForbiddenEndpoint() {
+     notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint))
+   }
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt
+index d2d0295c5f6..52f77a7b9ce 100644
+--- a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt
+@@ -53,7 +53,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
+     return configure {
+       textPref(
+         title = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__status)),
+-        summary = DSLSettingsText.from(getStatusSummary(state)),
++        summary = DSLSettingsText.from(getStatusSummary(state))
+       )
+ 
+       clickPref(
+@@ -67,7 +67,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
+         ),
+         onClick = {
+           qrScanLauncher.launch()
+-        },
++        }
+       )
+ 
+       if (state.distributors.isEmpty()) {
+@@ -82,7 +82,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
+           selected = state.selected,
+           onSelected = {
+             viewModel.setUnifiedPushDistributor(state.distributors[it].applicationId)
+-          },
++          }
+         )
+       }
+ 
+@@ -96,7 +96,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
+           isEnabled = state.serverParameters != null,
+           onClick = {
+             viewModel.copyParamsToClipboard(requireContext())
+-          },
++          }
+         )
+       } else {
+         val aciOrUnknown = state.aci ?: getString(R.string.Recipient_unknown)
+@@ -108,7 +108,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
+           isEnabled = state.aci != null,
+           onClick = {
+             viewModel.copyAciToClipboard(requireContext())
+-          },
++          }
+         )
+ 
+         clickPref(
+@@ -117,7 +117,7 @@ class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDel
+           onClick = {
+             viewModel.pingMollySocket()
+             Toast.makeText(context, getString(R.string.UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments), Toast.LENGTH_SHORT).show()
+-          },
++          }
+         )
+       }
+     }
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt
+index 2a672a4d56f..62c899827ca 100644
+--- a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt
+@@ -5,7 +5,7 @@ import im.molly.unifiedpush.model.RegistrationStatus
+ 
+ data class Distributor(
+   val applicationId: String,
+-  val name: String,
++  val name: String
+ )
+ 
+ data class UnifiedPushSettingsState(
+@@ -17,7 +17,7 @@ data class UnifiedPushSettingsState(
+   val selected: Int,
+   val selectedNotAck: Boolean,
+   val endpoint: String?,
+-  val mollySocketUrl: String?,
++  val mollySocketUrl: String?
+ ) {
+   val serverParameters: String?
+     get() {
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt
+index 689b80eedc4..77865db3fb0 100644
+--- a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt
+@@ -41,7 +41,8 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
+       val name = try {
+         val ai = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+           application.packageManager.getApplicationInfo(
+-            appId, PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong())
++            appId,
++            PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong())
+           )
+         } else {
+           application.packageManager.getApplicationInfo(appId, 0)
+@@ -53,7 +54,7 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
+ 
+       Distributor(
+         applicationId = appId,
+-        name = name,
++        name = name
+       )
+     }
+ 
+@@ -68,7 +69,7 @@ class UnifiedPushSettingsViewModel(private val application: Application) : ViewM
+       selected = selected,
+       selectedNotAck = !ack,
+       endpoint = SignalStore.unifiedpush.endpoint,
+-      mollySocketUrl = mollySocketUrl,
++      mollySocketUrl = mollySocketUrl
+     )
+   }
+ 
+diff --git a/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt b/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt
+index a21e22197f1..c89cc5b69f0 100644
+--- a/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt
++++ b/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt
+@@ -7,16 +7,16 @@ data class ConnectionRequest(
+   @JsonProperty("device_id") val deviceId: Int,
+   @JsonProperty("password") val password: String,
+   @JsonProperty("endpoint") val endpoint: String,
+-  @JsonProperty("ping") val ping: Boolean,
++  @JsonProperty("ping") val ping: Boolean
+ )
+ 
+ data class Response(
+-  @JsonProperty("mollysocket") val mollySocket: ResponseMollySocket,
++  @JsonProperty("mollysocket") val mollySocket: ResponseMollySocket
+ )
+ 
+ data class ResponseMollySocket(
+   @JsonProperty("version") val version: String,
+-  @JsonProperty("status") val status: ConnectionResult?,
++  @JsonProperty("status") val status: ConnectionResult?
+ )
+ 
+ enum class ConnectionResult(private val formatted: String) {
+diff --git a/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt b/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt
+index b3dc3dab9de..8d9666a99c5 100644
+--- a/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt
++++ b/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt
+@@ -2,7 +2,7 @@ package im.molly.unifiedpush.model
+ 
+ data class MollySocketDevice(
+   val deviceId: Int,
+-  val password: String,
++  val password: String
+ ) {
+   override fun toString(): String {
+     return "MollySocketDevice:$deviceId"
+@@ -12,7 +12,7 @@ data class MollySocketDevice(
+ enum class LinkStatus {
+   LINKED,
+   NOT_LINKED,
+-  UNKNOWN,
++  UNKNOWN
+ }
+ 
+ enum class RegistrationStatus(val value: Int) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
+index 04647f08601..d7cc07e35c5 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
+@@ -81,6 +81,7 @@ import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+ import androidx.navigation3.ui.NavDisplay
+ import androidx.recyclerview.widget.RecyclerView
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder
++import im.molly.unifiedpush.UnifiedPushDistributor
+ import io.reactivex.rxjava3.subjects.PublishSubject
+ import io.reactivex.rxjava3.subjects.Subject
+ import kotlinx.coroutines.Dispatchers
+@@ -89,7 +90,6 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
+ import kotlinx.coroutines.flow.filter
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.withContext
+-import im.molly.unifiedpush.UnifiedPushDistributor
+ import org.signal.core.ui.BottomSheetUtil
+ import org.signal.core.ui.compose.Snackbars
+ import org.signal.core.ui.compose.theme.SignalTheme
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+index b9dea7a28a4..38d23019fa1 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+@@ -54,10 +54,10 @@ import org.signal.core.ui.compose.DayNightPreviews
+ import org.signal.core.ui.compose.Dividers
+ import org.signal.core.ui.compose.Previews
+ import org.signal.core.ui.compose.Rows
++import org.signal.core.ui.compose.Rows.TextAndLabel
+ import org.signal.core.ui.compose.Scaffolds
+ import org.signal.core.ui.compose.SignalIcons
+ import org.signal.core.ui.compose.Texts
+-import org.signal.core.ui.compose.Rows.TextAndLabel
+ import org.signal.core.util.logging.Log
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt b/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
+index 591ef12b4ee..514e6f01089 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
+@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit
+ class UnifiedPushRefreshJob private constructor(
+   private val testPing: Boolean,
+   private val fromNewEndpoint: Boolean,
+-  parameters: Parameters,
++  parameters: Parameters
+ ) : BaseJob(parameters) {
+ 
+   constructor() : this(testPing = false)
+@@ -165,7 +165,7 @@ class UnifiedPushRefreshJob private constructor(
+       url = mollySocketUrl!!,
+       device = device,
+       endpoint = endpoint,
+-      ping = testPing,
++      ping = testPing
+     )
+ 
+     Log.d(TAG, "Registration result: $result")
+@@ -250,7 +250,7 @@ class UnifiedPushRefreshJob private constructor(
+       return UnifiedPushRefreshJob(
+         testPing = data.getBoolean(KEY_PING),
+         fromNewEndpoint = data.getBoolean(KEY_FROM_NEW_ENDPOINT),
+-        parameters = parameters,
++        parameters = parameters
+       )
+     }
+   }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt
+index f12d279d7e2..38eae4153d2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt
+@@ -32,7 +32,7 @@ class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
+     get() {
+       return MollySocketDevice(
+         deviceId = getInteger(MOLLYSOCKET_DEVICE_ID, 0),
+-        password = getString(MOLLYSOCKET_PASSWORD, null) ?: return null,
++        password = getString(MOLLYSOCKET_PASSWORD, null) ?: return null
+       )
+     }
+     set(device) {
+@@ -42,8 +42,7 @@ class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
+         .apply()
+     }
+ 
+-  fun isMollySocketDevice(deviceId: Int): Boolean =
+-    deviceId != 0 && getInteger(MOLLYSOCKET_DEVICE_ID, 0) == deviceId
++  fun isMollySocketDevice(deviceId: Int): Boolean = deviceId != 0 && getInteger(MOLLYSOCKET_DEVICE_ID, 0) == deviceId
+ 
+   var registrationStatus: RegistrationStatus
+     get() = RegistrationStatus.fromValue(getInteger(MOLLYSOCKET_STATUS, -1)) ?: RegistrationStatus.UNKNOWN
+@@ -57,7 +56,7 @@ class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
+ 
+   var mollySocketUrl: String? by stringValue(MOLLYSOCKET_URL, null)
+ 
+-  var vapidPublicKey:  String? by stringValue(MOLLYSOCKET_VAPID, null)
++  var vapidPublicKey: String? by stringValue(MOLLYSOCKET_VAPID, null)
+ 
+   var vapidKeySynced: Boolean by booleanValue(MOLLYSOCKET_VAPID_SYNCED, true)
+ 
+-- 
+2.52.0
+

@@ -1,0 +1,250 @@
+From ab2f6003d4d649050da47e78ac1d9f1b26d76ee1 Mon Sep 17 00:00:00 2001
+From: Codex PoC <codex-poc@invalid.example>
+Date: Wed, 21 Oct 2026 02:06:03 +0000
+Subject: [PATCH] Apply Molly default launcher artwork (P2 PoC)
+
+Applies only the three launcher artwork drawables from the pinned Molly target. The adaptive icon declaration and app wiring are unchanged dependencies; no byte parity is claimed for the declaration whitespace delta.
+
+Source-Commit: 15aeb5bbc9b67723a2adac5ddeab12aaea9f9f6e
+
+Source-Commit: 29cd5ad5dc35008bbfc9529cde1fe3e214b60aed
+
+Original-Author: Oscar Mira <valldrac@molly.im>
+
+Source-Paths: app/src/main/res/drawable/ic_launcher_background.xml, app/src/main/res/drawable/ic_launcher_foreground.xml, app/src/main/res/drawable/ic_launcher_monochrome.xml
+
+Source-Refs: https://github.com/mollyim/mollyim-android/commit/15aeb5bbc9b67723a2adac5ddeab12aaea9f9f6e
+
+PoC-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+
+PoC-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+---
+ .../res/drawable/ic_launcher_background.xml   |  40 +++----
+ .../res/drawable/ic_launcher_foreground.xml   | 101 ++++++++----------
+ .../res/drawable/ic_launcher_monochrome.xml   |  53 ++-------
+ 3 files changed, 75 insertions(+), 119 deletions(-)
+
+diff --git a/app/src/main/res/drawable/ic_launcher_background.xml b/app/src/main/res/drawable/ic_launcher_background.xml
+index b50d27d79f2..702a030fb5a 100644
+--- a/app/src/main/res/drawable/ic_launcher_background.xml
++++ b/app/src/main/res/drawable/ic_launcher_background.xml
+@@ -2,26 +2,20 @@
+     xmlns:aapt="http://schemas.android.com/aapt"
+     android:width="108dp"
+     android:height="108dp"
+-    android:viewportWidth="108"
+-    android:viewportHeight="108">
+-  <group>
+-    <path
+-        android:pathData="M108 0H0v108h108V0Z">
+-      <aapt:attr name="android:fillColor">
+-        <gradient
+-            android:type="linear"
+-            android:startX="54"
+-            android:startY="0"
+-            android:endX="54"
+-            android:endY="108">
+-          <item
+-              android:color="#FF3B45FD"
+-              android:offset="0"/>
+-          <item
+-              android:color="#FF1F2AFD"
+-              android:offset="1"/>
+-        </gradient>
+-      </aapt:attr>
+-    </path>
+-  </group>
+-</vector>
+\ No newline at end of file
++    android:viewportWidth="512"
++    android:viewportHeight="512">
++  <path
++      android:pathData="M0,0h512v512h-512z">
++    <aapt:attr name="android:fillColor">
++      <gradient
++          android:startX="430.85"
++          android:startY="558.85"
++          android:endX="81.15"
++          android:endY="-46.85"
++          android:type="linear">
++        <item android:offset="0.13" android:color="#FF553BFF"/>
++        <item android:offset="0.86" android:color="#FF9064FF"/>
++      </gradient>
++    </aapt:attr>
++  </path>
++</vector>
+diff --git a/app/src/main/res/drawable/ic_launcher_foreground.xml b/app/src/main/res/drawable/ic_launcher_foreground.xml
+index 3612d801074..e378e3c0ba3 100644
+--- a/app/src/main/res/drawable/ic_launcher_foreground.xml
++++ b/app/src/main/res/drawable/ic_launcher_foreground.xml
+@@ -1,57 +1,50 @@
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:aapt="http://schemas.android.com/aapt"
+     android:width="108dp"
+     android:height="108dp"
+-    android:viewportWidth="108"
+-    android:viewportHeight="108">
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M54 31c1.2 0 2.37 0.1 3.51 0.27l-0.33 2.13c-1.04-0.16-2.1-0.24-3.18-0.24s-2.14 0.08-3.18 0.24l-0.33-2.13C51.63 31.09 52.81 31 54 31Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M59.46 31.65l-0.51 2.1c2.1 0.5 4.07 1.34 5.87 2.43l1.12-1.84c-1.98-1.2-4.16-2.12-6.48-2.69Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M67.6 35.44l-1.28 1.74c1.72 1.27 3.24 2.78 4.5 4.5l1.74-1.27c-1.4-1.9-3.07-3.57-4.97-4.97Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M73.66 42.06l-1.84 1.12c1.1 1.8 1.92 3.77 2.43 5.87l2.1-0.5c-0.57-2.33-1.48-4.5-2.69-6.5Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M76.73 50.5l-2.13 0.32c0.16 1.04 0.24 2.1 0.24 3.18s-0.08 2.14-0.24 3.18l2.13 0.33C76.91 56.37 77 55.19 77 54c0-1.2-0.1-2.37-0.27-3.5Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M71.82 64.82c1.1-1.8 1.92-3.77 2.43-5.87l2.1 0.5c-0.57 2.33-1.48 4.5-2.69 6.5l-1.84-1.13Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M70.82 66.32l1.74 1.27c-1.4 1.9-3.07 3.57-4.97 4.97l-1.27-1.74c1.72-1.26 3.23-2.78 4.5-4.5Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M64.82 71.82l1.12 1.84c-1.98 1.2-4.16 2.12-6.48 2.69l-0.51-2.1c2.1-0.5 4.07-1.34 5.87-2.43Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M57.18 74.6l0.33 2.13C56.37 76.91 55.19 77 54 77c-1.2 0-2.37-0.1-3.51-0.27l0.33-2.13c1.04 0.16 2.1 0.24 3.18 0.24s2.14-0.08 3.18-0.24Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M49.05 74.25l-0.5 2.1c-1.75-0.43-3.41-1.05-4.98-1.84L41.4 75l-0.49-2.1 2.95-0.68 0.7 0.36c1.42 0.72 2.92 1.28 4.5 1.66Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M39.08 73.34l0.5 2.1-3.75 0.87c-2.49 0.58-4.72-1.65-4.14-4.14l0.87-3.74 2.1 0.49-0.87 3.74c-0.22 0.93 0.62 1.77 1.55 1.55l3.74-0.87Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M35.08 67.1l-2.1-0.5 0.51-2.17c-0.8-1.57-1.41-3.23-1.84-4.97l2.1-0.51c0.38 1.58 0.94 3.08 1.66 4.5l0.36 0.7-0.69 2.95Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M33.4 57.18l-2.13 0.33C31.09 56.37 31 55.19 31 54c0-1.2 0.1-2.37 0.27-3.51l2.13 0.33c-0.16 1.04-0.24 2.1-0.24 3.18s0.08 2.14 0.24 3.18Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M33.75 49.05l-2.1-0.5c0.57-2.33 1.48-4.5 2.69-6.5l1.84 1.13c-1.1 1.8-1.92 3.77-2.43 5.87Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M37.18 41.68l-1.74-1.27c1.4-1.9 3.07-3.57 4.97-4.97l1.27 1.74c-1.72 1.27-3.23 2.78-4.5 4.5Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M43.18 36.18l-1.12-1.84c1.98-1.2 4.16-2.12 6.48-2.69l0.51 2.1c-2.1 0.5-4.07 1.34-5.87 2.43Z"/>
+-  <path
+-      android:fillColor="#FFFFFFFF"
+-      android:pathData="M72.69 54c0 10.32-8.37 18.69-18.69 18.69-3.27 0-6.35-0.84-9.03-2.32-0.25-0.15-0.55-0.2-0.84-0.13l-8.31 1.94 1.94-8.3c0.06-0.3 0.02-0.6-0.13-0.85-1.48-2.68-2.32-5.76-2.32-9.03 0-10.32 8.37-18.69 18.69-18.69 10.32 0 18.69 8.37 18.69 18.69Z"/>
+-</vector>
+\ No newline at end of file
++    android:viewportWidth="512"
++    android:viewportHeight="512">
++  <group android:scaleX="0.63"
++      android:scaleY="0.63"
++      android:translateX="94.72"
++      android:translateY="94.72">
++    <path
++        android:pathData="m262.11,78.05c-95.22,-2.25 -173.31,73.26 -174.11,168.5 -0.34,40.48 13.49,77.71 36.8,107.07l-21.01,36.75c-7.04,12.31 1.85,27.63 16.03,27.63h136.78c94.56,0 172.44,-77.38 171.38,-171.93 -1,-91.63 -74.52,-165.85 -165.88,-168.02z">
++      <aapt:attr name="android:fillColor">
++        <gradient
++            android:startX="258"
++            android:startY="418"
++            android:endX="258"
++            android:endY="78"
++            android:type="linear">
++          <item android:offset="0" android:color="#FFE1D6FF"/>
++          <item android:offset="1" android:color="#FFFFFFFF"/>
++        </gradient>
++      </aapt:attr>
++    </path>
++    <path
++        android:pathData="m184.68,207.76c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.28 -23.29,-23.28c-12.86,0 -23.29,10.43 -23.29,23.28s10.43,23.28 23.29,23.28z"
++        android:fillColor="#CABAFF"/>
++    <path
++        android:pathData="m331.47,207.76c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.28 -23.29,-23.28c-12.86,0 -23.29,10.43 -23.29,23.28s10.43,23.28 23.29,23.28z"
++        android:fillColor="#CABAFF"/>
++    <path
++        android:pathData="m184.68,271.29c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.29 -23.29,-23.29c-12.86,0 -23.29,10.43 -23.29,23.29s10.43,23.28 23.29,23.28z"
++        android:fillColor="#A98DFF"/>
++    <path
++        android:pathData="m331.47,271.29c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.29 -23.29,-23.29c-12.86,0 -23.29,10.43 -23.29,23.29s10.43,23.28 23.29,23.28z"
++        android:fillColor="#A98DFF"/>
++    <path
++        android:pathData="m184.68,334.81c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.28 -23.29,-23.28c-12.86,0 -23.29,10.43 -23.29,23.28s10.43,23.28 23.29,23.28z"
++        android:fillColor="#7753FF"/>
++    <path
++        android:pathData="m331.47,334.81c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.28 -23.29,-23.28c-12.86,0 -23.29,10.43 -23.29,23.28s10.43,23.28 23.29,23.28z"
++        android:fillColor="#7753FF"/>
++    <path
++        android:pathData="m258.01,271.29c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.29 -23.29,-23.29c-12.86,0 -23.29,10.43 -23.29,23.29s10.43,23.28 23.29,23.28z"
++        android:fillColor="#A98DFF"/>
++    <path
++        android:pathData="m258.01,334.81c12.86,0 23.29,-10.43 23.29,-23.28s-10.43,-23.28 -23.29,-23.28c-12.86,0 -23.29,10.43 -23.29,23.28s10.43,23.28 23.29,23.28z"
++        android:fillColor="#7753FF"/>
++  </group>
++</vector>
+diff --git a/app/src/main/res/drawable/ic_launcher_monochrome.xml b/app/src/main/res/drawable/ic_launcher_monochrome.xml
+index bdaa41a0caf..8b285ba1914 100644
+--- a/app/src/main/res/drawable/ic_launcher_monochrome.xml
++++ b/app/src/main/res/drawable/ic_launcher_monochrome.xml
+@@ -1,45 +1,14 @@
+ <vector xmlns:android="http://schemas.android.com/apk/res/android"
+     android:width="108dp"
+     android:height="108dp"
+-    android:viewportWidth="108"
+-    android:viewportHeight="108">
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M44.63 35.15c2.46-1.22 5.18-1.97 8.06-2.15l0.18 2.86c-2.49 0.16-4.84 0.81-6.96 1.86l-1.28-2.57Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M55.31 33l-0.18 2.86c2.49 0.16 4.84 0.81 6.96 1.86l1.27-2.57c-2.45-1.22-5.17-1.97-8.05-2.15Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M65.64 36.47l-1.59 2.39c2.02 1.34 3.75 3.07 5.1 5.09l2.38-1.59c-1.55-2.33-3.56-4.34-5.9-5.9Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M72.85 44.63l-2.57 1.28c1.05 2.12 1.7 4.47 1.86 6.96L75 52.69c-0.18-2.88-0.93-5.6-2.15-8.06Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M72.14 55.13c-0.16 2.49-0.81 4.84-1.86 6.96l2.57 1.27c1.22-2.45 1.97-5.17 2.15-8.05l-2.86-0.18Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M64.05 69.14c2.02-1.34 3.75-3.07 5.1-5.09l2.38 1.59c-1.55 2.33-3.56 4.34-5.9 5.9l-1.58-2.4Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M62.09 70.28l1.28 2.57c-2.46 1.22-5.18 1.97-8.06 2.15l-0.18-2.86c2.49-0.16 4.84-0.81 6.96-1.86Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M52.87 72.14L52.69 75c-2.65-0.16-5.17-0.82-7.46-1.87l0.37-3 0.45 0.21c2.08 1.02 4.38 1.65 6.82 1.8Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M43.17 70.33l-0.38 3-4.55 0.96c-2.7 0.56-5.09-1.83-4.53-4.53l0.95-4.55 3.01-0.38-1.15 5.52c-0.14 0.67 0.46 1.27 1.13 1.13l5.52-1.15Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M37.87 62.4l-3 0.37c-1.05-2.29-1.7-4.8-1.87-7.46l2.86-0.18c0.15 2.44 0.78 4.74 1.8 6.82l0.21 0.45Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M35.86 52.87L33 52.69c0.18-2.88 0.93-5.6 2.15-8.05l2.57 1.27c-1.05 2.12-1.7 4.47-1.86 6.96Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M38.86 43.95l-2.4-1.59c1.56-2.33 3.57-4.34 5.9-5.9l1.59 2.4c-2.02 1.34-3.75 3.07-5.1 5.09Z"/>
+-    <path
+-        android:fillColor="#FF000000"
+-        android:pathData="M69.3 54c0 8.45-6.85 15.3-15.3 15.3-2.75 0-5.33-0.72-7.56-2l-7.25 1.52 1.5-7.26c-1.27-2.23-2-4.8-2-7.56 0-8.45 6.86-15.3 15.31-15.3S69.3 45.55 69.3 54Z"/>
+-</vector>
+\ No newline at end of file
++    android:viewportWidth="512"
++    android:viewportHeight="512">
++  <group android:scaleX="0.63"
++      android:scaleY="0.63"
++      android:translateX="94.72"
++      android:translateY="94.72">
++    <path
++        android:pathData="m262.11,78.05c-95.22,-2.24 -173.3,73.27 -174.1,168.51 -0.34,40.48 13.48,77.71 36.8,107.06l-21.01,36.75c-7.03,12.31 1.86,27.63 16.04,27.63h136.78c94.56,0 172.43,-77.37 171.38,-171.92 -1.01,-91.64 -74.53,-165.86 -165.88,-168.03zM184.68,334.82c-12.86,0 -23.3,-10.43 -23.3,-23.3s10.43,-23.28 23.3,-23.28 23.29,10.42 23.29,23.28 -10.42,23.3 -23.29,23.3zM184.68,271.29c-12.86,0 -23.3,-10.43 -23.3,-23.3s10.43,-23.28 23.3,-23.28 23.29,10.42 23.29,23.28 -10.42,23.3 -23.29,23.3zM184.68,207.77c-12.86,0 -23.3,-10.42 -23.3,-23.28 0,-12.86 10.43,-23.3 23.3,-23.3s23.29,10.43 23.29,23.3c0,12.86 -10.42,23.28 -23.29,23.28zM258.01,334.81c-12.86,0 -23.28,-10.43 -23.28,-23.3s10.42,-23.28 23.28,-23.28 23.3,10.42 23.3,23.28 -10.43,23.3 -23.3,23.3zM258.01,271.29c-12.86,0 -23.28,-10.43 -23.28,-23.3s10.42,-23.28 23.28,-23.28 23.3,10.42 23.3,23.28 -10.43,23.3 -23.3,23.3zM331.48,334.81c-12.87,0 -23.3,-10.43 -23.3,-23.3s10.42,-23.28 23.3,-23.28c12.87,0 23.28,10.42 23.28,23.28s-10.42,23.3 -23.28,23.3zM331.48,271.29c-12.87,0 -23.3,-10.43 -23.3,-23.3s10.42,-23.28 23.3,-23.28c12.87,0 23.28,10.42 23.28,23.28s-10.42,23.3 -23.28,23.3zM331.48,207.77c-12.87,0 -23.3,-10.42 -23.3,-23.28 0,-12.86 10.42,-23.3 23.3,-23.3 12.87,0 23.28,10.43 23.28,23.3 0,12.86 -10.42,23.28 -23.28,23.28z"
++        android:fillColor="#000"/>
++  </group>
++</vector>
+-- 
+2.52.0
+

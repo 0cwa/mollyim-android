@@ -1,0 +1,112 @@
+{
+  "status": "PASS",
+  "schema_version": 2,
+  "features": [
+    "branding",
+    "unifiedpush",
+    "build-validation"
+  ],
+  "patch_count": 20,
+  "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+  "resolved_upstream_sources": [
+    {
+      "feature": "branding",
+      "patch": "branding/0001-branding-default-launcher.patch",
+      "source_commit_sha": "15aeb5bbc9b67723a2adac5ddeab12aaea9f9f6e",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "branding",
+      "patch": "branding/0001-branding-default-launcher.patch",
+      "source_commit_sha": "29cd5ad5dc35008bbfc9529cde1fe3e214b60aed",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+      "source_commit_sha": "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+      "source_commit_sha": "d5c05fa94603addbaaccc9b63ca19a81520ba1c0",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+      "source_commit_sha": "a688a8d09a5ed40a9d60d9b7d3011757b6dcd398",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+      "source_commit_sha": "7fe38624aa096ae836120904012fc74735ecf965",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+      "source_commit_sha": "3ba16299066e918304664790136a577b29f25203",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+      "source_commit_sha": "6351f730a2c0acc2ab2e013e9a434f8c583e7435",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+      "source_commit_sha": "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+      "source_commit_sha": "60495667669377971dd19ae18cd04910c89cafcf",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+      "source_commit_sha": "6351f730a2c0acc2ab2e013e9a434f8c583e7435",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    },
+    {
+      "feature": "unifiedpush",
+      "patch": "unifiedpush/0003-Add-UnifiedPush-distributor-recovery-prompt.patch",
+      "source_commit_sha": "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+      "object_type": "commit",
+      "resolves": true,
+      "ancestor_of_molly_target": true
+    }
+  ],
+  "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "message": "Manifest, full patch checksums, dependency order, and mailbox source provenance verified."
+}

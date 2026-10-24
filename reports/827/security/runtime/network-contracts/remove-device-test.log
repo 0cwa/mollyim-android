@@ -1,0 +1,1 @@
+PASS: actual compiled candidate MollySocketRepository.removeDevice throws IOException when fake LinkDeviceRepository returns false; true result returns normally. Fixtures only.

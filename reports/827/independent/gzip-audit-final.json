@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "independent_runs": 2,
+  "tree_sha": [
+    "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+    "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77"
+  ],
+  "source_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "artifacts_per_run": 70,
+  "gzip_roundtrip_and_digests": "PASS",
+  "gzip_mtime_zero": true,
+  "compressed_artifacts_byte_identical_across_runs": true,
+  "stale_raw_diff_directories_removed": [
+    "/workspace/work/p2-integration/candidate15-replay-1/reports/827/independent/replay-twice-final-run-1-residual-diffs",
+    "/workspace/work/p2-integration/candidate15-replay-1/reports/827/independent/replay-twice-final-run-2-residual-diffs"
+  ],
+  "primary_worktree_cleanup": "PASS"
+}

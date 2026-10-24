@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "assessment": "Acceptance not met: the recorded full build failed at the audited source snapshot. The final 20-patch head replays reproducibly, while current build/test, adaptation behavior, live runtime, and CI criteria remain incomplete.",
+  "scope": "Molly #827 external local proof of concept: launcher artwork and selected UnifiedPush/MollySocket feature ports",
+  "source_pins": {
+    "audited_poc_head": "b8d5375b3fb6013f7939935ce73e250b53515381",
+    "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+    "molly_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+    "expected_replay_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+    "current_development_head": "0e34c904f72fb899947967e5d2b37f78ca71b70e",
+    "patch_count": 20
+  },
+  "criteria": [
+    {
+      "id": "patch_manifest_and_provenance",
+      "status": "PASS",
+      "evidence": "Current validation report reports/827/replay/validation.json verifies 20 mailbox patches, ordered checksums, dependencies, and source provenance."
+    },
+    {
+      "id": "deterministic_replay",
+      "status": "PASS",
+      "evidence": "Current two-run report reports/827/replay/replay-twice.json records both replays PASS at tree f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77. Independent verifier reports/827/independent/replay-twice-final.json confirms the tree equals the current source tree, with 83 changed paths and zero unowned changes."
+    },
+    {
+      "id": "target_parity",
+      "status": "BLOCKED",
+      "evidence": "Independent final replay records 12/12 whole-file paths, 12/12 anchored fragments, and 62/62 adaptation hashes, plus the expected target-absent F4 test path. Replay tree/checksums are reproducible; those hashes do not establish behavior for every adaptation. The acceptance condition requiring behavioral evidence for all adaptations is therefore blocked."
+    },
+    {
+      "id": "ownership_inventory",
+      "status": "PASS",
+      "evidence": "Independent current-series inventory validation passes at reports/827/independent/inventory-validation-final.json: 3,171 full-diff records match Git; the current series ledger covers 83 paths (12 full files, 12 fragments, 62 adaptations, and 1 target-absent added path). The remaining full-tree classes are explicitly unresolved/excluded; the pilot does not claim full Molly change classification."
+    },
+    {
+      "id": "full_android_build_and_tests",
+      "status": "FAIL",
+      "evidence": "The last completed full build was at the audited source snapshot and exited 130 after disk exhaustion, reaching 15/23 variants and 14 suites; it recorded 30 UriUtilTest_isValidExternalUri fixture failures that were subsequently addressed. A full build on current 20-patch HEAD has not passed. See /workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json."
+    },
+    {
+      "id": "final_head_focused_regression_tests",
+      "status": "BLOCKED",
+      "evidence": "The final-head staging task compiled the two selected test classes, then all 17 selected cases failed before entering test bodies because `--offline` could not fetch Robolectric artifact org.robolectric:android-all-instrumented:9-robolectric-4913185-2-i7. The JAR/POM are present in /workspace/work/p2-robolectric-cache; build agent is rerunning with that cache/proxy. Log: reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log."
+    },
+    {
+      "id": "focused_local_android_flows",
+      "status": "PASS",
+      "evidence": "Historical local API 30 synthetic flows passed for selected paths on prior replay tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3. They predate the F4 locked callback change and do not establish that behavior."
+    },
+    {
+      "id": "live_service_and_device_behavior",
+      "status": "BLOCKED",
+      "evidence": "Live Signal account, MollySocket service, API 33 privacy metadata, and physical-device behavior were not tested."
+    },
+    {
+      "id": "security_review",
+      "status": "BLOCKED",
+      "evidence": "Bounded review and runtime artifacts are in docs/827/SECURITY.md and reports/827/security/runtime/. The F4 receiver test compiled, but did not reach assertions: the offline run could not fetch Robolectric android-all-instrumented 9-robolectric-4913185-2-i7. Build agent is repeating with the configured Maven cache and proxy. Broader live-service and lock-transition behavior remains untested."
+    },
+    {
+      "id": "ci_validation",
+      "status": "BLOCKED",
+      "evidence": "Workflow .github/workflows/827-poc.yml is drafted and the coordinator plans to push the development branch to trigger it. No GitHub Actions run exists yet. Independent inventory validation passes at reports/827/independent/inventory-validation-final.json."
+    },
+    {
+      "id": "upstream_and_release_safety",
+      "status": "PASS",
+      "evidence": "No upstream pull request, merge, production keys, production signing, or publishing action occurred. The development branch may be pushed for review."
+    }
+  ],
+  "overall_success": "FAIL",
+  "must_not_claim": [
+    "full Android build or complete test matrix passed",
+    "behavioral proof for every adaptation or full Molly target parity",
+    "live UnifiedPush or MollySocket acceptance",
+    "API 33 lock-screen privacy acceptance",
+    "complete security signoff",
+    "maintainer approval or upstream endorsement",
+    "production readiness or production-signed artifact"
+  ],
+  "human_review_gates": "Waived by user for this external local research effort; no maintainer approval is claimed.",
+  "publication": "No upstream pull request or merge, production key use, signing, or publishing. The development branch may be pushed to a review remote.",
+  "overall_status": "FAIL"
+}

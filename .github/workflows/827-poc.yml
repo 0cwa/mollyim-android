@@ -1,0 +1,136 @@
+name: Molly #827 patch proof of concept
+
+on:
+  pull_request:
+    branches:
+      - dev/molly-827-reproducible-poc
+    paths:
+      - '.github/workflows/827-poc.yml'
+      - 'patches/827/**'
+      - 'tools/827/**'
+      - 'docs/827/**'
+      - 'app/**'
+      - 'gradle/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - 'gradle.properties'
+  push:
+    branches:
+      - dev/molly-827-reproducible-poc
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: molly-827-poc-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  replay-and-android-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out source
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          submodules: true
+          lfs: true
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Validate Gradle wrapper
+        uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
+        with:
+          cache-read-only: true
+
+      - name: Install pinned Android SDK components
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+            'platforms;android-36.1' \
+            'build-tools;36.0.0' \
+            'ndk;28.0.13004108'
+
+      - name: Verify pinned source commits
+        env:
+          SIGNAL_BASE: c47a74ba0961903eeaeda6d22347a990056c3e83
+          MOLLY_TARGET: 0e202dda90785771ff8c87526eaaf30c655f54f3
+        run: |
+          set -euo pipefail
+          git cat-file -e "$SIGNAL_BASE^{commit}"
+          git cat-file -e "$MOLLY_TARGET^{commit}"
+          git merge-base --is-ancestor "$SIGNAL_BASE" HEAD
+          git merge-base --is-ancestor "$SIGNAL_BASE" "$MOLLY_TARGET"
+          mkdir -p reports/827/build
+          python3 - <<'PY'
+          import json, os, subprocess
+          report = {
+              'status': 'PASS',
+              'signal_base': os.environ['SIGNAL_BASE'],
+              'molly_target': os.environ['MOLLY_TARGET'],
+              'checked_out_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'signal_base_is_ancestor_of_head': True,
+              'signal_base_is_ancestor_of_target': True,
+          }
+          with open('reports/827/build/source-pins.json', 'w') as f:
+              json.dump(report, f, indent=2)
+              f.write('\n')
+          PY
+
+      - name: Validate manifest and patch ownership
+        run: |
+          mkdir -p reports/827/build
+          python3 tools/827/test_replay.py
+          python3 tools/827/validate_inventory.py --repo .
+          python3 tools/827/validate.py \
+            --manifest patches/827/series.yaml \
+            --report reports/827/build/manifest-validation.json
+
+      - name: Replay twice and verify tree and declared parity
+        run: |
+          python3 tools/827/replay_twice.py \
+            --repo . \
+            --manifest patches/827/series.yaml \
+            --worktree-prefix "$RUNNER_TEMP/molly-827-replay" \
+            --report reports/827/build/replay-twice.json
+
+      - name: Build, test, lint, and verify dependencies
+        working-directory: ${{ runner.temp }}/molly-827-replay-run-1
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon --max-workers=2 --dependency-verification=strict \
+            -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
+            ciRemote \
+            :Signal-Android:assemblePlayProdDebug \
+            2>&1 | tee "$GITHUB_WORKSPACE/reports/827/build/gradle-ci.log"
+
+      - name: Run flavor-suffix URI and UnifiedPush regression tests
+        working-directory: ${{ runner.temp }}/molly-827-replay-run-1
+        run: |
+          set -o pipefail
+          ./gradlew --no-daemon --max-workers=2 --dependency-verification=strict \
+            -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
+            :Signal-Android:testPlayStagingDebugUnitTest \
+            --tests org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri \
+            --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest \
+            2>&1 | tee "$GITHUB_WORKSPACE/reports/827/build/gradle-focused.log"
+
+      - name: Upload replay, build, test, lint, and failure reports
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: molly-827-poc-validation-${{ github.run_id }}
+          if-no-files-found: warn
+          path: |
+            reports/827/build
+            ${{ runner.temp }}/molly-827-replay-run-1/**/build/reports
+            ${{ runner.temp }}/molly-827-replay-run-1/**/build/test-results
+            ${{ runner.temp }}/molly-827-replay-run-1/app/build/outputs/apk/playProd/debug

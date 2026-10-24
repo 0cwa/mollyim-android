@@ -1,0 +1,6 @@
+Starting: Intent { cmp=org.example.upfake/.BootstrapActivity }
+Status: ok
+LaunchState: UNKNOWN (-1)
+Activity: org.thoughtcrime.securesms.benchmark/org.signal.benchmark.BenchmarkSetupActivity
+WaitTime: 2402
+Complete

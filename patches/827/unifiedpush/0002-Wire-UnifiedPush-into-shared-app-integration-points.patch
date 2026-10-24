@@ -1,0 +1,390 @@
+From 334914ce9fd01a40b948e80c8d0ab23ca26caa59 Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:12:01 +0000
+Subject: [PATCH 02/16] Wire UnifiedPush into shared app integration points
+
+Source-Commits: 4d00414d22f726821f76c3d0e777f7c9ec2c9e0c 60495667669377971dd19ae18cd04910c89cafcf 6351f730a2c0acc2ab2e013e9a434f8c583e7435
+
+Shared files retain only UnifiedPush-specific hunks on the pinned Signal baseline; target whole-file parity is intentionally not claimed.
+---
+ app/build.gradle.kts                          |  7 ++++
+ app/src/main/AndroidManifest.xml              | 23 ++++++++++++
+ .../securesms/ApplicationContext.java         | 37 +++++++++++++++++++
+ .../securesms/gcm/FcmReceiveService.java      |  2 +-
+ .../securesms/jobs/JobManagerFactories.java   |  2 +
+ .../securesms/keyvalue/AccountValues.kt       |  7 ++++
+ .../securesms/keyvalue/SettingsValues.java    | 31 ++++++++++++++++
+ .../securesms/keyvalue/SignalStore.kt         |  8 ++++
+ .../securesms/linkdevice/Device.kt            |  2 +-
+ .../linkdevice/LinkDeviceFragment.kt          |  2 +-
+ .../linkdevice/LinkDeviceRepository.kt        |  5 ++-
+ gradle/libs.versions.toml                     |  2 +
+ gradle/verification-metadata.xml              | 16 ++++++++
+ 13 files changed, 139 insertions(+), 5 deletions(-)
+
+diff --git a/app/build.gradle.kts b/app/build.gradle.kts
+index 1c0477a24c0..218a683a789 100644
+--- a/app/build.gradle.kts
++++ b/app/build.gradle.kts
+@@ -664,6 +664,13 @@ kotlin {
+ }
+ 
+ dependencies {
++  implementation(libs.unifiedpush.connector) {
++    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
++    exclude(group = "com.google.protobuf", module = "protobuf-java")
++  }
++  implementation(libs.unifiedpush.connector.ui) {
++    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
++  }
+   lintChecks(project(":lintchecks"))
+   ktlintRuleset(libs.ktlint.twitter.compose)
+   coreLibraryDesugaring(libs.android.tools.desugar)
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index aab652a4f2e..62de1841558 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -898,6 +898,17 @@
+             android:exported="false"
+             android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
+ 
++        <activity
++            android:name="im.molly.unifiedpush.components.settings.app.notifications.MollySocketQrScannerActivity"
++            android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
++            android:exported="false"
++            android:theme="@style/Theme.Signal.DayNight.NoActionBar" />
++
++        <activity
++            android:name="im.molly.unifiedpush.UnifiedPushDefaultDistributorLinkActivity"
++            android:exported="false"
++            android:theme="@style/TextSecure.DialogActivity" />
++
+         <activity
+             android:name=".wallpaper.crop.WallpaperImageSelectionActivity"
+             android:configChanges="touchscreen|keyboard|keyboardHidden|orientation|screenLayout|screenSize"
+@@ -1594,6 +1605,18 @@
+         </receiver>
+ 
+         <!-- ======================================= -->
++        <receiver
++            android:name="im.molly.unifiedpush.receiver.UnifiedPushReceiver"
++            android:enabled="true"
++            android:exported="true">
++            <intent-filter>
++                <action android:name="org.unifiedpush.android.connector.MESSAGE" />
++                <action android:name="org.unifiedpush.android.connector.UNREGISTERED" />
++                <action android:name="org.unifiedpush.android.connector.NEW_ENDPOINT" />
++                <action android:name="org.unifiedpush.android.connector.REGISTRATION_FAILED" />
++            </intent-filter>
++        </receiver>
++
+         <!-- Providers                               -->
+         <!-- ======================================= -->
+         <provider
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
+index d153524694f..2c950ce6017 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
+@@ -76,6 +76,7 @@ import org.thoughtcrime.securesms.jobs.CheckServiceReachabilityJob;
+ import org.thoughtcrime.securesms.jobs.DownloadLatestEmojiDataJob;
+ import org.thoughtcrime.securesms.jobs.EmojiSearchIndexDownloadJob;
+ import org.thoughtcrime.securesms.jobs.FcmRefreshJob;
++import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob;
+ import org.thoughtcrime.securesms.jobs.FontDownloaderJob;
+ import org.thoughtcrime.securesms.jobs.GroupRingCleanupJob;
+ import org.thoughtcrime.securesms.jobs.GroupV2UpdateSelfProfileKeyJob;
+@@ -93,6 +94,7 @@ import org.thoughtcrime.securesms.jobs.RetrieveProfileJob;
+ import org.thoughtcrime.securesms.jobs.RetrieveRemoteAnnouncementsJob;
+ import org.thoughtcrime.securesms.jobs.StoryOnboardingDownloadJob;
+ import org.thoughtcrime.securesms.keyvalue.KeepMessagesDuration;
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ import org.thoughtcrime.securesms.logging.CustomSignalProtocolLogger;
+ import org.thoughtcrime.securesms.logging.PersistentLogger;
+@@ -130,6 +132,7 @@ import org.thoughtcrime.securesms.util.SignalUncaughtExceptionHandler;
+ import org.thoughtcrime.securesms.util.SqlCipherLogTarget;
+ import org.thoughtcrime.securesms.util.SupportEmailUtil;
+ import org.thoughtcrime.securesms.util.TextSecurePreferences;
++import im.molly.unifiedpush.UnifiedPushDistributor;
+ import org.thoughtcrime.securesms.util.VersionTracker;
+ import org.thoughtcrime.securesms.util.dynamiclanguage.DynamicLanguageContextWrapper;
+ import org.whispersystems.signalservice.api.websocket.SignalWebSocket;
+@@ -469,10 +472,44 @@ public class ApplicationContext extends Application implements AppForegroundObse
+   }
+ 
+   private void initializeFcmCheck() {
++    updatePushNotificationServices();
++  }
++
++  /** Reconcile the selected delivery method with FCM, UnifiedPush, and the message network. */
++  public void updatePushNotificationServices() {
+     if (!SignalStore.account().isRegistered()) {
+       return;
+     }
+ 
++    NotificationDeliveryMethod method = SignalStore.settings().getPreferredNotificationMethod();
++    boolean useUnifiedPush = method == NotificationDeliveryMethod.UNIFIEDPUSH && !SignalStore.account().isLinkedDevice();
++
++    if (SignalStore.account().isFcmEnabled() && method != NotificationDeliveryMethod.FCM) {
++      SignalStore.account().setFcmEnabled(false);
++      AppDependencies.getJobManager().startChain(new FcmRefreshJob())
++                                      .then(new RefreshAttributesJob())
++                                      .enqueue();
++    }
++
++    if (SignalStore.unifiedpush().isEnabled() != useUnifiedPush) {
++      SignalStore.unifiedpush().setEnabled(useUnifiedPush);
++      if (useUnifiedPush) {
++        UnifiedPushDistributor.registerApp(SignalStore.unifiedpush().getVapidPublicKey());
++      } else if (!SignalStore.unifiedpush().getAirGapped()) {
++        UnifiedPushDistributor.unregisterApp();
++      }
++      AppDependencies.getJobManager().add(new UnifiedPushRefreshJob());
++    } else if (useUnifiedPush) {
++      AppDependencies.getJobManager().add(new UnifiedPushRefreshJob());
++    }
++
++    if (method != NotificationDeliveryMethod.FCM) {
++      AppDependencies.resetNetwork();
++      AppDependencies.startNetwork();
++      IncomingMessageObserver.stopForegroundService(this);
++      return;
++    }
++
+     PlayServicesUtil.PlayServicesStatus playServicesStatus = PlayServicesUtil.getPlayServicesStatus(this);
+ 
+     if (playServicesStatus == PlayServicesUtil.PlayServicesStatus.SUCCESS && !SignalStore.account().isFcmEnabled()) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java
+index 8d6d40eef05..0dfd28861d0 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java
+@@ -78,7 +78,7 @@ public class FcmReceiveService extends FirebaseMessagingService {
+     Log.w(TAG, "onSendError()", e);
+   }
+ 
+-  private static void handleReceivedNotification(Context context, @Nullable RemoteMessage remoteMessage) {
++  public static void handleReceivedNotification(Context context, @Nullable RemoteMessage remoteMessage) {
+     boolean highPriority = remoteMessage != null && remoteMessage.getPriority() == RemoteMessage.PRIORITY_HIGH;
+     try {
+       Log.d(TAG, String.format(Locale.US, "[handleReceivedNotification] API: %s, RemoteMessagePriority: %s", Build.VERSION.SDK_INT, remoteMessage != null ? remoteMessage.getPriority() : "n/a"));
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/JobManagerFactories.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/JobManagerFactories.java
+index 2548403c5c1..593a703106b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/JobManagerFactories.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/JobManagerFactories.java
+@@ -42,6 +42,7 @@ import org.thoughtcrime.securesms.jobmanager.migrations.PushProcessMessageJobMig
+ import org.thoughtcrime.securesms.jobmanager.migrations.RetrieveProfileJobMigration;
+ import org.thoughtcrime.securesms.jobmanager.migrations.SendReadReceiptsJobMigration;
+ import org.thoughtcrime.securesms.jobmanager.migrations.SenderKeyDistributionSendJobRecipientMigration;
++import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob;
+ import org.thoughtcrime.securesms.migrations.AccountConsistencyMigrationJob;
+ import org.thoughtcrime.securesms.migrations.AccountRecordMigrationJob;
+ import org.thoughtcrime.securesms.migrations.AepMigrationJob;
+@@ -178,6 +179,7 @@ public final class JobManagerFactories {
+       put(E164FormattingJob.KEY,                       new E164FormattingJob.Factory());
+       put(EmojiSearchIndexDownloadJob.KEY,             new EmojiSearchIndexDownloadJob.Factory());
+       put(FcmRefreshJob.KEY,                           new FcmRefreshJob.Factory());
++      put(UnifiedPushRefreshJob.KEY,                   new UnifiedPushRefreshJob.Factory());
+       put(FetchRemoteMegaphoneImageJob.KEY,            new FetchRemoteMegaphoneImageJob.Factory());
+       put(FontDownloaderJob.KEY,                       new FontDownloaderJob.Factory());
+       put(ForceUpdateGroupV2Job.KEY,                   new ForceUpdateGroupV2Job.Factory());
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
+index 8998dfff906..b16ddeb5867 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/AccountValues.kt
+@@ -422,6 +422,13 @@ class AccountValues internal constructor(store: KeyValueStore, context: Context)
+   @get:JvmName("isFcmEnabled")
+   var fcmEnabled: Boolean by booleanValue(KEY_FCM_ENABLED, false)
+ 
++  val canReceiveFcm: Boolean
++    get() = fcmEnabled && fcmToken != null
++
++  @get:JvmName("isPushAvailable")
++  val pushAvailable: Boolean
++    get() = canReceiveFcm || SignalStore.unifiedpush.isAvailableOrAirGapped
++
+   /** The FCM token, which allows the server to send us FCM messages. */
+   var fcmToken: String?
+     get() {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java
+index d7d265b8d7f..7cb034d0f32 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SettingsValues.java
+@@ -77,6 +77,7 @@ public final class SettingsValues extends SignalStoreValues {
+   private static final String SCREEN_LOCK_TIMEOUT                     = "settings.screen.lock.timeout";
+   private static final String AUTOMATIC_VERIFICATION_ENABLED          = "settings.automatic.verification.enabled";
+   private static final String FORCE_WEBSOCKET_MODE                    = "settings.force.websocket.mode.2";
++  private static final String MOLLY_NOTIFICATION_METHOD               = "molly.notificationMethod";
+ 
+   public static final int BACKUP_DEFAULT_HOUR   = 2;
+   public static final int BACKUP_DEFAULT_MINUTE = 0;
+@@ -571,6 +572,17 @@ public final class SettingsValues extends SignalStoreValues {
+     putBoolean(AUTOMATIC_VERIFICATION_ENABLED, enabled);
+   }
+ 
++  public @NonNull NotificationDeliveryMethod getPreferredNotificationMethod() {
++    if (getStore().containsKey(MOLLY_NOTIFICATION_METHOD)) {
++      return NotificationDeliveryMethod.deserialize(getString(MOLLY_NOTIFICATION_METHOD, "FCM"));
++    }
++    return SignalStore.account().isFcmEnabled() ? NotificationDeliveryMethod.FCM : NotificationDeliveryMethod.WEBSOCKET;
++  }
++
++  public void setPreferredNotificationMethod(@NonNull NotificationDeliveryMethod method) {
++    putString(MOLLY_NOTIFICATION_METHOD, method.serialize());
++  }
++
+   public @NonNull ForceWebsocketMode getForceWebsocketMode() {
+     if (getStore().containsKey(FORCE_WEBSOCKET_MODE)) {
+       return ForceWebsocketMode.deserialize(getInteger(FORCE_WEBSOCKET_MODE, ForceWebsocketMode.DISABLED.serialize()));
+@@ -676,4 +688,23 @@ public final class SettingsValues extends SignalStoreValues {
+       }
+     }
+   }
++
++  public enum NotificationDeliveryMethod {
++    FCM, WEBSOCKET, UNIFIEDPUSH;
++
++    public @NonNull String serialize() { return name(); }
++
++    public static @NonNull NotificationDeliveryMethod deserialize(@NonNull String value) {
++      return NotificationDeliveryMethod.valueOf(value);
++    }
++
++    public int getStringId() {
++      return switch (this) {
++        case FCM -> R.string.NotificationDeliveryMethod__fcm;
++        case WEBSOCKET -> R.string.NotificationDeliveryMethod__websocket;
++        case UNIFIEDPUSH -> R.string.NotificationDeliveryMethod__unifiedpush;
++      };
++    }
++  }
++
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SignalStore.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SignalStore.kt
+index 650ad7dc306..d196449c2c8 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SignalStore.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/SignalStore.kt
+@@ -37,6 +37,7 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
+   val storyValues = StoryValues(store)
+   val apkUpdateValues = ApkUpdateValues(store)
+   val backupValues = BackupValues(store)
++  val unifiedPushValues = UnifiedPushValues(store)
+   val callQualityValues = CallQualityValues(store)
+   val labsValues = LabsValues(store)
+ 
+@@ -86,6 +87,7 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
+       story.onFirstEverAppLaunch()
+       apkUpdate.onFirstEverAppLaunch()
+       backup.onFirstEverAppLaunch()
++      unifiedpush.onFirstEverAppLaunch()
+       callQuality.onFirstEverAppLaunch()
+       labs.onFirstEverAppLaunch()
+     }
+@@ -120,6 +122,7 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
+           story.keysToIncludeInBackup +
+           apkUpdate.keysToIncludeInBackup +
+           backup.keysToIncludeInBackup +
++          unifiedpush.keysToIncludeInBackup +
+           callQuality.keysToIncludeInBackup +
+           labs.keysToIncludeInBackup
+       }
+@@ -272,6 +275,11 @@ class SignalStore(context: Application, private val store: KeyValueStore) {
+     val backup: BackupValues
+       get() = instance!!.backupValues
+ 
++    @JvmStatic
++    @get:JvmName("unifiedpush")
++    val unifiedpush: UnifiedPushValues
++      get() = instance!!.unifiedPushValues
++
+     @JvmStatic
+     @get:JvmName("callQuality")
+     val callQuality: CallQualityValues
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt
+index 6f548e4c86c..5ca60c3a266 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt
+@@ -3,4 +3,4 @@ package org.thoughtcrime.securesms.linkdevice
+ /**
+  * Class that represents a linked device
+  */
+-data class Device(val id: Int, val name: String?, val createdMillis: Long?, val lastSeenMillis: Long, val registrationId: Int)
++data class Device(val id: Int, val name: String?, val createdMillis: Long?, val lastSeenMillis: Long, val registrationId: Int, val canRename: Boolean = true)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceFragment.kt
+index 3be12fcf060..376ee13e928 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceFragment.kt
+@@ -568,7 +568,7 @@ fun DeviceRow(device: Device, isInternalUser: Boolean, setDeviceToRemove: (Devic
+           }
+         )
+ 
+-        DropdownMenus.Item(
++        if (device.canRename) DropdownMenus.Item(
+           contentPadding = PaddingValues(0.dp),
+           text = {
+             Row(
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceRepository.kt b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceRepository.kt
+index 0c8c931e648..c9de15add98 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceRepository.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceRepository.kt
+@@ -94,7 +94,8 @@ object LinkDeviceRepository {
+ 
+   private fun DeviceInfo.toDevice(): Device {
+     val createdAt = this.getPlaintextCreatedAt()
+-    val defaultDevice = Device(getId(), getName(), createdAt, getLastSeen(), getRegistrationId())
++    val canRename = !SignalStore.unifiedpush.isMollySocketDevice(getId())
++    val defaultDevice = Device(getId(), getName(), createdAt, getLastSeen(), getRegistrationId(), canRename)
+     try {
+       if (getName().isNullOrEmpty() || getName().length < 4) {
+         Log.w(TAG, "Invalid DeviceInfo name.")
+@@ -113,7 +114,7 @@ object LinkDeviceRepository {
+         return defaultDevice
+       }
+ 
+-      return Device(getId(), String(plaintext), createdAt, getLastSeen(), getRegistrationId())
++      return Device(getId(), String(plaintext), createdAt, getLastSeen(), getRegistrationId(), canRename)
+     } catch (e: Exception) {
+       Log.w(TAG, "Failed while reading the protobuf.", e)
+     }
+diff --git a/gradle/libs.versions.toml b/gradle/libs.versions.toml
+index 87a423a5ffd..6af8c283b9f 100644
+--- a/gradle/libs.versions.toml
++++ b/gradle/libs.versions.toml
+@@ -172,6 +172,8 @@ libsignal-android = { module = "org.signal:libsignal-android", version.ref = "li
+ protobuf-gradle-plugin = { module = "com.google.protobuf:protobuf-gradle-plugin", version.ref = "protobuf-gradle-plugin" }
+ signal-aesgcmprovider = "org.signal:aesgcmprovider:0.0.4"
+ signal-ringrtc = "org.signal:ringrtc-android:2.69.5"
++unifiedpush-connector = "org.unifiedpush.android:connector:3.0.10"
++unifiedpush-connector-ui = "org.unifiedpush.android:connector-ui:1.1.0-rc3"
+ 
+ # Third Party
+ signal-android-database-sqlcipher = "net.zetetic:sqlcipher-android:4.16.0"
+diff --git a/gradle/verification-metadata.xml b/gradle/verification-metadata.xml
+index f3e0fcf4402..503b18e5253 100644
+--- a/gradle/verification-metadata.xml
++++ b/gradle/verification-metadata.xml
+@@ -8146,6 +8146,22 @@ https://docs.gradle.org/current/userguide/dependency_verification.html
+             <sha256 value="e9f18b8a41f017e9033cb0ed85c8a2ba2307292cdfe25eae365923e7a31d2a70" origin="Generated by Gradle"/>
+          </artifact>
+       </component>
++      <component group="org.unifiedpush.android" name="connector" version="3.0.10">
++         <artifact name="connector-3.0.10.aar">
++            <sha256 value="8c72adba1bfb230bc823b19badbafe21d18a5db3c5f4e6da5b5305b4ec815717" origin="Generated by Gradle"/>
++         </artifact>
++         <artifact name="connector-3.0.10.module">
++            <sha256 value="d23909376a7b6abd7c680b3862dcef71bcc2e773bd5152b40ed5bc5f24127c7b" origin="Generated by Gradle"/>
++         </artifact>
++      </component>
++      <component group="org.unifiedpush.android" name="connector-ui" version="1.1.0-rc3">
++         <artifact name="connector-ui-1.1.0-rc3.aar">
++            <sha256 value="3aa84a57077765acb2bfbdbad1b2faed2094da4657bac2b6d0e8742cd0f2a599" origin="Generated by Gradle"/>
++         </artifact>
++         <artifact name="connector-ui-1.1.0-rc3.module">
++            <sha256 value="849b1f68a7a774747ab02cb90550ff27d40cd4e7fc9c501bead50e1d7a87de7d" origin="Generated by Gradle"/>
++         </artifact>
++      </component>
+       <component group="org.xerial" name="sqlite-jdbc" version="3.51.3.0">
+          <artifact name="sqlite-jdbc-3.51.3.0.jar">
+             <sha256 value="3684ac5e9bd893cbe68eb0ac1708343f66be829b1d2b5ab317e783d05acd5aef" origin="Generated by Gradle"/>
+-- 
+2.52.0
+

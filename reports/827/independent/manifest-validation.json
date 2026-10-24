@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "schema_version": 2,
+  "features": [
+    "branding",
+    "unifiedpush"
+  ],
+  "patch_count": 17,
+  "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+  "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "expected_tree_sha": "24a27bf3ddf2f23593f5a11e3230b66b335bc2a3",
+  "message": "Manifest, full patch checksums, dependency order, and mailbox source provenance verified."
+}

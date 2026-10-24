@@ -1,0 +1,35 @@
+{
+  "result": "PASS",
+  "checks": [
+    {
+      "id": "transport_redirect_bytecode",
+      "result": "PASS",
+      "scope": "Compiled MollySocketRepository methods both set followRedirects(false) and followSslRedirects(false). Pair with prior fake-credential local TLS 307/308 probe in ../p2-review/https-redirect-probe-no-follow.log; this is not a call into app singleton at runtime."
+    },
+    {
+      "id": "connector_duplicate_receiver_resolution",
+      "result": "EXPECTED_LIBRARY_FALLBACK",
+      "scope": "Merged manifest app receiver priority defaults 0, internal receiver priority -500. Connector 3.0.10 bytecode queries MESSAGE ResolveInfo and suppresses itself when a receiver priority is greater than -500. Static proof only; installed PackageManager resolution not observed."
+    },
+    {
+      "id": "locked_notification_policy",
+      "result": "PASS_STATIC_TRUTH_TABLE",
+      "scope": "The guard posts for unlocked state regardless of preference and suppresses only locked+opted-out. Both UP urgent callback and FCM generic fallback route through this guard. No Android notification manager/device assertion."
+    },
+    {
+      "id": "initial_and_explicit_delivery_method_routes",
+      "result": "PASS_STATIC_ROUTE_MATRIX",
+      "scope": "Unset preference selects FCM first-run route; explicit non-FCM starts network then exits FCM availability branch; UP is disabled for linked devices and unregisters unless air-gapped. Source-derived table, no fake AppDependencies integration test."
+    },
+    {
+      "id": "lock_predicate_target_difference",
+      "result": "KNOWN_SEMANTIC_DIVERGENCE",
+      "scope": "Truth table has 6 differing combinations because pinned baseline omits target locking transition flag and treats masterSecret-null/passphrase-disabled/no-screenlock as unlocked. This is intentional baseline adapter; exact A2-4 lock-hook parity cannot pass without semantics change."
+    }
+  ],
+  "lock_diff_rows": 6,
+  "manifest_priorities": [
+    0,
+    -500
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/work/p2-integration/candidate15-replay-1/tools/827/replay.py",
+        "--repo",
+        "/workspace/work/p2-integration/candidate15-replay-1",
+        "--manifest",
+        "/workspace/work/p2-integration/candidate15-replay-1/patches/827/series.yaml",
+        "--worktree",
+        "/tmp/codex-827-final-independent-run-1",
+        "--report",
+        "reports/827/independent/replay-twice-final-run-1.json"
+      ],
+      "exit_code": 0,
+      "report": "reports/827/independent/replay-twice-final-run-1.json",
+      "log": "reports/827/independent/replay-twice-final-run-1.log",
+      "status": "PASS",
+      "tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+      "expected_tree_match": true
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/work/p2-integration/candidate15-replay-1/tools/827/replay.py",
+        "--repo",
+        "/workspace/work/p2-integration/candidate15-replay-1",
+        "--manifest",
+        "/workspace/work/p2-integration/candidate15-replay-1/patches/827/series.yaml",
+        "--worktree",
+        "/tmp/codex-827-final-independent-run-2",
+        "--report",
+        "reports/827/independent/replay-twice-final-run-2.json"
+      ],
+      "exit_code": 0,
+      "report": "reports/827/independent/replay-twice-final-run-2.json",
+      "log": "reports/827/independent/replay-twice-final-run-2.log",
+      "status": "PASS",
+      "tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+      "expected_tree_match": true
+    }
+  ],
+  "tree_sha_equal": true,
+  "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "worktrees_preserved": [
+    "/tmp/codex-827-final-independent-run-1",
+    "/tmp/codex-827-final-independent-run-2"
+  ]
+}

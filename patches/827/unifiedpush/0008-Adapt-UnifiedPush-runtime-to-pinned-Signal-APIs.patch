@@ -1,0 +1,130 @@
+From 18d276b317a28dbdff56d6a3fb8235515480f5df Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:26:33 +0000
+Subject: [PATCH 08/16] Adapt UnifiedPush runtime to pinned Signal APIs
+
+Add the narrow device-link account-manager factory and lock-notification preference used by the feature, expose the existing locked-push notification through a wrapper, and map the job queue/network reset calls to existing baseline APIs.
+
+Password generation remains Util.getSecret(18), backed by SecureRandom in pinned core Util.
+---
+ .../unifiedpush/receiver/UnifiedPushReceiver.kt  |  2 +-
+ .../securesms/gcm/FcmFetchManager.kt             |  4 ++++
+ .../securesms/jobs/UnifiedPushRefreshJob.kt      |  5 +++--
+ .../securesms/push/AccountManagerFactory.java    | 16 ++++++++++++++++
+ .../securesms/util/TextSecurePreferences.java    | 10 ++++++++++
+ 5 files changed, 34 insertions(+), 3 deletions(-)
+
+diff --git a/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt b/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt
+index 604075eb408..e9c95c223a7 100644
+--- a/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt
++++ b/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt
+@@ -79,7 +79,7 @@ class UnifiedPushReceiver : MessagingReceiver() {
+       message.contains("\"urgent\":true") -> {
+         if (TextSecurePreferences.isPassphraseLockNotificationsEnabled(context)) {
+           Log.d(TAG, "New urgent message received while app is locked.")
+-          FcmFetchManager.postMayHaveMessagesNotification(context)
++          FcmFetchManager.postMayHaveMessagesNotificationForLockedPush(context)
+         }
+       }
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
+index a746ea88d2d..03ae2b8e7e1 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
+@@ -80,6 +80,10 @@ object FcmFetchManager {
+     }
+   }
+ 
++  fun postMayHaveMessagesNotificationForLockedPush(context: Context) {
++    postMayHaveMessagesNotification(context)
++  }
++
+   private fun postMayHaveMessagesNotification(context: Context) {
+     if (RemoteConfig.fcmMayHaveMessagesNotificationKillSwitch) {
+       Log.w(TAG, "May have messages notification kill switch")
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt b/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
+index 4dca4616dff..591ef12b4ee 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
+@@ -44,7 +44,7 @@ class UnifiedPushRefreshJob private constructor(
+     testPing = testPing,
+     fromNewEndpoint = fromNewEndpoint,
+     parameters = Parameters.Builder()
+-      .setQueue(FcmRefreshJob.QUEUE_KEY)
++      .setQueue(FcmRefreshJob.KEY)
+       .addConstraint(NetworkConstraint.KEY)
+       .setMaxAttempts(3)
+       .setLifespan(TimeUnit.HOURS.toMillis(6))
+@@ -102,7 +102,8 @@ class UnifiedPushRefreshJob private constructor(
+         else -> throw IOException(t)
+       }
+     } finally {
+-      AppDependencies.resetNetwork(restartMessageObserver = true)
++      AppDependencies.resetNetwork()
++      AppDependencies.startNetwork()
+       EventBus.getDefault().post(PushServiceEvent)
+     }
+   }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java b/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java
+index de9370fed6e..fea043ed769 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java
+@@ -13,6 +13,7 @@ import org.thoughtcrime.securesms.BuildConfig;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.util.RemoteConfig;
+ import org.whispersystems.signalservice.api.SignalServiceAccountManager;
++import org.whispersystems.signalservice.api.push.SignalServiceAddress;
+ 
+ public class AccountManagerFactory {
+ 
+@@ -67,4 +68,19 @@ public class AccountManagerFactory {
+     );
+   }
+ 
++  /** Creates an authenticated account manager used only to link a device to the current account. */
++  public @NonNull SignalServiceAccountManager createForDeviceLink(@NonNull Context context,
++                                                                  @NonNull String password) {
++    return SignalServiceAccountManager.createWithStaticCredentials(
++        AppDependencies.getSignalServiceNetworkAccess().getConfiguration(null),
++        null,
++        null,
++        null,
++        SignalServiceAddress.DEFAULT_DEVICE_ID,
++        password,
++        BuildConfig.SIGNAL_AGENT,
++        RemoteConfig.okHttpAutomaticRetry(),
++        RemoteConfig.groupLimits().getHardLimit());
++  }
++
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+index 2b04af571fa..847093fc355 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+@@ -98,6 +98,8 @@ public class TextSecurePreferences {
+   private static final String ATTACHMENT_ENCRYPTED_SECRET   = "pref_attachment_encrypted_secret";
+   private static final String ATTACHMENT_UNENCRYPTED_SECRET = "pref_attachment_unencrypted_secret";
+ 
++  private static final String PASSPHRASE_LOCK_NOTIFICATIONS = "pref_passphrase_lock_notifications";
++
+   public static final String CALL_NOTIFICATIONS_PREF = "pref_call_notifications";
+   public static final String CALL_RINGTONE_PREF      = "pref_call_ringtone";
+   public static final String CALL_VIBRATE_PREF       = "pref_call_vibrate";
+@@ -255,6 +257,14 @@ public class TextSecurePreferences {
+     }
+   }
+ 
++  public static boolean isPassphraseLockNotificationsEnabled(@NonNull Context context) {
++    return getBooleanPreference(context, PASSPHRASE_LOCK_NOTIFICATIONS, true);
++  }
++
++  public static void setPassphraseLockNotificationsEnabled(@NonNull Context context, boolean enabled) {
++    setBooleanPreference(context, PASSPHRASE_LOCK_NOTIFICATIONS, enabled);
++  }
++
+   public static void registerListener(@NonNull Context context, SharedPreferences.OnSharedPreferenceChangeListener listener) {
+     getSharedPreferences(context).registerOnSharedPreferenceChangeListener(listener);
+   }
+-- 
+2.52.0
+

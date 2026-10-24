@@ -1,0 +1,67 @@
+From fbc906a655272ebef9915cfbeee07bb8719db5fd Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:13:44 +0000
+Subject: [PATCH 03/16] Add UnifiedPush distributor recovery prompt
+
+Source-Commits: 4d00414d22f726821f76c3d0e777f7c9ec2c9e0c
+
+Only the UP-specific state and handling hunks are included; unrelated Vitals and MainActivity target edits are excluded.
+---
+ .../main/java/org/thoughtcrime/securesms/MainActivity.kt    | 2 ++
+ .../thoughtcrime/securesms/notifications/VitalsViewModel.kt | 6 ++++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
+index 7b732160f08..04647f08601 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
+@@ -89,6 +89,7 @@ import kotlinx.coroutines.flow.distinctUntilChangedBy
+ import kotlinx.coroutines.flow.filter
+ import kotlinx.coroutines.launch
+ import kotlinx.coroutines.withContext
++import im.molly.unifiedpush.UnifiedPushDistributor
+ import org.signal.core.ui.BottomSheetUtil
+ import org.signal.core.ui.compose.Snackbars
+ import org.signal.core.ui.compose.theme.SignalTheme
+@@ -1021,6 +1022,7 @@ class MainActivity :
+   private fun presentVitalsState(state: VitalsViewModel.State) {
+     when (state) {
+       VitalsViewModel.State.NONE -> Unit
++      VitalsViewModel.State.PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG -> UnifiedPushDistributor.showSelectDistributorDialog(this)
+       VitalsViewModel.State.PROMPT_SPECIFIC_BATTERY_SAVER_DIALOG -> DeviceSpecificNotificationBottomSheet.show(supportFragmentManager)
+       VitalsViewModel.State.PROMPT_GENERAL_BATTERY_SAVER_DIALOG -> PromptBatterySaverDialogFragment.show(supportFragmentManager)
+       VitalsViewModel.State.PROMPT_DEBUGLOGS_FOR_NOTIFICATIONS -> DebugLogsPromptDialogFragment.show(this, DebugLogsPromptDialogFragment.Purpose.NOTIFICATIONS)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt
+index d6a343ebfdc..41e1057e9d2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt
+@@ -7,6 +7,7 @@ package org.thoughtcrime.securesms.notifications
+ 
+ import android.app.Application
+ import androidx.lifecycle.AndroidViewModel
++import im.molly.unifiedpush.UnifiedPushDistributor
+ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+ import io.reactivex.rxjava3.core.Observable
+ import io.reactivex.rxjava3.core.Single
+@@ -51,6 +52,10 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
+ 
+   private fun checkHeuristics(): Single<State> {
+     return Single.fromCallable {
++      if (SignalStore.unifiedpush.enabled && !UnifiedPushDistributor.checkIfActive()) {
++        return@fromCallable State.PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG
++      }
++
+       val deviceSpecificCondition = SlowNotificationHeuristics.getDeviceSpecificShowCondition()
+ 
+       val shouldShowDeviceSpecificDialog = SlowNotificationHeuristics.shouldShowDeviceSpecificDialog()
+@@ -103,6 +108,7 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
+ 
+   enum class State {
+     NONE,
++    PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG,
+     PROMPT_SPECIFIC_BATTERY_SAVER_DIALOG,
+     PROMPT_GENERAL_BATTERY_SAVER_DIALOG,
+     PROMPT_DEBUGLOGS_FOR_NOTIFICATIONS,
+-- 
+2.52.0
+

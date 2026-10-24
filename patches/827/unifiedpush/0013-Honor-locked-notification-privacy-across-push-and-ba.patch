@@ -1,0 +1,53 @@
+From 576af670416160386a6c038e17ea19c838cfe3fc Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:37:32 +0000
+Subject: [PATCH 13/16] Honor locked notification privacy across push and
+ backup
+
+---
+ .../java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt | 7 +++++++
+ .../thoughtcrime/securesms/util/TextSecurePreferences.java | 1 +
+ 2 files changed, 8 insertions(+)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
+index 03ae2b8e7e1..b10eb54b9fd 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
+@@ -20,8 +20,10 @@ import org.thoughtcrime.securesms.jobs.MessageFetchJob
+ import org.thoughtcrime.securesms.messages.WebSocketDrainer
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+ import org.thoughtcrime.securesms.notifications.NotificationIds
++import org.thoughtcrime.securesms.service.KeyCachingService
+ import org.thoughtcrime.securesms.util.RemoteConfig
+ import org.thoughtcrime.securesms.util.SignalLocalMetrics
++import org.thoughtcrime.securesms.util.TextSecurePreferences
+ import org.thoughtcrime.securesms.util.concurrent.SerialMonoLifoExecutor
+ import kotlin.time.Duration.Companion.minutes
+ 
+@@ -85,6 +87,11 @@ object FcmFetchManager {
+   }
+ 
+   private fun postMayHaveMessagesNotification(context: Context) {
++    if (KeyCachingService.isLocked(context) && !TextSecurePreferences.isPassphraseLockNotificationsEnabled(context)) {
++      Log.i(TAG, "Suppressing locked notification because the user disabled them.")
++      return
++    }
++
+     if (RemoteConfig.fcmMayHaveMessagesNotificationKillSwitch) {
+       Log.w(TAG, "May have messages notification kill switch")
+       return
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+index 847093fc355..ae51180ceaf 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/TextSecurePreferences.java
+@@ -164,6 +164,7 @@ public class TextSecurePreferences {
+                                                               SHOW_UNIDENTIFIED_DELIVERY_INDICATORS,
+                                                               UNIVERSAL_UNIDENTIFIED_ACCESS,
+                                                               NOTIFICATION_PREF,
++                                                              PASSPHRASE_LOCK_NOTIFICATIONS,
+                                                               VIBRATE_PREF,
+                                                               IN_THREAD_NOTIFICATION_PREF,
+                                                               CALL_NOTIFICATIONS_PREF,
+-- 
+2.52.0
+

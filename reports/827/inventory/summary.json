@@ -1,0 +1,82 @@
+{
+  "baseline": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+  "target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "candidate": "b8d5375b3fb6013f7939935ce73e250b53515381",
+  "ancestry": {
+    "base_to_target": true,
+    "base_to_candidate": true,
+    "target_to_candidate": false
+  },
+  "full_diff": {
+    "status_path_records": 3171,
+    "path_strings_including_rename_sides": 3178,
+    "status_counts": {
+      "A": 387,
+      "M": 1377,
+      "D": 1400,
+      "R": 7
+    },
+    "binary_entries": 290,
+    "text_additions": 50554,
+    "text_deletions": 92561,
+    "class_counts": {
+      "unresolved": 2958,
+      "selected_unifiedpush": 77,
+      "other_molly_functionality": 2,
+      "verified_upstream_backport": 1,
+      "other_branding_target_change": 130,
+      "selected_branding": 3
+    },
+    "classification_tsv_sha256": "c7bdadf85ebec702d52eabb04fa94b74e91e24577b2ef0ae4b071ab43b1f9551"
+  },
+  "selected_boundary": {
+    "historical_target_paths": 80,
+    "historical_full_file_parity_paths": 12,
+    "historical_anchored_fragments": 12,
+    "historical_anchored_files": 8,
+    "historical_documented_adaptations": 60,
+    "historical_feature_inventory": "docs/827/feature-inventory.tsv",
+    "historical_hunk_coordinates": "reports/827/inventory/selected-hunks.tsv",
+    "live_manifest_ledger": "reports/827/inventory/current-series-owned.tsv",
+    "live_manifest_ledger_sha256": "556bff4f8528a21498a9f00bd896095eb4e3ed57ed6e496638dc954bc0862cd2",
+    "live_manifest_counts_are_recomputed_by": "tools/827/validate_inventory.py",
+    "live_manifest_snapshot": {
+      "paths": 83,
+      "target_diff_paths": 81,
+      "target_absent_paths": 1,
+      "roles": {
+        "anchored-fragment": 8,
+        "adaptation": 62,
+        "full-file-parity": 12,
+        "added-target-absent": 1
+      },
+      "outside_target_diff_paths": 2
+    },
+    "hunk_coordinate_tsv_sha256": "d11c277b2e5f35e9955c2b7e05a014a8f49884cf2c2cd0d5d1305113394abb63",
+    "historical_feature_inventory_sha256": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f",
+    "live_parity_document_sha256": "dc7dee8c36e7ef888ec8533baae6d0c6eea09eeb8a441841b4284572f1df1407"
+  },
+  "classification_limit": "Path enumeration covers all records. Ownership/provenance analysis is scoped to selected paths. All remaining records are excluded or unresolved; no whole-tree attribution is claimed.",
+  "reused_inventory_artifacts": {
+    "tsv": "/workspace/work/inventory/inventory.tsv",
+    "sha256": "c8e63702e4aa33e3c37ca492432cca60ef374c74b991c73f09fcf8d636a408ce",
+    "json": "/workspace/work/inventory/inventory.json",
+    "focus_notes": "/workspace/work/inventory/focus_notes.md"
+  },
+  "source_provenance": {
+    "mailbox_patch_count": 20,
+    "unique_original_molly_source_commits": 9,
+    "original_source_commits_resolving_locally": 9,
+    "mailbox_commit_objects_resolving_locally": 13,
+    "mailbox_commit_objects_unresolved": [
+      "0fa81df5d55a8a3f23810d7ee505fc284eff0654",
+      "1d647a4bbfb6f68c8989ab4957260b7e7adbc691",
+      "576af670416160386a6c038e17ea19c838cfe3fc",
+      "6787d617c5dd990e37ff7995c2dd73a32d3417d8",
+      "af892a60b24c5796db3b29c387c19dc2c7fec4d9",
+      "d538f378dd7b3aab4749eb0b65b2defcdf9376e6",
+      "e60b61bfd190e97af4924dfa337ba2592bdfa45d"
+    ],
+    "distinction": "Source-Commits headers identify original Molly source commits. Mailbox From SHAs identify reconstructed patch commits. Missing mailbox commit objects are not treated as missing Molly origins."
+  }
+}

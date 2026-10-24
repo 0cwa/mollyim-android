@@ -1,0 +1,75 @@
+From 6787d617c5dd990e37ff7995c2dd73a32d3417d8 Mon Sep 17 00:00:00 2001
+From: Codex PoC <codex-poc@invalid.example>
+Date: Wed, 21 Oct 2026 02:31:41 +0000
+Subject: [PATCH 12/16] Fix notification settings Compose scope
+
+Move localized delivery labels into the LazyColumn item composable and invoke the baseline Rows.TextAndLabel RowScope extension.
+---
+ .../NotificationsSettingsFragment.kt          | 41 ++++++++++---------
+ 1 file changed, 21 insertions(+), 20 deletions(-)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+index cb9e51ca20b..b9dea7a28a4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+@@ -57,6 +57,7 @@ import org.signal.core.ui.compose.Rows
+ import org.signal.core.ui.compose.Scaffolds
+ import org.signal.core.ui.compose.SignalIcons
+ import org.signal.core.ui.compose.Texts
++import org.signal.core.ui.compose.Rows.TextAndLabel
+ import org.signal.core.util.logging.Log
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
+@@ -658,29 +659,29 @@ fun NotificationsSettingsScreen(
+         method != NotificationDeliveryMethod.UNIFIEDPUSH || !state.isLinkedDevice
+       }
+ 
+-      val notificationLabels = if (state.isLinkedDevice) {
+-        arrayOf(
+-          stringResource(NotificationDeliveryMethod.FCM.stringId),
+-          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId)
+-        )
+-      } else {
+-        arrayOf(
+-          stringResource(NotificationDeliveryMethod.FCM.stringId),
+-          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId),
+-          stringResource(NotificationDeliveryMethod.UNIFIEDPUSH.stringId)
+-        )
+-      }
+-      val deliveryServiceLabel = stringResource(R.string.NotificationsSettingsFragment__delivery_service)
+-      val showAlertIcon = when (state.preferredNotificationMethod) {
+-        NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
+-        NotificationDeliveryMethod.WEBSOCKET -> false
+-        NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
+-      }
+-
+       item {
++        val notificationLabels = if (state.isLinkedDevice) {
++          arrayOf(
++            stringResource(NotificationDeliveryMethod.FCM.stringId),
++            stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId)
++          )
++        } else {
++          arrayOf(
++            stringResource(NotificationDeliveryMethod.FCM.stringId),
++            stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId),
++            stringResource(NotificationDeliveryMethod.UNIFIEDPUSH.stringId)
++          )
++        }
++        val deliveryServiceLabel = stringResource(R.string.NotificationsSettingsFragment__delivery_service)
++        val showAlertIcon = when (state.preferredNotificationMethod) {
++          NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
++          NotificationDeliveryMethod.WEBSOCKET -> false
++          NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
++        }
++
+         Rows.RadioListRow(
+           text = { selectedIndex ->
+-            Rows.TextAndLabel(
++            TextAndLabel(
+               text = deliveryServiceLabel,
+               label = notificationLabels.getOrNull(selectedIndex)
+             )
+-- 
+2.52.0
+

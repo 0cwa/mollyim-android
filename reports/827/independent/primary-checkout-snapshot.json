@@ -1,0 +1,11 @@
+{
+  "head_before_after": "b8d5375b3fb6013f7939935ce73e250b53515381",
+  "status_porcelain_equal": true,
+  "worktree_listing_returned_to_initial_state": true,
+  "replay_worktrees_cleaned": true,
+  "note": "git worktree add/remove changes Git administrative metadata temporarily; the checked-out primary tree, branch HEAD, and status were unchanged.",
+  "final_source_head": "0e34c904f72fb899947967e5d2b37f78ca71b70e",
+  "final_source_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "final_replayed_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "final_two_replay_worktrees_removed": true
+}

@@ -1,0 +1,538 @@
+From e60b61bfd190e97af4924dfa337ba2592bdfa45d Mon Sep 17 00:00:00 2001
+From: Codex PoC <codex-poc@invalid.example>
+Date: Wed, 21 Oct 2026 02:30:52 +0000
+Subject: [PATCH 11/16] Restore lock-screen notification privacy control
+
+Port the notification opt-in state, setter, toggle, and unavailable-push explanation from the pinned Molly UnifiedPush target. The control remains opt-in and reports the current effective setting only when push delivery is available.
+---
+ .../NotificationsSettingsFragment.kt          | 25 +++++++++++++++++++
+ .../NotificationsSettingsState.kt             |  2 ++
+ .../NotificationsSettingsViewModel.kt         |  7 ++++++
+ app/src/main/res/values-ar/strings2.xml       |  3 +++
+ app/src/main/res/values-bs/strings2.xml       |  3 +++
+ app/src/main/res/values-ca/strings2.xml       |  3 +++
+ app/src/main/res/values-cs/strings2.xml       |  3 +++
+ app/src/main/res/values-de/strings2.xml       |  3 +++
+ app/src/main/res/values-el/strings2.xml       |  3 +++
+ app/src/main/res/values-es/strings2.xml       |  3 +++
+ app/src/main/res/values-et/strings2.xml       |  3 +++
+ app/src/main/res/values-fi/strings2.xml       |  3 +++
+ app/src/main/res/values-fr/strings2.xml       |  3 +++
+ app/src/main/res/values-ga/strings2.xml       |  3 +++
+ app/src/main/res/values-gl/strings2.xml       |  3 +++
+ app/src/main/res/values-in/strings2.xml       |  3 +++
+ app/src/main/res/values-it/strings2.xml       |  3 +++
+ app/src/main/res/values-iw/strings2.xml       |  3 +++
+ app/src/main/res/values-ko/strings2.xml       |  3 +++
+ app/src/main/res/values-lv/strings2.xml       |  3 +++
+ app/src/main/res/values-nl/strings2.xml       |  3 +++
+ app/src/main/res/values-pa/strings2.xml       |  2 ++
+ app/src/main/res/values-pl/strings2.xml       |  3 +++
+ app/src/main/res/values-pt-rBR/strings2.xml   |  3 +++
+ app/src/main/res/values-pt/strings2.xml       |  3 +++
+ app/src/main/res/values-ro/strings2.xml       |  3 +++
+ app/src/main/res/values-ru/strings2.xml       |  3 +++
+ app/src/main/res/values-sr/strings2.xml       |  3 +++
+ app/src/main/res/values-sv/strings2.xml       |  3 +++
+ app/src/main/res/values-ta/strings2.xml       |  3 +++
+ app/src/main/res/values-tr/strings2.xml       |  3 +++
+ app/src/main/res/values-ug/strings2.xml       |  3 +++
+ app/src/main/res/values-uk/strings2.xml       |  3 +++
+ app/src/main/res/values-vi/strings2.xml       |  3 +++
+ app/src/main/res/values-zh-rCN/strings2.xml   |  3 +++
+ app/src/main/res/values/strings2.xml          |  3 +++
+ 36 files changed, 132 insertions(+)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+index 6846273b4d8..cb9e51ca20b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+@@ -315,6 +315,17 @@ open class DefaultNotificationsSettingsCallbacks(
+     viewModel.setNotifyWhenContactJoinsSignal(enabled)
+   }
+ 
++  override fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) {
++    if (enabled && !isSupported) {
++      MaterialAlertDialogBuilder(activity)
++        .setMessage(R.string.NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush)
++        .setPositiveButton(android.R.string.ok, null)
++        .show()
++    } else {
++      viewModel.setNotifyWhileLocked(enabled)
++    }
++  }
++
+   override fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) {
+     val (previousMethod, method) = fromToMethods
+     when (method) {
+@@ -367,6 +378,7 @@ interface NotificationsSettingsCallbacks {
+   fun setCallVibrateEnabled(enabled: Boolean) = Unit
+   fun onNavigationProfilesClick() = Unit
+   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) = Unit
++  fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) = Unit
+   fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) = Unit
+   fun onNavigationUnifiedPushSettings() = Unit
+ 
+@@ -603,6 +615,17 @@ fun NotificationsSettingsScreen(
+         Texts.SectionHeader(stringResource(R.string.NotificationsSettingsFragment__notify_when))
+       }
+ 
++      item {
++        Rows.ToggleRow(
++          text = stringResource(R.string.NotificationsSettingsFragment__new_activity_while_locked),
++          label = stringResource(R.string.NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked),
++          checked = state.notifyWhileLocked,
++          onCheckChanged = { enabled ->
++            callbacks.setNotifyNewActivityWhileLocked(enabled, state.canEnableNotifyWhileLocked)
++          }
++        )
++      }
++
+       item {
+         Rows.ToggleRow(
+           text = stringResource(R.string.NotificationsSettingsFragment__contact_joins_signal),
+@@ -765,6 +788,8 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
+       ringtone = Uri.EMPTY,
+       vibrateEnabled = true
+     ),
++    notifyWhileLocked = true,
++    canEnableNotifyWhileLocked = true,
+     isLinkedDevice = false,
+     preferredNotificationMethod = NotificationDeliveryMethod.FCM,
+     canReceiveFcm = true,
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
+index 705b92e9bb4..709522f0be2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
+@@ -6,6 +6,8 @@ import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMe
+ data class NotificationsSettingsState(
+   val messageNotificationsState: MessageNotificationsState,
+   val callNotificationsState: CallNotificationsState,
++  val notifyWhileLocked: Boolean,
++  val canEnableNotifyWhileLocked: Boolean,
+   val isLinkedDevice: Boolean,
+   val preferredNotificationMethod: NotificationDeliveryMethod,
+   val canReceiveFcm: Boolean,
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+index c3285ce346b..a38a1c7e075 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+@@ -116,6 +116,11 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
+     refresh()
+   }
+ 
++  fun setNotifyWhileLocked(enabled: Boolean) {
++    TextSecurePreferences.setPassphraseLockNotificationsEnabled(AppDependencies.application, enabled)
++    refresh()
++  }
++
+   fun setPreferredNotificationMethod(method: NotificationDeliveryMethod) {
+     SignalStore.settings.preferredNotificationMethod = method
+     TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
+@@ -165,6 +170,8 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
+       ringtone = SignalStore.settings.callRingtone,
+       vibrateEnabled = SignalStore.settings.isCallVibrateEnabled
+     ),
++    notifyWhileLocked = TextSecurePreferences.isPassphraseLockNotificationsEnabled(AppDependencies.application) && SignalStore.account.pushAvailable,
++    canEnableNotifyWhileLocked = SignalStore.account.pushAvailable,
+     isLinkedDevice = SignalStore.account.isLinkedDevice,
+     preferredNotificationMethod = SignalStore.settings.preferredNotificationMethod,
+     canReceiveFcm = SignalStore.account.canReceiveFcm,
+diff --git a/app/src/main/res/values-ar/strings2.xml b/app/src/main/res/values-ar/strings2.xml
+index fd6606919c2..35f38dc46d0 100644
+--- a/app/src/main/res/values-ar/strings2.xml
++++ b/app/src/main/res/values-ar/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">نقطة النهاية محظورة من قبل الخادم</string>
+     <string name="UnifiedPushNotificationBuilder__registration_failed">فشل التسجيل مع موزع الدفع الموحد(UnifiedPush) الخاص بك. قد يكون ذلك بسبب مشكلة في الشبكة أو متطلبات مفقودة من موزعك.</string>
+     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">هذا إشعار تجريبي من خادم مولي سوكيت(MollySocket).</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">نشاط جديد أثناء القفل</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">عذرًا، تتطلب هذه الميزة إرسال إشعارات Push عبر FCM أو UnifiedPush، وهي غير متوفرة حاليًا.</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">تلقي إشعارات للرسائل أو المكالمات الفائتة عندما يكون التطبيق مقفلاً.</string>
+ </resources>
+diff --git a/app/src/main/res/values-bs/strings2.xml b/app/src/main/res/values-bs/strings2.xml
+index c0e9149b715..f1c4a94c726 100644
+--- a/app/src/main/res/values-bs/strings2.xml
++++ b/app/src/main/res/values-bs/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Došlo je do greške na mreži. Molimo vas, pokušajte ponovno.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Izolovan</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova aktivnost dok je aplikacija zaljučana</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Žao nam je, ova funkcija zahtijeva push obavještenja koja se isporučuju putem FCM ili UnifiedPush usluga koje trenutno nisu dostupne.</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Primaj obavještenja o porukama ili propuštenim pozivima kada je aplikacija zaključana.</string>
+ </resources>
+diff --git a/app/src/main/res/values-ca/strings2.xml b/app/src/main/res/values-ca/strings2.xml
+index c3052261fe9..c5c52e73393 100644
+--- a/app/src/main/res/values-ca/strings2.xml
++++ b/app/src/main/res/values-ca/strings2.xml
+@@ -1,4 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">S\'ha produït un error de xarxa. Si us plau, torneu-ho a provar.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova activitat durant el bloqueig</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Rebre notificacions de missatges o trucades perdudes quan l\'aplicació està bloquejada.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Aquesta funció requereix notificacions lliurades a través de FCM o UnifiedPush, que actualment no estan disponibles.</string>
+ </resources>
+diff --git a/app/src/main/res/values-cs/strings2.xml b/app/src/main/res/values-cs/strings2.xml
+index 10522ab73d4..d7f641469bd 100644
+--- a/app/src/main/res/values-cs/strings2.xml
++++ b/app/src/main/res/values-cs/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Váš doručovací server byl odmítnut serverem MollySocket. Zkontrolujte prosím povolené endpointy v nastavení serveru.</string>
+     <string name="UnifiedPushNotificationBuilder__registration_failed">Registrace s vaší doručovací službou UnitedPush selhala. Mohlo se tak stát z důvodu chyby sítě nebo chybějícího požadavku od doručovací služby.</string>
+     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Zkuste naskenovat jiný obrázek obsahující QR kód MollySocket.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nová aktivita během uzamknutí</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Dostávat oznámení o nových zprávách a zmeškaných hovorech když je aplikace zamknutá.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Omlouváme se, tato funkce vyžaduje doručení oznámení skrz FCM nebo UnifiedPush, které nejsou aktuálně dostupné.</string>
+ </resources>
+diff --git a/app/src/main/res/values-de/strings2.xml b/app/src/main/res/values-de/strings2.xml
+index 528fa03b4ef..94aa8f9a656 100644
+--- a/app/src/main/res/values-de/strings2.xml
++++ b/app/src/main/res/values-de/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="NotificationsSettingsFragment__delivery_service">Push-Service</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Dein Konto wurde vom MollySocket-Server abgelehnt. Bitte überprüfe die zugelassenen UUIDs in der Serverkonfiguration.</string>
+     <string name="UnifiedPushNotificationBuilder__registration_failed">Die Registrierung mit deinem UnifiedPush-Distributor ist fehlgeschlagen. Dies könnte an einem Netzwerkproblem oder einer nicht erfüllten Anforderung des UnifiedPush-Distributors liegen.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Leider erfordert diese Funktion Push-Benachrichtigungen über FCM oder UnifiedPush, die derzeit nicht verfügbar sind.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Neue Aktivität während der Sperrung</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Benachrichtigungen für Nachrichten oder verpasste Anrufe empfangen, während die App gesperrt ist.</string>
+ </resources>
+diff --git a/app/src/main/res/values-el/strings2.xml b/app/src/main/res/values-el/strings2.xml
+index d8f014d335a..7f079aabd78 100644
+--- a/app/src/main/res/values-el/strings2.xml
++++ b/app/src/main/res/values-el/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">Διακομιστής MollySocket</string>
+     <string name="UnifiedPushNotificationBuilder__registration_failed">Η εγγραφή με τον διανομέα UnifiedPush απέτυχε. Αυτό θα μπορούσε να οφείλεται σε ένα ζήτημα δικτύου ή σε μια αγνοούμενη απαίτηση από τον διανομέα σου.</string>
+     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Προσπάθησε να σαρώσεις μια άλλη εικόνα που περιέχει έναν κωδικό MollySocket QR.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Νέα δραστηριότητα ενώ είναι κλειδωμένο</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Λήψη ειδοποιήσεων για μηνύματα ή αναπάντητες κλήσεις όσο η εφαρμογή είναι κλειδωμένη.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Λυπούμαστε, αυτή η λειτουργία απαιτεί ειδοποιήσεις push που παραδίδονται μέσω FCM ή UnifiedPush, οι οποίες προς το παρόν δεν είναι διαθέσιμες.</string>
+ </resources>
+diff --git a/app/src/main/res/values-es/strings2.xml b/app/src/main/res/values-es/strings2.xml
+index 50df67547b2..a18e1025fb0 100644
+--- a/app/src/main/res/values-es/strings2.xml
++++ b/app/src/main/res/values-es/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Se produjo un error de red. Inténtelo de nuevo.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Aislado</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Lo sentimos, esta función requiere notificaciones push enviadas a través de FCM o UnifiedPush, que actualmente no están disponibles.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nueva actividad mientras está bloqueado</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Recibe notificaciones de mensajes o llamadas perdidas cuando la aplicación esté bloqueada.</string>
+ </resources>
+diff --git a/app/src/main/res/values-et/strings2.xml b/app/src/main/res/values-et/strings2.xml
+index 8aec90c723d..f16ef6993ba 100644
+--- a/app/src/main/res/values-et/strings2.xml
++++ b/app/src/main/res/values-et/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Ilmnes võrguviga. Palun proovi uuesti.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocketi server</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Õhkeraldatud</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Uus tegevus lukustatud olekus</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Saa rakenduse lukustamisel teateid sõnumite või vastamata kõnede kohta.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Vabandust, see funktsioon nõuab tõukemärguandeid, mis edastatakse FCM-i või UnifiedPushi kaudu, mis pole praegu saadaval.</string>
+ </resources>
+diff --git a/app/src/main/res/values-fi/strings2.xml b/app/src/main/res/values-fi/strings2.xml
+index e3d4335bbfa..044a8dcf3dd 100644
+--- a/app/src/main/res/values-fi/strings2.xml
++++ b/app/src/main/res/values-fi/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocket-palvelin hylkäsi työntöpalvelimesi. Tarkista sallitut päätepisteet palvelimen kokoonpanosta.</string>
+     <string name="UnifiedPushNotificationBuilder__registration_failed">Rekisteröityminen UnifiedPush-jakelijallasi epäonnistui. Tämä voi johtua verkkoviasta tai jakelijan puuttuvasta vaatimuksesta.</string>
+     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Tämä on testi-ilmoitus MollySocket-palvelimelta.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Valitettavasti tämä ominaisuus vaatii FCM:n tai UnifiedPush:n kautta toimitettuja työntöilmoituksia, jotka eivät ole tällä hetkellä saatavilla.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Uusi toiminta ollessa lukittuna</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Vastaanota ilmoituksia viesteistä tai vastaamattomista puheluista, kun sovellus on lukittu.</string>
+ </resources>
+diff --git a/app/src/main/res/values-fr/strings2.xml b/app/src/main/res/values-fr/strings2.xml
+index b73566080ae..0128efdd7ef 100644
+--- a/app/src/main/res/values-fr/strings2.xml
++++ b/app/src/main/res/values-fr/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_scan_the_qr_code">Scannez le code QR affiché sur la page d\'accueil de votre serveur MollySocket ou sur la console.</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Votre inscription sur MollySocket n\'est plus valide. Veuillez supprimer l\'appareil lié et essayez de nouveau de l\'enregistrer.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolé</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Désolé, cette fonctionnalité nécessite des notifications poussées livrées via FCM ou UnifiedPush, qui sont actuellement indisponibles.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nouvelle activité pendant le verrouillage</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Recevoir des notifications pour des messages ou des appels interrompus quand l\'application est verrouillée.</string>
+ </resources>
+diff --git a/app/src/main/res/values-ga/strings2.xml b/app/src/main/res/values-ga/strings2.xml
+index 819fa4a4150..7fb1a9a2a65 100644
+--- a/app/src/main/res/values-ga/strings2.xml
++++ b/app/src/main/res/values-ga/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_scan_the_qr_code">Scan an cód QR atá ar taispeáint ar leathanach baile do fhreastalaí MollySocket nó sa chonsól.</string>
+     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Bain triail as íomhá eile a scanadh ina bhfuil cód MollySocket QR.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket freastalaí</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Ár leithscéal, éilíonn an ghné seo fógraí brú a sheachadtar trí FCM nó UnifiedPush, nach bhfuil ar fáil faoi láthair.</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Faigh fógraí maidir le teachtaireachtaí nó glaonna caillte nuair atá an aip faoi ghlas.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Gníomhaíocht nua agus é faoi ghlas</string>
+ </resources>
+diff --git a/app/src/main/res/values-gl/strings2.xml b/app/src/main/res/values-gl/strings2.xml
+index 72b365ed62d..59ee2aaa056 100644
+--- a/app/src/main/res/values-gl/strings2.xml
++++ b/app/src/main/res/values-gl/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Intenta escanear outra imaxe que conteña un código QR de MollySocket.</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">O servidor MollySocket rexeitou o teu servidor push. Comproba os puntos de acceso permitidos na configuración do servidor.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air gapped</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Recibir notificacións de mensaxes ou chamadas perdidas cando a app está bloqueada.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova actividade mentras en repouso</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Lamentámolo pero esta característica precisa que as notificacións push se entreguen usando FCM ou UnifiedPush, que non están dispoñibles.</string>
+ </resources>
+diff --git a/app/src/main/res/values-in/strings2.xml b/app/src/main/res/values-in/strings2.xml
+index 7e2a9eb194d..7a38c5ea47a 100644
+--- a/app/src/main/res/values-in/strings2.xml
++++ b/app/src/main/res/values-in/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Terjadi kesalahan jaringan. Silakan coba lagi.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">Server MollySocket</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air-gapped</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Aktivitas baru saat terkunci</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Terima notifikasi untuk pesan atau panggilan tak terjawab saat aplikasi terkunci.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Maaf, fitur ini memerlukan notifikasi push yang dikirim melalui FCM atau UnifiedPush, yang saat ini tidak tersedia.</string>
+ </resources>
+diff --git a/app/src/main/res/values-it/strings2.xml b/app/src/main/res/values-it/strings2.xml
+index ff0930c42cd..70d95e8c726 100644
+--- a/app/src/main/res/values-it/strings2.xml
++++ b/app/src/main/res/values-it/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Il server push è stato rifiutato dal server MollySocket. Si prega di controllare i terminali consentiti nella configurazione del server.</string>
+     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Questa è una notifica di prova dal server MollySocket.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Aria compressa</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Spiacenti, questa funzione richiede notifiche fornite tramite FCM o UnifiedPush, che attualmente non sono disponibili.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nuova attività quando bloccata</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Ricevi notifiche per messaggi o chiamate perse quando l\'applicazione è bloccata.</string>
+ </resources>
+diff --git a/app/src/main/res/values-iw/strings2.xml b/app/src/main/res/values-iw/strings2.xml
+index 5e1cf55d09b..f93c17e337c 100644
+--- a/app/src/main/res/values-iw/strings2.xml
++++ b/app/src/main/res/values-iw/strings2.xml
+@@ -3,4 +3,7 @@
+     <string name="NotificationsSettingsFragment__push_notifications">התראות</string>
+     <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">בחר בשירות המועדף להתראות. אם לא זמין, האפליקציה תשתמש בוובסוקט כדי לוודא שהתראות נשלחות.</string>
+     <string name="NotificationsSettingsFragment__delivery_service">שירות שליחה</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">פעילות חדשה בזמן נעילה</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">קבלת התראות להודעות או לשיחות שלא נענו כאשר היישומון נעול.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">היכולת הזאת צריכה להעביר הודעות בדחיפה דרך FCM או דרך UnifiedPush שאינן זמינות כרגע, עמך סליחה.</string>
+ </resources>
+diff --git a/app/src/main/res/values-ko/strings2.xml b/app/src/main/res/values-ko/strings2.xml
+index e5de2a538ce..209a56224b4 100644
+--- a/app/src/main/res/values-ko/strings2.xml
++++ b/app/src/main/res/values-ko/strings2.xml
+@@ -24,4 +24,7 @@
+     <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">클립보드에 복사하기</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">UnifedPush 배포자 응답을 기다리는 중입니다</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_bad_response">서버의 잘못된 응답</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">잠겨 있는 동안의 새로운 활동</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">죄송합니다. 이 기능을 사용하려면 현재 사용할 수 없는 FCM 또는 UnifiedPush를 통해 푸시 알림을 전달해야 합니다.</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">앱이 잠겨있을 때 온 메시지나 부재중 전화의 알림을 받습니다.</string>
+ </resources>
+diff --git a/app/src/main/res/values-lv/strings2.xml b/app/src/main/res/values-lv/strings2.xml
+index 88124b47a39..956b47c1325 100644
+--- a/app/src/main/res/values-lv/strings2.xml
++++ b/app/src/main/res/values-lv/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Jāmēģina nolasīt cits MollySocket kvadrātkodu saturošs attēls.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Nošķirts</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocket serveris atteica Tavam pašpiegādes serverim. Lūgums servera konfigurācijā pārbaudīt atļautos galamērķus.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Diemžēl šai iespējai ir nepieciešami pašpiegādes paziņojumi, kas tiek piegādāti ar FCM vai UnifiedPush, kas pašlaik nav pieejami.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Jauna darbība, kamēr aizslēgta</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Saņemt paziņojumus par ziņojumiem vai neatbildētiem zvaniem, kad lietotne ir aizslēgta.</string>
+ </resources>
+diff --git a/app/src/main/res/values-nl/strings2.xml b/app/src/main/res/values-nl/strings2.xml
+index b96b716fa6d..5273eb69901 100644
+--- a/app/src/main/res/values-nl/strings2.xml
++++ b/app/src/main/res/values-nl/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket server niet gevonden op \'%s\'</string>
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Er is een netwerkfout opgetreden. Probeer het opnieuw.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Sorry, deze functie vereist pushberichten via FCM of UnifiedPush en deze zijn momenteel niet beschikbaar.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nieuwe activiteit tijdens lock</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Ontvang notificaties voor berichten en oproepen als de app gelockt is.</string>
+ </resources>
+diff --git a/app/src/main/res/values-pa/strings2.xml b/app/src/main/res/values-pa/strings2.xml
+index 4bce3f6173c..0185f243452 100644
+--- a/app/src/main/res/values-pa/strings2.xml
++++ b/app/src/main/res/values-pa/strings2.xml
+@@ -18,4 +18,6 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">ਨੈੱਟਵਰਕ ਗਲਤੀ ਆਈ ਹੈ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰਿਓ।</string>
+     <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket ਸਰਵਰ \'%s\' ਨਹੀਂ ਲੱਭਿਆ</string>
+     <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">ਇਹ MollySocket ਸਰਵਰ ਵਲੋਂ ਟੈਸਟ ਨੋਟੀਫਿਕੇਸ਼ਨ ਹੈ।</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">ਲਾਕ ਹੋਣ ਦੇ ਦੌਰਾਨ ਨਵੀਂ ਸਰਗਰਮੀ</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">ਜਦੋਂ ਐਪ ਲਾਕ ਹੋਵੇ ਤਾਂ ਸੁਨੇਹੇ ਜਾਂ ਖੁੰਝੀਆਂ ਕਾਲਾਂ ਲਈ ਨੋਟੀਫਿਕੇਸ਼ਨ ਲਵੋ।</string>
+ </resources>
+diff --git a/app/src/main/res/values-pl/strings2.xml b/app/src/main/res/values-pl/strings2.xml
+index dd806b68167..1599eb9f008 100644
+--- a/app/src/main/res/values-pl/strings2.xml
++++ b/app/src/main/res/values-pl/strings2.xml
+@@ -38,4 +38,7 @@
+     <string name="MollySocketLink_mollysocket_server_not_found_at_s">Nie znaleziono serwera MollySocket \'%s\'</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Ten Endpoint jest zakazany przez serwer</string>
+     <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Twój Endpoint UnifiedPush się zmienił. Musisz zaktualizować swoje połączenie z MollySocket.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Niestety, ta funkcja wymaga powiadomień push dostarczanych za pośrednictwem FCM lub UnifiedPush, które są obecnie niedostępne.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nowa aktywność podczas blokady</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Otrzymuj powiadomienia o wiadomościach i nieodebranych połączeniach, nawet gdy aplikacja jest zablokowana.</string>
+ </resources>
+diff --git a/app/src/main/res/values-pt-rBR/strings2.xml b/app/src/main/res/values-pt-rBR/strings2.xml
+index 1a07b3d1465..3b034c1681b 100644
+--- a/app/src/main/res/values-pt-rBR/strings2.xml
++++ b/app/src/main/res/values-pt-rBR/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Selecione seu serviço preferido para notificações push. Se ele não estiver disponível, o aplicativo usará automaticamente WebSocket para garantir a entrega das notificações.</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nenhum distribuidor do UnifiedPush instalado</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolado da rede</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Desculpe, este recurso requer notificações push entregues por meio do FCM ou UnifiedPush, que no momento não estão disponíveis.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova atividade enquanto bloqueado</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Receber notificações de mensagens ou chamadas perdidas quando o aplicativo estiver bloqueado.</string>
+ </resources>
+diff --git a/app/src/main/res/values-pt/strings2.xml b/app/src/main/res/values-pt/strings2.xml
+index 78057240b33..ca1b9d92520 100644
+--- a/app/src/main/res/values-pt/strings2.xml
++++ b/app/src/main/res/values-pt/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Ocorreu um erro de rede. Tente novamente.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolado da rede</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Receber notificações de mensagens ou chamadas não atendidas quando a aplicação está bloqueada.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Lamentamos, mas esta funcionalidade requer notificações push entregues através de FCM ou UnifiedPush, que não estão atualmente disponíveis.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nova atividade durante o bloqueio</string>
+ </resources>
+diff --git a/app/src/main/res/values-ro/strings2.xml b/app/src/main/res/values-ro/strings2.xml
+index a20efd944e4..c6b7551b87d 100644
+--- a/app/src/main/res/values-ro/strings2.xml
++++ b/app/src/main/res/values-ro/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">A apărut o eroare de rețea. Încearcă din nou.</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">A fost atinsă limita de %d aparate asociate. Pentru asocierea cu serverul MollySocket, trebuie eliminat mai întâi un aparat.</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Înscrierea ta la MollySocket nu mai este valabilă. Elimină aparatul asociat și încearcă să te înscrii din nou.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Activitate nouă pe durata blocării</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Primește notificări pentru mesaje sau apeluri pierdute dacă aplicația este blocată.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Această caracteristică necesită notificări transmise prin FCM sau UnifiedPush, care nu sunt disponibile în prezent.</string>
+ </resources>
+diff --git a/app/src/main/res/values-ru/strings2.xml b/app/src/main/res/values-ru/strings2.xml
+index 707b9fa46af..699eb91dccd 100644
+--- a/app/src/main/res/values-ru/strings2.xml
++++ b/app/src/main/res/values-ru/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Неверный ответ от сервера</string>
+     <string name="MollySocketLink_scan_the_qr_code">Сосканируйте QR-код, отображаемый на домашней странице сервера MollySocket или в консоли.</string>
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Возникла сетевая ошибка. Пожалуйста, попробуйте еще раз.</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Получайте уведомления о сообщениях или пропущенных вызовах, когда приложение заблокировано.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">К сожалению, для этой функции требуются push-уведомления, доставляемые через FCM или UnifiedPush, которые в настоящее время недоступны.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Новая активность при блокировке</string>
+ </resources>
+diff --git a/app/src/main/res/values-sr/strings2.xml b/app/src/main/res/values-sr/strings2.xml
+index bb369879ffd..c2b08bfbfff 100644
+--- a/app/src/main/res/values-sr/strings2.xml
++++ b/app/src/main/res/values-sr/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushSettingsFragment__status_summary_pending">На чекању</string>
+     <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Изаберите вашу омиљену услугу за пуш обавештења. Ако није доступна, апликација ће аутоматски користити WebSocket да осигура да обавештења буду испоручена.</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Достигли сте ограничење од %d повезаних уређаја. Да бисте повезали ваш MollySocket сервер, молимо вас да прво уклоните уређај.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Нова активност док је закључано</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Добите обавештења за поруке или пропуштене позиве када је апликација закључана.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Извините, ова функција захтева пуш обавештења испоручена преко FCM или UnifiedPush, која су тренутно недоступна.</string>
+ </resources>
+diff --git a/app/src/main/res/values-sv/strings2.xml b/app/src/main/res/values-sv/strings2.xml
+index 114f608f128..2633f3ca031 100644
+--- a/app/src/main/res/values-sv/strings2.xml
++++ b/app/src/main/res/values-sv/strings2.xml
+@@ -27,4 +27,7 @@
+     <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Ingen UnifiedPush-distributör har installerats på enheten</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Ingen distributörsapp har valts</string>
+     <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Du har fler än de tillåtna %d länkade enheterna. För att länka till din MollySocket-server, måste du först ta bort en enhet.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Nya händelser medan enhet var låst</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Få notiser om meddelanden och missade samtal när appen är låst.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Tyvärr kräver den här funktionen push-meddelanden som levereras via FCM eller UnifiedPush, som för närvarande inte är tillgängliga.</string>
+ </resources>
+diff --git a/app/src/main/res/values-ta/strings2.xml b/app/src/main/res/values-ta/strings2.xml
+index 1c449fedba3..a59c5429794 100644
+--- a/app/src/main/res/values-ta/strings2.xml
++++ b/app/src/main/res/values-ta/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_mollysocket_server_not_found_at_s">மோலிசாக்கெட் சேவையகம் \'%s\' இல் காணப்படவில்லை</string>
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">பிணைய பிழையை அனுபவித்தது. மீண்டும் முயற்சிக்கவும்.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">மோலிச்கே சேவையகம்</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">பூட்டப்பட்டிருக்கும் போது புதிய செயல்பாடு</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">பயன்பாடு பூட்டப்படும்போது செய்திகள் அல்லது தவறவிட்ட அழைப்புகளுக்கான அறிவிப்புகளைப் பெறுங்கள்.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">மன்னிக்கவும், இந்த அம்சத்திற்கு FCM அல்லது UNIFIDEPUSH வழியாக வழங்கப்படும் புச் அறிவிப்புகள் தேவை, அவை தற்போது கிடைக்கவில்லை.</string>
+ </resources>
+diff --git a/app/src/main/res/values-tr/strings2.xml b/app/src/main/res/values-tr/strings2.xml
+index aeb4a1e8e5a..6507c1bf1b1 100644
+--- a/app/src/main/res/values-tr/strings2.xml
++++ b/app/src/main/res/values-tr/strings2.xml
+@@ -15,4 +15,7 @@
+     <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket URL\'si eksik</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_pending">Beklemede</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">MollySocket sunucusundan doğrulanma bekleniyor</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Üzgünüz, bu özellik FCM veya UnifiedPush aracılığıyla gönderilen anlık bildirimler gerektirir ve şu anda kullanılamıyor.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Kilitliyken yeni etkinlik</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Uygulama kilitliyken mesajlar veya cevapsız aramalar için bildirimler alın.</string>
+ </resources>
+diff --git a/app/src/main/res/values-ug/strings2.xml b/app/src/main/res/values-ug/strings2.xml
+index 9993b73b135..bc21a73d607 100644
+--- a/app/src/main/res/values-ug/strings2.xml
++++ b/app/src/main/res/values-ug/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">تور خاتالىقىغا يولۇقتى. قايتا سىناڭ.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket مۇلازىمېتىر</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">فىزىكىلىق ئايرىلدى</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">قۇلۇپلانغان ۋاقىتتىكى يېڭى پائالىيەت</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">كەچۈرۈڭ، بۇ ئىقتىدار FCM ياكى UnifiedPush ئۇقتۇرۇش يەتكۈزۈش مۇلازىمىتى ئارقىلىق يوللىنىدۇ، نۆۋەتتە بۇلارنى ئىشلەتكىلى بولمايدۇ.</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">ئەپ قۇلۇپلانغاندا ئۇچۇر تاپشۇرۇۋېلىش ياكى ئالمىغان چاقىرىش ئۇقتۇرۇشى.</string>
+ </resources>
+diff --git a/app/src/main/res/values-uk/strings2.xml b/app/src/main/res/values-uk/strings2.xml
+index b2ae2211752..e63ad9c5f90 100644
+--- a/app/src/main/res/values-uk/strings2.xml
++++ b/app/src/main/res/values-uk/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushNotificationBuilder__registration_failed">Помилка реєстрації у вашого дистриб’ютора UnifiedPush. Це може бути через проблему з мережею або відсутність вимоги від вашого дистриб’ютора.</string>
+     <string name="MollySocketLink_scan_the_qr_code">Відскануйте QR-код, який відображається на домашній сторінці вашого сервера MollySocket або в консолі.</string>
+     <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Спробуйте відсканувати інше зображення, яке містить QR-код MollySocket.</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Нова активність під час блокування</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Отримуйте сповіщення про повідомлення або пропущені дзвінки, коли додаток заблоковано.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Вибачте, ця функція вимагає push-сповіщень через FCM або UnifiedPush, які наразі недоступні.</string>
+ </resources>
+diff --git a/app/src/main/res/values-vi/strings2.xml b/app/src/main/res/values-vi/strings2.xml
+index f37686cae71..defb57ade9c 100644
+--- a/app/src/main/res/values-vi/strings2.xml
++++ b/app/src/main/res/values-vi/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Xảy ra lỗi mạng. Hãy thử lại.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">Máy chủ MollySocket</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Khoảng trống</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">Hoạt động mới trong lúc khoá</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Nhận thông váo tin nhắn và cuộc gọi nhỡ khi ứng dụng bị khoá.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Xin lỗi, tính năng này cần dịch vụ thông báo đẩy như FCM hay UnifiedPush mà hiện tại không có.</string>
+ </resources>
+diff --git a/app/src/main/res/values-zh-rCN/strings2.xml b/app/src/main/res/values-zh-rCN/strings2.xml
+index ec1de341c48..701052e2089 100644
+--- a/app/src/main/res/values-zh-rCN/strings2.xml
++++ b/app/src/main/res/values-zh-rCN/strings2.xml
+@@ -39,4 +39,7 @@
+     <string name="UnifiedPushSettingsFragment__distributor_app">分发者应用</string>
+     <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">轻按从 MollySocket 请求一则测试通知</string>
+     <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">正等待来自 MollySocket 服务器的确认</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">抱歉，此功能需要通过 FCM 或 UnifiedPush 传送推送通知，而 FCM 和 UnifiedPush 目前均不可用。</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">锁定期间有新活动</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">在应用锁定时接收消息或未接来电的通知。</string>
+ </resources>
+diff --git a/app/src/main/res/values/strings2.xml b/app/src/main/res/values/strings2.xml
+index 52d39c6f9c2..15067151ab3 100644
+--- a/app/src/main/res/values/strings2.xml
++++ b/app/src/main/res/values/strings2.xml
+@@ -43,4 +43,7 @@
+     <string name="MollySocketLink_experienced_a_network_error_please_try_again">Experienced a network error. Please try again.</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
+     <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air gapped</string>
++    <string name="NotificationsSettingsFragment__new_activity_while_locked">New activity while locked</string>
++    <string name="NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked">Receive notifications for messages or missed calls when the app is locked.</string>
++    <string name="NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush">Sorry, this feature requires push notifications delivered via FCM or UnifiedPush, which are currently unavailable.</string>
+ </resources>
+-- 
+2.52.0
+

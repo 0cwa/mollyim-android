@@ -1,0 +1,25 @@
+From 7b096c75e39c89506153daf5dc4d8d76b61c570c Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:28:34 +0000
+Subject: [PATCH 09/16] Restart network after notification method change
+
+AppDependencies.resetNetwork() closes and replaces the network module; explicitly reopen it after the final settings reset so the selected FCM, WebSocket, or UnifiedPush transport becomes active.
+---
+ .../settings/app/notifications/NotificationsSettingsViewModel.kt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+index 5a07cb3b2d5..c3285ce346b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+@@ -121,6 +121,7 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
+     TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
+     ApplicationContext.getInstance(AppDependencies.application).updatePushNotificationServices()
+     AppDependencies.resetNetwork()
++    AppDependencies.startNetwork()
+     refresh()
+   }
+ 
+-- 
+2.52.0
+

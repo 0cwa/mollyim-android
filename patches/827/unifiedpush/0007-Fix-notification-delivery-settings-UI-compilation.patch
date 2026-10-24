@@ -1,0 +1,83 @@
+From 230b41c4f8656ebe986d0f0d81a3b84003fc1e72 Mon Sep 17 00:00:00 2001
+From: Codex PoC <codex-poc@invalid.example>
+Date: Wed, 21 Oct 2026 02:26:12 +0000
+Subject: [PATCH 07/16] Fix notification delivery settings UI compilation
+
+Use the baseline RadioListRow composable API and capture localized service labels outside ordinary collection lambdas. Call the baseline no-argument network reset API.
+---
+ .../NotificationsSettingsFragment.kt          | 31 ++++++++++++++-----
+ .../NotificationsSettingsViewModel.kt         |  2 +-
+ 2 files changed, 24 insertions(+), 9 deletions(-)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+index 43f55557c86..6846273b4d8 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+@@ -635,6 +635,19 @@ fun NotificationsSettingsScreen(
+         method != NotificationDeliveryMethod.UNIFIEDPUSH || !state.isLinkedDevice
+       }
+ 
++      val notificationLabels = if (state.isLinkedDevice) {
++        arrayOf(
++          stringResource(NotificationDeliveryMethod.FCM.stringId),
++          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId)
++        )
++      } else {
++        arrayOf(
++          stringResource(NotificationDeliveryMethod.FCM.stringId),
++          stringResource(NotificationDeliveryMethod.WEBSOCKET.stringId),
++          stringResource(NotificationDeliveryMethod.UNIFIEDPUSH.stringId)
++        )
++      }
++      val deliveryServiceLabel = stringResource(R.string.NotificationsSettingsFragment__delivery_service)
+       val showAlertIcon = when (state.preferredNotificationMethod) {
+         NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
+         NotificationDeliveryMethod.WEBSOCKET -> false
+@@ -643,21 +656,23 @@ fun NotificationsSettingsScreen(
+ 
+       item {
+         Rows.RadioListRow(
+-          text = stringResource(R.string.NotificationsSettingsFragment__delivery_service),
+-          labels = notificationMethods.map { method -> stringResource(method.stringId) }.toTypedArray(),
+-          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
+-          selectedValue = state.preferredNotificationMethod.serialize(),
+-          trailingIcon = if (showAlertIcon) {
+-            {
++          text = { selectedIndex ->
++            Rows.TextAndLabel(
++              text = deliveryServiceLabel,
++              label = notificationLabels.getOrNull(selectedIndex)
++            )
++            if (showAlertIcon) {
+               Icon(
+                 painter = painterResource(android.R.drawable.ic_dialog_alert),
+                 contentDescription = null,
+                 tint = colorResource(R.color.signal_alert_primary)
+               )
+             }
+-          } else {
+-            null
+           },
++          dialogTitle = deliveryServiceLabel,
++          labels = notificationLabels,
++          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
++          selectedValue = state.preferredNotificationMethod.serialize(),
+           onSelected = { selected ->
+             callbacks.onNotificationMethodChanged(
+               state.preferredNotificationMethod to NotificationDeliveryMethod.deserialize(selected)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+index 931f4929554..5a07cb3b2d5 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+@@ -120,7 +120,7 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
+     SignalStore.settings.preferredNotificationMethod = method
+     TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
+     ApplicationContext.getInstance(AppDependencies.application).updatePushNotificationServices()
+-    AppDependencies.resetNetwork(true)
++    AppDependencies.resetNetwork()
+     refresh()
+   }
+ 
+-- 
+2.52.0
+

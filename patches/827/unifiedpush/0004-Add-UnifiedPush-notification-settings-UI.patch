@@ -1,0 +1,1906 @@
+From c4fe47a154591e3a5c596c8616f16976ecd2b914 Mon Sep 17 00:00:00 2001
+From: Codex PoC <codex-poc@invalid.example>
+Date: Wed, 21 Oct 2026 02:14:39 +0000
+Subject: [PATCH 04/16] Add UnifiedPush notification settings UI
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Adapt the notification settings controls and navigation from Molly’s UnifiedPush integration for the pinned Signal baseline. Preserve default notification selection until the user chooses a delivery method.
+
+Upstream provenance: Molly commit 4d00414d22f726821f76c3d0e777f7c9ec2c9e0c (sim, UnifiedPush); a688a8d09a5ed40a9d60d9b7d3011757b6dcd398 (sim, QR linking); 0f7438c283f1a761ef9b59fc5df015b33cacf604 (Oscar Mira, notification settings); 55bf67ecaedb31ba767f8866cc22582e85cef60f (Oscar Mira, navigation).
+
+This patch retains the source license headers and attributes the upstream work; it adds no new licensing terms.
+---
+ .../NotificationsSettingsFragment.kt          | 152 ++++++++++++++++++
+ .../NotificationsSettingsState.kt             |   5 +
+ .../NotificationsSettingsViewModel.kt         |  25 +++
+ .../settings/app/routes/AppSettingsRoute.kt   |   1 +
+ .../app_settings_with_change_number.xml       |  14 +-
+ app/src/main/res/values-ar/strings2.xml       |  42 +++++
+ app/src/main/res/values-bs/strings2.xml       |  42 +++++
+ app/src/main/res/values-ca/strings2.xml       |   4 +
+ app/src/main/res/values-cs/strings2.xml       |  42 +++++
+ app/src/main/res/values-de/strings2.xml       |  42 +++++
+ app/src/main/res/values-el/strings2.xml       |  42 +++++
+ app/src/main/res/values-es/strings2.xml       |  42 +++++
+ app/src/main/res/values-et/strings2.xml       |  42 +++++
+ app/src/main/res/values-fi/strings2.xml       |  42 +++++
+ app/src/main/res/values-fr/strings2.xml       |  42 +++++
+ app/src/main/res/values-ga/strings2.xml       |  42 +++++
+ app/src/main/res/values-gl/strings2.xml       |  42 +++++
+ app/src/main/res/values-in/strings2.xml       |  42 +++++
+ app/src/main/res/values-it/strings2.xml       |  42 +++++
+ app/src/main/res/values-iw/strings2.xml       |   6 +
+ app/src/main/res/values-ko/strings2.xml       |  27 ++++
+ app/src/main/res/values-lv/strings2.xml       |  42 +++++
+ app/src/main/res/values-nl/strings2.xml       |  42 +++++
+ app/src/main/res/values-pa/strings2.xml       |  21 +++
+ app/src/main/res/values-pl/strings2.xml       |  41 +++++
+ app/src/main/res/values-pt-rBR/strings2.xml   |  42 +++++
+ app/src/main/res/values-pt/strings2.xml       |  42 +++++
+ app/src/main/res/values-ro/strings2.xml       |  42 +++++
+ app/src/main/res/values-ru/strings2.xml       |  42 +++++
+ app/src/main/res/values-sr/strings2.xml       |  42 +++++
+ app/src/main/res/values-sv/strings2.xml       |  30 ++++
+ app/src/main/res/values-ta/strings2.xml       |  42 +++++
+ app/src/main/res/values-tr/strings2.xml       |  18 +++
+ app/src/main/res/values-ug/strings2.xml       |  42 +++++
+ app/src/main/res/values-uk/strings2.xml       |  42 +++++
+ app/src/main/res/values-vi/strings2.xml       |  42 +++++
+ app/src/main/res/values-zh-rCN/strings2.xml   |  42 +++++
+ app/src/main/res/values/strings2.xml          |  46 ++++++
+ 38 files changed, 1439 insertions(+), 1 deletion(-)
+ create mode 100644 app/src/main/res/values-ar/strings2.xml
+ create mode 100644 app/src/main/res/values-bs/strings2.xml
+ create mode 100644 app/src/main/res/values-ca/strings2.xml
+ create mode 100644 app/src/main/res/values-cs/strings2.xml
+ create mode 100644 app/src/main/res/values-de/strings2.xml
+ create mode 100644 app/src/main/res/values-el/strings2.xml
+ create mode 100644 app/src/main/res/values-es/strings2.xml
+ create mode 100644 app/src/main/res/values-et/strings2.xml
+ create mode 100644 app/src/main/res/values-fi/strings2.xml
+ create mode 100644 app/src/main/res/values-fr/strings2.xml
+ create mode 100644 app/src/main/res/values-ga/strings2.xml
+ create mode 100644 app/src/main/res/values-gl/strings2.xml
+ create mode 100644 app/src/main/res/values-in/strings2.xml
+ create mode 100644 app/src/main/res/values-it/strings2.xml
+ create mode 100644 app/src/main/res/values-iw/strings2.xml
+ create mode 100644 app/src/main/res/values-ko/strings2.xml
+ create mode 100644 app/src/main/res/values-lv/strings2.xml
+ create mode 100644 app/src/main/res/values-nl/strings2.xml
+ create mode 100644 app/src/main/res/values-pa/strings2.xml
+ create mode 100644 app/src/main/res/values-pl/strings2.xml
+ create mode 100644 app/src/main/res/values-pt-rBR/strings2.xml
+ create mode 100644 app/src/main/res/values-pt/strings2.xml
+ create mode 100644 app/src/main/res/values-ro/strings2.xml
+ create mode 100644 app/src/main/res/values-ru/strings2.xml
+ create mode 100644 app/src/main/res/values-sr/strings2.xml
+ create mode 100644 app/src/main/res/values-sv/strings2.xml
+ create mode 100644 app/src/main/res/values-ta/strings2.xml
+ create mode 100644 app/src/main/res/values-tr/strings2.xml
+ create mode 100644 app/src/main/res/values-ug/strings2.xml
+ create mode 100644 app/src/main/res/values-uk/strings2.xml
+ create mode 100644 app/src/main/res/values-vi/strings2.xml
+ create mode 100644 app/src/main/res/values-zh-rCN/strings2.xml
+ create mode 100644 app/src/main/res/values/strings2.xml
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+index 1d55a68be76..43f55557c86 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+@@ -10,6 +10,7 @@ import android.widget.Toast
+ import androidx.activity.result.ActivityResultCallback
+ import androidx.activity.result.ActivityResultLauncher
+ import androidx.activity.result.contract.ActivityResultContract
++import androidx.activity.result.launch
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Spacer
+@@ -17,6 +18,8 @@ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.lazy.LazyColumn
+ import androidx.compose.foundation.shape.CircleShape
++import androidx.compose.material3.Icon
++import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
+@@ -25,6 +28,7 @@ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.res.colorResource
++import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringArrayResource
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.unit.dp
+@@ -34,9 +38,16 @@ import androidx.lifecycle.Lifecycle
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import androidx.lifecycle.lifecycleScope
+ import androidx.lifecycle.repeatOnLifecycle
++import androidx.lifecycle.withStateAtLeast
+ import androidx.navigation.fragment.findNavController
+ import androidx.preference.PreferenceManager
++import com.google.android.material.dialog.MaterialAlertDialogBuilder
++import im.molly.unifiedpush.UnifiedPushDefaultDistributorLinkActivity
++import im.molly.unifiedpush.components.settings.app.notifications.MollySocketQrScannerActivity
+ import kotlinx.coroutines.launch
++import org.greenrobot.eventbus.EventBus
++import org.greenrobot.eventbus.Subscribe
++import org.greenrobot.eventbus.ThreadMode
+ import org.signal.core.ui.BottomSheetUtil
+ import org.signal.core.ui.compose.ComposeFragment
+ import org.signal.core.ui.compose.DayNightPreviews
+@@ -52,8 +63,12 @@ import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
+ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRoute
+ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRouter
+ import org.thoughtcrime.securesms.components.settings.models.Banner
++import org.thoughtcrime.securesms.conversation.v2.registerForLifecycle
++import org.thoughtcrime.securesms.events.PushServiceEvent
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+ import org.thoughtcrime.securesms.notifications.TurnOnNotificationsBottomSheet
++import org.thoughtcrime.securesms.util.CommunicationActions
+ import org.thoughtcrime.securesms.util.RingtoneUtil
+ import org.thoughtcrime.securesms.util.navigation.safeNavigate
+ import org.thoughtcrime.securesms.util.viewModel
+@@ -85,11 +100,17 @@ class NotificationsSettingsFragment : ComposeFragment() {
+               findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_notificationProfilesFragment)
+             }
+ 
++            AppSettingsRoute.NotificationsRoute.UnifiedPushSettings -> {
++              findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_unifiedPushFragment)
++            }
++
+             else -> error("Unexpected route: ${it.javaClass.name}")
+           }
+         }
+       }
+     }
++
++    EventBus.getDefault().registerForLifecycle(subscriber = this, lifecycleOwner = viewLifecycleOwner)
+   }
+ 
+   override fun onResume() {
+@@ -97,6 +118,11 @@ class NotificationsSettingsFragment : ComposeFragment() {
+     viewModel.refresh()
+   }
+ 
++  @Subscribe(threadMode = ThreadMode.MAIN)
++  fun onPushServiceEvent(event: PushServiceEvent) {
++    viewModel.refresh()
++  }
++
+   @Composable
+   override fun FragmentContent() {
+     val state by viewModel.state.collectAsStateWithLifecycle()
+@@ -160,6 +186,31 @@ open class DefaultNotificationsSettingsCallbacks(
+     callback = {}
+   )
+ 
++  private val linkDefaultDistributorLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
++    contract = UnifiedPushDefaultDistributorLinkActivity.Contract(),
++    callback = { success ->
++      if (success != true) {
++        viewModel.selectFirstDistributor()
++      }
++      activity.lifecycleScope.launch {
++        activity.lifecycle.withStateAtLeast(Lifecycle.State.RESUMED) {
++          onNavigationUnifiedPushSettings()
++        }
++      }
++    }
++  )
++
++  private val qrScanLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
++    contract = MollySocketQrScannerActivity.Contract(),
++    callback = { mollySocket ->
++      if (mollySocket != null) {
++        viewModel.initializeMollySocket(mollySocket)
++        viewModel.setPreferredNotificationMethod(NotificationDeliveryMethod.UNIFIEDPUSH)
++        linkDefaultDistributorLauncher.launch()
++      }
++    }
++  )
++
+   override fun onTurnOnNotificationsActionClick() {
+     TurnOnNotificationsBottomSheet.turnOnSystemNotificationsFragment(activity).show(activity.supportFragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
+   }
+@@ -263,6 +314,36 @@ open class DefaultNotificationsSettingsCallbacks(
+   override fun setNotifyWhenContactJoinsSignal(enabled: Boolean) {
+     viewModel.setNotifyWhenContactJoinsSignal(enabled)
+   }
++
++  override fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) {
++    val (previousMethod, method) = fromToMethods
++    when (method) {
++      NotificationDeliveryMethod.FCM,
++      NotificationDeliveryMethod.WEBSOCKET -> viewModel.setPreferredNotificationMethod(method)
++
++      NotificationDeliveryMethod.UNIFIEDPUSH -> {
++        if (method != previousMethod) {
++          MaterialAlertDialogBuilder(activity)
++            .setTitle(R.string.NotificationsSettingsFragment__mollysocket_server)
++            .setMessage(R.string.NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server)
++            .setPositiveButton(R.string.AddLinkDeviceFragment__scan_qr_code) { _, _ ->
++              qrScanLauncher.launch()
++            }
++            .setNegativeButton(R.string.RegistrationActivity_cancel, null)
++            .setNeutralButton(R.string.LearnMoreTextView_learn_more) { _, _ ->
++              CommunicationActions.openBrowserLink(activity, activity.getString(R.string.mollysocket_setup_url))
++            }
++            .show()
++        } else {
++          onNavigationUnifiedPushSettings()
++        }
++      }
++    }
++  }
++
++  override fun onNavigationUnifiedPushSettings() {
++    appSettingsRouter.navigateTo(AppSettingsRoute.NotificationsRoute.UnifiedPushSettings)
++  }
+ }
+ 
+ interface NotificationsSettingsCallbacks {
+@@ -286,6 +367,8 @@ interface NotificationsSettingsCallbacks {
+   fun setCallVibrateEnabled(enabled: Boolean) = Unit
+   fun onNavigationProfilesClick() = Unit
+   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) = Unit
++  fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) = Unit
++  fun onNavigationUnifiedPushSettings() = Unit
+ 
+   object Empty : NotificationsSettingsCallbacks
+ }
+@@ -527,6 +610,71 @@ fun NotificationsSettingsScreen(
+           onCheckChanged = callbacks::setNotifyWhenContactJoinsSignal
+         )
+       }
++
++      item {
++        Dividers.Default()
++      }
++
++      item {
++        Texts.SectionHeader(stringResource(R.string.NotificationsSettingsFragment__push_notifications))
++      }
++
++      item {
++        Rows.TextRow(
++          text = {
++            Text(
++              text = stringResource(R.string.NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications),
++              style = MaterialTheme.typography.bodyMedium,
++              color = MaterialTheme.colorScheme.onSurfaceVariant
++            )
++          }
++        )
++      }
++
++      val notificationMethods = NotificationDeliveryMethod.values().filter { method ->
++        method != NotificationDeliveryMethod.UNIFIEDPUSH || !state.isLinkedDevice
++      }
++
++      val showAlertIcon = when (state.preferredNotificationMethod) {
++        NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
++        NotificationDeliveryMethod.WEBSOCKET -> false
++        NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
++      }
++
++      item {
++        Rows.RadioListRow(
++          text = stringResource(R.string.NotificationsSettingsFragment__delivery_service),
++          labels = notificationMethods.map { method -> stringResource(method.stringId) }.toTypedArray(),
++          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
++          selectedValue = state.preferredNotificationMethod.serialize(),
++          trailingIcon = if (showAlertIcon) {
++            {
++              Icon(
++                painter = painterResource(android.R.drawable.ic_dialog_alert),
++                contentDescription = null,
++                tint = colorResource(R.color.signal_alert_primary)
++              )
++            }
++          } else {
++            null
++          },
++          onSelected = { selected ->
++            callbacks.onNotificationMethodChanged(
++              state.preferredNotificationMethod to NotificationDeliveryMethod.deserialize(selected)
++            )
++          }
++        )
++      }
++
++      if (!state.isLinkedDevice) {
++        item {
++          Rows.TextRow(
++            text = stringResource(R.string.NotificationsSettingsFragment__configure_unifiedpush),
++            enabled = state.preferredNotificationMethod == NotificationDeliveryMethod.UNIFIEDPUSH,
++            onClick = callbacks::onNavigationUnifiedPushSettings
++          )
++        }
++      }
+     }
+   }
+ }
+@@ -602,6 +750,10 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
+       ringtone = Uri.EMPTY,
+       vibrateEnabled = true
+     ),
++    isLinkedDevice = false,
++    preferredNotificationMethod = NotificationDeliveryMethod.FCM,
++    canReceiveFcm = true,
++    canReceiveUnifiedPush = false,
+     notifyWhenContactJoinsSignal = true
+   )
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
+index 81eb443c3ea..705b92e9bb4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
+@@ -1,10 +1,15 @@
+ package org.thoughtcrime.securesms.components.settings.app.notifications
+ 
+ import android.net.Uri
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
+ 
+ data class NotificationsSettingsState(
+   val messageNotificationsState: MessageNotificationsState,
+   val callNotificationsState: CallNotificationsState,
++  val isLinkedDevice: Boolean,
++  val preferredNotificationMethod: NotificationDeliveryMethod,
++  val canReceiveFcm: Boolean,
++  val canReceiveUnifiedPush: Boolean,
+   val notifyWhenContactJoinsSignal: Boolean
+ )
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+index 5b043a132ac..931f4929554 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+@@ -6,12 +6,17 @@ import android.os.Build
+ import androidx.lifecycle.ViewModel
+ import androidx.lifecycle.ViewModelProvider
+ import androidx.lifecycle.viewModelScope
++import im.molly.unifiedpush.UnifiedPushDistributor
++import im.molly.unifiedpush.components.settings.app.notifications.updateMollySocket
++import im.molly.unifiedpush.model.MollySocket
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+ import kotlinx.coroutines.flow.update
+ import kotlinx.coroutines.launch
++import org.thoughtcrime.securesms.ApplicationContext
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfig
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+@@ -111,6 +116,22 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
+     refresh()
+   }
+ 
++  fun setPreferredNotificationMethod(method: NotificationDeliveryMethod) {
++    SignalStore.settings.preferredNotificationMethod = method
++    TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
++    ApplicationContext.getInstance(AppDependencies.application).updatePushNotificationServices()
++    AppDependencies.resetNetwork(true)
++    refresh()
++  }
++
++  fun selectFirstDistributor() {
++    UnifiedPushDistributor.selectFirstDistributor()
++  }
++
++  fun initializeMollySocket(mollySocket: MollySocket) {
++    SignalStore.unifiedpush.updateMollySocket(mollySocket)
++  }
++
+   /**
+    * @param currentState If provided and [calculateSlowNotifications] = false, then we will copy the slow notification state from it
+    * @param calculateSlowNotifications If true, calculate the true slow notification state (this is not main-thread safe). Otherwise, it will copy from
+@@ -143,6 +164,10 @@ class NotificationsSettingsViewModel(private val sharedPreferences: SharedPrefer
+       ringtone = SignalStore.settings.callRingtone,
+       vibrateEnabled = SignalStore.settings.isCallVibrateEnabled
+     ),
++    isLinkedDevice = SignalStore.account.isLinkedDevice,
++    preferredNotificationMethod = SignalStore.settings.preferredNotificationMethod,
++    canReceiveFcm = SignalStore.account.canReceiveFcm,
++    canReceiveUnifiedPush = SignalStore.unifiedpush.isAvailableOrAirGapped,
+     notifyWhenContactJoinsSignal = SignalStore.settings.isNotifyWhenContactJoinsSignal
+   )
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/routes/AppSettingsRoute.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/routes/AppSettingsRoute.kt
+index 0a6565192b4..3d8d4adc7ef 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/routes/AppSettingsRoute.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/routes/AppSettingsRoute.kt
+@@ -75,6 +75,7 @@ sealed interface AppSettingsRoute : Parcelable {
+   sealed interface NotificationsRoute : AppSettingsRoute {
+     data object Notifications : NotificationsRoute
+     data object NotificationProfiles : NotificationsRoute
++    data object UnifiedPushSettings : NotificationsRoute
+     data class EditProfile(val profileId: Long = -1L) : NotificationsRoute
+     data class ProfileDetails(val profileId: Long) : NotificationsRoute
+     data class AddAllowedMembers(val profileId: Long) : NotificationsRoute
+diff --git a/app/src/main/res/navigation/app_settings_with_change_number.xml b/app/src/main/res/navigation/app_settings_with_change_number.xml
+index 5dc9e66523d..f88dd004054 100644
+--- a/app/src/main/res/navigation/app_settings_with_change_number.xml
++++ b/app/src/main/res/navigation/app_settings_with_change_number.xml
+@@ -519,6 +519,14 @@
+             app:popEnterAnim="@anim/fragment_close_enter"
+             app:popExitAnim="@anim/fragment_close_exit" />
+ 
++        <action
++            android:id="@+id/action_notificationsSettingsFragment_to_unifiedPushFragment"
++            app:destination="@id/notificationUnifiedPushFragment"
++            app:enterAnim="@anim/fragment_open_enter"
++            app:exitAnim="@anim/fragment_open_exit"
++            app:popEnterAnim="@anim/fragment_close_enter"
++            app:popExitAnim="@anim/fragment_close_exit" />
++
+     </fragment>
+ 
+     <!-- region Privacy -->
+@@ -1074,6 +1082,10 @@
+             app:popExitAnim="@anim/fragment_close_exit" />
+     </fragment>
+ 
++    <fragment
++        android:id="@+id/notificationUnifiedPushFragment"
++        android:name="im.molly.unifiedpush.components.settings.app.notifications.UnifiedPushSettingsFragment" />
++
+     <fragment
+         android:id="@+id/editNotificationProfileFragment"
+         android:name="org.thoughtcrime.securesms.components.settings.app.notifications.profiles.EditNotificationProfileFragment"
+@@ -1303,4 +1315,4 @@
+     <include app:graph="@navigation/username_link_settings" />
+     <include app:graph="@navigation/story_privacy_settings" />
+ 
+-</navigation>
+\ No newline at end of file
++</navigation>
+diff --git a/app/src/main/res/values-ar/strings2.xml b/app/src/main/res/values-ar/strings2.xml
+new file mode 100644
+index 00000000000..fd6606919c2
+--- /dev/null
++++ b/app/src/main/res/values-ar/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">إشعارات push</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">حدد الخدمة المفضلة لديك لتلقي إشعارات push. إذا لم تكن الخدمة متاحة، فسيستخدم التطبيق تلقائيًا WebSocket لضمان تسليم الإشعارات.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">خدمة التوصيل</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">تم رفض خادم الدفع الخاص بك من قبل خادم مولي سوكيت (MollySocket). يرجى التحقق من نقاط النهاية المسموح بها في إعدادات الخادم.</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">لاستخدام نظام الدفع الموحد(UnifiedPush)، تحتاج إلى الوصول إلى خادم MollySocket لربط حسابك على Signal.\n\nابدأ بمسح رمز الاستجابة السريعة الذي يوفره الخادم الخاص بك.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">خادم مولي سوكيت MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">غير محدد</string>
++    <string name="UnifiedPushSettingsFragment__status">الحالة</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">إعدادات الخادم</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">انقر للنسخ إلى الحافظة</string>
++    <string name="UnifiedPushSettingsFragment__account_id">معرّف الحساب</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">انقر لطلب إشعار تجريبي من مولي سوكيت MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">في انتظار التأكيد من خادم مولي سوكيت (MollySocket)</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">معلق</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">تعذر إنشاء الجهاز المرتبط</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">في انتظار استجابة موزع الدفع الموحد (UnifiedPush)</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">لقد تغيرت نقطة نهاية الدفع الموحد (UnifiedPush)الخاصة بك. يجب عليك تحديث اتصالك على مولي سوكيت(MollySocket).</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">تسجيلك على مولي سوكيت لم يعد صالحاً. يرجى إزالة الجهاز المرتبط ومحاولة التسجيل مرة أخرى.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">خادم مولي سوكيت MollySocket</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">حاول مسح صورة أخرى تحتوي على رمز الاستجابة السريعة لمولي سوكيت(MollySocket).</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">حدث خطأ في الشبكة. يرجى المحاولة مرة أخرى.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">خادم مولي سوكيت(MollySocket) غير موجود في \'%s\'</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">تم رفض معرّف الحساب من قبل الخادم</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">غير متصل بالإنترنت</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">تهيئة نظام الدفع الموحد(UnifiedPush)</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">تهيئة الاختبار</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">رابط مولي سوكيت (MollySocket)مفقود</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">يجب أن يظهر إشعار تجريبي في غضون لحظات قليلة…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">استجابة غير صالحة من الخادم</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">لم يتم تثبيت موزع الدفع الموحد (UnifiedPush)</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">\"تم رفض حسابك من قبل خادم مولي سوكيت (MollySocket). يرجى التحقق من معرفات فريدة عالمياً (UUIDs) المسموح بها في إعدادات الخادم.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">لم يتم تحديد تطبيق الموزع</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">لقد وصلت إلى الحد الأقصى للأجهزة المرتبطة %d. لربط خادم مولي سوكيت(MollySocket) الخاص بك، يرجى إزالة جهاز أولاً.</string>
++    <string name="MollySocketLink_scan_the_qr_code">امسح رمز الاستجابة السريعة المعروض على الصفحة الرئيسية لخادم مولي سوكيت(MollySocket) أو في وحدة التحكم.</string>
++    <string name="UnifiedPushSettingsFragment__none_available">لا يوجد</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">تطبيق الموزِّع</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">نقطة النهاية محظورة من قبل الخادم</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">فشل التسجيل مع موزع الدفع الموحد(UnifiedPush) الخاص بك. قد يكون ذلك بسبب مشكلة في الشبكة أو متطلبات مفقودة من موزعك.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">هذا إشعار تجريبي من خادم مولي سوكيت(MollySocket).</string>
++</resources>
+diff --git a/app/src/main/res/values-bs/strings2.xml b/app/src/main/res/values-bs/strings2.xml
+new file mode 100644
+index 00000000000..c0e9149b715
+--- /dev/null
++++ b/app/src/main/res/values-bs/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Push obavještenja</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Odaberite željenu uslugu za push obavještenja. Ako nije dostupna, aplikacija će automatski koristiti WebSocket kako bi osigurala isporuku obavještenja.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Usluga isporuke</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Podesi UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Da bi koristili UnifiedPush, potreban vam je pristup MollySocket serveru kako bi povezali vaš Signal nalog.\n\nPočnite skeniranjem QR koda koji je dat od strane vašeg servera.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket server</string>
++    <string name="NotificationsSettingsFragment__not_selected">Nije izabrano</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Nema dostupnih</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Distributor aplikacija</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Dodirnite za kopiranje u međuspremnik</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parametri servera</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID naloga</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testirajte konfiguraciju</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Dodirnite da zatražite testno obavještenje od MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Testno obavještenje će se pojaviti za nekoliko trenutaka…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Nedostaje MollySocket URL</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Na čekanju</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Čekanje na potvrdu od strane MollySocket servera</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Nevažeći odgovor servera</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID naloga je odbijen od strane servera</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Nije moguće kreirati povezani uređaj</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Čekanje na odgovor UnifiedPush distributora</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Krajnja tačka je zabranjena od strane servera</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nema instaliranog UnifiedPush distributora</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nije izabrana distributor aplikacija</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Dosegnuli ste ograničenje od %d povezanih uređaja. Da biste povezali svoj MollySocket server, prvo uklonite neki uređaj.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Tvoja UnifiedPush krajna tačka se promijenila. Morate ažurirati svoju vezu na MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Vaša registracija na MollySocket više nije važeća. Molimo Vas da uklonite povezani uređaj i ponovo pokušate registraciju.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Vaš račun je odbijen od strane MollySocket servera. Provjerite dopuštene UUID-ove u konfiguraciji servera.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Vaš push server je odbijen od strane MollySocket servera. Provjerite dopuštene krajnje tačke u konfiguraciji servera.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Registracija s vašim UnifiedPush distributerom nije uspjela. To se može desiti zbog mrežnog problema ili neispunjavanja zahtjeva vašeg distributera.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Ovo je testno obavještenje od strane MollySocket servera.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Skenirajte QR kod prikazan na početnoj stranici MollySocket servera ili u konzoli.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Pokušajte skenirati drugu sliku koja sadrži MollySocket QR kod.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket server nije pronađen na \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Došlo je do greške na mreži. Molimo vas, pokušajte ponovno.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Izolovan</string>
++</resources>
+diff --git a/app/src/main/res/values-ca/strings2.xml b/app/src/main/res/values-ca/strings2.xml
+new file mode 100644
+index 00000000000..c3052261fe9
+--- /dev/null
++++ b/app/src/main/res/values-ca/strings2.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">S\'ha produït un error de xarxa. Si us plau, torneu-ho a provar.</string>
++</resources>
+diff --git a/app/src/main/res/values-cs/strings2.xml b/app/src/main/res/values-cs/strings2.xml
+new file mode 100644
+index 00000000000..10522ab73d4
+--- /dev/null
++++ b/app/src/main/res/values-cs/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Není vybrána žádná doručovací aplikace</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Čekání na potvrzení ze serveru MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Distribuční aplikace</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Neplatná odpověď serveru</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Dosáhli jste limitu %d propojených zařízení. Pro propojení vašeho serveru MollySocket nejprve prosím odstraňte zařízení.</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Došlo k chybě sítě. Zkuste to prosím znovu.</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Pro použití služby UnifiedPush potřebujete přístup k serveru MollySocket pro propojení vašeho účtu Signal.\n\nZačněte naskenováním QR kódu poskytnutého vaším serverem.</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Klepněte pro zkopírování do schránky</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parametry serveru</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID účtu</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Nepodařilo se vytvořit propojenou službu</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Čekání na odpověď doručovací služby UnifiedPush</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Toto je testovací oznámení ze serveru MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Server MollySocket nebyl na adrese „%s“ nalezen</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Izolovaný</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Doručovací služba</string>
++    <string name="UnifiedPushSettingsFragment__status">Stav</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Vyzkoušet nastavení</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Klepněte o vyžádání testovacího oznámení z MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Během chvíle by se mělo objevit testovací oznámení…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Chybějící adresa MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Čekající</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID účtu bylo serverem zamítnuto</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Endpoint je zakázán serverem</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Není dostupné</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Není nainstalována žádná doručovací služba UnifiedPush</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Vaše registrace ve službě MollySocket již není platná. Odstraňte prosím propojené zařízení a zkuste se znovu zaregistrovat.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Váš endpoint UnifiedPush se změnil. Musíte aktualizovat vaše spojení k MollySocket.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Naskenujte QR kód zobrazení na domovské stránce vašeho serveru MollySocket nebo v konzoli.</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Zvolte preferovanou službu pro doručování oznámení. Pokud není dostupná, aplikace automaticky použije WebSocket, aby byla oznámení spolehlivě doručena.</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Oznámení</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Nastavit UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__not_selected">Nevybráno</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Váš účet byl odmítnut serverem MollySocket. Zkontrolujte prosím povolená UUID v nastavení serveru.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Váš doručovací server byl odmítnut serverem MollySocket. Zkontrolujte prosím povolené endpointy v nastavení serveru.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Registrace s vaší doručovací službou UnitedPush selhala. Mohlo se tak stát z důvodu chyby sítě nebo chybějícího požadavku od doručovací služby.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Zkuste naskenovat jiný obrázek obsahující QR kód MollySocket.</string>
++</resources>
+diff --git a/app/src/main/res/values-de/strings2.xml b/app/src/main/res/values-de/strings2.xml
+new file mode 100644
+index 00000000000..528fa03b4ef
+--- /dev/null
++++ b/app/src/main/res/values-de/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Bevorzugten Dienst für Push-Benachrichtigungen auswählen. Falls dieser nicht verfügbar ist, wird die App automatisch WebSocket für Benachrichtigungen nutzen.</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">UnifiedPush konfigurieren</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Um UnifiedPush zu nutzen, musst du Zugriff auf einen MollySocket-Server haben, um dein Signal-Konto mit diesem verbinden zu können.\n\nScanne den QR-Code, der von deinem Server bereitgestellt wird, um zu beginnen.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket-Server</string>
++    <string name="NotificationsSettingsFragment__not_selected">Nicht ausgewählt</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Keiner verfügbar</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Distributor-App</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Zum Kopieren in die Zwischenablage antippen</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Serverparameter</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testkonfiguration</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Konto-ID</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Antippen, um eine Testbenachrichtigung von MollySocket anzufordern</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Eine Testbenachrichtigung sollte jeden Moment auftauchen …</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket-URL fehlt</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Ausstehend</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Warte auf Bestätigung vom MollySocket-Server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Ungültige Antwort des Servers</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Die Konto-ID wurde vom Server abgelehnt</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Warte auf Antwort des UnifiedPush-Distributors</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Das gekoppelte Gerät kann nicht erstellt werden</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Kein UnifiedPush-Distributor installiert</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Der Endpoint wird vom Server nicht zugelassen</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Keine Distributor-App ausgewählt</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Die Grenze von %d verbundenen Geräten wurde erreicht. Bitte entferne zuerst ein Gerät, um deinen MollySocket Server zu verbinden.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Dein UnifiedPush-Endpoint hat sich geändert. Du musst deine Verbindung auf MollySocket aktualisieren.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Deine MollySocket-Registrierung ist nicht mehr gültig. Bitte entferne das verbundene Gerät und versuche, es erneut zu registrieren.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Dein Push-Server wurde vom MollySocket-Server abgelehnt. Bitte überprüfe die zugelassenen Endpoints in der Serverkonfiguration.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Dies ist eine Testbenachrichtigung vom MollySocket-Server.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Scanne den QR-Code auf der Homepage oder der Konsole deines MollySocket-Servers.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Versuche ein anderes Bild mit einem MollySocket-QR-Code zu scannen.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket-Server nicht gefunden bei \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Netzwerkfehler. Bitte versuche es erneut.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket-Server</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Physisch getrennt</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Push-Benachrichtigungen</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Push-Service</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Dein Konto wurde vom MollySocket-Server abgelehnt. Bitte überprüfe die zugelassenen UUIDs in der Serverkonfiguration.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Die Registrierung mit deinem UnifiedPush-Distributor ist fehlgeschlagen. Dies könnte an einem Netzwerkproblem oder einer nicht erfüllten Anforderung des UnifiedPush-Distributors liegen.</string>
++</resources>
+diff --git a/app/src/main/res/values-el/strings2.xml b/app/src/main/res/values-el/strings2.xml
+new file mode 100644
+index 00000000000..d8f014d335a
+--- /dev/null
++++ b/app/src/main/res/values-el/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Ειδοποιήσεις push</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Επέλεξε την υπηρεσία που προτιμάς για ειδοποιήσεις push. Εάν δεν είναι διαθέσιμη, η εφαρμογή θα χρησιμοποιήσει αυτόματα το WebSocket για να διασφαλίσει την παράδοση των ειδοποιήσεων.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Υπηρεσία παράδοσης</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Ρύθμιση UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Διακομιστής MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Δεν επιλέχθηκε</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Κανένα διαθέσιμο</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Εφαρμογή διανομής</string>
++    <string name="UnifiedPushSettingsFragment__status">Κατάσταση</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Πάτα για αντιγραφή στο πρόχειρο</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Παράμετροι διακομιστή</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID λογαριασμού</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Δοκιμή ρύθμισης</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Πατα για αίτηση δοκιμαστικής ειδοποίησης από το MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Μια δοκιμαστική ειδοποίηση θα εμφανιστεί σύντομα…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Λείπει MollySocket URL</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Σε αναμονή</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Μη έγκυρη απάντηση από τον διακομιστή</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Το ID λογαριασμού απορρίφθηκε από τον διακομιστή</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Αδυναμία δημιουργίας συνδεδεμένης συσκευής</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Αναμονή απάντησης διανομέα UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Το τελικό σημείο απαγορεύεται από τον διακομιστή</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Δεν επιλέχθηκε εφαρμογή διανομέα</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Έφτασες το όριο των %d συνδεδεμένων συσκευών. Για να συνδέσεις τον διακομιστή MollySocket σου, παρακαλούμε αφαίρεσε μια συσκευή πρώτα.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Το τελικό σημείο του UnifiedPush σου έχει αλλάξει. Πρέπει να ενημερώσεις τη σύνδεσή σου με το MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Η εγγραφή σου στο MollySocket δεν είναι πλέον έγκυρη. Παρακαλώ αφαίρεσε τη συνδεδεμένη συσκευή και δοκίμασε να εγγραφείς ξανά.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Ο λογαριασμός σου απορρίφθηκε από τον διακομιστή MollySocket. Παρακαλούμε ελέγξτε τα επιτρεπόμενα UUIDs στη ρύθμιση του διακομιστή.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Δεν έχει εγκατασταθεί διανομέας UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Για να χρησιμοποιήσεις το UnifiedPush, χρειάζεσαι πρόσβαση σε διακομιστή MollySocket για να συνδέσεις τον λογαριασμό σου στο Signal.\n\nΞεκίνα με τη σάρωση του κωδικού QR που παρέχεται από τον διακομιστή σου.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Αναμονή επιβεβαίωσης από τον διακομιστή MollySocket</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Ο διακομιστής push σου απορρίφθηκε από τον διακομιστή MollySocket. Παρακαλούμε έλεγξε τα επιτρεπόμενα τελικά σημεία στη διαμόρφωση διακομιστή.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Σάρωσε τον κωδικό QR που εμφανίζεται στην αρχική σελίδα του διακομιστή MollySocket ή στην κονσόλα.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Ο διακομιστής MollySocket δεν βρέθηκε στο \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Συνέβη ένα σφάλμα δικτύου. Παρακαλούμε δοκίμασε ξανά.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Πρόκειται για μια δοκιμαστική ειδοποίηση από τον διακομιστή MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Αεροστεγές</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Διακομιστής MollySocket</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Η εγγραφή με τον διανομέα UnifiedPush απέτυχε. Αυτό θα μπορούσε να οφείλεται σε ένα ζήτημα δικτύου ή σε μια αγνοούμενη απαίτηση από τον διανομέα σου.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Προσπάθησε να σαρώσεις μια άλλη εικόνα που περιέχει έναν κωδικό MollySocket QR.</string>
++</resources>
+diff --git a/app/src/main/res/values-es/strings2.xml b/app/src/main/res/values-es/strings2.xml
+new file mode 100644
+index 00000000000..50df67547b2
+--- /dev/null
++++ b/app/src/main/res/values-es/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__delivery_service">Servicio de entrega</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Notificaciones push</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Seleccione su servicio preferido para las notificaciones push. Si no está disponible, la aplicación utilizará automáticamente WebSocket para garantizar que se entreguen las notificaciones.</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Para utilizar UnifiedPush, necesita acceso a un servidor MollySocket para vincular su cuenta de Signal.\n\nComience escaneando el código QR proporcionado por su servidor.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Esperando confirmación del servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">El punto de acceso fue vetado por el servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">El servidor rechazó el ID de la cuenta</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Toque para solicitar una notificación de prueba de MollySocket</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configurar UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">No seleccionado</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Ninguno disponible</string>
++    <string name="UnifiedPushSettingsFragment__status">Estado</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Aplicación del distribuidor</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Toque para copiar al portapapeles</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parámetros del servidor</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID de cuenta</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Probar configuración</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Una notificación debería aparecer en unos segundos…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Falta la URL de MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Pendiente</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Respuesta no válida del servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">No se puede crear el dispositivo vinculado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Esperando respuesta del distribuidor de UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">No hay ningún distribuidor UnifiedPush instalado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">No se seleccionó ninguna aplicación de distribuidor</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Has llegado al límite de %d dispositivos vinculados. Para vincular su servidor MollySocket, primero elimine un dispositivo.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Su punto de conexión UnifiedPush ha cambiado. Debe actualizar su conexión en MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">El registro en MollySocket ya no es válido. Elimine el dispositivo vinculado e intente registrarse nuevamente.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">El servidor MollySocket ha rechazado su cuenta. Compruebe los UUID permitidos en la configuración del servidor.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">El servidor MollySocket rechazó su servidor push. Por favor, verifique los puntos de acceso permitidos en la configuración del servidor.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">No se pudo registrar con el distribuidor de UnifiedPush. Puede deberse a algún problema en la red o que falta algún requerimiento del distribuidor.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Esta es una notificación de prueba del servidor MollySocket.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Escanee el código QR que se muestra en la página de inicio de su servidor MollySocket o en la consola.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Intente escanear otra imagen que contenga un código QR de MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">No se encontró el servidor MollySocket en «%s»</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Se produjo un error de red. Inténtelo de nuevo.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Aislado</string>
++</resources>
+diff --git a/app/src/main/res/values-et/strings2.xml b/app/src/main/res/values-et/strings2.xml
+new file mode 100644
+index 00000000000..8aec90c723d
+--- /dev/null
++++ b/app/src/main/res/values-et/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Tõuketeated</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Vali oma eelistatud teenus push-teavituste jaoks. Kui see pole saadaval, kasutab rakendus automaatselt WebSocketit, et tagada teavituste edastamine.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Kohaletoimetamise teenus</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Häälesta UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">UnifiedPushi kasutamiseks vajate juurdepääsu MollySocketi serverile, et linkida oma Signali konto.\n\nAlustage serveri pakutava QR-koodi skaneerimisest.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket-i server</string>
++    <string name="NotificationsSettingsFragment__not_selected">Pole valitud</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Pole saadaval</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Edasimüüja rakendus</string>
++    <string name="UnifiedPushSettingsFragment__status">Staatus</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Puudutage lõikelauale kopeerimiseks</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Serveri parameetrid</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Konto ID</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testkonfiguratsioon</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Puuduta, et taotleda MollySocketilt testteatist</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Mõne hetke pärast peaks ilmuma testteade …</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Puudub MollySocketi URL</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Ootel</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Ootan MollySocketi serveri kinnitust</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Serverilt saadud vigane vastus</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Server keeldus konto ID-st</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Seadme linkimine ebaõnnestus</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Ootan UnifiedPushi levitaja vastust</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Server keelab lõpp-punkti kasutamise</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">UnifiedPushi jaoturit pole installeeritud</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Levitaja rakendust pole valitud</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Oled saavutanud lingitud seadmete arvu piirangu (%d). MollySocketi serveri linkimiseks eemalda esmalt üks seade.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">UnifiedPushi lõpp-punkt on muutunud. Pead oma ühendust MollySocketis värskendama.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Registreering MollySocketis ei kehti enam. Palun eemalda lingitud seade ja proovi uuesti registreeruda.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">MollySocketi server keeldus konto registreerimisest. Palun kontrolli serveri konfiguratsioonis lubatud UUID-sid.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocketi server keeldus push-serverist. Palun kontrolli serveri konfiguratsioonis lubatud lõpp-punkte.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Registreerimine UnifiedPushi edasimüüja juures ebaõnnestus. Selle põhjuseks võib olla võrguprobleem või edasimüüja nõue.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">See on MollySocketi serveri testteatis.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Skaneerige oma MollySocketi serveri avalehel või konsoolis kuvatavat QR-koodi.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Proovi skaneerida mõnda teist pilti, mis sisaldab MollySocketi QR-koodi.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket serverit ei leitud aadressilt \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Ilmnes võrguviga. Palun proovi uuesti.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocketi server</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Õhkeraldatud</string>
++</resources>
+diff --git a/app/src/main/res/values-fi/strings2.xml b/app/src/main/res/values-fi/strings2.xml
+new file mode 100644
+index 00000000000..e3d4335bbfa
+--- /dev/null
++++ b/app/src/main/res/values-fi/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__delivery_service">Toimituspalvelu</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket-palvelin</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Valitse haluamasi palvelu työntöilmoituksia varten. Jos sitä ei ole saatavilla, sovellus käyttää automaattisesti WebSocketia varmistaakseen, että ilmoitukset toimitetaan.</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Työntöilmoitukset</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Käyttääksesi UnifiedPushia, tarvitset pääsyn MollySocket-palvelimeen Signal-tilisi linkittämiseksi.\n\nAloita skannaamalla palvelimesi toimittama QR-koodi.</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Määritä UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Tilitunnus</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Palvelimen parametrit</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testaa kokoonpano</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Napauta pyytääksesi testi-ilmoitus MollySocketilta</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Puuttuva MollySocketin URL-osoite</string>
++    <string name="NotificationsSettingsFragment__not_selected">Ei valittu</string>
++    <string name="UnifiedPushSettingsFragment__status">Tila</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Testi-ilmoituksen pitäisi ilmestyä hetken kuluttua…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Odottaa</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Epäkelpo vastaus palvelimelta</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Palvelin hylkää tilitunnuksen</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Odotetaan UnifiedPush-jakelijan vastausta</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Palvelin kieltää päätepisteen</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">UnifiedPush-jakelijaa ei ole asennettu</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Jakelijasovellusta ei ole valittu</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Olet saavuttanut %d linkitettyjen laitteiden rajan. Jos haluat linkittää MollySocket-palvelimesi, poista ensin laite.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Rekisteröitymisesi MollySocketilla ei ole enää voimassa. Poista linkitetty laite ja yritä rekisteröityä uudelleen.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">MollySocket-palvelin hylkäsi tilisi. Tarkista sallitut UUID-tunnukset palvelimen kokoonpanosta.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Skannaa MollySocket-palvelimesi etusivulla tai konsolissa näkyvä QR-koodi.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Yritä skannata toinen kuva, joka sisältää MollySocket QR-koodin.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket-palvelinta ei löytynyt kohteesta \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Tapahtui verkkovirhe. Yritä uudelleen.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket-palvelin</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Ilmaraotettu</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">UnifiedPush-päätepisteesi on muuttunut. Sinun on päivitettävä yhteytesi MollySocketissa.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Odotetaan vahvistusta MollySocket-palvelimelta</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Ei yhtään saatavilla</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Linkitettyä laitetta ei voi luoda</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Jakelijasovellus</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Napauta kopioidaksesi leikepöydälle</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocket-palvelin hylkäsi työntöpalvelimesi. Tarkista sallitut päätepisteet palvelimen kokoonpanosta.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Rekisteröityminen UnifiedPush-jakelijallasi epäonnistui. Tämä voi johtua verkkoviasta tai jakelijan puuttuvasta vaatimuksesta.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Tämä on testi-ilmoitus MollySocket-palvelimelta.</string>
++</resources>
+diff --git a/app/src/main/res/values-fr/strings2.xml b/app/src/main/res/values-fr/strings2.xml
+new file mode 100644
+index 00000000000..b73566080ae
+--- /dev/null
++++ b/app/src/main/res/values-fr/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notifications poussées</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Sélectionnez votre service préféré pour les notifications poussées. Si elle n\'est pas disponible, l\'application utilisera automatiquement WebSocket pour assurer la distribution des notifications.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Service de distribution</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configurer UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Serveur MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Aucun sélectionné</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Indisponible</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Appli du distributeur</string>
++    <string name="UnifiedPushSettingsFragment__status">État</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Appuyez pour copier dans le presse-papier</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Paramètres du serveur</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Identifiant du compte</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Tester la configuration</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Appuyez pour demander une notification d\'essai de MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Une notification de test devrait apparaître dans quelques instants…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">URL de MollySocket manquant</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">En attente</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">En attente de la confirmation du serveur MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Réponse invalide du serveur</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">L\'identifiant du compte est refusé par le serveur</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Impossible de créer l\'appareil lié</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">En attente d\'une réponse du distributeur UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Le terminal est interdit par le serveur</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Aucun distributeur UnifiedPush installé</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Aucune application de distributeur sélectionnée</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Vous avez atteint la limite des appareils liés %d. Pour lier votre serveur MollySocket, veuillez d\'abord supprimer un appareil.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Votre terminal UnifiedPush a changé. Vous devez mettre à jour votre connexion sur MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Votre compte a été refusé par le serveur MollySocket. Veuillez vérifier les UUID autorisés dans la configuration du serveur.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Votre serveur push a été refusé par le serveur MollySocket. Veuillez vérifier les paramètres de fin autorisés dans la configuration du serveur.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">L\'inscription avec votre distributeur UnifiedPush a échoué. Ceci pourrait être dû à un problème réseau ou à une exigence manquante de votre distributeur.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Ceci est une notification de test du serveur MollySocket.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Essayez de scanner une autre image contenant un code QR MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Le serveur MollySocket n\'a pas été trouvé sur « %s »</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Erreur réseau. Veuillez réessayer.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Serveur MollySocket</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Pour utiliser UnifiedPush, vous devez accéder à un serveur MollySocket pour lier votre compte Signal.\n\nCommencez par scanner le code QR fourni par votre serveur.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Scannez le code QR affiché sur la page d\'accueil de votre serveur MollySocket ou sur la console.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Votre inscription sur MollySocket n\'est plus valide. Veuillez supprimer l\'appareil lié et essayez de nouveau de l\'enregistrer.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolé</string>
++</resources>
+diff --git a/app/src/main/res/values-ga/strings2.xml b/app/src/main/res/values-ga/strings2.xml
+new file mode 100644
+index 00000000000..819fa4a4150
+--- /dev/null
++++ b/app/src/main/res/values-ga/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Fógraí a bhrú</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Roghnaigh an tseirbhís is fearr leat le haghaidh fógraí brú. Mura bhfuil sé ar fáil, úsáidfidh an aip WebSocket go huathoibríoch chun a chinntiú go seachadtar fógraí.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Seirbhís seachadta</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket freastalaí</string>
++    <string name="NotificationsSettingsFragment__not_selected">Gan roghnaithe</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Níl aon cheann ar fáil</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">App dáileoir</string>
++    <string name="UnifiedPushSettingsFragment__status">Stádas</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Tapáil chun cóip a dhéanamh chuig an ngearrthaisce</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Paraiméadair freastalaí</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID cuntais</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Cumraíocht tástála</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Tapáil chun fógra tástála a iarraidh ó MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Ba cheart go mbeadh fógra tástála le feiceáil i gceann cúpla bomaite…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">URL MollySocket ar iarraidh</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Ar feitheamh</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Ag fanacht le deimhniú ón bhfreastalaí MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Freagra neamhbhailí ón bhfreastalaí</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Diúltaíonn an freastalaí aitheantas an chuntais</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Ag feitheamh le freagra dáileoir UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Tá an críochphointe toirmiscthe ag an bhfreastalaí</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Níl aon dáileoir UnifiedPush suiteáilte</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Níor roghnaíodh aon aip dáileacháin</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Tá do chríochphointe UnifiedPush athraithe. Ní mór duit do nasc a nuashonrú ar MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Níl do chlárúchán ar MollySocket bailí a thuilleadh. Bain an gléas nasctha agus bain triail eile as clárú.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Dhiúltaigh an freastalaí MollySocket do bhrú-fhreastalaí. Seiceáil na críochphointí ceadaithe i gcumraíocht an fhreastalaí.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Theip ar chlárú le do dáileoir UnifiedPush. D\'fhéadfadh sé seo a bheith mar gheall ar shaincheist líonra nó riachtanas ar iarraidh ó do dháileoir.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">freastalaí MollySocket gan aimsiú ag \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Tharla earráid líonra. Bain triail eile as.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Aer bearna</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Ní féidir an gléas nasctha a chruthú</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Cumraigh UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Chun UnifiedPush a úsáid, teastaíonn rochtain uait ar fhreastalaí MollySocket chun do chuntas Signal a nascadh.\n\nTosaigh tríd an gcód QR a sholáthraíonn do fhreastalaí a scanadh.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Dhiúltaigh an freastalaí MollySocket do chuntas. Seiceáil na UUIDanna ceadaithe i gcumraíocht an fhreastalaí.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Tá an teorainn de %d gléas nasctha sroichte agat. Chun do fhreastalaí MollySocket a nascadh, bain gléas ar dtús.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Is fógra tástála é seo ón bhfreastalaí MollySocket.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Scan an cód QR atá ar taispeáint ar leathanach baile do fhreastalaí MollySocket nó sa chonsól.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Bain triail as íomhá eile a scanadh ina bhfuil cód MollySocket QR.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket freastalaí</string>
++</resources>
+diff --git a/app/src/main/res/values-gl/strings2.xml b/app/src/main/res/values-gl/strings2.xml
+new file mode 100644
+index 00000000000..72b365ed62d
+--- /dev/null
++++ b/app/src/main/res/values-gl/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notificacións Push</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Elixe o servizo preferido para as notificacións push. Se non está dispoñible a app usará automáticamente WebSocket para ter certeza de que se entregan as notificacións.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Servizo de entrega</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configurar UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">App distribuidora</string>
++    <string name="UnifiedPushSettingsFragment__status">Estado</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Toca para copiar ao portapapeis</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parámetros do servidor</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID da Conta</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Probar configuración</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Toca para solicitar unha notificación de proba desde MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Debería aparecer unha notificación en poucos segundos…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Falta URL do MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Pendentes</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Agardando pola confirmación desde o servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Non se puido crear o dispositivo ligado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Agardando pola resposta do distribuidor UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">O punto de acceso foi vetado polo servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Non hai un distribuidor UnifiedPush instalado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Sen app distribuidora instalada</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Acadaches o límite de %d dispositivos ligados. Para ligar o servidor MollySocket debes eliminar primeiro un dispositivo.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">O rexistro en MollySocket xa non é válido. Por favor elimina o dispositivo ligado e intenta rexistrarte outra vez.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">O servidor MollySocket rexeitou a túa conta. Comproba os UUIDs permitidos na configuración do servidor.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Fallou o rexistro na distribuidora UnifiedPush. Pode deberse a un problema na rede ou a que falte algún requerimento da distribuidora.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Esta é unha notificación de proba desde o servidor MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Non se atopa un servidor MollySocket en \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Houbo un fallo na rede. Inténtao outra vez.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Sen selección</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Resposta non válida desde o servidor</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Para usar UnifiedPush debes acceder a un servidor MollySocket para ligar a túa conta Signal.\n\nComeza escaneando o código QR proporcionado polo teu servidor.</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Ningún dispoñible</string>
++    <string name="MollySocketLink_scan_the_qr_code">Escanea o código QR mostrado na páxina de inicio do servidor MollySocket ou na consola.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">O servidor rexeitou o ID da conta</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Cambiou o punto de acceso UnifiedPush. Debes actualizar a conexión a MollySocket.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Intenta escanear outra imaxe que conteña un código QR de MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">O servidor MollySocket rexeitou o teu servidor push. Comproba os puntos de acceso permitidos na configuración do servidor.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air gapped</string>
++</resources>
+diff --git a/app/src/main/res/values-in/strings2.xml b/app/src/main/res/values-in/strings2.xml
+new file mode 100644
+index 00000000000..7e2a9eb194d
+--- /dev/null
++++ b/app/src/main/res/values-in/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notifikasi push</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Pilih layanan pilihan Anda untuk notifikasi push. Jika tidak tersedia, aplikasi akan secara otomatis menggunakan WebSocket untuk memastikan notifikasi tetap dikirim.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Layanan pengiriman</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Konfigurasikan UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Untuk menggunakan UnifiedPush, Anda memerlukan akses ke server MollySocket untuk menautkan akun Signal Anda.\n\nMulailah dengan memindai kode QR yang disediakan oleh server Anda.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Belum dipilih</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Tidak ada yang tersedia</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Aplikasi distributor</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Ketuk untuk menyalin ke clipboard</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parameter server</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID akun</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Uji konfigurasi</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Ketuk untuk meminta notifikasi uji dari MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Notifikasi uji akan muncul dalam beberapa saat…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">URL MollySocket tidak ada</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Tertunda</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Menunggu konfirmasi dari server MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Respons dari server tidak valid</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID akun ditolak oleh server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Tidak dapat membuat perangkat tertaut</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Menunggu respons distributor UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Endpoint dilarang oleh server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Tidak ada distributor UnifiedPush yang terpasang</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Tidak ada aplikasi distributor yang dipilih</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Anda telah mencapai batas %d perangkat tertaut. Untuk menautkan server MollySocket Anda, harap hapus satu perangkat terlebih dahulu.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Endpoint UnifiedPush Anda telah berubah. Anda harus memperbarui koneksi Anda di MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Pendaftaran Anda di MollySocket tidak lagi valid. Harap hapus perangkat tertaut dan coba daftar lagi.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Akun Anda ditolak oleh server MollySocket. Harap periksa UUID yang diizinkan dalam konfigurasi server.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Server push Anda ditolak oleh server MollySocket. Harap periksa endpoint yang diizinkan dalam konfigurasi server.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Pendaftaran dengan distributor UnifiedPush Anda gagal. Ini bisa disebabkan oleh masalah jaringan atau persyaratan yang belum dipenuhi dari distributor Anda.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Ini adalah notifikasi uji dari server MollySocket.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Pindai kode QR yang ditampilkan di halaman beranda server MollySocket Anda atau di konsol.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Coba pindai gambar lain yang berisi kode QR MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Server MollySocket tidak ditemukan di \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Terjadi kesalahan jaringan. Silakan coba lagi.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air-gapped</string>
++</resources>
+diff --git a/app/src/main/res/values-it/strings2.xml b/app/src/main/res/values-it/strings2.xml
+new file mode 100644
+index 00000000000..ff0930c42cd
+--- /dev/null
++++ b/app/src/main/res/values-it/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notifiche</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Selezionare il servizio preferito per le notifiche. Se non è disponibile, l\'applicazione utilizzerà automaticamente WebSocket per garantire la consegna delle notifiche.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Servizio di consegna</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Hai raggiunto il limite dei dispositivi collegati %d. Per collegare il server MollySocket, rimuovi prima un dispositivo.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">La registrazione con il tuo distributore UnifiedPush non è riuscita. Questo potrebbe essere dovuto a un problema di rete o un requisito mancante dal tuo distributore.</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configura UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Per usare UnifiedPush, è necessario accedere a un server MollySocket per collegare il tuo account Signal.\n\nInizia scansionando il codice QR fornito dal server.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Tocca per copiare negli appunti</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">App del distributore</string>
++    <string name="UnifiedPushSettingsFragment__status">Stato</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parametri del server</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Identificatore dell\'account</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Prova la configurazione</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">In attesa</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">In attesa della conferma dal server MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Risposta non valida dal server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">L\'identificatore dell\'account viene rifiutato dal server</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">La registrazione su MollySocket non è più valida. Si prega di rimuovere il dispositivo collegato e provare a registrare di nuovo.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Il tuo terminale UnifiedPush è cambiato. Devi aggiornare la tua connessione su MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Il tuo account è stato rifiutato dal server MollySocket. Controlla gli UUID consentiti nella configurazione del server.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Scansiona il codice QR visualizzato nella pagina principale del tuo server MollySocket o nella console.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Prova a scansionare un\'altra immagine contenente un codice QR MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Server MollySocket non trovato a «%s»</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">È successo un errore di rete. Si prega di riprovare.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Manca l\'URL MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Non disponibile</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Tocca per richiedere una notifica di prova da MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nessun dstributore UnifiedPush installato</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nessuna applicazione di distributore selezionata</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Nessuno selezionato</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Una notifica di prova dovrebbe apparire in pochi istanti…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Impossibile creare il dispositivo collegato</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">In attesa della risposta del distributore UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Il terminale è vietato dal server</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Il server push è stato rifiutato dal server MollySocket. Si prega di controllare i terminali consentiti nella configurazione del server.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Questa è una notifica di prova dal server MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Aria compressa</string>
++</resources>
+diff --git a/app/src/main/res/values-iw/strings2.xml b/app/src/main/res/values-iw/strings2.xml
+new file mode 100644
+index 00000000000..5e1cf55d09b
+--- /dev/null
++++ b/app/src/main/res/values-iw/strings2.xml
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">התראות</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">בחר בשירות המועדף להתראות. אם לא זמין, האפליקציה תשתמש בוובסוקט כדי לוודא שהתראות נשלחות.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">שירות שליחה</string>
++</resources>
+diff --git a/app/src/main/res/values-ko/strings2.xml b/app/src/main/res/values-ko/strings2.xml
+new file mode 100644
+index 00000000000..e5de2a538ce
+--- /dev/null
++++ b/app/src/main/res/values-ko/strings2.xml
+@@ -0,0 +1,27 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">선호하는 푸시 알림 서비스를 고르세요. 이용 불가능하다면, 알림 전송을 보장하기 위해 자동으로 웹소켓을 사용합니다.</string>
++    <string name="NotificationsSettingsFragment__push_notifications">푸시 알림</string>
++    <string name="NotificationsSettingsFragment__delivery_service">전달 서비스</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">UnifiedPush를 사용하려면 MollySocket 서버에 액세스하여 Signal 계정을 연결해야 합니다.\n\n서버에서 제공되는 QR 코드를 스캔하여 시작하세요.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">UnifiedPush 대리점에 등록 실패. 이것은 네트워크 문제 또는 당신의 분배자에서 누락된 필요조건 때문에 일 수 있었습니다.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">%d 연결 장치의 한계에 도달했습니다. MollySocket 서버를 연결하려면 먼저 장치를 제거하십시오.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Push 서버는 MollySocket 서버에 의해 거부되었습니다. 서버 구성에서 허용된 끝점을 확인하시기 바랍니다.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">MollySocket에 등록은 더 이상 유효하지 않습니다. 연결된 장치를 다시 묻고 다시 등록 해보십시오.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">귀하의 회계는 MollySocket 서버에 의해 거부되었습니다. 서버 구성에 Ulid UUID를 만들어주십시오.</string>
++    <string name="MollySocketLink_scan_the_qr_code">MollySocket Server의 홈페이지 또는 콘솔에 표시된 QR 코드를 스캔하십시오.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">UnifiedPush 끝점이 변경되었습니다. MollySocket에서 서비스를 업데이트해야합니다.</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">몇 가지 모니터에 테스트 알림이 나타나야합니다 …</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">MollySocket 서버의 테스트 알림입니다.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Anchar 이미지 경로를 스캐닝하십시오. MollySocket QR 코드.</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">MollySocket에서의 개택을 요청하려면</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">계정 ID는 서버에 의해 울려 있습니다</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">MollySocket 서버에서 확인을 기다립니다</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">최종 포인트는 서버에 의해 금지됩니다</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">네트워크 오류 경험. 다시 시도하십시오.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">연결된 장치를 만들 수 없습니다</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket 서버가 \'%s에서 찾을 수 없습니다. 이름 *</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">클립보드에 복사하기</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">UnifedPush 배포자 응답을 기다리는 중입니다</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">서버의 잘못된 응답</string>
++</resources>
+diff --git a/app/src/main/res/values-lv/strings2.xml b/app/src/main/res/values-lv/strings2.xml
+new file mode 100644
+index 00000000000..88124b47a39
+--- /dev/null
++++ b/app/src/main/res/values-lv/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Pašpiegādes paziņojumi</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Jāatlasa vēlamais pašpiegādes paziņojumu pakalpojums. Ja nav pieejams, lietotne automātiski izmantos Websocket, lai nodrošinātu, ka paziņojumi tiek piegādāti.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Piegādes pakalpojums</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Konfigurēt UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Lai izmantotu UnifiedPush, nepieciešama piekļuve MollySocket serverim, lai sasaistītu Signal kontu.\n\nJāuzsāk ar kvadrātkoda, kuru sniedz serveris, nolasīšanu.</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Neviens nav pieejams</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Izplatītāja lietotne</string>
++    <string name="UnifiedPushSettingsFragment__status">Stāvoklis</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Piesist, lai ievietotu starpliktuvē</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket serveris</string>
++    <string name="NotificationsSettingsFragment__not_selected">Nav atlasīts</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Servera parametri</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Konta Id</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Pārbaudīt konfigurāciju</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Piesist, lai pieprasītu pārbaudes paziņojumu no MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Pārbaudes paziņojumam vajadzētu parādīties pēc dažiem mirkļiem…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Trūkst MollySocket URL</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Gaida</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Nederīga servera atbilde</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Serveris noraidīja konta Id</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Nevarēja izveidot sasaistīto ierīci</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Gaida no UnifiedPush izplatītāja atbildi</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Gaida apstiprinājumu no MollySocket servera</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Serveris ir aizliedzis galamērķi</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nav uzstādīts neviens UnifiedPush izplatītājs</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nav atlasīta neviena izplatītāja lietotne</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket serveris netika atrasts \"%s\"</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Tika pieredzēta tīkla kļūda. Lūgums mēģināt vēlreiz.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Molly Socket serveris</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Ir sasniegts %d sasaistītu ierīču ierobežojums. Lai sasaistītu ar MollySocket serveri, lūgums vispirms noņemt kādu ierīci.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">UnifiedPush galamērķis ir mainījies. Ir jāatjaunina savienojumus MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">MollySocket reģistrācija vairs nav derīga. Lūgums noņemt sasaistīto ierīci un mēģināt to atkārtoti reģistrēt.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">MollySocket serveris atteica Tavam kontam. Lūgums servera konfigurācijā pārbaudīt atļautos UUID.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Neizdevās reģistrēšanās ar UnifiedPush izplatītāju. Tas varētu būt tīkla kļūmes vai neizpildītas izplatītāja prasības dēļ.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Šis ir pārbaudes paziņojums no MollySocket servera.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Jānolasa MollySocket servera mājaslapā vai konsolē attēlotais kvadrātkods.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Jāmēģina nolasīt cits MollySocket kvadrātkodu saturošs attēls.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Nošķirts</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">MollySocket serveris atteica Tavam pašpiegādes serverim. Lūgums servera konfigurācijā pārbaudīt atļautos galamērķus.</string>
++</resources>
+diff --git a/app/src/main/res/values-nl/strings2.xml b/app/src/main/res/values-nl/strings2.xml
+new file mode 100644
+index 00000000000..b96b716fa6d
+--- /dev/null
++++ b/app/src/main/res/values-nl/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Selecteer de gewenste service voor pushberichten. Indien niet beschikbaar zal de app automatisch WebSockets gebruiken om te garanderen dat notificaties afgeleverd worden.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Afleverservice</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Push notificaties</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket server</string>
++    <string name="NotificationsSettingsFragment__not_selected">Niet geselecteerd</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Geen beschikbaar</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Distributeur app</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Tap om naar klembord te copiëren</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Server parameters</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Account ID</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Test configuratie</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Tap om een testnotificatie van MollySocket aan te vragen</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Een testnotificatie moet elk moment verschijnen…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket URL mist</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">In behandeling</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Wachten op bevestiging van de MollySocket server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Ongeldig antwoord van de server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Het Account ID is geweigerd door de server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Kan gekoppeld apparaat niet aanmaken</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Aan het wachten op antwoord van de UnifiedPush distributeur</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Geen UnifiedPush distributeur geïnstalleerd</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configureer UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Om UnifiedPush te gebruiken heb je toegang nodig tot een MollySocket server om je Signal account te linken.\n\nStart door de QR code van de server te scannen.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Het eindpunt is verboden door de server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Geen distributeur app geselecteerd</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Je hebt het maximum aantal van %d gekoppelde apparaten bereikt. Verwijder er een om je MollySocket server te koppene.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Je UnifiedPush eindpunt is veranderd. Je moet je verbinding op MollySocket updaten.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Je push server was geweigerd door de MollySocket server. Check de toegestane eindpunten in de server configuratie.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Dit is een testnotifocatie van de MollySocket server.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Probeer een andere afbeelding met de MollySocket QR code te scannen.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air-gapped</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Je registratie op MollySocket is niet langer geldig. Verwijder het gekoppelde apparaat en probeer opnieuw te registreren.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Je account is geweigerd door de MollySocket server. Check de toegestane UUIDs i de server configuratie.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Scan de QR code die getoond wordt op de homepage van je MollySocket server of in de console.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">De registratie met je UnifiedPush distributeur is mislukt. Dit kan veroorzaakt worden door een netwerkfout of een ontbrekend vereiste van je distributeur.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket server niet gevonden op \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Er is een netwerkfout opgetreden. Probeer het opnieuw.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
++</resources>
+diff --git a/app/src/main/res/values-pa/strings2.xml b/app/src/main/res/values-pa/strings2.xml
+new file mode 100644
+index 00000000000..4bce3f6173c
+--- /dev/null
++++ b/app/src/main/res/values-pa/strings2.xml
+@@ -0,0 +1,21 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">ਪੁਸ਼ ਨੋਟੀਫਿਕੇਸ਼ਨ</string>
++    <string name="NotificationsSettingsFragment__delivery_service">ਡਿਲਵਰੀ ਸਰਵਿਸ</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Molly-ਸਾਕਟ ਸਰਵਰ</string>
++    <string name="NotificationsSettingsFragment__not_selected">ਨਹੀਂ ਚੁਣਿਆ</string>
++    <string name="UnifiedPushSettingsFragment__none_available">ਕੋਈ ਮੌਜੂਦ ਨਹੀਂ</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">ਡਿਸਟਰੀਬਿਊਟਰ ਐਪ</string>
++    <string name="UnifiedPushSettingsFragment__status">ਸਥਿਤੀ</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">ਕਲਿੱਪਬੋਰਡ ਵਿੱਚ ਕਾਪੀ ਕਰਨ ਲਈ ਛੂਹੋ</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">ਸਰਵਰ ਪੈਰਾਮੀਟਰ</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ਖਾਤਾ ID</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">ਸੰਰਚਨਾ ਟੈਸਟ ਕਰੋ</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">ਟੈਸਟ ਨੋਟੀਫਿਕੇਸ਼ਨ ਕੁਝ ਪਲ਼ਾਂ ਵਿੱਚ ਦਿਖਾਈ ਦੇਵੇਗਾ…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">ਬਾਕੀ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">ਲਿੰਕ ਕੀਤੇ ਡਿਵਾਈਸ ਬਣਾਉਣ ਲਈ ਅਸਮਰੱਥ</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket ਸਰਵਰ</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">ਨੈੱਟਵਰਕ ਗਲਤੀ ਆਈ ਹੈ। ਫੇਰ ਕੋਸ਼ਿਸ਼ ਕਰਿਓ।</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket ਸਰਵਰ \'%s\' ਨਹੀਂ ਲੱਭਿਆ</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">ਇਹ MollySocket ਸਰਵਰ ਵਲੋਂ ਟੈਸਟ ਨੋਟੀਫਿਕੇਸ਼ਨ ਹੈ।</string>
++</resources>
+diff --git a/app/src/main/res/values-pl/strings2.xml b/app/src/main/res/values-pl/strings2.xml
+new file mode 100644
+index 00000000000..dd806b68167
+--- /dev/null
++++ b/app/src/main/res/values-pl/strings2.xml
+@@ -0,0 +1,41 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Aby korzystać z UnifiedPush, potrzebujesz dostępu do serwera MollySocket, aby połączyć swoje konto Signal.\n\nZacznij od zeskanowania kodu QR dostarczonego przez serwer.</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Powiadomienia push</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Konfiguracja UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Serwer MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Nie wybrano</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Brak dostępnych</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Wybierz preferowaną usługę dla powiadomień push. Jeśli jest niedostępna, aplikacja automatycznie użyje WebSocket, aby zapewnić dostarczanie powiadomień.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Usługa dostawy</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Twoje konto zostało odrzucone przez serwer MollySocket. Sprawdź dozwolone identyfikatory UUID w konfiguracji serwera.</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Osiągnięto limit %d połączonych urządzeń. Aby połączyć serwer MollySocket, najpierw usuń urządzenie.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Twój serwer push został odrzucony przez serwer MollySocket. Sprawdź dozwolone punkty końcowe w konfiguracji serwera.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">To jest testowe powiadomienie z serwera MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Nie powiodła się rejestracja u dystrybutora UnifiedPush. Może to być spowodowane problemem z siecią lub brakującymi wymaganiami od strony dystrybutora.</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Wystąpił błąd sieci. Spróbuj ponownie.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Spróbuj zeskanować inny obraz zawierający kod QR MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Serwer MollySocket</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Twoja rejestracja w MollySocket nie jest już ważna. Usuń powiązane urządzenie i spróbuj zarejestrować się ponownie.</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Aplikacja dystrybutora</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Naciśnij aby skopiować do schowka</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Brakuje URL MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Serwer odmówił ID konta</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Czekanie na odpowiedź dystrybutora UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parametry serwera</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID konta</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Przetestuj konfigurację</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Czekanie na potwierdzenie serwera MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nie zainstalowano żadnego dystrybutora UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Naciśnij aby dostać próbne powiadomienie MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Niepoprawna odpowiedź serwera</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Powiadomienie testowe powinno za chwile się pojawić…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Oczekiwanie</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Nie udało się stworzyć połączonego urządzenia</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nie wybrano aplikacji dystrybutora</string>
++    <string name="MollySocketLink_scan_the_qr_code">Zeskanuj kod QR wyświetlony na stronie głównej twojego serwera MollySocket albo w konsoli.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Nie znaleziono serwera MollySocket \'%s\'</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Ten Endpoint jest zakazany przez serwer</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Twój Endpoint UnifiedPush się zmienił. Musisz zaktualizować swoje połączenie z MollySocket.</string>
++</resources>
+diff --git a/app/src/main/res/values-pt-rBR/strings2.xml b/app/src/main/res/values-pt-rBR/strings2.xml
+new file mode 100644
+index 00000000000..1a07b3d1465
+--- /dev/null
++++ b/app/src/main/res/values-pt-rBR/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notificações push</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Toque para copiar para a área de transferência</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parâmetros do servidor</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID da conta</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Uma notificação de teste deve aparecer em alguns instantes…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Não foi possível criar o dispositivo vinculado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">O endpoint não é permitido pelo servidor</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Seu registro no MollySocket não é mais válido. Remova o dispositivo vinculado e tente registrar novamente.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Escaneie o código QR exibido na página inicial do seu servidor MollySocket ou no console.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Aguardando confirmação do servidor MollySocket</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Você atingiu o limite de %d dispositivos vinculados. Para vincular seu servidor MollySocket, remova um dispositivo primeiro.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">O registro com seu distribuidor do UnifiedPush falhou. Isso pode ter ocorrido por um problema de rede ou pela ausência de algum requisito do distribuidor.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Servidor MollySocket não encontrado em \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Ocorreu um erro de rede. Tente novamente.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Tente escanear outra imagem que contenha um código QR do MollySocket.</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Para usar o UnifiedPush, você precisa de acesso a um servidor MollySocket para vincular sua conta do Signal.\n\nComece escaneando o código QR fornecido pelo seu servidor.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Resposta inválida do servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">O ID da conta foi recusado pelo servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nenhum aplicativo distribuidor selecionado</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Seu endpoint do UnifiedPush foi alterado. Você precisa atualizar sua conexão no MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Seu servidor de push foi recusado pelo servidor MollySocket. Verifique os endpoints permitidos na configuração do servidor.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Esta é uma notificação de teste do servidor MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Serviço de entrega</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configurar UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__not_selected">Não selecionado</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Nenhum disponível</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Aplicativo distribuidor</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testar configuração</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Toque para solicitar uma notificação de teste do MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">URL do MollySocket não informada</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Pendente</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Aguardando resposta do distribuidor do UnifiedPush</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Sua conta foi recusada pelo servidor MollySocket. Verifique os UUIDs permitidos na configuração do servidor.</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Selecione seu serviço preferido para notificações push. Se ele não estiver disponível, o aplicativo usará automaticamente WebSocket para garantir a entrega das notificações.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nenhum distribuidor do UnifiedPush instalado</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolado da rede</string>
++</resources>
+diff --git a/app/src/main/res/values-pt/strings2.xml b/app/src/main/res/values-pt/strings2.xml
+new file mode 100644
+index 00000000000..78057240b33
+--- /dev/null
++++ b/app/src/main/res/values-pt/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notificações push</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Selecione o seu serviço preferido para notificações push. Se ele não estiver disponível, a app usará automaticamente WebSocket para garantir a entrega das notificações.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Serviço de entrega</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configurar UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Para usar o UnifiedPush, precisa de acesso a um servidor MollySocket para vincular a sua conta do Signal.\n\nComece escaneando o código QR fornecido pelo seu servidor.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Não selecionado</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Nenhum disponível</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">App distribuidor</string>
++    <string name="UnifiedPushSettingsFragment__status">Estado</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Toque para copiar para a área de transferência</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parâmetros do servidor</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID da conta</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testar configuração</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Toque para solicitar uma notificação de teste do MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Uma notificação de teste deve aparecer em alguns instantes…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">URL do MollySocket não informada</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Pendente</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">A aguardar confirmação do servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Resposta inválida do servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">O ID da conta foi recusado pelo servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Não foi possível criar o dispositivo vinculado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">A aguardar resposta do distribuidor do UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">O endpoint não é permitido pelo servidor</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nenhum distribuidor do UnifiedPush instalado</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nenhuma app distribuidora selecionada</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Atingiu o limite de %d dispositivos vinculados. Para vincular o seu servidor MollySocket, remova um dispositivo primeiro.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">O seu endpoint do UnifiedPush foi alterado. Precisa atualizar a sua conexão no MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">S seu registo no MollySocket já não é válido. Remova o dispositivo vinculado e tente registar novamente.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">A sua conta foi recusada pelo servidor MollySocket. Verifique os UUIDs permitidos na configuração do servidor.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">O seu servidor de push foi recusado pelo servidor MollySocket. Verifique os endpoints permitidos na configuração do servidor.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">O registo com o seu distribuidor do UnifiedPush falhou. Isto pode ter ocorrido por um problema de rede ou pela ausência de algum requisito do distribuidor.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Esta é uma notificação de teste do servidor MollySocket.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Escaneie o código QR exibido na página inicial do seu servidor MollySocket ou no console.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Tente escanear outra imagem que contenha um código QR do MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Servidor MollySocket não encontrado em \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Ocorreu um erro de rede. Tente novamente.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Servidor MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Isolado da rede</string>
++</resources>
+diff --git a/app/src/main/res/values-ro/strings2.xml b/app/src/main/res/values-ro/strings2.xml
+new file mode 100644
+index 00000000000..a20efd944e4
+--- /dev/null
++++ b/app/src/main/res/values-ro/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Notificări</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Alege serviciul preferat pentru notificări. Dacă nu este disponibil, aplicația va utiliza automat WebSocket pentru a se asigura că notificările vor fi livrate.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Serviciul de livrare</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configurează UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Pentru a utiliza UnifiedPush, este nevoie de acces la un server MollySocket pentru a conecta contul tău Signal.\n\nÎncepe prin scanarea codului QR furnizat de serverul tău.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Neselecționat</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Niciunul disponibil</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Aplicație distribuitor</string>
++    <string name="UnifiedPushSettingsFragment__status">Stare</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Parametrii serverului</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID-ul contului</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testează configurația</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Atinge pentru a solicita o notificare de test de la MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Lipsește URL-ul MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">În așteptare</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">O notificare de test ar trebui să apară în câteva momente…</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Atinge pentru a copia</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID-ul contului este refuzat de server</string>
++    <string name="MollySocketLink_scan_the_qr_code">Scanează codul QR afișat pe prima pagină a serverului MollySocket sau în consolă.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Se așteaptă confirmarea de la serverul MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Răspuns incorect de la server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Nu se poate crea aparatul asociat</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Se așteaptă răspunsul distribuitorului UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Nu este instalat niciun distribuitor UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Nu a fost aleasă nicio aplicație distribuitor</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Terminalul tău UnifiedPush s-a schimbat. Trebuie actualizată conexiunea cu MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Terminalul este interzis de server</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Contul tău a fost refuzat de serverul MollySocket. Verifică UUID-urile permise în configurația serverului.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Aceasta este o notificare de test de la serverul MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Server MollySocket</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Încearcă să scanezi altă imagine care conține un cod QR MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Serverul MollySocket nu a fost găsit la „%s”</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Izolat fizic</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Serverul tău de notificări a fost refuzat de serverul MollySocket. Verifică terminalele permise în configurația serverului.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Înscrierea la distribuitorul tău UnifiedPush a eșuat. Acest lucru s-ar putea datora unei probleme de rețea sau unei cerințe lipsă din partea distribuitorului tău.</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">A apărut o eroare de rețea. Încearcă din nou.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">A fost atinsă limita de %d aparate asociate. Pentru asocierea cu serverul MollySocket, trebuie eliminat mai întâi un aparat.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Înscrierea ta la MollySocket nu mai este valabilă. Elimină aparatul asociat și încearcă să te înscrii din nou.</string>
++</resources>
+diff --git a/app/src/main/res/values-ru/strings2.xml b/app/src/main/res/values-ru/strings2.xml
+new file mode 100644
+index 00000000000..707b9fa46af
+--- /dev/null
++++ b/app/src/main/res/values-ru/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Push-уведомления</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Сервер MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Не выбрано</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Параметры сервера</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID аккаунта</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Тестовая конфигурация</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Ожидание</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID учетной записи отклонен сервером</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Конечная точка запрещена сервером</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Вы достигли лимита в %d связанных устройств. Чтобы связать ваш сервер MollySocket, сначала удалите устройство.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Ваша учетная запись была отклонена сервером MollySocket. Пожалуйста, проверьте допустимые UUID в конфигурации сервера.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Попробуйте сосканировать другое изображение, содержащее QR-код MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Сервер MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Воздушный зазор</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Нажмите, чтобы запросить уведомление о проверке от MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Ожидание подтверждения от сервера MollySocket</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Регистрация у дистрибьютора UnifiedPush не удалась. Это может быть связано с проблемами в сети или отсутствием требований со стороны дистрибьютора.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Не выбрано приложение для распространения</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Это тестовое уведомление от сервера MollySocket.</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Выберите предпочтительный сервис для push-уведомлений. Если он недоступен, приложение автоматически использует WebSocket для обеспечения доставки уведомлений.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Ваша конечная точка UnifiedPush изменилась. Вы должны обновить свое соединение на MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Ваш push-сервер был отвергнут сервером MollySocket. Проверьте, пожалуйста, разрешенные конечные точки в конфигурации сервера.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Ожидание ответа дистрибьютора UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Чтобы использовать UnifiedPush, вам нужен доступ к серверу MollySocket для связи с учетной записью Signal.\n\nНачните со сканирования QR-кода, предоставленного вашим сервером.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Невозможно создать связанное устройство</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Служба доставки</string>
++    <string name="UnifiedPushSettingsFragment__status">Статус</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Отсутствует URL MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Нажмите, чтобы скопировать в буфер обмена</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Ваша регистрация на сайте MollySocket больше не действительна. Пожалуйста, удалите связанное устройство и попробуйте зарегистрироваться снова.</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Через несколько минут должно появиться тестовое уведомление…</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Приложение-дистрибьютор</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Дистрибьютор UnifiedPush не установлен</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Сервер MollySocket не найден по адресу \'%s\'</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Настройка UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Отсутствует</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Неверный ответ от сервера</string>
++    <string name="MollySocketLink_scan_the_qr_code">Сосканируйте QR-код, отображаемый на домашней странице сервера MollySocket или в консоли.</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Возникла сетевая ошибка. Пожалуйста, попробуйте еще раз.</string>
++</resources>
+diff --git a/app/src/main/res/values-sr/strings2.xml b/app/src/main/res/values-sr/strings2.xml
+new file mode 100644
+index 00000000000..bb369879ffd
+--- /dev/null
++++ b/app/src/main/res/values-sr/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Ваша UnifiedPush крајња тачка је промењена. Морате ажурирати вашу везу на MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Ваш налог је одбијен од стране MollySocket сервера. Молимо вас проверите дозвољене UUID-ове у конфигурацији сервера.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Ово је тест обавештење са MollySocket сервера.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Скенирајте QR код приказан на почетној страници вашег MollySocket сервера или у конзоли.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket сервер није пронађен на \'%s\'</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket сервер</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Постоји грешка са мрежним повезивањем. Молимо вас покушајте поново.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Изолован</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Регистрација са вашим UnifiedPush дистрибутором није успела. Ово може бити због проблема са мрежом или недостајућег захтева од вашег дистрибутера.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Покушајте да скенирате другу слику која садржи MollySocket QR код.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Ваша регистрација на MollySocket више није важећа. Молимо вас уклоните повезани уређај и покушајте поново да се региструјете.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Ваш push сервер је одбијен од стране MollySocket сервера. Молимо вас проверите дозвољене крајње тачке у конфигурацији сервера.</string>
++    <string name="NotificationsSettingsFragment__not_selected">Није изабрано</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Параметри сервера</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Тест обавештење ће се појавити за неколико тренутака…</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket сервер</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Додирните да копирате у клипборд</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Тестирајте конфигурацију</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Није могуће креирати повезани уређај</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Недостаје MollySocket URL</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Нема доступних</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Крајња тачка је забрањена од стране сервера</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Додирните да затражите тест обавештење од MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Чекање на потврду од MollySocket сервера</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Невалидан одговор сервера</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Чекање на одговор дистрибутера UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Пуш обавештења</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Услуга испоруке</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Конфигуриши UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID налога је одбијен од стране сервера</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Да бисте користили UnifiedPush, потребан вам је приступ MollySocket серверу да повежете ваш Signal налог.\n\nПочните скенирањем QR кода који вам је обезбедио ваш сервер.</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID налога</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Нема изабране апликације дистрибутор</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Апликација дистрибутор</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Нема инсталираног UnifiedPush дистрибутера</string>
++    <string name="UnifiedPushSettingsFragment__status">Статус</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">На чекању</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Изаберите вашу омиљену услугу за пуш обавештења. Ако није доступна, апликација ће аутоматски користити WebSocket да осигура да обавештења буду испоручена.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Достигли сте ограничење од %d повезаних уређаја. Да бисте повезали ваш MollySocket сервер, молимо вас да прво уклоните уређај.</string>
++</resources>
+diff --git a/app/src/main/res/values-sv/strings2.xml b/app/src/main/res/values-sv/strings2.xml
+new file mode 100644
+index 00000000000..114f608f128
+--- /dev/null
++++ b/app/src/main/res/values-sv/strings2.xml
+@@ -0,0 +1,30 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Väntar på bekräftelse från MollySocket-servern</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Felaktigt svar från servern</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Account-ID nekades av servern</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Kunde inte skapa länkade enheten</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Notistjänst</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Välj vilken notistjänst du vill använda. Om den inte fungerar, kommer appen automatiskt att använda WebSocket för att leverera notiser.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Notisleverantör</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Konfigurera UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">För att använda UnifiedPush måste du ha en MollySocket-server att koppla ditt Signalkonto till.\n\nBörja med att skanna den QR-kod din server visar.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket-server</string>
++    <string name="NotificationsSettingsFragment__not_selected">Ingen har valts</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Ingen är tillgänglig</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Distributörsapp</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Klicka för att kopiera</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Serverparametrar</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Konto-ID</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Testkonfiguration</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Klicka för att få en testnotis från MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Snart borde en testnotis dyka upp …</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Saknar URL till MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Behandlas</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Väntar på svar från UnifiedPush-distributören</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Denna slutpunkt är förbjuden av servern</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Ingen UnifiedPush-distributör har installerats på enheten</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Ingen distributörsapp har valts</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Du har fler än de tillåtna %d länkade enheterna. För att länka till din MollySocket-server, måste du först ta bort en enhet.</string>
++</resources>
+diff --git a/app/src/main/res/values-ta/strings2.xml b/app/src/main/res/values-ta/strings2.xml
+new file mode 100644
+index 00000000000..1c449fedba3
+--- /dev/null
++++ b/app/src/main/res/values-ta/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">ஒருங்கிணைந்த புசை உள்ளமைக்கவும்</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">மோலிச்கே சேவையகம்</string>
++    <string name="NotificationsSettingsFragment__not_selected">தேர்ந்தெடுக்கப்படவில்லை</string>
++    <string name="UnifiedPushSettingsFragment__none_available">எதுவும் கிடைக்கவில்லை</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">விநியோகச்தர் பயன்பாடு</string>
++    <string name="UnifiedPushSettingsFragment__status">நிலை</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">மோலிசாக்கெட்டிலிருந்து சோதனை அறிவிப்பைக் கோர தட்டவும்</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">ஒரு சோதனை அறிவிப்பு சில தருணங்களில் தோன்ற வேண்டும்…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">மோலிச்கே முகவரி காணவில்லை</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">நிலுவையில் உள்ளது</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">சேவையகத்திலிருந்து தவறான பதில்</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">இணைக்கப்பட்ட சாதனத்தை உருவாக்க முடியவில்லை</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">மோலிசாக்கெட்டில் உங்கள் பதிவு இனி செல்லுபடியாகாது. இணைக்கப்பட்ட சாதனத்தை அகற்றி மீண்டும் பதிவு செய்ய முயற்சிக்கவும்.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">மோலிசாக்கெட் QR குறியீட்டைக் கொண்ட மற்றொரு படத்தை ச்கேன் செய்ய முயற்சிக்கவும்.</string>
++    <string name="MollySocketLink_scan_the_qr_code">உங்கள் மோலி சாக்கெட் சேவையக முகப்புப்பக்கத்தில் அல்லது கன்சோலில் காட்டப்படும் QR குறியீட்டை ச்கேன் செய்யுங்கள்.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">காற்று நுழைந்தது</string>
++    <string name="NotificationsSettingsFragment__push_notifications">அறிவிப்புகளை அழுத்தவும்</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">மோலிசாக்கெட் சேவையகத்திலிருந்து உறுதிப்படுத்த காத்திருக்கிறது</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">கணக்கு ஐடி சேவையகத்தால் மறுக்கப்படுகிறது</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">ஒருங்கிணைந்த புச் விநியோகச்தர் பதிலுக்காக காத்திருக்கிறது</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">இறுதிப்புள்ளி சேவையகத்தால் தடைசெய்யப்பட்டுள்ளது</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">ஒருங்கிணைந்த புச் விநியோகச்தர் நிறுவப்படவில்லை</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">விநியோகச்தர் பயன்பாடு எதுவும் தேர்ந்தெடுக்கப்படவில்லை</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">%d இணைக்கப்பட்ட சாதனங்களின் வரம்பை நீங்கள் அடைந்துவிட்டீர்கள். உங்கள் மோல்சாக்கெட் சேவையகத்தை இணைக்க, முதலில் ஒரு சாதனத்தை அகற்றவும்.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">உங்கள் ஒருங்கிணைந்த புச் இறுதிப்புள்ளி மாறிவிட்டது. உங்கள் இணைப்பை மோலிசாக்கெட்டில் புதுப்பிக்க வேண்டும்.</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">புச் அறிவிப்புகளுக்கு உங்களுக்கு விருப்பமான சேவையைத் தேர்ந்தெடுக்கவும். கிடைக்கவில்லை என்றால், அறிவிப்புகள் வழங்கப்படுவதை உறுதிசெய்ய பயன்பாடு தானாகவே வெப்சாக்கெட்டைப் பயன்படுத்தும்.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">விநியோக பணி</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">UNIFICEPUSH ஐப் பயன்படுத்த, உங்கள் சமிக்ஞை கணக்கை இணைக்க மோல்சாக்கெட் சேவையகத்திற்கு அணுகல் தேவை.\n\n உங்கள் சேவையகத்தால் வழங்கப்பட்ட QR குறியீட்டை ச்கேன் செய்வதன் மூலம் தொடங்கவும்.</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">இடைநிலைப்பலகைக்கு நகலெடுக்க தட்டவும்</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">சேவையக அளவுருக்கள்</string>
++    <string name="UnifiedPushSettingsFragment__account_id">கணக்கு ஐடி</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">சோதனை உள்ளமைவு</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">உங்கள் கணக்கை மோலிசாக்கெட் சேவையகத்தால் மறுக்கப்பட்டது. சேவையக உள்ளமைவில் அனுமதிக்கப்பட்ட UUID களை சரிபார்க்கவும்.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">உங்கள் புச் சேவையகம் மோலிசாக்கெட் சேவையகத்தால் மறுக்கப்பட்டது. சேவையக உள்ளமைவில் அனுமதிக்கப்பட்ட இறுதிப் புள்ளிகளை சரிபார்க்கவும்.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">உங்கள் ஒருங்கிணைந்த புச் விநியோகச்தருடன் பதிவு தோல்வியுற்றது. இது ஒரு பிணைய சிக்கல் அல்லது உங்கள் விநியோகச்தரிடமிருந்து காணாமல் போன தேவை காரணமாக இருக்கலாம்.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">இது மோலிசாக்கெட் சேவையகத்திலிருந்து சோதனை அறிவிப்பாகும்.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">மோலிசாக்கெட் சேவையகம் \'%s\' இல் காணப்படவில்லை</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">பிணைய பிழையை அனுபவித்தது. மீண்டும் முயற்சிக்கவும்.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">மோலிச்கே சேவையகம்</string>
++</resources>
+diff --git a/app/src/main/res/values-tr/strings2.xml b/app/src/main/res/values-tr/strings2.xml
+new file mode 100644
+index 00000000000..aeb4a1e8e5a
+--- /dev/null
++++ b/app/src/main/res/values-tr/strings2.xml
+@@ -0,0 +1,18 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Anlık bildirimler</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Anlık bildirimler için tercih ettiğiniz servisi seçin. Seçilen servis mevcut değilse uygulama, bildirimlerin gönderildiğinden emin olmak için otomatik olarak WebSocket servisine geçecektir.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Anlık bildirim servisi</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">UnifiedPush\'u yapılandır</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">UnifiedPush servisini kullanmak için, Signal hesabınızı bağlamak adına bir MollySocket sunucusuna erişmeniz gerekmektedir.\n\nBaşlamak için sunucunuzdan verilen QR kodu tarayın.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket sunucusu</string>
++    <string name="NotificationsSettingsFragment__not_selected">Seçilmemiş</string>
++    <string name="UnifiedPushSettingsFragment__status">Durum</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Panoya kopyalamak için dokunun</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Sunucu parametreleri</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Yapılandırmayı test et</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">MollySocket servisi ile bildirim testi yapmak için dokunun</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket URL\'si eksik</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Beklemede</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">MollySocket sunucusundan doğrulanma bekleniyor</string>
++</resources>
+diff --git a/app/src/main/res/values-ug/strings2.xml b/app/src/main/res/values-ug/strings2.xml
+new file mode 100644
+index 00000000000..9993b73b135
+--- /dev/null
++++ b/app/src/main/res/values-ug/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">ئۇقتۇرۇش يەتكۈزۈش</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">ئۇقتۇرۇش يەتكۈزۈش مايىللىقىڭىزنى تاللاڭ. ئەگەر ئىشلەتكىلى بولسا، ئەپ ئۆزلۈكىدىن WebSocket نى ئىشلىتىپ ئۇقتۇرۇشنىڭ يەتكۈزۈلۈشىگە كاپالەتلىك قىلىدۇ.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">يەتكۈزۈش مۇلازىمىتى</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">UnifiedPush سەپلەش</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">UnifiedPush ئىشلىتىشتە، سىز MollySocket مۇلازىمېتىردىن بىرنى زىيارەت قىلىپ Signal ھېساباتىڭىز بىلەن باغلىشىڭىز كېرەك.\n\nباشلاشتا مۇلازىمېتىر تەمىنلىگەن QR كودىنى تاراڭ.</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">تارقاتقۇچى ئەپى</string>
++    <string name="UnifiedPushSettingsFragment__status">ھالەت</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">چېكىلسە چاپلاش تاختىسىغا كۆچۈرىدۇ</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">مۇلازىمېتىر پارامېتىرلىرى</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ھېسابات كىملىكى</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">تەڭشەش سەپلىمىسى</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">چېكىلسە MollySocket تىن سىناق ئۇقتۇرۇشى ئىلتىماس قىلىدۇ</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">سىناق ئۇقتۇرۇشى بىر دەمدىلا كۆرۈنۈشى مۇمكىن…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">MollySocket تور ئادرېسى كەم</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">كۈتۈۋاتىدۇ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">MollySocket مۇلازىمېتىرنىڭ جەزملىشىنى كۈتۈۋاتىدۇ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">مۇلازىمېتىرنىڭ ئىناۋەتسىز ئىنكاسى</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">مۇلازىمېتىر ھېسابات كىملىكىنى رەت قىلدى</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">باغلانغان ئۈسكۈنە قۇرالمىدى</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">UnifiedPush تارقاتقۇچىنىڭ ئىنكاسىنى كۈتۈۋاتىدۇ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">مۇلازىمېتىر ئاخىرقى تۈگۈننى چەكلىگەن</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">ھېچقانداق تارقاتقۇچى ئەپ تاللانمىغان</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">سىز %d ئۇلانما ئۈسكۈنە يۇقىرى چېكىگە يەتتىڭىز. MollySocket مۇلازىمېتىرىڭىزگە باغلىنىشتا، ئالدى بىلەن ئۈسكۈنىدىن بىرنى چىقىرىۋېتىڭ.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">ھېساباتىڭىزنى MollySocket مۇلازىمېتىر رەت قىلغان. مۇلازىمېتىر سەپلىمىسىدىكى يول قويىدىغان UUID نى تەكشۈرۈڭ.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">يەتكۈزۈش مۇلازىمىتېرىڭىزنى MollySocket مۇلازىمېتىر رەت قىلغان. مۇلازىمېتىر سەپلىمىسىدىكى يول قويىدىغان ئاخىرقى نۇقتىنى تەكشۈرۈڭ.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">بۇ MollySocket مۇلازىمېتىردىن كەلگەن سىناق ئۇقتۇرۇشى.</string>
++    <string name="MollySocketLink_scan_the_qr_code">MollySocket مۇلازىمېتىرىنىڭ باش بېتىدە كۆرۈنگەن ياكى باشقۇرۇش تاختىسىدا كۆرۈنگەن QR كودىنى تاراڭ.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">MollySocket QR كودى بار باشقا سۈرەتنى تاراشنى سىناڭ.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket مۇلازىمېتىر</string>
++    <string name="NotificationsSettingsFragment__not_selected">تاللانمىدى</string>
++    <string name="UnifiedPushSettingsFragment__none_available">ھېچنېمە يوق</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">UnifiedPush تارقاتقۇچى ئورنىتىلمىغان</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">UnifiedPush ئاخىرقى نۇقتىڭىز ئۆزگەردى. سىز چوقۇم MollySocket دىكى باغلىنىشىڭىزنى يېڭىلىشىڭىز كېرەك.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">سىزنىڭ MollySocket دىكى تىزىملىتىشىڭىزنى ئەمدى ئىشلەتكىلى بولمايدۇ. باغلانغان ئۈسكۈنىنى چىقىرىۋېتىپ ئاندىن قايتا تىزىملىتىشنى سىناڭ.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">سىزنىڭ UnifiedPush تارقاتقۇچىڭىزنى تىزىملىتالمىدى. بۇ تور مەسىلىسى ياكى تارقاتقۇچىغا زۆرۈر شەرتلەر كەم بولغانلىقتىن بولغان بولۇشى مۇمكىن.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">«%s» دا MollySocket مۇلازىمېتىرنى تاپالمىدى</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">تور خاتالىقىغا يولۇقتى. قايتا سىناڭ.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket مۇلازىمېتىر</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">فىزىكىلىق ئايرىلدى</string>
++</resources>
+diff --git a/app/src/main/res/values-uk/strings2.xml b/app/src/main/res/values-uk/strings2.xml
+new file mode 100644
+index 00000000000..b2ae2211752
+--- /dev/null
++++ b/app/src/main/res/values-uk/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__delivery_service">Служба доставки</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Push-повідомлення</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Виберіть бажану послугу для push-повідомлень. Якщо він недоступний, програма автоматично використовуватиме WebSocket для забезпечення доставки сповіщень.</string>
++    <string name="UnifiedPushSettingsFragment__status">Статус</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Конфігурація тесту</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">За кілька хвилин має з’явитися тестове сповіщення…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">В очікуванні</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Очікування підтвердження від сервера MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Очікування відповіді дистриб’ютора UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Кінцева точка заборонена сервером</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Ви досягли максимальної кількості підключених пристроїв: %d. Щоб зв’язати свій сервер MollySocket, спершу видаліть пристрій.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Ваш обліковий запис відхилено сервером MollySocket. Перевірте дозволені UUID у конфігурації сервера.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Сервер MollySocket не знайдено в \"%s\"</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Виникла помилка мережі. Спробуйте ще раз.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Сервер MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Повітряний проміжок</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Налаштувати UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__not_selected">Не вибрано</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Щоб використовувати UnifiedPush, вам потрібен доступ до сервера MollySocket, щоб зв’язати обліковий запис Signal.\n\nПочніть зі сканування QR-коду, наданого вашим сервером.</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Параметри сервера</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Обліковий запис ID</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Сервер MollySocket</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Це тестове сповіщення від сервера MollySocket.</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Немає доступних</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Додаток дистриб\'ютора</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Відсутня URL-адреса MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Торкніться, щоб скопіювати в буфер обміну</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Торкніться, щоб надіслати запит на тестове сповіщення від MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Недійсна відповідь від сервера</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">Ідентифікатор облікового запису відхилено сервером</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Неможливо створити підключений пристрій</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Не встановлено дистриб’ютора UnifiedPush</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Ваша реєстрація на MollySocket більше недійсна. Будь ласка, видаліть пов’язаний пристрій і спробуйте зареєструватися знову.</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Додаток дистриб’ютора не вибрано</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Ваша кінцева точка UnifiedPush змінилася. Ви повинні оновити підключення до MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Сервер MollySocket відхилив ваш push-сервер. Перевірте дозволені кінцеві точки в конфігурації сервера.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Помилка реєстрації у вашого дистриб’ютора UnifiedPush. Це може бути через проблему з мережею або відсутність вимоги від вашого дистриб’ютора.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Відскануйте QR-код, який відображається на домашній сторінці вашого сервера MollySocket або в консолі.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Спробуйте відсканувати інше зображення, яке містить QR-код MollySocket.</string>
++</resources>
+diff --git a/app/src/main/res/values-vi/strings2.xml b/app/src/main/res/values-vi/strings2.xml
+new file mode 100644
+index 00000000000..f37686cae71
+--- /dev/null
++++ b/app/src/main/res/values-vi/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__push_notifications">Thông báo đẩy</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Chọn dịch vụ thông báo đẩy mộng muốn. Nếu không có sẵn, ứng dụng sẽ tự động dùng Websocket để đảm bảo rằng thông báo được gửi đến.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Dịch vụ gửi</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Thiết lập UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">Để dùng UnifiedPush, bạn cần truy cập vào một máy chủ MollySocket để liên kết với tài khoản Signal của bạn.\n\nBắt đầu bằng việc quét mã QR được cũng cấp bởi máy chủ của bạn.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">Máy chủ MollySocket</string>
++    <string name="NotificationsSettingsFragment__not_selected">Chưa được chọn</string>
++    <string name="UnifiedPushSettingsFragment__none_available">Không có sẵn</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Ứng dụng phân phối</string>
++    <string name="UnifiedPushSettingsFragment__status">Trạng thái</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Chạm để sao chép bào bảng nhớ tạm</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Tham số máy chủ</string>
++    <string name="UnifiedPushSettingsFragment__account_id">ID tài khoản</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Kiểm trả thiết lập</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Nhấn để yêu cầu kiểm tra thông báo từ MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">Một bài kiểm tra thông báo có thể sẽ hiện ra sau một lúc…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Thiếu đường dẫn đến MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Đang chờ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Đang đợi xác nhận từ máy chủ MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Phản hồi không hợp lệ từ máy chủ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">ID tài khoản bị từ chối bởi máy chủ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Không thể tạo thiết bị liên kết</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Đang đợi phản hồi từ nhà phân phối UnifiedPush</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">Điểm cuối bị cấm bởi máy chủ</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">Không có ứng dụng phân phối UnifiedPush nào được cài đặt</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">Không có ứng dụng phân phối được chọn</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">Bạn đã đạt giới hạn %d thiết bị được liên kết. Để liên kết máy chủ MollySocket của bạn, hãy gỡ một thiết bị trước.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Điểm cuối cho UnifiedPush đã thấy đổi. Bạn phải cập nhật kết nối trên MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Đăng ký của bạn trên MollySocket không còn hợp lệ. Hãy gỡ thiết bị đã liên kết và đăng ký lại.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Tài khoản của bạn đã bị từ chối bởi máy chủ MollySocket. Hãy kiểm tra UUID được cho phép trong thiết lập máy chủ.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Máy chủ thông báo đẩy của bạn đã bị từ chối bởi máy chủ MollySocket. Hãy kiểm tra điểm cuối bị chặn trong thiết lập máy chủ.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Đăng ký với nhà phân phối UnifiedPush của bạn thất bại. Đây có thể là do lỗi mạng hoặc thiếu xót từ nhà phân phối.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">Đây là thông báo thử cho máy chủ MollySocket.</string>
++    <string name="MollySocketLink_scan_the_qr_code">Quest mã WR hiện trên trang chủ của máy chủ MollySocket hoặc trong bảng điều khiển.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Thử quét một bức ảnh khác có chứa mã QR của MollySocket.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">Không thể tìm thấy máy chủ MollySocket ở \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Xảy ra lỗi mạng. Hãy thử lại.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">Máy chủ MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Khoảng trống</string>
++</resources>
+diff --git a/app/src/main/res/values-zh-rCN/strings2.xml b/app/src/main/res/values-zh-rCN/strings2.xml
+new file mode 100644
+index 00000000000..ec1de341c48
+--- /dev/null
++++ b/app/src/main/res/values-zh-rCN/strings2.xml
+@@ -0,0 +1,42 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="NotificationsSettingsFragment__delivery_service">通知传递服务</string>
++    <string name="NotificationsSettingsFragment__push_notifications">推送通知</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">选择首选的推送通知服务。如果不可用，应用将自动使用 WebSocket 确保通知被传递。</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">配置 UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">要使用 UnifiedPush，你需要可以访问一台 MollySocket 服务器来链接你的 Signal 账户。\n\n要开始，请扫描由你的服务器提供的二维码。</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket 服务器</string>
++    <string name="NotificationsSettingsFragment__not_selected">未选中</string>
++    <string name="UnifiedPushSettingsFragment__none_available">没有可用的</string>
++    <string name="UnifiedPushSettingsFragment__status">状态</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">轻按复制到剪贴板</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">服务器参数</string>
++    <string name="UnifiedPushSettingsFragment__account_id">账户 ID</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">测试配置</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">不久后应该会出现一则测试通知…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">缺少 MollySocket URL</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">未完成</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">无效的服务器响应</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">服务器拒绝了该账户 ID</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">无法创建已链接的设备</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">端点被服务器禁止</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">未安装 UnifiedPush 分发程序</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">你已达到 %d 台链接设备的上限。要链接你的 MollySocket 服务器，请先删除一台设备。</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">你的 UnifiedPush 端点已改变。你必须更新你的 MollySocket 连接。</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">注册 UnifiedPush 分发程序失败。这可能是由于网络问题或者分发程序缺少必要条件。</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">这是来自 MollySocket 服务器的测试通知。</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">在 \'%s\' 没找到 MollySocket 服务器</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">遇到网络错误。请再试。</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket 服务器</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">物理隔离</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">正等待 UnifiedPush 分发程序响应</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">未选择分发程序</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">你的 MollySocket 注册不再有效。请删除已链接的设备并再次尝试注册。</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">你的账户被 MollySocket 账户拒绝。请检查服务器配置中允许的 UUID。</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">你的推送服务器被 MollySocket 服务器拒绝。请检查服务器配置中允许的端点。</string>
++    <string name="MollySocketLink_scan_the_qr_code">扫描展示在 MollySocket 服务器主页上或者控制台中的二维码。</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">尝试扫描包含另一张 MollySocket 二维码的图片。</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">分发者应用</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">轻按从 MollySocket 请求一则测试通知</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">正等待来自 MollySocket 服务器的确认</string>
++</resources>
+diff --git a/app/src/main/res/values/strings2.xml b/app/src/main/res/values/strings2.xml
+new file mode 100644
+index 00000000000..52d39c6f9c2
+--- /dev/null
++++ b/app/src/main/res/values/strings2.xml
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <string name="mollysocket_setup_url" translatable="false">https://github.com/mollyim/mollysocket</string>
++    <string name="NotificationsSettingsFragment__push_notifications">Push notifications</string>
++    <string name="NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications">Select your preferred service for push notifications. If unavailable, the app will automatically use WebSocket to ensure notifications are delivered.</string>
++    <string name="NotificationsSettingsFragment__delivery_service">Delivery service</string>
++    <string name="NotificationsSettingsFragment__configure_unifiedpush">Configure UnifiedPush</string>
++    <string name="NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server">To use UnifiedPush, you need access to a MollySocket server to link your Signal account.\n\nStart by scanning the QR code provided by your server.</string>
++    <string name="NotificationsSettingsFragment__mollysocket_server">MollySocket server</string>
++    <string name="NotificationsSettingsFragment__not_selected">Not selected</string>
++    <string name="UnifiedPushSettingsFragment__none_available">None available</string>
++    <string name="UnifiedPushSettingsFragment__distributor_app">Distributor app</string>
++    <string name="UnifiedPushSettingsFragment__status">Status</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_copy_to_clipboard">Tap to copy to clipboard</string>
++    <string name="UnifiedPushSettingsFragment__server_parameters">Server parameters</string>
++    <string name="UnifiedPushSettingsFragment__account_id">Account ID</string>
++    <string name="UnifiedPushSettingsFragment__test_configuration">Test configuration</string>
++    <string name="UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket">Tap to request a test notification from MollySocket</string>
++    <string name="UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments">A test notification should appear in a few moments…</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing">Missing MollySocket URL</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_pending">Pending</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_air_gapped_pending">Waiting for confirmation from the MollySocket server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_bad_response">Invalid response from server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_uuid">The account ID is refused by the server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_linked_device_error">Unable to create the linked device</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_missing_endpoint">Waiting for UnifiedPush distributor response</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_forbidden_endpoint">The endpoint is forbidden by the server</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_no_distributor">No UnifiedPush distributor installed</string>
++    <string name="UnifiedPushSettingsFragment__status_summary_distributor_not_selected">No distributor app selected</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_device_limit_hit">You\'ve reached the limit of %d linked devices. To link your MollySocket server, please remove a device first.</string>
++    <string name="UnifiedPushNotificationBuilder__endpoint_changed_air_gapped">Your UnifiedPush endpoint has changed. You must update your connection on MollySocket.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_password">Your registration on MollySocket is no longer valid. Please remove the linked device and try registering again.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid">Your account was refused by the MollySocket server. Please check the allowed UUIDs in the server configuration.</string>
++    <string name="UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint">Your push server was refused by the MollySocket server. Please check the permitted endpoints in the server configuration.</string>
++    <string name="UnifiedPushNotificationBuilder__registration_failed">Registration with your UnifiedPush distributor failed. This could be due to a network issue or a missing requirement from your distributor.</string>
++    <string name="UnifiedPushNotificationBuilder__this_is_a_test_notification">This is a test notification from the MollySocket server.</string>
++    <string name="NotificationDeliveryMethod__unifiedpush" translatable="false">UnifiedPush</string>
++    <string name="NotificationDeliveryMethod__fcm" translatable="false">FCM (Google Play Services)</string>
++    <string name="NotificationDeliveryMethod__websocket" translatable="false">WebSocket</string>
++    <string name="MollySocketLink_scan_the_qr_code">"Scan the QR code displayed on your MollySocket server's homepage or in the console.</string>
++    <string name="MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code">Try scanning another image containing a MollySocket QR code.</string>
++    <string name="MollySocketLink_mollysocket_server_not_found_at_s">MollySocket server not found at \'%s\'</string>
++    <string name="MollySocketLink_experienced_a_network_error_please_try_again">Experienced a network error. Please try again.</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server">MollySocket server</string>
++    <string name="UnifiedPushSettingsFragment__mollysocket_server_air_gapped">Air gapped</string>
++</resources>
+-- 
+2.52.0
+

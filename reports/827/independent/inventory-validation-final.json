@@ -1,0 +1,38 @@
+{
+  "status": "PASS",
+  "full_diff_records": 3171,
+  "full_diff_matches_git": true,
+  "historical_inventory_paths": 80,
+  "current_manifest": {
+    "full_file_parity_paths": 12,
+    "integration_files": 8,
+    "anchored_fragments": 12,
+    "adaptation_paths": 62,
+    "added_target_absent_paths": 1,
+    "build_validation_overlay_paths": 0,
+    "current_manifest_paths": 83,
+    "current_target_diff_paths": 81,
+    "current_paths_outside_target_diff": 2,
+    "historical_target_paths": 80
+  },
+  "full_tree_class_counts": {
+    "unresolved": 2958,
+    "selected_unifiedpush": 77,
+    "other_molly_functionality": 2,
+    "verified_upstream_backport": 1,
+    "other_branding_target_change": 130,
+    "selected_branding": 3
+  },
+  "validated_exact_files": 12,
+  "validated_anchor_fragments": 12,
+  "validated_adaptation_paths": 62,
+  "adaptation_hunk_rows": 86,
+  "validated_added_paths": 1,
+  "validated_overlay_paths": 0,
+  "current_series_ledger_paths": 83,
+  "sha256": {
+    "full_tree_classification": "c7bdadf85ebec702d52eabb04fa94b74e91e24577b2ef0ae4b071ab43b1f9551",
+    "feature_inventory": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f",
+    "selected_hunks": "d11c277b2e5f35e9955c2b7e05a014a8f49884cf2c2cd0d5d1305113394abb63"
+  }
+}

@@ -1,0 +1,1 @@
+result_dir=/workspace/work/p2-instrumentation-followup/results/run-20261024T050903Z

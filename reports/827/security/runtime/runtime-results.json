@@ -1,0 +1,116 @@
+{
+  "schema_version": 1,
+  "candidate": {
+    "repository": "Molly Android",
+    "tree_sha": "24a27bf3ddf2f23593f5a11e3230b66b335bc2a3",
+    "tested_benchmark_apk": {
+      "path": "private build artifact omitted; SHA-256 retained",
+      "sha256": "d9f862681bd0afc44cc147f49a82c7480eb899176631ec90934e4f645abca434",
+      "bytes": 109315014
+    },
+    "preserved_independent_copy": {
+      "path": "private unbundled copy omitted; SHA-256 retained",
+      "sha256": "d9f862681bd0afc44cc147f49a82c7480eb899176631ec90934e4f645abca434",
+      "bytes": 109315014,
+      "published_or_bundled": false,
+      "included": false
+    }
+  },
+  "runtime_image": {
+    "api_level": 30,
+    "sdk_package": "system-images;android-30;default;x86_64",
+    "source": "https://dl.google.com/android/repository/sys-img/android/x86_64-30_r11.zip",
+    "private_sparse_image_removed_after_test": true,
+    "image_archive_sha256": "8d591034a4244a920d7a3ec274bb1734dd6474a3d8c11d0fce902010db3a13aa",
+    "system_image_sha256": "27038e8e516c98878fb9d392b87232ce3adbd9fc175421c979aed392963996d1"
+  },
+  "probe_artifacts": {
+    "runner_apk": {
+      "path": "runner APK omitted; source retained",
+      "sha256": "80779eb404d34d03af83a3441ea50db38ac93a4859e32e566ff6fd23f751efdf"
+    },
+    "fake_distributor_apk": {
+      "path": "fake APK omitted; fixture source retained",
+      "sha256": "56edc9642a3622b3c71b7941c8494853d82095d9671c0452326930474d3abd1b",
+      "internet_permission": false,
+      "included": false
+    }
+  },
+  "final_run": {
+    "run_id": "run-20261024T050903Z",
+    "device": "emulator-5560",
+    "phases": {
+      "seed": {
+        "result": "PASS",
+        "instrumentation_code": 0,
+        "failures": [],
+        "checks": [
+          "benchmark synthetic app unlocked",
+          "delivery enum roundtrip",
+          "preferred-method fallback",
+          "UnifiedPush backup exclusion",
+          "synthetic clipboard payloads",
+          "local REGISTER/NEW_ENDPOINT (fake distributor; no network)",
+          "fake distributor REGISTER and NEW_ENDPOINT",
+          "fake MESSAGE callback",
+          "fake distributor MESSAGE and test notification"
+        ],
+        "raw_bundle_log": "raw/seed.txt",
+        "raw_bundle_log_sha256": "24ceae42f2845d64bde70b63e5ac66a34b0ddf0d09e2e4356ddd4e994724e29e"
+      },
+      "restart": {
+        "result": "PASS",
+        "instrumentation_code": 0,
+        "failures": [],
+        "checks": [
+          "benchmark synthetic app unlocked after process restart",
+          "connector token persisted across target process restart",
+          "fake MESSAGE callback after process restart",
+          "fake distributor MESSAGE after process restart",
+          "unsolicited local UNREGISTERED callback and public API cleanup",
+          "fake distributor UNREGISTER and endpoint removal",
+          "actual UnifiedPushRefreshJob missing-VAPID transition (no endpoint request)",
+          "refresh-job transition to WebSocket availability",
+          "restore test-only target state"
+        ],
+        "raw_bundle_log": "raw/restart.txt",
+        "raw_bundle_log_sha256": "29d73cbcac6666e239fb684cad126346c0430813fa65cd482e2afca0ad146ffb"
+      }
+    },
+    "scope": "Synthetic local-only Android instrumentation; fake distributor REGISTER/NEW_ENDPOINT and MESSAGE/UNREGISTERED flows, target receiver and notification, process restart persistence, clipboard behavior, preference policy, and injected missing-VAPID refresh fallback.",
+    "limits": [
+      "No live Signal account registration, MollySocket registration, real distributor, or remote push delivery was exercised.",
+      "Android 13+ sensitive clipboard metadata was not tested; this emulator is API 30.",
+      "Missing-VAPID refresh-job state was explicitly synthetic and took the early-return path before endpoint/network requests.",
+      "No real credentials or user account data were used."
+    ]
+  },
+  "network_isolation": {
+    "observed": "Airplane mode enabled; Wi-Fi and mobile data disabled by the probe driver; only emulator-local 10.0.2.0/24 route; IPv4 and IPv6 OUTPUT default DROP.",
+    "evidence": [
+      "raw/ip-route.txt",
+      "raw/ip4-output.txt",
+      "raw/ip6-output.txt"
+    ],
+    "external_firewall_driver_logs": "Original run also retained firewall setup and iptables outputs outside this repository; not bundled."
+  },
+  "earlier_harness_failures": [
+    {
+      "evidence": "not bundled; harness diagnosis summarized here",
+      "result": "FAIL",
+      "classification": "Harness/fixture failure, not a candidate finding: freshly installed fake distributor had not been launched, so REGISTER/NEW_ENDPOINT did not complete; a null fixture token then prevented the message step. Corrected by a one-shot BootstrapActivity and target-owned checkpoint prefs; the subsequent clean run passed.",
+      "sha256": "c49a271f64f56336747f02f19788af5aefa2ce601d64d2dda14a1678c0032625"
+    },
+    {
+      "evidence": "not bundled; interruption transcripts summarized here",
+      "result": "INTERRUPTED",
+      "classification": "Earlier attempts were disrupted by overlapping instrumentation/UI commands or QEMU SIGKILL/device loss; they are not candidate failures and are separate from the final clean passing run."
+    }
+  ],
+  "cleanup": {
+    "emulator_shutdown": "Emulator stopped after run.",
+    "private_artifacts_removed": true,
+    "note": "Original cleanup transcript is external and omitted; no APKs or emulator images are included."
+  },
+  "provenance_note": "This is historical runtime evidence for candidate tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3 and benchmark APK SHA-256 d9f862681bd0afc44cc147f49a82c7480eb899176631ec90934e4f645abca434. It does not validate subsequent source changes in this worktree."
+}

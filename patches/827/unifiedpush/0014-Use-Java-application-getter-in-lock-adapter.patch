@@ -1,0 +1,25 @@
+From af892a60b24c5796db3b29c387c19dc2c7fec4d9 Mon Sep 17 00:00:00 2001
+From: Codex Local Research <codex-local@example.invalid>
+Date: Wed, 21 Oct 2026 02:37:58 +0000
+Subject: [PATCH 14/16] Use Java application getter in lock adapter
+
+---
+ .../org/thoughtcrime/securesms/service/KeyCachingService.java   | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/KeyCachingService.java b/app/src/main/java/org/thoughtcrime/securesms/service/KeyCachingService.java
+index adc3a64a05e..f6e0f236dd8 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/KeyCachingService.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/KeyCachingService.java
+@@ -84,7 +84,7 @@ public class KeyCachingService extends Service {
+ 
+   /** Baseline-compatible lock-state adapter for push receivers. */
+   public static synchronized boolean isLocked() {
+-    return isLocked(AppDependencies.application);
++    return isLocked(AppDependencies.getApplication());
+   }
+ 
+   public static synchronized boolean isLocked(Context context) {
+-- 
+2.52.0
+
