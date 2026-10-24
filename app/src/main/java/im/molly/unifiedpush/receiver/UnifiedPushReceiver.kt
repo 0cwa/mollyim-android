@@ -140,6 +140,10 @@ class UnifiedPushReceiver : MessagingReceiver() {
   private fun refreshEndpoint(endpoint: String?): Boolean {
     val stored = SignalStore.unifiedpush.endpoint
     return if (endpoint != stored) {
+      if (endpoint != null && SignalStore.unifiedpush.registrationStatus == RegistrationStatus.REGISTERED) {
+        // Keep the old server registration unavailable until the updated endpoint is confirmed.
+        SignalStore.unifiedpush.registrationStatus = RegistrationStatus.PENDING
+      }
       SignalStore.unifiedpush.endpoint = endpoint
       AppDependencies.jobManager.add(UnifiedPushRefreshJob(testPing = false, fromNewEndpoint = true))
       true

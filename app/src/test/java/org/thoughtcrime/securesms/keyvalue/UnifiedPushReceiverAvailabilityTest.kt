@@ -3,6 +3,9 @@ package org.thoughtcrime.securesms.keyvalue
 import android.app.Application
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
+import im.molly.unifiedpush.MollySocketRepository
+import im.molly.unifiedpush.UnifiedPushDistributor
+import im.molly.unifiedpush.model.LinkStatus
 import im.molly.unifiedpush.model.MollySocketDevice
 import im.molly.unifiedpush.model.RegistrationStatus
 import im.molly.unifiedpush.receiver.UnifiedPushReceiver
@@ -10,15 +13,19 @@ import io.mockk.Runs
 import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.just
+import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.mockkStatic
+import io.mockk.slot
 import io.mockk.spyk
 import io.mockk.unmockkAll
 import io.mockk.verify
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
-import org.junit.After
+import org.junit.Assert.fail
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -26,11 +33,16 @@ import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.thoughtcrime.securesms.dependencies.AppDependencies
 import org.thoughtcrime.securesms.gcm.FcmFetchManager
+import org.thoughtcrime.securesms.jobmanager.Job
+import org.thoughtcrime.securesms.jobmanager.JobManager
+import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob
 import org.thoughtcrime.securesms.service.KeyCachingService
 import org.thoughtcrime.securesms.util.TextSecurePreferences
 import org.unifiedpush.android.connector.FailedReason
 import org.unifiedpush.android.connector.UnifiedPush
+import org.unifiedpush.android.connector.data.PushEndpoint
 import org.unifiedpush.android.connector.data.PushMessage
+import java.io.IOException
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
@@ -144,6 +156,78 @@ class UnifiedPushReceiverAvailabilityTest {
     verify(exactly = 1) { UnifiedPush.forceRemoveDistributor(context) }
     verify(exactly = 1) { AppDependencies.resetNetwork() }
     verify(exactly = 1) { AppDependencies.startNetwork() }
+  }
+
+  @Test
+  fun `unlocked changed endpoint falls back when refresh fails`() {
+    seedRegisteredState()
+    val jobManager = mockk<JobManager>(relaxed = true)
+    val queuedJob = slot<Job>()
+    every { AppDependencies.jobManager } returns jobManager
+    every { jobManager.add(capture(queuedJob)) } just Runs
+    every { KeyCachingService.isLocked() } returns false
+
+    values.vapidPublicKey = "fixture-vapid"
+    values.mollySocketUrl = "https://molly.invalid/"
+    values.airGapped = false
+    values.vapidKeySynced = true
+    store.blockUntilAllWritesFinished()
+    storage.startRecording()
+    val endpoint = mockk<PushEndpoint>()
+    every { endpoint.url } returns "new-endpoint"
+
+    UnifiedPushReceiver().onNewEndpoint(context, endpoint, "instance")
+    store.blockUntilAllWritesFinished()
+
+    assertEquals(RegistrationStatus.PENDING, values.registrationStatus)
+    assertFalse(account.pushAvailable)
+    assertEquals("new-endpoint", values.endpoint)
+    assertTrue(queuedJob.captured is UnifiedPushRefreshJob)
+
+    val registeredAccount = mockk<AccountValues>(relaxed = true)
+    every { registeredAccount.isRegistered } returns true
+    every { SignalStore.account } returns registeredAccount
+    mockkObject(UnifiedPushDistributor)
+    every { UnifiedPushDistributor.checkIfActive() } returns true
+    mockkObject(MollySocketRepository)
+    every { MollySocketRepository.getDeviceStatus(any()) } returns LinkStatus.LINKED
+    val serverException = IOException("fixture MollySocket unavailable")
+    every {
+      MollySocketRepository.registerDeviceOnServer(any(), any(), any(), any())
+    } throws serverException
+
+    try {
+      (queuedJob.captured as UnifiedPushRefreshJob).onRun()
+      fail("Expected the simulated MollySocket request to fail")
+    } catch (error: IOException) {
+      // Expected: a failed refresh must leave UnifiedPush unavailable.
+      assertSame(serverException, error)
+    }
+
+    assertEquals(RegistrationStatus.UNKNOWN, values.registrationStatus)
+    assertFalse(account.pushAvailable)
+    assertEquals(MollySocketDevice(17, "fixture-password"), values.device)
+    verify(exactly = 1) { AppDependencies.resetNetwork() }
+    verify(exactly = 1) { AppDependencies.startNetwork() }
+    verify(exactly = 1) { MollySocketRepository.registerDeviceOnServer(any(), any(), any(), any()) }
+  }
+
+  @Test
+  fun `unlocked same endpoint does not change registration or schedule refresh`() {
+    seedRegisteredState()
+    val jobManager = mockk<JobManager>(relaxed = true)
+    every { AppDependencies.jobManager } returns jobManager
+    every { KeyCachingService.isLocked() } returns false
+    val endpoint = mockk<PushEndpoint>()
+    every { endpoint.url } returns "old-endpoint"
+
+    UnifiedPushReceiver().onNewEndpoint(context, endpoint, "instance")
+
+    assertEquals(RegistrationStatus.REGISTERED, values.registrationStatus)
+    assertTrue(account.pushAvailable)
+    verify(exactly = 0) { jobManager.add(any()) }
+    verify(exactly = 0) { AppDependencies.resetNetwork() }
+    verify(exactly = 0) { AppDependencies.startNetwork() }
   }
 
   @Test
