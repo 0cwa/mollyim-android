@@ -9,29 +9,51 @@
   "findings": [
     {
       "id": "F4",
-      "status": "FIXED_PENDING_TEST_EXECUTION",
+      "status": "FIXED_TESTED_PASS",
       "summary": "Locked endpoint changes and distributor removal previously left registered availability stale; unregister with a null endpoint could also skip invalidation.",
       "change": "Receiver callbacks set registrationStatus to UNKNOWN and restart the network when a REGISTERED state is invalidated. Locked paths do not access endpoint/device/VAPID values. The unlocked unregister path invalidates state even when refreshEndpoint(null) would be a no-op.",
       "test": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
+      "test_result": {
+        "status": "PASS",
+        "tests": 7,
+        "failures": 0,
+        "command": "./gradlew --offline --no-daemon --max-workers=1 --dependency-verification=strict :Signal-Android:testPlayStagingDebugUnitTest --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest",
+        "log": "reports/827/build/testPlayStagingDebug-focused-appdeps-static-final-20261024.log",
+        "xml": "reports/827/build/focused-test-results/TEST-org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest.xml",
+        "test_source_sha256": "5453b2469b7aa56fd5c8d131f8ff6619bb9680eb282861f0836bdb89e9a0b1d4"
+      },
       "historical_runtime": "PASS on API 30 for synthetic refresh-job missing-VAPID fallback on tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3; predates this fix and does not validate locked callbacks."
     },
     {
       "id": "F5",
-      "status": "PARTIALLY_ADDRESSED",
-      "summary": "Stale availability after registration failure is now invalidated; retry cadence and duplicate network restarts remain source-reviewed only.",
-      "evidence": "UnifiedPushRefreshJob uses a six-hour lifespan, maximum three attempts, and maximum two factory instances. No live failure/recovery server test ran."
+      "status": "FIXED_FOCUSED_TEST_PASS_LIVE_SERVER_UNVERIFIED",
+      "summary": "Inherited endpoint-rotation bug: changing a registered endpoint could leave availability REGISTERED if MollySocket rejected the update. The callback now sets PENDING before enqueue; the existing IOException path sets UNKNOWN.",
+      "evidence": "The same callback and failure behavior exists in the pinned Molly target (source-reviewed); this patch fixes that inherited behavior. No deployed/live MollySocket or HTTP retry timing was exercised.",
+      "change": "On changed non-null endpoint, REGISTERED is invalidated to PENDING before the refresh job is queued. The actual refresh-job callback test injects a specific IOException from the MollySocket repository boundary and verifies UNKNOWN, pushAvailable=false, and one registration attempt. Same-endpoint updates remain idempotent.",
+      "test": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
+      "test_result": {
+        "status": "PASS",
+        "tests": 9,
+        "failures": 0,
+        "scope": "9 receiver security/availability tests (including actual endpoint callback + refresh job IOException path and same-endpoint idempotence) plus 16 URI validation tests; 25 total.",
+        "log": "reports/827/build/testPlayStagingDebug-focused-f5-2g-20261024.log",
+        "receiver_source_sha256": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
+        "formatted_test_source_sha256": "f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252",
+        "note": "Focused run used identical test body before import-only ktlint formatting; official ktlint passed after formatting. Full staging suite remains pending."
+      },
+      "retry_limits": "Refresh jobs remain capped at three attempts and six hours with at most two factory instances; retry cadence and live recovery are source-reviewed only."
     },
     {
       "id": "F6_RECEIVER_AUTH",
-      "status": "BOUNDED_TRUST_DEPENDENCY",
+      "status": "BOUNDED_TRUST_DEPENDENCY_TESTED_PASS",
       "summary": "The app receiver is exported without a signature permission; connector 3.0.10 gates callbacks on a stored registration token mapped to an instance, but does not authenticate the sender package.",
-      "evidence": "Compiled MessagingReceiver.onReceive bytecode retained in runtime/network-contracts/MessagingReceiverImpl.javap.txt and connector-classes.jar."
+      "evidence": "Compiled MessagingReceiver.onReceive bytecode retained in runtime/network-contracts/MessagingReceiverImpl.javap.txt and connector-classes.jar; Robolectric missing/unknown token cases passed in the focused receiver suite."
     },
     {
       "id": "F6_LOCK_PRIVACY",
-      "status": "SOURCE_REVIEWED",
+      "status": "TESTED_PASS_WITH_BOUNDED_PAYLOAD_CASES",
       "summary": "Locked push handling can post only a generic may-have-messages notice, guarded by the existing preference. It does not deserialize or display protected contents.",
-      "evidence": "UnifiedPushReceiver.onMessageLocked and FcmFetchManager.postMayHaveMessagesNotificationForLockedPush. Payload classification is substring-based and can misclassify malformed content."
+      "evidence": "UnifiedPushReceiver.onMessageLocked and FcmFetchManager.postMayHaveMessagesNotificationForLockedPush; Robolectric tests passed for urgent preference gating, malformed payload, and locked test payload. Payload classification is substring-based and can misclassify unexpected content."
     },
     {
       "id": "F7_LINK_ADAPTER",
@@ -59,9 +81,10 @@
     }
   ],
   "limitations": [
-    "F4 regression tests have not yet completed in Gradle.",
+    "The new receiver regression tests cover local callback and connector behavior; they do not exercise physical-device delivery.",
     "No live Signal account, Signal service, MollySocket, or real UnifiedPush distributor was used.",
     "Android 13+ clipboard metadata and physical-device notification behavior were not tested.",
-    "Historical API 30 runtime evidence belongs to tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3, before the current source fix."
+    "Historical API 30 runtime evidence belongs to tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3, before the current source fix.",
+    "The callback tests model Signal UI passphrase locking; Signal KeyValueStore remains accessible. They do not model Molly encrypted database/master-secret locking or prove end-to-end lock hardening or protected-credential erasure."
   ]
 }

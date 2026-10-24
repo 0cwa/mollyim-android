@@ -6,7 +6,7 @@
     "unifiedpush",
     "build-validation"
   ],
-  "patch_count": 20,
+  "patch_count": 22,
   "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
   "resolved_upstream_sources": [
     {
@@ -107,6 +107,6 @@
     }
   ],
   "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
-  "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
   "message": "Manifest, full patch checksums, dependency order, and mailbox source provenance verified."
 }

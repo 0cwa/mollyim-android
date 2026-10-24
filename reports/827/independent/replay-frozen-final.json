@@ -1,0 +1,55 @@
+{
+  "status": "PASS",
+  "runs": [
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/work/p2-integration/candidate15-replay-1/tools/827/replay.py",
+        "--repo",
+        "/workspace/work/p2-integration/candidate15-replay-1",
+        "--manifest",
+        "/workspace/work/p2-integration/candidate15-replay-1/patches/827/series.yaml",
+        "--worktree",
+        "/tmp/codex-827-final-22patch-run-1",
+        "--report",
+        "reports/827/independent/replay-frozen-final-run-1.json"
+      ],
+      "exit_code": 0,
+      "report": "reports/827/independent/replay-frozen-final-run-1.json",
+      "log": "reports/827/independent/replay-frozen-final-run-1.log",
+      "status": "PASS",
+      "tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+      "expected_tree_match": true,
+      "error": null,
+      "git_am_failure": null
+    },
+    {
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+        "/workspace/work/p2-integration/candidate15-replay-1/tools/827/replay.py",
+        "--repo",
+        "/workspace/work/p2-integration/candidate15-replay-1",
+        "--manifest",
+        "/workspace/work/p2-integration/candidate15-replay-1/patches/827/series.yaml",
+        "--worktree",
+        "/tmp/codex-827-final-22patch-run-2",
+        "--report",
+        "reports/827/independent/replay-frozen-final-run-2.json"
+      ],
+      "exit_code": 0,
+      "report": "reports/827/independent/replay-frozen-final-run-2.json",
+      "log": "reports/827/independent/replay-frozen-final-run-2.log",
+      "status": "PASS",
+      "tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+      "expected_tree_match": true,
+      "error": null,
+      "git_am_failure": null
+    }
+  ],
+  "tree_sha_equal": true,
+  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "worktrees_preserved": [
+    "/tmp/codex-827-final-22patch-run-1",
+    "/tmp/codex-827-final-22patch-run-2"
+  ]
+}

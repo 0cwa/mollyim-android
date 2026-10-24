@@ -11,10 +11,12 @@ import subprocess
 import sys
 from pathlib import Path, PurePosixPath
 
+
 SHA = re.compile(r'^[a-f0-9]{40}$')
 HEX64 = re.compile(r'^[a-f0-9]{64}$')
 PINNED_SIGNAL_BASE = 'c47a74ba0961903eeaeda6d22347a990056c3e83'
 PINNED_MOLLY_TARGET = '0e202dda90785771ff8c87526eaaf30c655f54f3'
+ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', 'docs/827', 'patches/827', 'reports/827', 'tools/827'}
 MAILBOX_COMMIT = re.compile(rb'^From ([0-9a-f]{40}) ', re.M)
 SOURCE_COMMIT_FIELD = re.compile(rb'^Source-Commits?:\s*(.*)$', re.M)
 
@@ -71,6 +73,14 @@ def validate_manifest(manifest, root):
     version = manifest.get('schema_version')
     if version not in (1, 2):
         raise ReplayError('schema_version must be 1 or 2')
+    expected_application_commit = manifest.get('expected_application_commit')
+    if not isinstance(expected_application_commit, str) or not SHA.fullmatch(expected_application_commit):
+        raise ReplayError('expected_application_commit must be a full pinned commit SHA')
+    metadata_exclusions = manifest.get('metadata_exclusions')
+    if not isinstance(metadata_exclusions, list) or set(metadata_exclusions) != ALLOWED_METADATA_EXCLUSIONS:
+        raise ReplayError('metadata_exclusions must match the explicit #827 metadata path allowlist')
+    for excluded in metadata_exclusions:
+        validate_git_path(excluded, 'metadata exclusion')
     for key in ('signal_base', 'molly_expected'):
         if not isinstance(manifest.get(key), str) or not SHA.fullmatch(manifest[key]):
             raise ReplayError(f'{key} must be pinned full 40-hex commit SHA')
@@ -299,6 +309,8 @@ def conflict_markers(repo, paths):
 def run_replay(args):
     source = args.repo.resolve()
     root = args.manifest.resolve().parent
+    expected_application_commit = None
+    metadata_exclusions = None
     raw_worktree = args.worktree
     worktree = raw_worktree.absolute()
     if '..' in raw_worktree.parts:
@@ -318,11 +330,20 @@ def run_replay(args):
     except Exception as exc:
         raise ReplayError(f'cannot read manifest: {exc}')
     version, features = validate_manifest(manifest, root)
+    expected_application_commit = manifest['expected_application_commit']
+    metadata_exclusions = manifest['metadata_exclusions']
     for key in ('signal_base', 'molly_expected'):
         if git(source, 'cat-file', '-t', manifest[key]).stdout.strip() != 'commit':
             raise ReplayError(f'missing commit {key}: {manifest[key]}')
     if git(source, 'merge-base', '--is-ancestor', manifest['signal_base'], manifest['molly_expected'], check=False).returncode:
         raise ReplayError('Signal is not ancestor of expected Molly commit')
+    if git(source, 'cat-file', '-t', expected_application_commit, check=False).output.strip() != 'commit':
+        raise ReplayError(f'missing expected application source commit: {expected_application_commit}')
+    from source_tree import project_tree
+    expected_source_tree = project_tree(source, expected_application_commit, metadata_exclusions)
+    if expected_source_tree != manifest['expected_tree_sha']:
+        raise ReplayError('expected_tree_sha does not match projected expected_application_commit tree')
+    source_projection_tree = project_tree(source, 'HEAD', metadata_exclusions)
 
     for feature in manifest['features']:
         for patch in feature['patches']:
@@ -343,7 +364,11 @@ def run_replay(args):
     report = {
         'status': 'STARTED', 'schema_version': version,
         'signal_base': manifest['signal_base'], 'molly_expected': manifest['molly_expected'],
-        'worktree': str(worktree), 'expected_tree_sha': manifest.get('expected_tree_sha'), 'features': [], 'warnings': [
+        'worktree': str(worktree), 'expected_tree_sha': manifest.get('expected_tree_sha'),
+        'expected_application_commit': manifest['expected_application_commit'],
+        'source_head_sha': git(source, 'rev-parse', 'HEAD').output.strip(),
+        'source_projected_tree_sha': source_projection_tree,
+        'metadata_exclusions': manifest['metadata_exclusions'], 'features': [], 'warnings': [
             'Full parity is checked only on declared parity_paths; this is not full application or APK equivalence.'
         ],
         'original_A2_4': 'REVISED' if (has_integrations or has_adaptations) else 'FULL_DECLARED_PATH_PARITY',
@@ -366,7 +391,11 @@ def run_replay(args):
                 if actual != patch_info['sha256']:
                     raise ReplayError(f'patch changed after validation: {patch_info["file"]}')
                 log_path = log_dir / f'{feature["id"]}-{index:02d}.git-am.log'
-                cmd = git(worktree, '-c', 'core.hooksPath=/dev/null', 'am', '--3way', str(patch),
+                cmd = git(worktree, '-c', 'core.hooksPath=/dev/null',
+                          '-c', 'user.name=Molly Replay Tool',
+                          '-c', 'user.email=molly-replay-tool@example.invalid',
+                          '-c', 'commit.gpgSign=false',
+                          'am', '--committer-date-is-author-date', '--3way', str(patch),
                           check=False, env=safe_env, binary=True)
                 log_data = cmd.stdout
                 log_path.write_bytes(log_data)
@@ -375,6 +404,9 @@ def run_replay(args):
                     'full_log_sha256': hashlib.sha256(log_data).hexdigest()})
                 if cmd.returncode:
                     report['status'] = 'PATCH_FAILED'
+                    log_text = log_data.decode('utf-8', errors='replace')
+                    report['git_am_failure'] = {'patch': patch_info['file'], 'log_path': str(log_path),
+                                                'log_tail': log_text.splitlines()[-40:]}
                     raise ReplayError(f'Patch failed: {patch_info["file"]} (worktree left for inspection; git am --abort before cleanup)')
             feature_changes = named_paths(worktree, previous_head, 'HEAD')
             record['changed_paths'] = feature_changes
@@ -385,6 +417,7 @@ def run_replay(args):
                 raise ReplayError(f'Feature {feature["id"]} changed unowned paths: {feature_unowned}')
         report['tree_sha'] = git(worktree, 'rev-parse', 'HEAD^{tree}').output.strip()
         report['expected_tree_match'] = (report['tree_sha'] == manifest['expected_tree_sha']) if manifest.get('expected_tree_sha') else None
+        report['source_projection_match'] = report['source_projected_tree_sha'] == report['tree_sha']
         changed = named_paths(worktree, manifest['signal_base'], 'HEAD')
         report['changed_paths'] = changed
         scopes = [scope for feature in features for scope in feature['scopes']]
@@ -492,6 +525,7 @@ def run_replay(args):
         passed = (not unowned and not report['whitespace_check'] and not report['unmerged_index_entries']
                   and not report['conflict_markers']
                   and report['expected_tree_match'] is not False
+                  and report['source_projection_match']
                   and all(item['pass'] for item in full_parity.values())
                   and all(item['pass'] for item in fragment_results)
                   and all(item['pass'] for item in added_results)

@@ -7,5 +7,19 @@
   "final_source_head": "0e34c904f72fb899947967e5d2b37f78ca71b70e",
   "final_source_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
   "final_replayed_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
-  "final_two_replay_worktrees_removed": true
+  "final_two_replay_worktrees_removed": true,
+  "current_handoff_head": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
+  "current_checkout_tree": "ec319dffdb59f26d77a05fa93132194ea515a97a",
+  "current_source_projection": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "current_replay_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "feature_source_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "feature_source_projected_tree": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "latest_replay_tree": "461f3c200d4a15cc1ea1475851c882f3f810ed6b",
+  "focused_f4_tests": "7_pass_0_fail",
+  "focused_uri_tests": "16_pass_0_fail",
+  "final_replay_tree": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "receiver_tests_passed": 9,
+  "uri_tests_passed": 16,
+  "resource_elements_matched": 1242,
+  "unrelated_resource_xml_unchanged": 112
 }

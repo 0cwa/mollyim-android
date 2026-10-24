@@ -1,0 +1,70 @@
+From 908db1de74a9937c2b9bc1a0f4ac446f8faef914 Mon Sep 17 00:00:00 2001
+From: Molly PoC Coordinator <poc@example.invalid>
+Date: Sat, 24 Oct 2026 15:24:13 +0000
+Subject: [PATCH] Correct static mocks in UnifiedPush regression tests
+
+---
+ .../UnifiedPushReceiverAvailabilityTest.kt      | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt b/app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt
+index d75601375ae..9731e2a90a4 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt
++++ b/app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt
+@@ -6,22 +6,22 @@ import androidx.test.core.app.ApplicationProvider
+ import im.molly.unifiedpush.model.MollySocketDevice
+ import im.molly.unifiedpush.model.RegistrationStatus
+ import im.molly.unifiedpush.receiver.UnifiedPushReceiver
++import io.mockk.Runs
++import io.mockk.clearMocks
+ import io.mockk.every
+ import io.mockk.just
+ import io.mockk.mockkObject
+ import io.mockk.mockkStatic
+-import io.mockk.Runs
+ import io.mockk.spyk
+-import io.mockk.clearMocks
+ import io.mockk.unmockkAll
+ import io.mockk.verify
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertTrue
+ import org.junit.After
+ import org.junit.Before
+ import org.junit.Test
+ import org.junit.runner.RunWith
+-import org.junit.Assert.assertEquals
+-import org.junit.Assert.assertFalse
+-import org.junit.Assert.assertTrue
+ import org.robolectric.RobolectricTestRunner
+ import org.robolectric.annotation.Config
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+@@ -50,14 +50,14 @@ class UnifiedPushReceiverAvailabilityTest {
+     store = KeyValueStore(storage)
+     values = spyk(UnifiedPushValues(store))
+     account = AccountValues(store, context)
+-    mockkStatic(SignalStore::class)
++    mockkObject(SignalStore)
+     every { SignalStore.unifiedpush } returns values
+     mockkStatic(KeyCachingService::class)
+     every { KeyCachingService.isLocked() } returns true
+-    mockkObject(AppDependencies)
++    mockkStatic(AppDependencies::class)
+     every { AppDependencies.resetNetwork() } just Runs
+     every { AppDependencies.startNetwork() } just Runs
+-    mockkObject(UnifiedPush)
++    mockkStatic(UnifiedPush::class)
+     every { UnifiedPush.forceRemoveDistributor(any()) } just Runs
+     mockkObject(FcmFetchManager)
+     every { FcmFetchManager.postMayHaveMessagesNotificationForLockedPush(any()) } just Runs
+@@ -196,6 +196,7 @@ class UnifiedPushReceiverAvailabilityTest {
+     values.registrationStatus = RegistrationStatus.REGISTERED
+     values.endpoint = "old-endpoint"
+     values.device = MollySocketDevice(17, "fixture-password")
++    account.fcmEnabled = false
+     assertTrue(values.isAvailableOrAirGapped)
+     assertTrue(account.pushAvailable)
+     store.blockUntilAllWritesFinished()
+-- 
+2.52.0
+

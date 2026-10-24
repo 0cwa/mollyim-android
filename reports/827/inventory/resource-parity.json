@@ -1,0 +1,303 @@
+{
+  "status": "PASS",
+  "method": "Compare named XML elements in pinned Signal baseline, pinned Molly target, and the manifest-pinned projected app tree. Candidate deltas must be a subset of target deltas with identical canonical tag/attributes/text/child markup; all other baseline value XML files remain byte-identical to Signal.",
+  "revisions": {
+    "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+    "molly_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+    "application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+    "projected_tree": "26956e0f159c0b60719d4a20667aeef8913fa365"
+  },
+  "manifest_owned_resource_paths": 33,
+  "changed_resource_paths": 33,
+  "candidate_changed_elements": 1242,
+  "manifest_owned_changed_resource_keys": 1242,
+  "manifest_owned_resource_key_set_sha256": "77d2347e80966b3dd9d82852407d853c3109c0b316d08c5bc3e9fe33e94276d5",
+  "pinned_target_element_matches": 1242,
+  "unique_selected_resource_names": 46,
+  "selected_resource_names": [
+    "MollySocketLink_experienced_a_network_error_please_try_again",
+    "MollySocketLink_mollysocket_server_not_found_at_s",
+    "MollySocketLink_scan_the_qr_code",
+    "MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code",
+    "NotificationDeliveryMethod__fcm",
+    "NotificationDeliveryMethod__unifiedpush",
+    "NotificationDeliveryMethod__websocket",
+    "NotificationsSettingsFragment__configure_unifiedpush",
+    "NotificationsSettingsFragment__delivery_service",
+    "NotificationsSettingsFragment__mollysocket_server",
+    "NotificationsSettingsFragment__new_activity_while_locked",
+    "NotificationsSettingsFragment__not_selected",
+    "NotificationsSettingsFragment__push_notifications",
+    "NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked",
+    "NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications",
+    "NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush",
+    "NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server",
+    "UnifiedPushNotificationBuilder__endpoint_changed_air_gapped",
+    "UnifiedPushNotificationBuilder__mollysocket_device_limit_hit",
+    "UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint",
+    "UnifiedPushNotificationBuilder__mollysocket_forbidden_password",
+    "UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid",
+    "UnifiedPushNotificationBuilder__registration_failed",
+    "UnifiedPushNotificationBuilder__this_is_a_test_notification",
+    "UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments",
+    "UnifiedPushSettingsFragment__account_id",
+    "UnifiedPushSettingsFragment__distributor_app",
+    "UnifiedPushSettingsFragment__mollysocket_server",
+    "UnifiedPushSettingsFragment__mollysocket_server_air_gapped",
+    "UnifiedPushSettingsFragment__none_available",
+    "UnifiedPushSettingsFragment__server_parameters",
+    "UnifiedPushSettingsFragment__status",
+    "UnifiedPushSettingsFragment__status_summary_air_gapped_pending",
+    "UnifiedPushSettingsFragment__status_summary_bad_response",
+    "UnifiedPushSettingsFragment__status_summary_distributor_not_selected",
+    "UnifiedPushSettingsFragment__status_summary_forbidden_endpoint",
+    "UnifiedPushSettingsFragment__status_summary_forbidden_uuid",
+    "UnifiedPushSettingsFragment__status_summary_linked_device_error",
+    "UnifiedPushSettingsFragment__status_summary_missing_endpoint",
+    "UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing",
+    "UnifiedPushSettingsFragment__status_summary_no_distributor",
+    "UnifiedPushSettingsFragment__status_summary_pending",
+    "UnifiedPushSettingsFragment__tap_to_copy_to_clipboard",
+    "UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket",
+    "UnifiedPushSettingsFragment__test_configuration",
+    "mollysocket_setup_url"
+  ],
+  "unrelated_baseline_elements_preserved": 0,
+  "unrelated_baseline_xml_files_checked": 112,
+  "unrelated_baseline_xml_files_unchanged": 112,
+  "candidate_delta_outside_target_delta": 0,
+  "value_mismatches": 0,
+  "files": [
+    {
+      "path": "app/src/main/res/values-ar/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9adadee0af86799e064cdb46631eb6ea7f3bb44b93f5394be0eae54aaacf2d96"
+    },
+    {
+      "path": "app/src/main/res/values-bs/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9bcc095afa93df5884ab4fad2ff58c11cdbb4c63863d352af0db7be5873ff44a"
+    },
+    {
+      "path": "app/src/main/res/values-ca/strings2.xml",
+      "candidate_changed_elements": 4,
+      "pinned_target_matches": 4,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "ebc33275af3eb3838b86a808f18681ef443e202a8c965f1e38ec01a3d967ec36"
+    },
+    {
+      "path": "app/src/main/res/values-cs/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "a65ab702ad419e78317b8bd40886c308b7980996108e998418e387ed34758e59"
+    },
+    {
+      "path": "app/src/main/res/values-de/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "ae88a39da017f9147c3cac0ab2ec6d01c6f9e4e3be32fc497428a4eab14ba1ff"
+    },
+    {
+      "path": "app/src/main/res/values-el/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "8943435a342330291182b150ddfec8372e6e8bbf227828ca7ba6c92bd00fd657"
+    },
+    {
+      "path": "app/src/main/res/values-es/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9b5dab65578cde0e3bc1e5130e7120f16367a59c398dee9344405f7ba3713663"
+    },
+    {
+      "path": "app/src/main/res/values-et/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "5c08519c43ef4f1e09becd19a2dc8e04da25af306cd49c98f8b7e178772a5bf0"
+    },
+    {
+      "path": "app/src/main/res/values-fi/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "278baeb5df9ab789fdbc925dd7e325510f3360b2b8b29b2d0fec58c94ac8a82d"
+    },
+    {
+      "path": "app/src/main/res/values-fr/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "bbffe9c248d0650f4b9a8c82b1171cda349b5818768e7edeff64d03603c39f44"
+    },
+    {
+      "path": "app/src/main/res/values-ga/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "f77684a65a574d66acd33cb5d775d5c658cd53507ebe64564314f4fbdbabe8e5"
+    },
+    {
+      "path": "app/src/main/res/values-gl/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "6c454176ea4008b9a99c5de6ea1b16668f59ada204bb1466eef63b6226770b45"
+    },
+    {
+      "path": "app/src/main/res/values-in/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "3594afc49b1810e9007a09dd77c576b545cdd3cf0e1a2da68a83d8f13afe828a"
+    },
+    {
+      "path": "app/src/main/res/values-it/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "c69103d03382de748786898e734ea14b62d3ea8dc6e4ac0d79dec4f6abe6171d"
+    },
+    {
+      "path": "app/src/main/res/values-iw/strings2.xml",
+      "candidate_changed_elements": 6,
+      "pinned_target_matches": 6,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "7ccaeb62e6df14688950c0893ce811ad053b7f69b8ebe36fe2f8f321e6b47c85"
+    },
+    {
+      "path": "app/src/main/res/values-ko/strings2.xml",
+      "candidate_changed_elements": 27,
+      "pinned_target_matches": 27,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "e47dc6a474ff43892011ab130eb12a74b6eba8cde3d68cf43f9cfa68f9b5157a"
+    },
+    {
+      "path": "app/src/main/res/values-lv/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "185b69b3f9cbc509f205eb1ca1aaec8308f7b4e6dc72af37249772327c36cd22"
+    },
+    {
+      "path": "app/src/main/res/values-nl/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "3361eb2ef0447509a7a6606f708f662af158c3133aef5574df46a948b40956e1"
+    },
+    {
+      "path": "app/src/main/res/values-pa/strings2.xml",
+      "candidate_changed_elements": 20,
+      "pinned_target_matches": 20,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "1dfd0496af7366a7ac93ac34098c1d30f48ae7ff433b3530c494d4fe77246c6d"
+    },
+    {
+      "path": "app/src/main/res/values-pl/strings2.xml",
+      "candidate_changed_elements": 41,
+      "pinned_target_matches": 41,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "aed14fe8c4e9ea4cc8f2c53130ec07a9c90bfedc338eaefa62669642284d1a26"
+    },
+    {
+      "path": "app/src/main/res/values-pt-rBR/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "5cc2f2dea03ce3635367c310fc60a664a7b1cfe117f318a9f065a074d2faadad"
+    },
+    {
+      "path": "app/src/main/res/values-pt/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9811aa27ab4a3e66e132ee395182a90ea110178b678864f543a95aa3b308be82"
+    },
+    {
+      "path": "app/src/main/res/values-ro/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "235c59eca1b4e830270101a6fa012859e0829675711e7f4c92b4b32d9575ca89"
+    },
+    {
+      "path": "app/src/main/res/values-ru/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9b42e59db1273e4dac9dc6c75a5032dcace36fa22fb2b36d4ee887c22944af1f"
+    },
+    {
+      "path": "app/src/main/res/values-sr/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "18327c85cc6cf4fc4a9122adc9b338827ba4c9845fdd12dbd7ee99b7b19f6df0"
+    },
+    {
+      "path": "app/src/main/res/values-sv/strings2.xml",
+      "candidate_changed_elements": 30,
+      "pinned_target_matches": 30,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "77894e6b65f50762a5263185c7808c6c4d0e4a69457221a9a452ff2e67771bcf"
+    },
+    {
+      "path": "app/src/main/res/values-ta/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "1e2708797cb7084a8a0ec1b7ece86e1f2f534bf673ea1e0abce810008053e0a4"
+    },
+    {
+      "path": "app/src/main/res/values-tr/strings2.xml",
+      "candidate_changed_elements": 18,
+      "pinned_target_matches": 18,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "350f17cfc5bd8a1fdb1778949d6f1d06f98100be279a76ad0ad5d4fafd55a780"
+    },
+    {
+      "path": "app/src/main/res/values-ug/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "863bcf601f1830922abe4718ef8fbba37310cc68cdcc883457de804b6e5a13e0"
+    },
+    {
+      "path": "app/src/main/res/values-uk/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "a2e74be008d90ffde5ad5edaf4d86ed1a548f53e0af670b1e9d3e96f193a8e79"
+    },
+    {
+      "path": "app/src/main/res/values-vi/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9d88a5f7203b08aa4a0062792c06bb73b317a2ea7cba8fb34fa7f57454a2dedb"
+    },
+    {
+      "path": "app/src/main/res/values-zh-rCN/strings2.xml",
+      "candidate_changed_elements": 42,
+      "pinned_target_matches": 42,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "c1723a7ec88a1f6980466e0a344a1a72d5231777d8e299fe54e5bc6fe879b0e5"
+    },
+    {
+      "path": "app/src/main/res/values/strings2.xml",
+      "candidate_changed_elements": 46,
+      "pinned_target_matches": 46,
+      "unrelated_baseline_elements_preserved": 0,
+      "candidate_key_set_sha256": "9f68751f5a5b7d6aed56c53f460ca3e61fde2feb7fe5a96ea21aee95365b06ac"
+    }
+  ]
+}

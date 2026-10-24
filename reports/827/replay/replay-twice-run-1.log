@@ -3,8 +3,18 @@
   "schema_version": 2,
   "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
   "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
-  "worktree": "/tmp/molly827gzip2-run-1",
-  "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "worktree": "/tmp/molly827final22-run-1",
+  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "expected_application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "source_head_sha": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "source_projected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
+  "metadata_exclusions": [
+    ".github/workflows/827-poc.yml",
+    "docs/827",
+    "patches/827",
+    "reports/827",
+    "tools/827"
+  ],
   "features": [
     {
       "id": "branding",
@@ -153,6 +163,20 @@
           "result": 0,
           "full_log": "reports/827/replay/replay-twice-run-1-logs/unifiedpush-17.git-am.log",
           "full_log_sha256": "9dac3d6e8c54b84992ac087af6ab07addaa8592765e1b35cbecaf93789c4d24a"
+        },
+        {
+          "file": "unifiedpush/0018-Fix-UnifiedPush-regression-test-static-mocks.patch",
+          "sha256": "75d62a82c08798363516f0f6b4f28b427d932dcfc66c849e97d2e412ccc2a5ea",
+          "result": 0,
+          "full_log": "reports/827/replay/replay-twice-run-1-logs/unifiedpush-18.git-am.log",
+          "full_log_sha256": "ca7801d14cfb45b0ff3323809e4f61602de81c4eb585776cbd2654652e08c8df"
+        },
+        {
+          "file": "unifiedpush/0019-Invalidate-stale-registration-on-endpoint-rotation.patch",
+          "sha256": "289822fe0fe6f4303d6570088a77925ccc990b52a98295ca1fc1b5d9969bd1bc",
+          "result": 0,
+          "full_log": "reports/827/replay/replay-twice-run-1-logs/unifiedpush-19.git-am.log",
+          "full_log_sha256": "09dbcb5a90b64412c7d39b4d6945fea514b3561de57e77127c518a61e8bba050"
         }
       ],
       "parity_paths": [
@@ -375,12 +399,12 @@
         },
         {
           "path": "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt",
-          "expected_replay_sha256": "2a2cbed61ab7b275dc9493cda77b7c04c9ef9a3d7aabf8cec3d0dd802c5f2f21",
+          "expected_replay_sha256": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
           "target_sha256": "ec01adb4f7ca9ad2e0f7505538fd7af91620eaf70d383e6d60483205747d67a1",
-          "evidence": "Signal API adaptation plus locked-state availability invalidation; the locked path only changes registration status and restarts routing on availability transitions. Behavior is covered by the new availability regression test.",
+          "evidence": "Signal API adaptation plus locked-state availability invalidation and pending-state reset on unlocked endpoint rotation. The callback/failure tests verify fallback no longer retains stale REGISTERED status.",
           "tests": [
             "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+            "reports/827/build/focused-f5-2g-test-results/summary.json"
           ]
         },
         {
@@ -897,11 +921,11 @@
       "added_paths": [
         {
           "path": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-          "expected_replay_sha256": "24a00ba7ad1d2c3726462b1fd11c925d3cdf05543dcbe10ed85b19bfc9add1d6",
-          "evidence": "New focused regression test exercises locked endpoint rotation and distributor removal and verifies fallback becomes available without opening protected message data.",
+          "expected_replay_sha256": "f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252",
+          "evidence": "Focused regression tests cover locked endpoint changes/removal, unlocked endpoint rotation, and registration failure behavior while checking protected values remain untouched.",
           "tests": [
             "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+            "reports/827/build/focused-f5-2g-test-results/summary.json"
           ]
         }
       ],
@@ -1139,8 +1163,9 @@
       "unifiedpush:app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt"
     ]
   },
-  "tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
   "expected_tree_match": true,
+  "source_projection_match": true,
   "changed_paths": [
     "app/build.gradle.kts",
     "app/src/main/AndroidManifest.xml",
@@ -1562,13 +1587,13 @@
       "feature": "unifiedpush",
       "path": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
       "target_absent": true,
-      "replay_sha256": "24a00ba7ad1d2c3726462b1fd11c925d3cdf05543dcbe10ed85b19bfc9add1d6",
-      "expected_replay_sha256": "24a00ba7ad1d2c3726462b1fd11c925d3cdf05543dcbe10ed85b19bfc9add1d6",
+      "replay_sha256": "f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252",
+      "expected_replay_sha256": "f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252",
       "replay_matches_evidence": true,
-      "evidence": "New focused regression test exercises locked endpoint rotation and distributor removal and verifies fallback becomes available without opening protected message data.",
+      "evidence": "Focused regression tests cover locked endpoint changes/removal, unlocked endpoint rotation, and registration failure behavior while checking protected values remain untouched.",
       "tests": [
         "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-        "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+        "reports/827/build/focused-f5-2g-test-results/summary.json"
       ],
       "pass": true
     }
@@ -1732,16 +1757,16 @@
       "match": "documented-adaptation",
       "target_sha256": "ec01adb4f7ca9ad2e0f7505538fd7af91620eaf70d383e6d60483205747d67a1",
       "expected_target_sha256": "ec01adb4f7ca9ad2e0f7505538fd7af91620eaf70d383e6d60483205747d67a1",
-      "replay_sha256": "2a2cbed61ab7b275dc9493cda77b7c04c9ef9a3d7aabf8cec3d0dd802c5f2f21",
-      "expected_replay_sha256": "2a2cbed61ab7b275dc9493cda77b7c04c9ef9a3d7aabf8cec3d0dd802c5f2f21",
+      "replay_sha256": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
+      "expected_replay_sha256": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
       "target_matches_evidence": true,
       "replay_matches_evidence": true,
       "target_parity": false,
       "whole_file_target_parity_claimed": false,
-      "evidence": "Signal API adaptation plus locked-state availability invalidation; the locked path only changes registration status and restarts routing on availability transitions. Behavior is covered by the new availability regression test.",
+      "evidence": "Signal API adaptation plus locked-state availability invalidation and pending-state reset on unlocked endpoint rotation. The callback/failure tests verify fallback no longer retains stale REGISTERED status.",
       "tests": [
         "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-        "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+        "reports/827/build/focused-f5-2g-test-results/summary.json"
       ],
       "residual_diff_artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/21046450a8588b2e.diff.gz"
     },
@@ -2899,12 +2924,12 @@
     {
       "artifact": "reports/827/replay/replay-twice-run-1-residual-diffs/21046450a8588b2e.diff.gz",
       "compressed_path": "reports/827/replay/replay-twice-run-1-residual-diffs/21046450a8588b2e.diff.gz",
-      "compressed_sha256": "d830b80953b148dc87e350a9f7f83f42c8ec6f77b9b1a49fb34103444da59b68",
-      "compressed_bytes": 1360,
-      "uncompressed_sha256": "ad8c6e1fc507d2371a9db45ea3f7a8492b9ef5c90fca054ead62117c2a6a28eb",
-      "uncompressed_bytes": 3962,
-      "sha256": "ad8c6e1fc507d2371a9db45ea3f7a8492b9ef5c90fca054ead62117c2a6a28eb",
-      "bytes": 3962,
+      "compressed_sha256": "5942193dbd65d80f4392e9141b5eda5dbc3c357284e9fe7e7018335b54808dab",
+      "compressed_bytes": 1536,
+      "uncompressed_sha256": "5ce8559928b5135e44c26d3649fc3f0552f6723d42fb998ad610587cafee986c",
+      "uncompressed_bytes": 4647,
+      "sha256": "5ce8559928b5135e44c26d3649fc3f0552f6723d42fb998ad610587cafee986c",
+      "bytes": 4647,
       "empty": false,
       "compression": {
         "format": "gzip",

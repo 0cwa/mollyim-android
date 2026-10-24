@@ -7,6 +7,7 @@ import json
 import os
 import re
 import subprocess
+from check_resource_parity import check_resource_parity
 from collections import Counter
 from pathlib import Path
 
@@ -213,11 +214,19 @@ def validate(repo: Path):
         expected=item.get('expected_replay_sha256')
         if expected and hashlib.sha256(head_blob).hexdigest()!=expected: raise CheckError(f'added path replay hash mismatch: {p}')
     ownership_counts={'full_file_parity_paths':len(parity),'integration_files':len(integrations),'anchored_fragments':sum(len(x['fragments']) for f in manifest['features'] for x in f.get('integration_paths',[])),'adaptation_paths':len(adaptations),'added_target_absent_paths':len(added),'build_validation_overlay_paths':len(overlays),'current_manifest_paths':len(declared),'current_target_diff_paths':len(target_present),'current_paths_outside_target_diff':len(outside_target_diff),'historical_target_paths':len(historical)}
+    resource_parity=check_resource_parity(repo)
+    if resource_parity['status']!='PASS': raise CheckError('resource element parity failed')
+    resource_report_sha=digest(inv_dir/'resource-parity.json')
+    resource_summary=summary.get('resource_parity',{})
+    if resource_summary.get('report_sha256')!=resource_report_sha: raise CheckError('resource parity receipt digest is stale')
+    for key in ('status','manifest_owned_paths','candidate_changed_elements','pinned_target_matches','unique_selected_names','baseline_resource_xml_files_checked','baseline_resource_xml_files_unchanged'):
+        actual={'status':resource_parity['status'],'manifest_owned_paths':resource_parity['manifest_owned_resource_paths'],'candidate_changed_elements':resource_parity['candidate_changed_elements'],'pinned_target_matches':resource_parity['pinned_target_element_matches'],'unique_selected_names':resource_parity['unique_selected_resource_names'],'baseline_resource_xml_files_checked':resource_parity['unrelated_baseline_xml_files_checked'],'baseline_resource_xml_files_unchanged':resource_parity['unrelated_baseline_xml_files_unchanged']}[key]
+        if resource_summary.get(key)!=actual: raise CheckError(f'resource parity summary is stale: {key}')
     class_counts=dict(Counter(r['category'] for r in full))
     if class_counts!=summary['full_diff']['class_counts']: raise CheckError('summary category counts do not match live full-tree TSV')
     return {'status':'PASS','full_diff_records':len(full),'full_diff_matches_git':True,'historical_inventory_paths':len(historical),'current_manifest':ownership_counts,'full_tree_class_counts':class_counts,
-            'validated_exact_files':len(full_ranges),'validated_anchor_fragments':len(anchors),'validated_adaptation_paths':len(manifest_adapt),'adaptation_hunk_rows':len(adaptation_rows),'validated_added_paths':len(added_entries),'validated_overlay_paths':len(overlay_entries),'current_series_ledger_paths':len(current),
-            'sha256':{'full_tree_classification':digest(inv_dir/'full-tree-classification.tsv'),'feature_inventory':digest(repo/'docs/827/feature-inventory.tsv'),'selected_hunks':digest(inv_dir/'selected-hunks.tsv')}}
+            'validated_exact_files':len(full_ranges),'validated_anchor_fragments':len(anchors),'validated_adaptation_paths':len(manifest_adapt),'adaptation_hunk_rows':len(adaptation_rows),'validated_added_paths':len(added_entries),'validated_overlay_paths':len(overlay_entries),'current_series_ledger_paths':len(current),'resource_parity':{k:resource_parity[k] for k in ('manifest_owned_resource_paths','manifest_owned_changed_resource_keys','candidate_changed_elements','pinned_target_element_matches','unrelated_baseline_xml_files_checked','unrelated_baseline_xml_files_unchanged','candidate_delta_outside_target_delta','value_mismatches')},
+            'sha256':{'resource_parity':resource_report_sha,'full_tree_classification':digest(inv_dir/'full-tree-classification.tsv'),'feature_inventory':digest(repo/'docs/827/feature-inventory.tsv'),'selected_hunks':digest(inv_dir/'selected-hunks.tsv')}}
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--repo',type=Path,default=Path('.'));args=parser.parse_args()

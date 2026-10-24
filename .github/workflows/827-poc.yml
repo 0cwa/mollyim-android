@@ -1,9 +1,10 @@
-name: Molly #827 patch proof of concept
+name: "Molly #827 patch proof of concept"
 
 on:
   pull_request:
     branches:
       - dev/molly-827-reproducible-poc
+      - poc/molly-827-unifiedpush
     paths:
       - '.github/workflows/827-poc.yml'
       - 'patches/827/**'
@@ -17,6 +18,32 @@ on:
   push:
     branches:
       - dev/molly-827-reproducible-poc
+    paths:
+      - '.github/workflows/827-poc.yml'
+      - 'patches/827/**'
+      - 'tools/827/**'
+      - 'app/**'
+      - 'baseline-profile/**'
+      - 'benchmark/**'
+      - 'build-logic/**'
+      - 'core/**'
+      - 'demo/**'
+      - 'fast-lint/**'
+      - 'feature/**'
+      - 'lib/**'
+      - 'lintchecks/**'
+      - 'microbenchmark/**'
+      - 'reproducible-builds/**'
+      - 'wire-handler/**'
+      - 'gradle/**'
+      - 'build.gradle.kts'
+      - 'settings.gradle.kts'
+      - 'gradle.properties'
+      - 'gradlew'
+      - 'gradlew.bat'
+      - 'gradle/libs.versions.toml'
+      - '.gitattributes'
+      - '.gitmodules'
   workflow_dispatch:
 
 permissions:
@@ -102,11 +129,23 @@ jobs:
             --worktree-prefix "$RUNNER_TEMP/molly-827-replay" \
             --report reports/827/build/replay-twice.json
 
+      - name: Record build capacity
+        run: |
+          df -h "$RUNNER_TEMP" "$GITHUB_WORKSPACE" | tee reports/827/build/build-capacity.txt
+
+      - name: Hydrate and verify Git LFS build inputs
+        run: |
+          set -euo pipefail
+          replay="$RUNNER_TEMP/molly-827-replay-run-1"
+          git -C "$replay" lfs checkout
+          git -C "$replay" lfs fsck 2>&1 | tee reports/827/build/lfs-fsck.txt
+
       - name: Build, test, lint, and verify dependencies
         working-directory: ${{ runner.temp }}/molly-827-replay-run-1
         run: |
           set -o pipefail
-          ./gradlew --no-daemon --max-workers=2 --dependency-verification=strict \
+          ./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
+            --init-script "$GITHUB_WORKSPACE/tools/827/test-worker-heap.init.gradle" \
             -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
             ciRemote \
             :Signal-Android:assemblePlayProdDebug \
@@ -116,7 +155,8 @@ jobs:
         working-directory: ${{ runner.temp }}/molly-827-replay-run-1
         run: |
           set -o pipefail
-          ./gradlew --no-daemon --max-workers=2 --dependency-verification=strict \
+          ./gradlew --no-daemon --max-workers=1 --dependency-verification=strict \
+            --init-script "$GITHUB_WORKSPACE/tools/827/test-worker-heap.init.gradle" \
             -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
             :Signal-Android:testPlayStagingDebugUnitTest \
             --tests org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri \

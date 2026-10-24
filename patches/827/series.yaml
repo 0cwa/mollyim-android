@@ -208,6 +208,26 @@
           "mailbox_commit_sha": "e46df7f69d75e67af4aaf50a50923311db1a9648",
           "source_commit_shas": [],
           "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0018-Fix-UnifiedPush-regression-test-static-mocks.patch",
+          "sha256": "75d62a82c08798363516f0f6b4f28b427d932dcfc66c849e97d2e412ccc2a5ea",
+          "depends_on": [
+            "unifiedpush/0017-Restore-locked-state-push-fallback.patch"
+          ],
+          "mailbox_commit_sha": "908db1de74a9937c2b9bc1a0f4ac446f8faef914",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
+        },
+        {
+          "path": "unifiedpush/0019-Invalidate-stale-registration-on-endpoint-rotation.patch",
+          "sha256": "289822fe0fe6f4303d6570088a77925ccc990b52a98295ca1fc1b5d9969bd1bc",
+          "depends_on": [
+            "unifiedpush/0018-Fix-UnifiedPush-regression-test-static-mocks.patch"
+          ],
+          "mailbox_commit_sha": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+          "source_commit_shas": [],
+          "provenance_kind": "poc-adaptation"
         }
       ],
       "parity_paths": [
@@ -430,12 +450,12 @@
         },
         {
           "path": "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt",
-          "expected_replay_sha256": "2a2cbed61ab7b275dc9493cda77b7c04c9ef9a3d7aabf8cec3d0dd802c5f2f21",
+          "expected_replay_sha256": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
           "target_sha256": "ec01adb4f7ca9ad2e0f7505538fd7af91620eaf70d383e6d60483205747d67a1",
-          "evidence": "Signal API adaptation plus locked-state availability invalidation; the locked path only changes registration status and restarts routing on availability transitions. Behavior is covered by the new availability regression test.",
+          "evidence": "Signal API adaptation plus locked-state availability invalidation and pending-state reset on unlocked endpoint rotation. The callback/failure tests verify fallback no longer retains stale REGISTERED status.",
           "tests": [
             "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+            "reports/827/build/focused-f5-2g-test-results/summary.json"
           ]
         },
         {
@@ -953,11 +973,11 @@
       "added_paths": [
         {
           "path": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-          "expected_replay_sha256": "24a00ba7ad1d2c3726462b1fd11c925d3cdf05543dcbe10ed85b19bfc9add1d6",
-          "evidence": "New focused regression test exercises locked endpoint rotation and distributor removal and verifies fallback becomes available without opening protected message data.",
+          "expected_replay_sha256": "f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252",
+          "evidence": "Focused regression tests cover locked endpoint changes/removal, unlocked endpoint rotation, and registration failure behavior while checking protected values remain untouched.",
           "tests": [
             "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
-            "reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log"
+            "reports/827/build/focused-f5-2g-test-results/summary.json"
           ]
         }
       ]
@@ -1010,7 +1030,7 @@
       "added_paths": []
     }
   ],
-  "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+  "expected_tree_sha": "26956e0f159c0b60719d4a20667aeef8913fa365",
   "patch_provenance": "mailbox_commit_sha identifies the local reconstructed patch commit in the From header. source_commit_shas identifies original Molly upstream commits explicitly referenced inside that patch; an empty list with provenance_kind poc-adaptation means the patch is a Signal compatibility or PoC correction and makes no claim of a matching Molly source commit.",
   "expected_validation_commands": [
     "python3 tools/827/validate.py --repo . --manifest patches/827/series.yaml",
@@ -1019,7 +1039,15 @@
   ],
   "known_intentional_target_differences": [
     "Signal API adaptation in UnifiedPush shared integration points is declared through integration/adaptation checks; this is not a claim of whole-application Molly parity.",
-    "Validation overlays add a UnifiedPush locked-state regression test, use flavor-aware URI test fixtures, and pin the Gradle distribution checksum; these additions are not present in the pinned Molly application tree."
+    "Validation overlays add a UnifiedPush F4/F5 regression test, use flavor-aware URI test fixtures, and pin the Gradle distribution checksum; these additions are not present in the pinned Molly application tree."
   ],
-  "patch_count": 20
+  "patch_count": 22,
+  "expected_application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+  "metadata_exclusions": [
+    ".github/workflows/827-poc.yml",
+    "docs/827",
+    "patches/827",
+    "reports/827",
+    "tools/827"
+  ]
 }

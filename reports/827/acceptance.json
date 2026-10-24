@@ -1,45 +1,68 @@
 {
   "schema_version": 1,
-  "assessment": "Acceptance not met: the recorded full build failed at the audited source snapshot. The final 20-patch head replays reproducibly, while current build/test, adaptation behavior, live runtime, and CI criteria remain incomplete.",
+  "assessment": "The current 22-patch series replays deterministically, inventory/resource parity checks pass, and focused F4/F5/F6+URI tests pass 25/25. Full staging tests, full project build, current-head CI, adaptation behavior evidence, and live runtime remain outstanding.",
   "scope": "Molly #827 external local proof of concept: launcher artwork and selected UnifiedPush/MollySocket feature ports",
   "source_pins": {
     "audited_poc_head": "b8d5375b3fb6013f7939935ce73e250b53515381",
     "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
     "molly_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
-    "expected_replay_tree": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
-    "current_development_head": "0e34c904f72fb899947967e5d2b37f78ca71b70e",
-    "patch_count": 20
+    "expected_replay_tree": "26956e0f159c0b60719d4a20667aeef8913fa365",
+    "patch_count": 22,
+    "feature_source_head": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
+    "handoff_head": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
+    "metadata_handoff_commit": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
+    "f5_working_tree_files": {
+      "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt": "ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320",
+      "app/src/test/java/org/thoughtcrime/securesms/util/UriUtilTest_isValidExternalUri.java": "b8095173443a1633ed28ad64f7a7d7de9a2964ad30b7ee003932568466dd0ab9",
+      "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt": "31befa0f5dd6e540efb38f1b4d224ead5a10bfd2fd81e2711694d4fb544687fa"
+    },
+    "f5_worktree_base": "908db1de74a9937c2b9bc1a0f4ac446f8faef914"
   },
   "criteria": [
     {
       "id": "patch_manifest_and_provenance",
       "status": "PASS",
-      "evidence": "Current validation report reports/827/replay/validation.json verifies 20 mailbox patches, ordered checksums, dependencies, and source provenance."
+      "evidence": "Current validation report reports/827/replay/validation.json passes for all 22 ordered mailbox patches, checksums, dependencies, and provenance."
     },
     {
       "id": "deterministic_replay",
       "status": "PASS",
-      "evidence": "Current two-run report reports/827/replay/replay-twice.json records both replays PASS at tree f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77. Independent verifier reports/827/independent/replay-twice-final.json confirms the tree equals the current source tree, with 83 changed paths and zero unowned changes."
+      "evidence": "Current two-run report reports/827/replay/replay-twice.json records identical projected tree 26956e0f159c0b60719d4a20667aeef8913fa365, matching source commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af, with 83 owned paths, zero unowned changes, and successful source projection."
     },
     {
       "id": "target_parity",
       "status": "BLOCKED",
-      "evidence": "Independent final replay records 12/12 whole-file paths, 12/12 anchored fragments, and 62/62 adaptation hashes, plus the expected target-absent F4 test path. Replay tree/checksums are reproducible; those hashes do not establish behavior for every adaptation. The acceptance condition requiring behavioral evidence for all adaptations is therefore blocked."
+      "evidence": "Independent current replay records 12/12 whole-file paths, 12/12 anchored fragments, and 62/62 adaptation hashes, plus the target-absent test path. The two build-validation adaptations are test/toolchain integrity checks. Hash parity does not prove behavior for every adaptation; the all-adaptations behavioral evidence criterion remains blocked."
     },
     {
       "id": "ownership_inventory",
       "status": "PASS",
-      "evidence": "Independent current-series inventory validation passes at reports/827/independent/inventory-validation-final.json: 3,171 full-diff records match Git; the current series ledger covers 83 paths (12 full files, 12 fragments, 62 adaptations, and 1 target-absent added path). The remaining full-tree classes are explicitly unresolved/excluded; the pilot does not claim full Molly change classification."
+      "evidence": "Independent inventory check passes for the current 83-path ledger: 12 exact whole-file paths, 12 fragments, 62 adaptations, and 1 target-absent added test. The underlying 3,171 full-diff records match Git. See reports/827/independent/manifest-validation.json and docs/827/PARITY.md."
+    },
+    {
+      "id": "resource_element_parity",
+      "status": "PASS",
+      "evidence": "Independent inventory validation compared 1,242 candidate-changed resource elements across 33 locale files with the pinned Molly target: 1,242 matched, with no candidate-only keys or value mismatches. It also confirmed 112 unrelated baseline resource XML files remained byte-identical. Evidence: reports/827/inventory/resource-parity.json and reports/827/inventory/summary.json."
+    },
+    {
+      "id": "f5_working_tree_patch_integration",
+      "status": "PASS",
+      "evidence": "F5 endpoint rotation/failure handling is included in patch 22 and final projected tree 26956e0f159c0b60719d4a20667aeef8913fa365. Focused tests passed with injected IOException at the MollySocket repository boundary; live server retry timing remains untested."
     },
     {
       "id": "full_android_build_and_tests",
-      "status": "FAIL",
-      "evidence": "The last completed full build was at the audited source snapshot and exited 130 after disk exhaustion, reaching 15/23 variants and 14 suites; it recorded 30 UriUtilTest_isValidExternalUri fixture failures that were subsequently addressed. A full build on current 20-patch HEAD has not passed. See /workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json."
+      "status": "BLOCKED",
+      "evidence": "No full project build has passed on current 22-patch source. The prior full project attempt exited 130 after disk exhaustion at 15/23 variants and 14 suites; it recorded 30 URI suffix fixture failures later addressed. Current full staging suite remains incomplete. See /workspace/work/p2-baseline/attempt20-retry2-build-evidence-summary.json and reports/827/build/history/attempt20-retry2/."
     },
     {
       "id": "final_head_focused_regression_tests",
+      "status": "PASS",
+      "evidence": "Selected F4/F5/F6 and URI tests passed 25/25 on the F5 working-tree snapshot based on 908db1de74a9937c2b9bc1a0f4ac446f8faef914 (16 UriUtilTest_isValidExternalUri and 9 UnifiedPushReceiverAvailabilityTest). Exact file hashes, JUnit XML hashes, and log SHA are in reports/827/build/focused-test-results/f5-2g-summary.json. The final source commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af applies an import-order formatting change afterward; ktlint passes on that formatted source."
+    },
+    {
+      "id": "full_staging_suite_and_app_lint",
       "status": "BLOCKED",
-      "evidence": "The final-head staging task compiled the two selected test classes, then all 17 selected cases failed before entering test bodies because `--offline` could not fetch Robolectric artifact org.robolectric:android-all-instrumented:9-robolectric-4913185-2-i7. The JAR/POM are present in /workspace/work/p2-robolectric-cache; build agent is rerunning with that cache/proxy. Log: reports/827/build/testPlayStagingDebug-focused-frozen-20261024.log."
+      "evidence": "App ktlint passed on formatted source commit 36578d8bb7058f862d5dd379440a12c1fbd7f3af; log reports/827/build/ktlint-f5-formatted-20261024.log. The full staging unit suite has not completed: a 512 MiB attempt OOMed in AttachmentBackfill setup, a 2 GiB attempt was interrupted before a result, and a final 2 GiB run on the final source is active at reports/827/build/testPlayStagingDebug-full-final-2g-ktlint-20261024.log."
     },
     {
       "id": "focused_local_android_flows",
@@ -53,13 +76,13 @@
     },
     {
       "id": "security_review",
-      "status": "BLOCKED",
-      "evidence": "Bounded review and runtime artifacts are in docs/827/SECURITY.md and reports/827/security/runtime/. The F4 receiver test compiled, but did not reach assertions: the offline run could not fetch Robolectric android-all-instrumented 9-robolectric-4913185-2-i7. Build agent is repeating with the configured Maven cache and proxy. Broader live-service and lock-transition behavior remains untested."
+      "status": "PASS",
+      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the selected F5 working-tree run (9 receiver tests; 25 total with 16 URI cases). Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested."
     },
     {
       "id": "ci_validation",
       "status": "BLOCKED",
-      "evidence": "Workflow .github/workflows/827-poc.yml is drafted and the coordinator plans to push the development branch to trigger it. No GitHub Actions run exists yet. Independent inventory validation passes at reports/827/independent/inventory-validation-final.json."
+      "evidence": "The first run 40105996791 failed during replay 1 with PATCH_FAILED before Android steps. Its run-level log did not expose the per-patch git-am diagnostic, and the Actions artifact could not be retrieved, so the cause is unconfirmed. Replay now sets explicit committer identity and disables commit signing; a fresh Git-config replay integration fixture passes. LFS hydration (`git lfs checkout`/`git lfs fsck`) is a separate proactive build-input step before screenshot validation. A corrected current-head CI run is pending."
     },
     {
       "id": "upstream_and_release_safety",
@@ -67,7 +90,7 @@
       "evidence": "No upstream pull request, merge, production keys, production signing, or publishing action occurred. The development branch may be pushed for review."
     }
   ],
-  "overall_success": "FAIL",
+  "overall_success": "BLOCKED",
   "must_not_claim": [
     "full Android build or complete test matrix passed",
     "behavioral proof for every adaptation or full Molly target parity",
@@ -79,5 +102,5 @@
   ],
   "human_review_gates": "Waived by user for this external local research effort; no maintainer approval is claimed.",
   "publication": "No upstream pull request or merge, production key use, signing, or publishing. The development branch may be pushed to a review remote.",
-  "overall_status": "FAIL"
+  "overall_status": "BLOCKED"
 }

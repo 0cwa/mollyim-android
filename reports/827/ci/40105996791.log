@@ -1,0 +1,681 @@
+replay-and-android-checks	Set up job	﻿2026-10-24T15:13:37.8062558Z Current runner version: '2.338.0'
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8089792Z ##[group]Runner Image Provisioner
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8090798Z Hosted Compute Agent
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8091435Z Version: 20261012.601
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8092176Z Commit: f3dc54e1fb89da6852db922499a0233137369e1d
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8093005Z Build Date: 2026-10-12T17:48:21Z
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8093695Z Worker ID: {a50a95d5-2bcb-4232-b410-4c2dfe77c84b}
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8094507Z Region: northcentralus
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8095152Z Cloud: Azure
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8095746Z ##[endgroup]
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8097168Z ##[group]Operating System
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8097816Z Ubuntu
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8098440Z 24.04.5
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8098998Z LTS
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8099783Z ##[endgroup]
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8100485Z ##[group]Runner Image
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8101128Z Image: ubuntu-24.04
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8101780Z Version: 20261012.334.1
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8102922Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8104735Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8105713Z ##[endgroup]
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8106874Z ##[group]GITHUB_TOKEN Permissions
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8108956Z Contents: read
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8109920Z Metadata: read
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8110519Z ##[endgroup]
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8112678Z Secret source: Actions
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8113844Z Cache mode: write
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8114619Z Prepare workflow directory
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8458787Z Prepare all required actions
+replay-and-android-checks	Set up job	2026-10-24T15:13:37.8507010Z Getting action download info
+replay-and-android-checks	Set up job	2026-10-24T15:13:38.0933484Z Download action repository 'actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0' (SHA:9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0)
+replay-and-android-checks	Set up job	2026-10-24T15:13:38.1923287Z Download action repository 'actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520' (SHA:1bcf9fb12cf4aa7d266a90ae39939e61372fe520)
+replay-and-android-checks	Set up job	2026-10-24T15:13:38.6309982Z Download action repository 'gradle/actions@3f131e8634966bd73d06cc69884922b02e6faf92' (SHA:3f131e8634966bd73d06cc69884922b02e6faf92)
+replay-and-android-checks	Set up job	2026-10-24T15:13:39.6771283Z Download action repository 'actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+replay-and-android-checks	Set up job	2026-10-24T15:13:39.9182931Z Complete job name: replay-and-android-checks
+replay-and-android-checks	Check out source	﻿2026-10-24T15:13:40.0061307Z ##[group]Run actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0062210Z with:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0062546Z   submodules: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0062880Z   lfs: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0063194Z   fetch-depth: 0
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0063562Z   repository: 0cwa/mollyim-android
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0066431Z   token: ***
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0066767Z   ssh-strict: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0067109Z   ssh-user: git
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0067464Z   persist-credentials: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0067849Z   clean: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0068207Z   sparse-checkout-cone-mode: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0068640Z   fetch-tags: false
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0068995Z   show-progress: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0069515Z   set-safe-directory: true
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0069907Z   allow-unsafe-pr-checkout: false
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.0070523Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.1218255Z Syncing repository: 0cwa/mollyim-android
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.1220572Z ##[group]Getting Git version info
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.1221328Z Working directory is '/home/runner/work/mollyim-android/mollyim-android'
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.1222282Z [command]/usr/bin/git version
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.1246046Z git version 2.55.0
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.1295222Z [command]/usr/bin/git lfs version
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.6914826Z git-lfs/3.8.0 (GitHub; linux amd64; go 1.27.0)
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.6937131Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.6947859Z Temporarily overriding HOME='/home/runner/work/_temp/1f41a923-52af-48c9-be25-b5cc45e0b348' before making global git config changes
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.6949115Z Adding repository directory to the temporary git global config as a safe directory
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.6950822Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/mollyim-android/mollyim-android
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7000528Z Deleting the contents of '/home/runner/work/mollyim-android/mollyim-android'
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7003979Z ##[group]Determining repository object format
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7005844Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7006372Z ##[group]Initializing the repository
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7010877Z [command]/usr/bin/git init /home/runner/work/mollyim-android/mollyim-android
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7104262Z hint: Using 'master' as the name for the initial branch. This default branch name
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7105242Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7106451Z hint: to use in all of your new repositories, which will suppress this warning,
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7107047Z hint: call:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7107303Z hint:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7107686Z hint: 	git config --global init.defaultBranch <name>
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7108100Z hint:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7108460Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7109020Z hint: 'development'. The just-created branch can be renamed via this command:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7109594Z hint:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7109865Z hint: 	git branch -m <name>
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7110150Z hint:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7110538Z hint: Disable this message with "git config set advice.defaultBranchName false"
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7111555Z Initialized empty Git repository in /home/runner/work/mollyim-android/mollyim-android/.git/
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7115580Z [command]/usr/bin/git remote add origin https://github.com/0cwa/mollyim-android
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7166933Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7167694Z ##[group]Disabling automatic garbage collection
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7170706Z [command]/usr/bin/git config --local gc.auto 0
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7204982Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7205641Z ##[group]Setting up auth
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7206025Z Removing SSH command configuration
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7212572Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7249085Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7513698Z Removing HTTP extra header
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7519742Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7560146Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7813129Z Removing includeIf entries pointing to credentials config files
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7820273Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.7859157Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8108609Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8157406Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git.path /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8197554Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8242551Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8285654Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8326029Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8330253Z [command]/usr/bin/git lfs install --local
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8798614Z Updated Git hooks.
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8808761Z Git LFS initialized.
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8817836Z ##[group]Fetching the repository
+replay-and-android-checks	Check out source	2026-10-24T15:13:40.8828960Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules origin +refs/heads/*:refs/remotes/origin/* +refs/tags/*:refs/tags/*
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9798555Z From https://github.com/0cwa/mollyim-android
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9800076Z  * [new branch]            dev/molly-827-reproducible-poc -> origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9800773Z  * [new branch]            main       -> origin/main
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9801437Z  * [new branch]            poc/molly-827-unifiedpush -> origin/poc/molly-827-unifiedpush
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9811908Z [command]/usr/bin/git branch --list --remote origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9848935Z   origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9858333Z [command]/usr/bin/git rev-parse refs/remotes/origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9889865Z 7eda9c55e0fe124da682f6c2a4e49493cd665d97
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9894285Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9894960Z ##[group]Determining the checkout info
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9900466Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9901076Z ##[group]Fetching LFS objects
+replay-and-android-checks	Check out source	2026-10-24T15:15:31.9903044Z [command]/usr/bin/git lfs fetch origin refs/remotes/origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:32.0170186Z Fetching reference refs/remotes/origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:37.6402193Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:37.6403075Z [command]/usr/bin/git sparse-checkout disable
+replay-and-android-checks	Check out source	2026-10-24T15:15:37.6464292Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+replay-and-android-checks	Check out source	2026-10-24T15:15:37.6501091Z ##[group]Checking out the ref
+replay-and-android-checks	Check out source	2026-10-24T15:15:37.6506297Z [command]/usr/bin/git checkout --progress --force -B dev/molly-827-reproducible-poc refs/remotes/origin/dev/molly-827-reproducible-poc
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.6828878Z Updating files:  87% (9026/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.6898119Z Updating files:  88% (9109/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.6963206Z Updating files:  89% (9213/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7017062Z Updating files:  90% (9316/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7070655Z Updating files:  91% (9420/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7158030Z Updating files:  92% (9523/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7231918Z Updating files:  93% (9627/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7341466Z Updating files:  94% (9730/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7382037Z Updating files:  95% (9834/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7424199Z Updating files:  96% (9937/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7491657Z Updating files:  97% (10041/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7531282Z Updating files:  98% (10144/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7613928Z Updating files:  99% (10248/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7614728Z Updating files: 100% (10351/10351)
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7615193Z Updating files: 100% (10351/10351), done.
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7816900Z Switched to a new branch 'dev/molly-827-reproducible-poc'
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.7819710Z branch 'dev/molly-827-reproducible-poc' set up to track 'origin/dev/molly-827-reproducible-poc'.
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8769812Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8770265Z ##[group]Setting up auth for fetching submodules
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8778701Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8837506Z [command]/usr/bin/git config --global include.path /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8882117Z [command]/usr/bin/git config --global --unset-all url.https://github.com/.insteadOf
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8921096Z [command]/usr/bin/git config --global --add url.https://github.com/.insteadOf git@github.com:
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8961552Z [command]/usr/bin/git config --global --add url.https://github.com/.insteadOf org-1490936@github.com:
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8997962Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.8998590Z ##[group]Fetching submodules
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.9010080Z [command]/usr/bin/git submodule sync
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.9283042Z [command]/usr/bin/git -c protocol.version=2 submodule update --init --force
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.9555000Z [command]/usr/bin/git submodule foreach git config --local gc.auto 0
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.9830808Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.9831416Z ##[group]Persisting credentials for submodules
+replay-and-android-checks	Check out source	2026-10-24T15:15:38.9837625Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'url\.https\:\/\/github\.com\/\.insteadOf' && git config --local --unset-all 'url.https://github.com/.insteadOf' || :"
+replay-and-android-checks	Check out source	2026-10-24T15:15:39.0107202Z [command]/usr/bin/git submodule foreach git config --local --show-origin --name-only --get-regexp remote.origin.url
+replay-and-android-checks	Check out source	2026-10-24T15:15:39.0381678Z [command]/usr/bin/git submodule foreach git config --local --add 'url.https://github.com/.insteadOf' 'git@github.com:'
+replay-and-android-checks	Check out source	2026-10-24T15:15:39.0648646Z [command]/usr/bin/git submodule foreach git config --local --add 'url.https://github.com/.insteadOf' 'org-1490936@github.com:'
+replay-and-android-checks	Check out source	2026-10-24T15:15:39.0913093Z ##[endgroup]
+replay-and-android-checks	Check out source	2026-10-24T15:15:39.0963391Z [command]/usr/bin/git log -1 --format=%H
+replay-and-android-checks	Check out source	2026-10-24T15:15:39.0997930Z 7eda9c55e0fe124da682f6c2a4e49493cd665d97
+replay-and-android-checks	Set up JDK 21	﻿2026-10-24T15:15:39.1299520Z ##[group]Run actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1299954Z with:
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1300167Z   distribution: temurin
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1300416Z   java-version: 21
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1300637Z   java-package: jdk
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1300860Z   check-latest: false
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1301083Z   server-id: github
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1301301Z   server-username: GITHUB_ACTOR
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1301586Z   server-password: GITHUB_TOKEN
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1301839Z   overwrite-settings: true
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1302077Z   job-status: success
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1304561Z   token: ***
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.1304773Z ##[endgroup]
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2818768Z ##[group]Installed distributions
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2876601Z Resolved Java 21.0.12+1 from tool-cache
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2877094Z Setting Java 21.0.12+1 as the default
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2888039Z Creating toolchains.xml for JDK version 21 from temurin
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2960430Z Writing to /home/runner/.m2/toolchains.xml
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2960955Z 
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2961119Z Java configuration:
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2961464Z   Distribution: temurin
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2961808Z   Version: 21.0.12+1
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2962313Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2962745Z 
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.2963150Z ##[endgroup]
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.3000328Z Creating settings.xml with server-id: github
+replay-and-android-checks	Set up JDK 21	2026-10-24T15:15:39.3001019Z Writing to /home/runner/.m2/settings.xml
+replay-and-android-checks	Validate Gradle wrapper	﻿2026-10-24T15:15:39.3188019Z ##[group]Run gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3188780Z with:
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3189097Z   min-wrapper-count: 1
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3189643Z   allow-snapshots: false
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3190010Z env:
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3190481Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3191289Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.3191918Z ##[endgroup]
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.7212096Z ✓ Found known Gradle Wrapper JAR files:
+replay-and-android-checks	Validate Gradle wrapper	2026-10-24T15:15:39.7213314Z   575098db54a998ff1c6770b352c3b16766c09848bee7555dab09afc34e8cf590 gradle/wrapper/gradle-wrapper.jar
+replay-and-android-checks	Set up Gradle	﻿2026-10-24T15:15:39.7543368Z ##[group]Run gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7543798Z with:
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7544017Z   cache-read-only: true
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7544457Z   cache-provider: enhanced
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7544706Z   cache-disabled: false
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7544937Z   cache-write-only: false
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7545190Z   cache-overwrite-existing: false
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7545469Z   cache-cleanup: on-success
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7545765Z   gradle-home-cache-includes: caches
+replay-and-android-checks	Set up Gradle	notifications
+replay-and-android-checks	Set up Gradle	
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7546102Z   add-job-summary: always
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7546365Z   add-job-summary-as-pr-comment: never
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7546656Z   dependency-graph: disabled
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7546973Z   dependency-graph-report-dir: dependency-graph-reports
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7547351Z   dependency-graph-continue-on-failure: true
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7547662Z   build-scan-publish: false
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7547922Z   validate-wrappers: true
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7548182Z   allow-snapshot-wrappers: false
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7548506Z   gradle-home-cache-strict-match: false
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7548799Z   workflow-job-context: null
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7551622Z   github-token: ***
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7551846Z env:
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7552161Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7552653Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7553092Z   GRADLE_ACTION_ID: gradle/actions/wrapper-validation
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:39.7553401Z ##[endgroup]
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.2118244Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.2121831Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.2997107Z ##[group]Restore Gradle state from cache
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.4286725Z Gradle User Home cache not found. Will initialize empty.
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.4287676Z ##[endgroup]
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.6222180Z ##[group]All Gradle Wrapper jars are valid
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.6224140Z ✓ Found known Gradle Wrapper JAR files:
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.6224991Z   575098db54a998ff1c6770b352c3b16766c09848bee7555dab09afc34e8cf590 gradle/wrapper/gradle-wrapper.jar
+replay-and-android-checks	Set up Gradle	2026-10-24T15:15:40.6226272Z ##[endgroup]
+replay-and-android-checks	Install pinned Android SDK components	﻿2026-10-24T15:15:40.6383381Z ##[group]Run "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6384026Z [36;1m"$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \[0m
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6384441Z [36;1m  'platforms;android-36.1' \[0m
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6384729Z [36;1m  'build-tools;36.0.0' \[0m
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6384984Z [36;1m  'ndk;28.0.13004108'[0m
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6614066Z shell: /usr/bin/bash -e {0}
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6614388Z env:
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6614724Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6615274Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6615731Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6616089Z   GRADLE_USER_HOME: /home/runner/.gradle
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6616395Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6616843Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6617385Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6617710Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:40.6617974Z ##[endgroup]
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:42.6181148Z Loading package information...                                                  
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:42.7113136Z Loading local repository...                                                     
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:42.7115861Z [                                       ] 3% Loading local repository...        
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.0560843Z [                                       ] 3% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.4788356Z [=                                      ] 3% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.5607982Z [=                                      ] 4% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.6229904Z [=                                      ] 5% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.6796476Z [==                                     ] 5% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.7482629Z [==                                     ] 6% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.9440606Z [==                                     ] 7% Fetch remote repository...         
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.9442062Z [==                                     ] 7% Computing updates...               
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.9524464Z [===                                    ] 8% Computing updates...               
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:44.9644270Z [===                                    ] 10% Computing updates...              
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:45.0327607Z [===                                    ] 10% Installing NDK (Side by side) 28.0
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:45.2363183Z [===                                    ] 10% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:45.3370443Z [====                                   ] 10% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:45.5722646Z [====                                   ] 11% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:46.1296388Z [====                                   ] 12% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:46.3438608Z [=====                                  ] 13% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:46.5455992Z [=====                                  ] 14% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:46.7044153Z [=====                                  ] 15% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:46.8074958Z [======                                 ] 15% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:47.0155302Z [======                                 ] 16% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:47.2915465Z [======                                 ] 17% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:47.5222322Z [=======                                ] 18% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:47.7747050Z [=======                                ] 19% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:47.8748008Z [=======                                ] 20% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:47.9632724Z [========                               ] 20% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:48.2202367Z [========                               ] 21% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:48.4481252Z [========                               ] 22% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:48.6469120Z [=========                              ] 23% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:48.9017102Z [=========                              ] 24% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:48.9920867Z [=========                              ] 25% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:49.0789063Z [==========                             ] 25% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:49.3525597Z [==========                             ] 26% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:49.5522075Z [==========                             ] 27% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:49.7877542Z [===========                            ] 28% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:49.9889060Z [===========                            ] 29% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.0814233Z [===========                            ] 30% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.2445753Z [============                           ] 30% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.4184816Z [============                           ] 31% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.5929470Z [============                           ] 32% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.5933453Z [============                           ] 33% Downloading android-ndk-r28-linux.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.9971347Z [============                           ] 33% Unzipping...                      
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.9972357Z [============                           ] 33% Unzipping... android-ndk-r28/     
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.9980828Z [============                           ] 33% Unzipping... android-ndk-r28/READM
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:50.9984453Z [=============                          ] 33% Unzipping... android-ndk-r28/READM
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:51.0007482Z [=============                          ] 33% Unzipping... android-ndk-r28/meta/
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:51.1487176Z [=============                          ] 33% Unzipping... android-ndk-r28/shade
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:51.1510615Z [=============                          ] 33% Unzipping... android-ndk-r28/ndk-l
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:51.1540461Z [=============                          ] 33% Unzipping... android-ndk-r28/wrap.
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:51.1560504Z [=============                          ] 33% Unzipping... android-ndk-r28/ndk-w
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:51.5760247Z [=============                          ] 33% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:52.0910960Z [=============                          ] 34% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:52.3221852Z [=============                          ] 35% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:52.5932070Z [==============                         ] 35% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:53.0356476Z [==============                         ] 36% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:53.6236421Z [==============                         ] 37% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:54.0074280Z [===============                        ] 38% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:54.4782391Z [===============                        ] 39% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:54.7135989Z [===============                        ] 40% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:54.9675446Z [================                       ] 40% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:55.4956463Z [================                       ] 41% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:55.9756300Z [================                       ] 42% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:56.8031985Z [=================                      ] 43% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:57.3612440Z [=================                      ] 44% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:57.6595389Z [=================                      ] 45% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:58.2694413Z [==================                     ] 45% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:58.7433709Z [==================                     ] 46% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:59.2010832Z [==================                     ] 47% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:15:59.6492458Z [===================                    ] 48% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:00.1317446Z [===================                    ] 49% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:00.3354827Z [===================                    ] 50% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:00.5555528Z [====================                   ] 50% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:01.0631725Z [====================                   ] 51% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:01.4828437Z [====================                   ] 52% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:01.9479109Z [=====================                  ] 53% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.2250956Z [=====================                  ] 54% Unzipping... android-ndk-r28/toolc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.2355913Z [=====================                  ] 54% Unzipping... android-ndk-r28/build
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.4553053Z [=====================                  ] 54% Unzipping... android-ndk-r28/sourc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.4576130Z [=====================                  ] 54% Unzipping... android-ndk-r28/NOTIC
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.4578279Z [=====================                  ] 54% Unzipping... android-ndk-r28/ndk-g
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.4592827Z [=====================                  ] 54% Unzipping... android-ndk-r28/NOTIC
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.4628537Z [=====================                  ] 54% Unzipping... android-ndk-r28/pytho
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.5078269Z [=====================                  ] 54% Unzipping... android-ndk-r28/prebu
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.5079036Z [=====================                  ] 54% Unzipping... android-ndk-r28/ndk-s
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.5080777Z [=====================                  ] 54% Unzipping... android-ndk-r28/ndk-b
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.5082528Z [=====================                  ] 54% Unzipping... android-ndk-r28/sourc
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.5706809Z [=====================                  ] 54% Unzipping... android-ndk-r28/simpl
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.7431145Z [=====================                  ] 55% Unzipping... android-ndk-r28/simpl
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.8823711Z [=====================                  ] 55% Unzipping... android-ndk-r28/CHANG
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:02.8824443Z [=======================================] 100% Unzipping... android-ndk-r28/CHAN
+replay-and-android-checks	Install pinned Android SDK components	2026-10-24T15:16:03.2439997Z 
+replay-and-android-checks	Verify pinned source commits	﻿2026-10-24T15:16:03.2706492Z ##[group]Run set -euo pipefail
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2706863Z [36;1mset -euo pipefail[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2707145Z [36;1mgit cat-file -e "$SIGNAL_BASE^{commit}"[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2707497Z [36;1mgit cat-file -e "$MOLLY_TARGET^{commit}"[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2707856Z [36;1mgit merge-base --is-ancestor "$SIGNAL_BASE" HEAD[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2708269Z [36;1mgit merge-base --is-ancestor "$SIGNAL_BASE" "$MOLLY_TARGET"[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2708646Z [36;1mmkdir -p reports/827/build[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2708931Z [36;1mpython3 - <<'PY'[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2709394Z [36;1mimport json, os, subprocess[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2709679Z [36;1mreport = {[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2709921Z [36;1m    'status': 'PASS',[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2710223Z [36;1m    'signal_base': os.environ['SIGNAL_BASE'],[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2710586Z [36;1m    'molly_target': os.environ['MOLLY_TARGET'],[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2711109Z [36;1m    'checked_out_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2711674Z [36;1m    'signal_base_is_ancestor_of_head': True,[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2712010Z [36;1m    'signal_base_is_ancestor_of_target': True,[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2712300Z [36;1m}[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2712590Z [36;1mwith open('reports/827/build/source-pins.json', 'w') as f:[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2712964Z [36;1m    json.dump(report, f, indent=2)[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2713249Z [36;1m    f.write('\n')[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2713481Z [36;1mPY[0m
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2782674Z shell: /usr/bin/bash -e {0}
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2782952Z env:
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2783292Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2783802Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2784234Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2784549Z   GRADLE_USER_HOME: /home/runner/.gradle
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2784843Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2785300Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2785874Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2786290Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2786623Z   SIGNAL_BASE: c47a74ba0961903eeaeda6d22347a990056c3e83
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2786984Z   MOLLY_TARGET: 0e202dda90785771ff8c87526eaaf30c655f54f3
+replay-and-android-checks	Verify pinned source commits	2026-10-24T15:16:03.2787298Z ##[endgroup]
+replay-and-android-checks	Validate manifest and patch ownership	﻿2026-10-24T15:16:03.4363315Z ##[group]Run mkdir -p reports/827/build
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4363691Z [36;1mmkdir -p reports/827/build[0m
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4364161Z [36;1mpython3 tools/827/test_replay.py[0m
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4364513Z [36;1mpython3 tools/827/validate_inventory.py --repo .[0m
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4364864Z [36;1mpython3 tools/827/validate.py \[0m
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4365175Z [36;1m  --manifest patches/827/series.yaml \[0m
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4365545Z [36;1m  --report reports/827/build/manifest-validation.json[0m
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4434361Z shell: /usr/bin/bash -e {0}
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4434634Z env:
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4434968Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4435486Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4435925Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4436251Z   GRADLE_USER_HOME: /home/runner/.gradle
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4436551Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4437053Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4437536Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4437857Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.4438123Z ##[endgroup]
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.9492907Z ...............
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.9493378Z ----------------------------------------------------------------------
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.9493800Z Ran 15 tests in 0.431s
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.9493956Z 
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:03.9494046Z OK
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9652861Z {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9653239Z   "status": "PASS",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9653526Z   "full_diff_records": 3171,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9653818Z   "full_diff_matches_git": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9654099Z   "historical_inventory_paths": 80,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9654379Z   "current_manifest": {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9654637Z     "full_file_parity_paths": 12,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9654920Z     "integration_files": 8,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9655216Z     "anchored_fragments": 12,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9655478Z     "adaptation_paths": 62,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9655748Z     "added_target_absent_paths": 1,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9656029Z     "build_validation_overlay_paths": 0,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9656315Z     "current_manifest_paths": 83,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9656578Z     "current_target_diff_paths": 81,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9656868Z     "current_paths_outside_target_diff": 2,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9657166Z     "historical_target_paths": 80
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9657417Z   },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9657618Z   "full_tree_class_counts": {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9657876Z     "unresolved": 2958,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9658118Z     "selected_unifiedpush": 77,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9658385Z     "other_molly_functionality": 2,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9658671Z     "verified_upstream_backport": 1,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9659687Z     "other_branding_target_change": 130,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9660099Z     "selected_branding": 3
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9660483Z   },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9660837Z   "validated_exact_files": 12,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9661284Z   "validated_anchor_fragments": 12,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9661734Z   "validated_adaptation_paths": 62,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9662173Z   "adaptation_hunk_rows": 86,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9662586Z   "validated_added_paths": 1,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9662971Z   "validated_overlay_paths": 0,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9663388Z   "current_series_ledger_paths": 83,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9663811Z   "sha256": {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9664367Z     "full_tree_classification": "c7bdadf85ebec702d52eabb04fa94b74e91e24577b2ef0ae4b071ab43b1f9551",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9665160Z     "feature_inventory": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9665955Z     "selected_hunks": "d11c277b2e5f35e9955c2b7e05a014a8f49884cf2c2cd0d5d1305113394abb63"
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9666566Z   }
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:04.9666915Z }
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4136179Z {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4136607Z   "status": "PASS",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4136930Z   "schema_version": 2,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4137673Z   "features": [
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4138025Z     "branding",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4138634Z     "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4138944Z     "build-validation"
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4139436Z   ],
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4139702Z   "patch_count": 20,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4140095Z   "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4140582Z   "resolved_upstream_sources": [
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4140976Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4141273Z       "feature": "branding",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4141755Z       "patch": "branding/0001-branding-default-launcher.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4142429Z       "source_commit_sha": "15aeb5bbc9b67723a2adac5ddeab12aaea9f9f6e",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4143025Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4143409Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4143786Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4144196Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4144471Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4144786Z       "feature": "branding",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4145316Z       "patch": "branding/0001-branding-default-launcher.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4146009Z       "source_commit_sha": "29cd5ad5dc35008bbfc9529cde1fe3e214b60aed",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4146548Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4148005Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4148393Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4148791Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4149069Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4149547Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4150205Z       "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4151052Z       "source_commit_sha": "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4151612Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4151983Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4152354Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4152712Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4152901Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4153101Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4153513Z       "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4154028Z       "source_commit_sha": "d5c05fa94603addbaaccc9b63ca19a81520ba1c0",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4154378Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4154650Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4154899Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4155153Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4155337Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4155530Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4155922Z       "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4156412Z       "source_commit_sha": "a688a8d09a5ed40a9d60d9b7d3011757b6dcd398",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4156749Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4156980Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4157209Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4157449Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4157690Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4157910Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4158307Z       "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4158802Z       "source_commit_sha": "7fe38624aa096ae836120904012fc74735ecf965",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4159143Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4159597Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4159838Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4160096Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4160279Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4160481Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4160879Z       "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4161363Z       "source_commit_sha": "3ba16299066e918304664790136a577b29f25203",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4161708Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4161964Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4162281Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4162571Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4162994Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4163202Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4163603Z       "patch": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4164251Z       "source_commit_sha": "6351f730a2c0acc2ab2e013e9a434f8c583e7435",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4164612Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4164862Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4165095Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4165345Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4165522Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4165720Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4166164Z       "patch": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4166702Z       "source_commit_sha": "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4167037Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4167294Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4167525Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4167777Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4167953Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4168144Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4168561Z       "patch": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4169069Z       "source_commit_sha": "60495667669377971dd19ae18cd04910c89cafcf",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4169620Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4169859Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4170091Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4170338Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4170513Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4170702Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4171119Z       "patch": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4171644Z       "source_commit_sha": "6351f730a2c0acc2ab2e013e9a434f8c583e7435",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4171983Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4172227Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4172452Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4172704Z     },
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4172875Z     {
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4173083Z       "feature": "unifiedpush",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4173488Z       "patch": "unifiedpush/0003-Add-UnifiedPush-distributor-recovery-prompt.patch",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4173977Z       "source_commit_sha": "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4174324Z       "object_type": "commit",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4174566Z       "resolves": true,
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4174802Z       "ancestor_of_molly_target": true
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4175058Z     }
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4175235Z   ],
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4175502Z   "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4175990Z   "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4176553Z   "message": "Manifest, full patch checksums, dependency order, and mailbox source provenance verified."
+replay-and-android-checks	Validate manifest and patch ownership	2026-10-24T15:16:05.4177020Z }
+replay-and-android-checks	Replay twice and verify tree and declared parity	﻿2026-10-24T15:16:05.4226853Z ##[group]Run python3 tools/827/replay_twice.py \
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4227249Z [36;1mpython3 tools/827/replay_twice.py \[0m
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4227561Z [36;1m  --repo . \[0m
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4227829Z [36;1m  --manifest patches/827/series.yaml \[0m
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4228207Z [36;1m  --worktree-prefix "$RUNNER_TEMP/molly-827-replay" \[0m
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4228597Z [36;1m  --report reports/827/build/replay-twice.json[0m
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4296318Z shell: /usr/bin/bash -e {0}
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4296590Z env:
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4296919Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4297428Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4297858Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4298187Z   GRADLE_USER_HOME: /home/runner/.gradle
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4298492Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4298952Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4299575Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4300075Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:05.4300351Z ##[endgroup]
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4932699Z {
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4933158Z   "status": "FAIL",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4933421Z   "runs": [
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4933624Z     {
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4933830Z       "command": [
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4934070Z         "/usr/bin/python3",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4934475Z         "/home/runner/work/mollyim-android/mollyim-android/tools/827/replay.py",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4934876Z         "--repo",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4935160Z         "/home/runner/work/mollyim-android/mollyim-android",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4935525Z         "--manifest",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4935901Z         "/home/runner/work/mollyim-android/mollyim-android/patches/827/series.yaml",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4936344Z         "--worktree",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4936635Z         "/home/runner/work/_temp/molly-827-replay-run-1",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4936977Z         "--report",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4937235Z         "reports/827/build/replay-twice-run-1.json"
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4937539Z       ],
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4937734Z       "exit_code": 1,
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4938026Z       "report": "reports/827/build/replay-twice-run-1.json",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4938402Z       "log": "reports/827/build/replay-twice-run-1.log",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4938716Z       "status": "PATCH_FAILED",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4938975Z       "tree_sha": null,
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4939390Z       "expected_tree_match": null
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4939650Z     }
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4939832Z   ],
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4940031Z   "tree_sha_equal": false,
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4940359Z   "expected_tree_sha": "f00af8f47e8f5bef1cb65559d0a8c7c45d2e5f77",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4940723Z   "worktrees_preserved": [
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4941003Z     "/home/runner/work/_temp/molly-827-replay-run-1",
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4941348Z     "/home/runner/work/_temp/molly-827-replay-run-2"
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4941635Z   ],
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4942096Z   "error": "replay 1 failed; see reports/827/build/replay-twice-run-1.json and reports/827/build/replay-twice-run-1.log"
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.4942613Z }
+replay-and-android-checks	Replay twice and verify tree and declared parity	2026-10-24T15:16:07.5005192Z ##[error]Process completed with exit code 1.
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	﻿2026-10-24T15:16:07.5104484Z ##[group]Run actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5104902Z with:
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5105155Z   name: molly-827-poc-validation-40105996791
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5105467Z   if-no-files-found: warn
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5106358Z   path: reports/827/build
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	/home/runner/work/_temp/molly-827-replay-run-1/**/build/reports
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	/home/runner/work/_temp/molly-827-replay-run-1/**/build/test-results
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	/home/runner/work/_temp/molly-827-replay-run-1/app/build/outputs/apk/playProd/debug
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5107267Z   compression-level: 6
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5107524Z   overwrite: false
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5107758Z   include-hidden-files: false
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5108007Z   archive: true
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5108210Z env:
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5108521Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5109026Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5109683Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5110037Z   GRADLE_USER_HOME: /home/runner/.gradle
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5110333Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5110781Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5111252Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5111574Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:07.5111843Z ##[endgroup]
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.6117504Z Multiple search paths detected. Calculating the least common ancestor of all paths
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.6120313Z The least common ancestor is /home/runner/work. This will be the root directory of the artifact
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.6121260Z With the provided path, there will be 6 files uploaded
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.6126630Z Artifact name is valid!
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.6127105Z Root directory input is valid!
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.8542882Z Uploading artifact: molly-827-poc-validation-40105996791.zip
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:08.8579937Z Beginning upload of artifact content to blob storage
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.0238760Z Uploaded bytes 4616
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.0585938Z Finished uploading artifact content to blob storage!
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.0586936Z SHA256 digest of uploaded artifact is ad2a5fa39e387089dc67ba424abdade31cbee8976c62c59a6524b5394183fe84
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.0587600Z Finalizing artifact upload
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.5226994Z Artifact molly-827-poc-validation-40105996791 successfully finalized. Artifact ID 12565145336
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.5228365Z Artifact molly-827-poc-validation-40105996791 has been successfully uploaded! Final size is 4616 bytes. Artifact ID is 12565145336
+replay-and-android-checks	Upload replay, build, test, lint, and failure reports	2026-10-24T15:16:09.5232697Z Artifact download URL: https://github.com/0cwa/mollyim-android/actions/runs/40105996791/artifacts/12565145336
+replay-and-android-checks	Post Set up Gradle	﻿2026-10-24T15:16:09.5497915Z Post job cleanup.
+replay-and-android-checks	Post Set up Gradle	2026-10-24T15:16:09.8133689Z In post-action step
+replay-and-android-checks	Post Set up Gradle	2026-10-24T15:16:09.8139105Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+replay-and-android-checks	Post Set up Gradle	2026-10-24T15:16:09.8880679Z Cache is read-only: will not save state for use in subsequent builds.
+replay-and-android-checks	Post Set up Gradle	2026-10-24T15:16:09.8886663Z Generating Job Summary
+replay-and-android-checks	Post Set up Gradle	2026-10-24T15:16:09.8906751Z Completed post-action step
+replay-and-android-checks	Post Set up JDK 21	﻿2026-10-24T15:16:09.9128910Z Post job cleanup.
+replay-and-android-checks	Post Check out source	﻿2026-10-24T15:16:10.0577059Z Post job cleanup.
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1482052Z [command]/usr/bin/git version
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1539104Z git version 2.55.0
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1578587Z Temporarily overriding HOME='/home/runner/work/_temp/03b26720-751a-4b6d-b600-9e9c184b5d9c' before making global git config changes
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1580186Z Adding repository directory to the temporary git global config as a safe directory
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1586809Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/mollyim-android/mollyim-android
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1626718Z Removing SSH command configuration
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1633954Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1675411Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1955217Z Removing HTTP extra header
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.1962023Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2012630Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2304900Z Removing includeIf entries pointing to credentials config files
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2312080Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2351938Z includeif.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2353134Z includeif.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git/worktrees/*.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2353983Z includeif.gitdir:/github/workspace/.git.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2354433Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2380353Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2420936Z /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2431562Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git.path /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2476375Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git/worktrees/*.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2509387Z /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2528573Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/mollyim-android/mollyim-android/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2571836Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2604915Z /github/runner_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2614902Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2656457Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2685133Z /github/runner_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2693675Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.2734888Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+replay-and-android-checks	Post Check out source	2026-10-24T15:16:10.3011932Z Removing credentials config '/home/runner/work/_temp/git-credentials-1481e945-f726-4662-b13a-08dbdef0afcc.config'
+replay-and-android-checks	Complete job	﻿2026-10-24T15:16:10.3161406Z Cleaning up orphan processes

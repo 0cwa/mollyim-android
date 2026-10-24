@@ -1,0 +1,100 @@
+{
+  "status": "completed",
+  "conclusion": "failure",
+  "url": "https://github.com/0cwa/mollyim-android/actions/runs/40105996791",
+  "headBranch": "dev/molly-827-reproducible-poc",
+  "headSha": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
+  "jobs": [
+    {
+      "name": "replay-and-android-checks",
+      "status": "completed",
+      "conclusion": "failure",
+      "url": "https://github.com/0cwa/mollyim-android/actions/runs/40105996791/job/120907687818",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Check out source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set up JDK 21",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate Gradle wrapper",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Set up Gradle",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install pinned Android SDK components",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Verify pinned source commits",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Validate manifest and patch ownership",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Replay twice and verify tree and declared parity",
+          "status": "completed",
+          "conclusion": "failure"
+        },
+        {
+          "name": "Build, test, lint, and verify dependencies",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Run flavor-suffix URI and UnifiedPush regression tests",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Upload replay, build, test, lint, and failure reports",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Set up Gradle",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Set up JDK 21",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Post Check out source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "full_log_file": "reports/827/ci/40105996791.log",
+  "full_log_sha256": "d0722d2b8c25979fbbd003614a42c5da4ff1b9ee650bb9428a13c205f47b30e7",
+  "artifact_download": "BLOCKED: GitHub artifact metadata API returned the artifact, but download redirected to productionresultssa7.blob.core.windows.net and returned HTTP 403 through the configured network proxy."
+}

@@ -42,7 +42,8 @@ def main():
             result['runs'].append({'command': cmd, 'exit_code': proc.returncode,
                                    'report': str(child_report), 'log': str(log),
                                    'status': child.get('status'), 'tree_sha': child.get('tree_sha'),
-                                   'expected_tree_match': child.get('expected_tree_match')})
+                                   'expected_tree_match': child.get('expected_tree_match'),
+                                   'error': child.get('error'), 'git_am_failure': child.get('git_am_failure')})
             if proc.returncode or child.get('status') != 'PASS':
                 raise RuntimeError(f'replay {index} failed; see {child_report} and {log}')
         result['tree_sha_equal'] = result['runs'][0]['tree_sha'] == result['runs'][1]['tree_sha']
