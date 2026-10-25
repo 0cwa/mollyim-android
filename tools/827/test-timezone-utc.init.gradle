@@ -1,0 +1,7 @@
+import org.gradle.api.tasks.testing.Test
+
+allprojects {
+  tasks.withType(Test).configureEach {
+    systemProperty('user.timezone', 'UTC')
+  }
+}

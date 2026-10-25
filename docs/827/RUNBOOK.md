@@ -115,6 +115,20 @@ Run repository fast-lint from the replay worktree as well:
 
 On tree `e783cf54487a5b5d78c3241ec977fd8c8cd23f1d`, this task passed with no findings; its log is `reports/827/build/fastLint-replay-fixes-20261024.log` (SHA-256 `cb512b8ec093c5b01024921f27ce5fd9c0ea93a7fbc7bc6d6a2f7664bd60a983`). Current hosted CI status is in `reports/827/acceptance.json`.
 
+### Full all-variant build and test timezone
+
+Run the full `build` task from the replay worktree with both reviewed init scripts. `TZ=UTC` sets the Gradle process timezone, and `test-timezone-utc.init.gradle` also configures every Gradle `Test` task with `user.timezone=UTC`. Gradle treats test system properties as task inputs, so the timezone value participates in the test task cache key and avoids reusing results produced under a different timezone. The timezone script changes only test JVM configuration; it does not change application date handling or add a test filter.
+
+```sh
+(cd "$REPLAY_WORKTREE" && TZ=UTC ./gradlew --continue --no-daemon --max-workers=1 --dependency-verification=strict \
+  --init-script "$PRIMARY_CHECKOUT/tools/827/test-worker-heap.init.gradle" \
+  --init-script "$PRIMARY_CHECKOUT/tools/827/test-timezone-utc.init.gradle" \
+  -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' \
+  build)
+```
+
+A `CollapsingMessagesTests` case uses `now() - 24h` while `DateUtils.isSameDay` compares local calendar dates. On the 25-hour Europe/Stockholm DST transition day, an elapsed 24-hour interval can still be the same local date, so a calendar-dependent `HEAD` expectation can disagree with the actual `PENDING` result. The source date comparison is intentionally unchanged; use UTC for deterministic unit-test execution and retain timezone/DST-specific coverage for the underlying date behavior. Related DST evidence is in [the Europe/Stockholm test summary](../../reports/827/build/dst-timezone-20261025/completed-europe-stockholm-test-xml-summary-20261025.json), [the sanitized original failure](../../reports/827/build/dst-timezone-20261025/nightly-prod-perf-failed-collapsing-test-sanitized.xml), and [the UTC test-worker verification](../../reports/827/build/dst-timezone-20261025/utc-test-worker-timezone-verification.json). The current all-variant build remains in progress; see its [replay 1 log](../../reports/827/build/all-variant-build-replay1-20261025.log). Do not treat that run as a matrix pass until its final exit status and summary are recorded.
+
 For the URI suffix, UnifiedPush receiver, and F5 endpoint retry tests:
 
 ```sh
