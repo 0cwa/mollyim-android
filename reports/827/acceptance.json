@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "assessment": "The refreshed 23-patch manifest, two replays, inventory/resource checks, current-source fast-lint and ktlint, WebsiteProdRelease compile, full staging suite, and hosted CI all pass. The full all-variant build, behavior evidence for every adaptation, and live runtime remain unproven.",
+  "assessment": "The refreshed 23-patch manifest, two replays, inventory/resource checks, current-source fast-lint and ktlint, WebsiteProdRelease compile, full staging suite, and hosted CI all pass. A current-source API 35 synthetic runtime probe now passes its selected seed and process-restart flows, including sensitive clipboard metadata checks. The full all-variant build matrix, behavior evidence for every adaptation, and live service/device behavior remain unproven.",
   "scope": "Molly #827 external local proof of concept: launcher artwork and selected UnifiedPush/MollySocket feature ports",
   "source_pins": {
     "audited_poc_head": "b8d5375b3fb6013f7939935ce73e250b53515381",
@@ -46,7 +46,7 @@
     {
       "id": "all_variant_build_matrix",
       "status": "BLOCKED",
-      "evidence": "On current source commit d99876269eb6556e37bb2d584ba08e8334e8e5db/projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d, the unfiltered Play Staging Debug unit suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites. App ktlint and :fast-lint:fastLint pass. :Signal-Android:compileWebsiteProdReleaseSources passed strict dependency verification (27 tasks executed, 204 up-to-date). Hosted run 40111431112 passed ciRemote and :Signal-Android:assemblePlayProdDebug on final source. A full project build across every variant has not been performed; the earlier audited-snapshot matrix exited 130 after disk exhaustion at 15/23 variants and 14 suites. Evidence is in reports/827/build/ and reports/827/ci/40111431112.log."
+      "evidence": "On current source tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d, the unfiltered Play Staging Debug unit suite passed 2,800 tests with 0 failures/errors and 78 skipped across 251 suites. App ktlint and :fast-lint:fastLint pass. :Signal-Android:compileWebsiteProdReleaseSources passed strict dependency verification (27 tasks executed, 204 up-to-date). Hosted run 40111431112 passed ciRemote and :Signal-Android:assemblePlayProdDebug on final source. The full all-variant matrix was still running when the API35 runtime evidence was recorded; its completion result is pending. The separate PlayProdBenchmark APK assembly used by the focused runtime probe is not a full matrix pass. Earlier audited-snapshot matrix exited 130 after disk exhaustion at 15/23 variants and 14 suites. Evidence is in reports/827/build/ and reports/827/ci/40111431112.log."
     },
     {
       "id": "final_head_focused_regression_tests",
@@ -61,17 +61,17 @@
     {
       "id": "focused_local_android_flows",
       "status": "BLOCKED",
-      "evidence": "Historical local API 30 synthetic flows passed selected paths on prior replay tree 24a27bf3ddf2f23593f5a11e3230b66b335bc2a3, but predate the F4 locked callback change. Final-source JVM/CI tests pass; current-source Android runtime flows on a device or emulator have not been demonstrated."
+      "evidence": "Current-source API35 synthetic sub-evidence now passes on the projected tree e783cf54487a5b5d78c3241ec977fd8c8cd23f1d: both seed and process-restart phases passed synthetic benchmark setup, selected preference/backup checks, sensitive clipboard metadata for MollySocket parameters and account ID, local fake REGISTER/NEW_ENDPOINT and MESSAGE callbacks, connector-token persistence, local UNREGISTERED cleanup, and the missing-VAPID WebSocket-availability transition. This does not satisfy the broader focused Android-flow gate: no rendered settings/navigation flow, locked-state notification presentation, physical-device behavior, real distributor/service, clipboard expiry, or cryptographic lock behavior was demonstrated. Exact scope and reproducible evidence: reports/827/security/runtime/api35-20261025/."
     },
     {
       "id": "live_service_and_device_behavior",
       "status": "BLOCKED",
-      "evidence": "Live Signal account, MollySocket service, API 33 privacy metadata, and physical-device behavior were not tested."
+      "evidence": "A current-source API35 synthetic emulator run verified EXTRA_IS_SENSITIVE=true on copied MollySocket parameters and account ID and passed local fake-distributor seed/restart paths (reports/827/security/runtime/api35-20261025/). No real Signal account, deployed MollySocket, production distributor, physical device, locked-notification presentation, API35 clipboard expiry, remote linking/removal, or actual network/reconnection behavior was tested."
     },
     {
       "id": "security_review",
       "status": "PASS",
-      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the current-source staging suite (9 receiver tests; 25 total with 16 URI cases); hosted CI also passed focused URI/UnifiedPush regressions. Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested. A separate inherited F7 availability risk remains: remote linked-device registration may succeed before local prekey loading fails, leaving an orphan server-side device; a recoverable provisioning/cleanup follow-up is recommended."
+      "evidence": "F4/F6 receiver tests and F5 changed-endpoint failure/idempotence tests pass in the current-source staging suite (9 receiver tests; 25 total with 16 URI cases); hosted CI also passed focused URI/UnifiedPush regressions. A current-source synthetic API35 runtime probe passed local fake distributor and clipboard metadata checks; it does not test locked notification privacy or cryptographic lock behavior. Security dispositions remain documented in docs/827/SECURITY.md and reports/827/security/findings.json; live service/provisioning and physical-device behavior remain untested. A separate inherited F7 availability risk remains: remote linked-device registration may succeed before local prekey loading fails, leaving an orphan server-side device; a recoverable provisioning/cleanup follow-up is recommended."
     },
     {
       "id": "ci_validation",
@@ -86,7 +86,7 @@
     {
       "id": "untested_behavior_disclosure",
       "status": "PASS",
-      "evidence": "The handoff and acceptance report explicitly identify untested live Signal/MollySocket service behavior, API 33+ notification privacy, current-source device/emulator flows, complete all-variant coverage, and per-adaptation behavioral proof. This PASS records completeness of disclosure only; it does not claim those behaviors were tested. See docs/827/SECURITY.md, docs/827/PARITY.md, docs/827/RUNBOOK.md, and the BLOCKED runtime/parity criteria in this report. Required behavior-by-behavior coverage is recorded in reports/827/behavior-coverage.json."
+      "evidence": "The handoff and acceptance report identify untested live Signal/MollySocket service behavior, physical-device and locked-notification behavior, API35 clipboard presentation/expiry behavior, complete all-variant coverage, and per-adaptation behavioral proof. Current-source API35 instrumentation now verifies sensitive clipboard metadata on both the MollySocket-parameters and account-ID copy paths, and passes bounded synthetic seed/restart flows. This PASS records completeness of disclosure only; it does not claim live or locked-state behavior was tested. See docs/827/SECURITY.md, docs/827/PARITY.md, docs/827/RUNBOOK.md, the BLOCKED live/parity/build criteria in this report, and reports/827/behavior-coverage.json."
     },
     {
       "id": "maintainer_reproducibility",
@@ -161,7 +161,7 @@
         "all_variant_build_matrix"
       ],
       "status": "PASS",
-      "note": "Disclosure is complete; current-source device/live behavior and the full variant matrix remain untested (BLOCKED)."
+      "note": "Disclosure is complete; selected current-source synthetic API35 runtime flows pass, while physical/live behavior and the full variant matrix remain untested (BLOCKED)."
     },
     {
       "item": 9,

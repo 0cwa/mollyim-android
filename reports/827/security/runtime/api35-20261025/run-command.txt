@@ -1,0 +1,8 @@
+# The AVD had already booted from a fresh -wipe-data run.
+export ANDROID_SDK_ROOT=/tmp/molly827-toolchain/android-sdk
+export ADB_SERIAL=emulator-5554 EXPECTED_AVD_NAME=molly827-api35
+export TARGET_BENCHMARK_APK=/run/media/x/6272b7dd-069d-480e-9530-85c52a28bc6e/molly827-worktrees/molly827-run-1/app/build/outputs/apk/playProd/benchmark/Signal-Android-play-prod-x86_64-benchmark-8.19.2.apk
+export TARGET_APK_SHA256=2cd6047804e5aca640357bc73dc10010de9c0087e880efa8f474615332c91b1b
+export FAKE_DISTRIBUTOR_APK=/tmp/molly827-toolchain/runtime-api35/fake-distributor/fake-distributor.apk
+export PROBE_APK=/tmp/molly827-toolchain/runtime-api35/api35-source/p2-probe.apk
+/tmp/molly827-toolchain/runtime-api35/api35-source/run-probe.sh emulator-5554

@@ -152,6 +152,12 @@ This task passed with strict dependency verification on refreshed source commit 
 
 Hosted workflow run 40111431112 passed source verification, inventory validation, two replays, LFS hydration, `ciRemote`, `:Signal-Android:assemblePlayProdDebug`, and focused URI/UnifiedPush regression tests. Full log: `reports/827/ci/40111431112.log`; run link and detailed status are in `reports/827/acceptance.json`.
 
+### Current-source API35 synthetic runtime probe
+
+The current-source benchmark APK was also exercised on a fresh API35 x86_64 Google APIs emulator. The bounded seed and process-restart phases passed for synthetic account setup, selected UnifiedPush preference/backup checks, clipboard payloads and sensitive metadata, fake distributor callbacks, synthetic connector-token persistence across app process restart, unregister cleanup, and the missing-VAPID WebSocket-availability transition. This run does not validate a live Signal account, MollySocket, real distributor, physical device, locked notification presentation, API35 clipboard expiry, or cryptographic lock semantics. It does not replace the pending all-variant matrix.
+
+The full text-only runner source, API30-to-API35 diff, source pins, checksums, captured logs, failed-attempt dispositions, and exact invocation are in [the API35 runtime report](../../reports/827/security/runtime/api35-20261025/README.md). Use a fresh API35 Google APIs x86_64 AVD with `-wipe-data`; the run script requires emulator root, sets airplane mode and requests Wi-Fi/mobile radio disablement, installs the no-INTERNET fake distributor, and requires exact IPv4 and IPv6 guest OUTPUT DROP rules before instrumentation. Build `:Signal-Android:assemblePlayProdBenchmark` from the replayed source worktree, sign the separate instrumentation runner with the same local debug keystore, and verify the certificate match as documented in the harness. The run script clears only the disposable benchmark app's data, runs seed and restart, verifies PASS markers, and removes the fake distributor. Shut down the AVD after evidence capture. The recorded API35 run is synthetic, local-only evidence; it does not prove a real notification display or a remote delivery path.
+
 ## Upgrade simulation
 
 1. Choose an exact new Signal base SHA and Molly target SHA. Fetch them, verify commit identities and ancestry, and save both in the experiment record.

@@ -1,0 +1,5 @@
+result_dir=/tmp/molly827-toolchain/runtime-api35/api35-source/results/api35-20261025T185348Z
+serial=emulator-5554
+avd=molly827-api35
+api=35
+target_apk_sha256=2cd6047804e5aca640357bc73dc10010de9c0087e880efa8f474615332c91b1b

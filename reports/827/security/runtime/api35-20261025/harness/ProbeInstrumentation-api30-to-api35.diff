@@ -1,0 +1,55 @@
+--- original-api30/ProbeInstrumentation.kt
++++ adapted-api35/ProbeInstrumentation.kt
+@@ -7,0 +8 @@
++import android.content.ClipDescription
+@@ -166,0 +168 @@
++      assertSensitiveClipboardMetadata(clipboard)
+@@ -168,0 +171 @@
++      assertSensitiveClipboardMetadata(clipboard)
+@@ -170,4 +173,10 @@
+-      assertThat(sdk == 30, "clipboard expiry check expects the configured API 30 emulator")
+-      val expiryDeadline = SystemClock.uptimeMillis() + 65_000L
+-      while (SystemClock.uptimeMillis() < expiryDeadline && clipboard.primaryClip?.getItemAt(0)?.text?.toString() == aci) {
+-        SystemClock.sleep(250)
++      if (sdk == 30) {
++        val expiryDeadline = SystemClock.uptimeMillis() + 65_000L
++        while (SystemClock.uptimeMillis() < expiryDeadline && clipboard.primaryClip?.getItemAt(0)?.text?.toString() == aci) {
++          SystemClock.sleep(250)
++        }
++        val expired = clipboard.primaryClip
++        assertThat(expired == null || expired.itemCount == 0 || expired.getItemAt(0).text?.toString() != aci, "sensitive clipboard content was not cleared by its scheduled 60-second alarm")
++      } else {
++        assertThat(sdk >= 33, "clipboard metadata probe requires Android 13 or later")
++        results += "PASS API33+ sensitive clipboard metadata for parameters and account ID"
+@@ -175,2 +183,0 @@
+-      val expired = clipboard.primaryClip
+-      assertThat(expired == null || expired.itemCount == 0 || expired.getItemAt(0).text?.toString() != aci, "sensitive clipboard content was not cleared by its scheduled 60-second alarm")
+@@ -186,2 +193,3 @@
+-    val launchIntent = target.packageManager.getLaunchIntentForPackage(target.packageName)
+-      ?: throw ProbeFailure("target package has no launcher activity")
++    // Benchmark variants do not declare a MAIN/LAUNCHER activity. Start the app's
++    // explicit MainActivity; getLaunchIntentForPackage resolves unrelated setup/restore flows.
++    val launchIntent = Intent().setClassName(target.packageName, "org.thoughtcrime.securesms.MainActivity")
+@@ -352,0 +361,13 @@
++    val account = signalValues(target).second
++    val getAci = { account.javaClass.getMethod("getAci").invoke(account) }
++    val isRegistered = { account.javaClass.getMethod("isRegistered").invoke(account) as Boolean }
++    if (getAci() == null || !isRegistered()) {
++      // BenchmarkSetupActivity runs TestUsers.setupSelf() and message-send setup. That path
++      // creates fixed synthetic credentials locally and blocks Signal network access.
++      val setupIntent = Intent().setClassName(target.packageName, "org.signal.benchmark.BenchmarkSetupActivity")
++        .putExtra("setup-type", "message-send")
++        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
++      startActivitySync(setupIntent)
++      waitUntil("synthetic benchmark account registration", 60_000) { getAci() != null && isRegistered() }
++      results += "PASS synthetic benchmark account created locally without a real account or server"
++    }
+@@ -442,0 +464,8 @@
++  }
++
++  private fun assertSensitiveClipboardMetadata(clipboard: ClipboardManager) {
++    if (android.os.Build.VERSION.SDK_INT >= 33) {
++      val description = clipboard.primaryClip?.description ?: throw ProbeFailure("clipboard is empty")
++      val extras = description.extras
++      assertThat(extras?.getBoolean(ClipDescription.EXTRA_IS_SENSITIVE, false) == true, "Android 13+ clipboard item is missing EXTRA_IS_SENSITIVE")
++    }

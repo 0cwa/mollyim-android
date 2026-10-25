@@ -1,0 +1,6 @@
+INSTRUMENTATION_RESULT: probe_checks=PASS benchmark synthetic app unlocked after process restart; PASS connector token persisted across target process restart; PASS fake MESSAGE callback after process restart; PASS fake distributor MESSAGE after process restart; PASS unsolicited local UNREGISTERED callback and public API cleanup; PASS fake distributor UNREGISTER and endpoint removal; PASS actual UnifiedPushRefreshJob missing-VAPID transition (no endpoint request); PASS refresh-job transition to WebSocket availability; PASS restore test-only target state
+INSTRUMENTATION_RESULT: probe_disclaimer=Synthetic local-only instrumentation; no real distributor, credentials, or server.
+INSTRUMENTATION_RESULT: probe_failures=
+INSTRUMENTATION_RESULT: probe_phase=restart
+INSTRUMENTATION_RESULT: probe_result=PASS
+INSTRUMENTATION_CODE: 0

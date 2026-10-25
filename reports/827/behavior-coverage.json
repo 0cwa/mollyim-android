@@ -8,28 +8,28 @@
   "scenarios": [
     {
       "required_behavior": "Initial FCM selection and WebSocket fallback",
-      "available_evidence": "Preference/availability policy, historical API30 preference fallback and missing-VAPID job transition; current account availability tests pass.",
-      "untested": "Live FCM token acquisition and delivery; physical-device fallback/reconnect."
+      "available_evidence": "Preference/availability policy and current account availability tests; historical API30 preference fallback. The current-source API35 synthetic run also executes the missing-VAPID refresh-job transition to WebSocket availability (no endpoint request).",
+      "untested": "Live FCM token acquisition/delivery; physical-device fallback/reconnect; this synthetic transition does not test real offline recovery."
     },
     {
       "required_behavior": "Selecting UnifiedPush",
-      "available_evidence": "Enum/preference policy and current receiver/availability tests; historical connector registration.",
-      "untested": "Final-source device UI selection with a real distributor."
+      "available_evidence": "Current receiver/availability tests and historical connector registration. Current-source API35 synthetic setup sends local REGISTER/NEW_ENDPOINT callbacks to a fake distributor.",
+      "untested": "Final-source device UI selection with a real distributor or live registration."
     },
     {
       "required_behavior": "QR provisioning and distributor selection",
-      "available_evidence": "Historical QR clipboard payload/expiry and local fake-distributor activation/registration; DTO/source contract probes.",
-      "untested": "Live Signal linking, QR provisioning through MollySocket, and real distributor selection."
+      "available_evidence": "Current-source API35 synthetic clipboard probe checks the copied MollySocket parameter text and EXTRA_IS_SENSITIVE metadata for that item. Local fake-distributor setup/registration also passes.",
+      "untested": "QR scan, live Signal linking, provisioning through deployed MollySocket, and real distributor selection."
     },
     {
       "required_behavior": "Endpoint registration and ping",
-      "available_evidence": "Historical fake REGISTER/NEW_ENDPOINT; current changed-endpoint PENDING/IOException fallback and same-endpoint idempotence tests.",
-      "untested": "Successful deployed MollySocket registration/ping, endpoint rotation and recovery."
+      "available_evidence": "Current-source API35 synthetic fake-distributor REGISTER/NEW_ENDPOINT callbacks pass; current changed-endpoint failure fallback and same-endpoint idempotence tests pass.",
+      "untested": "Successful deployed MollySocket registration/ping, endpoint rotation and recovery against a real service."
     },
     {
       "required_behavior": "Message-delivery notification triggering",
-      "available_evidence": "Historical API30 fake MESSAGE reached actual app callback and NotificationManager; current locked callback tests.",
-      "untested": "Final-source device notification from live Signal/MollySocket push."
+      "available_evidence": "Current-source API35 fake MESSAGE callback reached the synthetic app test-notification path in both seed and after-restart phases.",
+      "untested": "Final-source device notification rendering from a live Signal/MollySocket push; visible system notification behavior."
     },
     {
       "required_behavior": "Offline and reconnection",
@@ -43,8 +43,8 @@
     },
     {
       "required_behavior": "Disabling or uninstalling a distributor",
-      "available_evidence": "Historical unsolicited UNREGISTERED cleanup; current locked/unlocked unregister callback state tests.",
-      "untested": "Actual disable/uninstall/package-removal behavior on final-source devices."
+      "available_evidence": "Historical API30 unsolicited UNREGISTERED cleanup; current locked/unlocked unregister callback state tests. Current-source API35 synthetic unsolicited UNREGISTERED callback and public API cleanup pass.",
+      "untested": "Actual package uninstall/removal behavior on final-source devices."
     },
     {
       "required_behavior": "Locked-state notification privacy",
@@ -58,14 +58,16 @@
     },
     {
       "required_behavior": "Switching back from UnifiedPush",
-      "available_evidence": "Delivery/preference state and availability policy evidence.",
+      "available_evidence": "Delivery/preference state and availability policy evidence. Current-source API35 synthetic missing-VAPID refresh-job transition to WebSocket availability passes without an endpoint request.",
       "untested": "Final-source UI switching to live FCM/WebSocket and remote registration cleanup."
     }
   ],
   "additional_limits": [
-    "API33+ clipboard UI/sensitive metadata and device-idle expiry timing were not tested.",
+    "API35 synthetic instrumentation verifies ClipDescription.EXTRA_IS_SENSITIVE on MollySocket parameters and account-ID clipboard payloads. It does not test expiry timing, other-app presentation, or a visible OS privacy indicator.",
+    "Locked notification presentation, physical-device behavior and Molly's cryptographic database/master-secret lock semantics remain untested.",
     "Signal Firebase/Google dependencies are retained.",
     "Inherited F7 provisioning can leave an orphan linked device when post-registration prekey initialization fails."
   ],
-  "next_capability": "Use a disposable isolated Signal account, test MollySocket/distributor endpoints, and a final-source device installation for the remaining live tests; no production account or signing keys were used."
+  "next_capability": "Use a disposable isolated Signal account, test MollySocket/distributor endpoints, and a final-source device for remaining live flows; test locked-notification presentation and clipboard expiry separately. No production account or signing keys were used.",
+  "current_api35_runtime_report": "reports/827/security/runtime/api35-20261025/README.md"
 }
