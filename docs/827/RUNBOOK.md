@@ -158,6 +158,18 @@ The current-source benchmark APK was also exercised on a fresh API35 x86_64 Goog
 
 The full text-only runner source, API30-to-API35 diff, source pins, checksums, captured logs, failed-attempt dispositions, and exact invocation are in [the API35 runtime report](../../reports/827/security/runtime/api35-20261025/README.md). Use a fresh API35 Google APIs x86_64 AVD with `-wipe-data`; the run script requires emulator root, sets airplane mode and requests Wi-Fi/mobile radio disablement, installs the no-INTERNET fake distributor, and requires exact IPv4 and IPv6 guest OUTPUT DROP rules before instrumentation. Build `:Signal-Android:assemblePlayProdBenchmark` from the replayed source worktree, sign the separate instrumentation runner with the same local debug keystore, and verify the certificate match as documented in the harness. The run script clears only the disposable benchmark app's data, runs seed and restart, verifies PASS markers, and removes the fake distributor. Shut down the AVD after evidence capture. The recorded API35 run is synthetic, local-only evidence; it does not prove a real notification display or a remote delivery path.
 
+### Quickstart packaging inputs for the full variant build
+
+The full flavor matrix includes Quickstart variants, whose asset-copy task requires `quickstart.credentials.dir`. Generate packaging fixtures only when the build reports that this property or its expected `prod_*.json` / `staging_*.json` files are missing. Follow the [synthetic fixture-generation record](../../reports/827/build-environment/quickstart-20261025/README.md): it uses the canonical `QuickstartCredentialExporter` with locally generated benchmark `TestUsers` data on an isolated API 35 emulator. The evidence bundle includes the temporary exporter harness, schema validator, setup and cleanup records, and exact source/APK identities.
+
+Keep the generated JSON files in a private directory outside the checkout (directory mode 700, files mode 600); the JSON contains synthetic account credentials and serialized keys. The recorded package-only inputs are `prod_synthetic.json` and `staging_synthetic.json`, copied from the same local synthetic export to meet the two flavor filename prefixes. Never commit the fixture JSON, generated account values, or keys. In the **isolated replay worktree** used for the full build, set the ignored root `local.properties` entry to the private directory:
+
+```properties
+quickstart.credentials.dir=/path/to/private/quickstart-fixtures
+```
+
+Resume the full build from that replay worktree after the original `--continue` run has finished. This property only supplies assets to the Quickstart package tasks. Do not install or launch a Quickstart APK. Fixture generation and schema/base64 validation do not prove Quickstart deserialization, registration, protocol or cryptographic correctness, or live Signal/MollySocket behavior. The benchmark TestUsers setup has a documented PNI prekey-generation concern; this packaging fixture does not fix or validate it.
+
 ## Upgrade simulation
 
 1. Choose an exact new Signal base SHA and Molly target SHA. Fetch them, verify commit identities and ancestry, and save both in the experiment record.
