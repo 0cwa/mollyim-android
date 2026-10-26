@@ -1,0 +1,125 @@
+{
+  "acceptance_summary": {
+    "app_utc_unit_test_variants": "23/23 passed, 251 fresh XML each, 2,800 cases and 78 skipped each, zero failures/errors",
+    "application_only_diagnostic": "PASS, Gradle exit 0; subordinate and not a full-root pass",
+    "full_root_build": "FAILED, Gradle exit 1, two tasks failed"
+  },
+  "allowlist_excludes_manifest_self_hash": true,
+  "allowlisted_files_excluding_manifest": [
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/all-variant-build-replay1-fixture-utc-input-20261025.log",
+      "role": "Full raw terminal log for the complete --continue build; contains two root failures.",
+      "sha256": "8b4410ba72bd8ebe66dc8431127cfed81fe6bcbdf13e384b37c75e3439b6ee95",
+      "size_bytes": 467574
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/app-only-signal-android-build-replay1-20261026/build.log",
+      "role": "Raw application-only diagnostic build log; exit 0, subordinate to full-root failure.",
+      "sha256": "842f5b05246123bcb5c04e6d445e9b2f24220be5f202fbc284ca99144b718bde",
+      "size_bytes": 227967
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/local-reconstruction-20261025/source-replay-lfs-summary.json",
+      "role": "Sanitized source pins, two-run replay tree proof, and 313-object Git LFS hydration/fsck summary.",
+      "sha256": "57a4d5cc1c737165c0b3ddc9d4ee74091ac2d0f96a7cbdc38f8f5b908972cb2d",
+      "size_bytes": 3221
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/local-reconstruction-20261025/toolchain-summary.json",
+      "role": "Verified task-local build toolchain versions and controls.",
+      "sha256": "fa6b10f087c193bfb1732da6cc54ac3cb74319135cdd1d9a8782e00b6459af22",
+      "size_bytes": 807
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/local-reconstruction-20261025/prior-attempts-summary.json",
+      "role": "Sanitized setup, Quickstart fixture, DST, and interrupted-attempt classifications.",
+      "sha256": "c0e45e0f178b0ee61d60bd2fe43a19007f26fbd6b5c9b58a15437473c50bde4c",
+      "size_bytes": 2316
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/local-reconstruction-20261025/resource-recovery-summary.json",
+      "role": "Sanitized APK archive and native output hardlink recovery counts and postconditions.",
+      "sha256": "8cdef921fe53951c83e6e0357526d479be24f1c1f9ae63882578f46fb1e7f622",
+      "size_bytes": 905
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/full-root-replay1-20261025/run-receipt.json",
+      "role": "Sanitized full-root start, normalized command, terminal exit, log hash, and disk snapshots.",
+      "sha256": "0c651437d796d23824a764c559882c45a1f44c4417922823483d329908b2e099",
+      "size_bytes": 3285
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/full-root-replay1-20261025/task-outcomes.json",
+      "role": "Full-root task outcomes, all app assembly/unit-test task outcomes, aggregate results, and both failures.",
+      "sha256": "a21bdd8e1a5f2eb11218c148936d2201e2d99f367f3a06d4472a24c26442680f",
+      "size_bytes": 22491
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/utc-test-matrix-public-20261026.json",
+      "role": "Fresh 23-variant UTC unit-test checkpoint with per-XML filename/size/SHA-256 manifests.",
+      "sha256": "e88586f6d1f2f1510e5f89ef6d5f0173377c9a3eff140d86fe2e4cf78edb1e74",
+      "size_bytes": 1387563
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/app-only-signal-android-build-replay1-20261026/public-run-receipt.json",
+      "role": "Application-only exit-0 receipt with exact task scope and cached/up-to-date signing task outcomes.",
+      "sha256": "15122f9adbfab928dd8cb3567103143889e0359a844a8270796becbfee4ef156",
+      "size_bytes": 13238
+    },
+    {
+      "format": "UTF-8 text",
+      "path": "reports/827/build/publication-staging-dry-run-20261026.txt",
+      "role": "Dry-run explicit staging list; contains commands as text only and was not executed.",
+      "sha256": "08b676276f8ad3d19fb5f3dd07b9537778dd29e149718c0704aadee8800c68c6",
+      "size_bytes": 1100
+    }
+  ],
+  "credential_scan": {
+    "matched_values_printed": false,
+    "matches_reported": 0,
+    "patterns": [
+      "GitHub/GitLab/AWS/Slack/Google API credential forms",
+      "PEM private-key header",
+      "Authorization bearer value",
+      "URL user:password form"
+    ],
+    "selected_text_files_scanned_before_manifest": 10
+  },
+  "excluded_categories": [
+    "APK/AAB/AAR/JAR/DEX/native .so/class binaries",
+    "raw Quickstart synthetic fixture contents",
+    "keystore/key material",
+    "partial test-event XML bodies",
+    "private per-file archive/hardlink journals and path maps",
+    "unrelated ignored build outputs"
+  ],
+  "generated_on": "2026-10-26",
+  "git_actions": {
+    "committed": false,
+    "pushed": false,
+    "staged": false
+  },
+  "manifest_self_reference": {
+    "path": "reports/827/build/publication-manifest-20261026.json",
+    "role": "This allowlist manifest; deliberately excluded from its own path/size/hash entries."
+  },
+  "publication_bytes_excluding_manifest": 2130467,
+  "publication_file_count_excluding_manifest": 11,
+  "purpose": "Explicit text-only publication allowlist for Molly #827 build and source replay evidence.",
+  "schema_version": 1,
+  "staging_file": {
+    "contains_only_explicit_paths": true,
+    "executed": false,
+    "path": "reports/827/build/publication-staging-dry-run-20261026.txt"
+  }
+}

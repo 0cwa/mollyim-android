@@ -1,0 +1,23 @@
+{
+  "apk_archive": {
+    "additional_variant_directories": 4,
+    "binary_contents_included": false,
+    "final_output_symlink_count": 21,
+    "first_batch_files": 102,
+    "first_batch_variant_directories": 17,
+    "first_batch_verified_bytes": 11340893992,
+    "old_17_unchanged": true,
+    "quickstart_outputs_preserved": true
+  },
+  "native_output_deduplication": {
+    "app_source_clean": true,
+    "authorized_plan_sha256": "d0acbc0bd86cd1b1e14e4e90c3ec93d1d5631b690d632ae67b2650bc59fc2bb8",
+    "noncandidate_files_unchanged": true,
+    "private_file_map_and_journals_included": false,
+    "reclaimed_bytes": 12569083904,
+    "resume_note": "A journaled first operation was verified; remaining operations resumed, and the final 120-link verification completed.",
+    "verified_hardlink_count": 120,
+    "workspace_free_bytes_after": 17854042112,
+    "workspace_free_bytes_before": 5284958208
+  }
+}

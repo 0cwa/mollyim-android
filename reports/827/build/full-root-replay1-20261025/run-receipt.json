@@ -1,0 +1,74 @@
+{
+  "build_input": {
+    "quickstart": "canonical synthetic local-only packaging input; private contents omitted",
+    "source_receipt": "reports/827/build-environment/quickstart-20261025/receipt.json"
+  },
+  "exit": {
+    "build_summary": [
+      "BUILD FAILED in 5h 34m 44s"
+    ],
+    "cache_filesystem_free_bytes": 11805769728,
+    "completed_at_utc": "2026-10-26T03:58:16.908698+00:00",
+    "failed_tasks": [
+      ":demo:image-editor:mergeDexRelease",
+      ":lib:video:verifyReleaseResources"
+    ],
+    "gradle_exit_code": 1,
+    "log_sha256": "8b4410ba72bd8ebe66dc8431127cfed81fe6bcbdf13e384b37c75e3439b6ee95",
+    "log_size_bytes": 467574,
+    "task_status_line_count": 7098,
+    "task_status_line_counts": {
+      "EXECUTED": 2092,
+      "FAILED": 2,
+      "FROM-CACHE": 301,
+      "NO-SOURCE": 875,
+      "SKIPPED": 611,
+      "UP-TO-DATE": 3217
+    },
+    "workspace_free_bytes": 13066027008,
+    "worktree_exists_at_exit": true
+  },
+  "result": "FAILED; full-root acceptance not achieved",
+  "scope": "full root --continue build; terminal run",
+  "source_receipts": {
+    "exit": {
+      "name": "all-variant-build-replay1-fixture-utc-input-20261025-exit.json",
+      "sha256": "7df9ea2ec41554aeca6f22559c56359009bbbfb9c0e5aa38cfca778c2b99a974",
+      "size_bytes": 3951
+    },
+    "exit_code_file": {
+      "name": "all-variant-build-replay1-fixture-utc-input-20261025.exit",
+      "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "size_bytes": 2
+    },
+    "log": {
+      "name": "all-variant-build-replay1-fixture-utc-input-20261025.log",
+      "sha256": "8b4410ba72bd8ebe66dc8431127cfed81fe6bcbdf13e384b37c75e3439b6ee95",
+      "size_bytes": 467574
+    },
+    "results": {
+      "name": "all-variant-build-replay1-fixture-utc-input-20261025-results.json",
+      "sha256": "44176a2e38736411aa9653752174e338a7498f888bb5100c33c4ff0964eb456b",
+      "size_bytes": 29959
+    },
+    "start": {
+      "name": "all-variant-build-replay1-fixture-utc-input-20261025-start.json",
+      "sha256": "12f108bfdc121511ab21c3f44ab822a3c1fb72e8550816a4535b72379a7807ac",
+      "size_bytes": 1575
+    }
+  },
+  "start": {
+    "cache_filesystem_free_bytes": 16933724160,
+    "declared_test_property": "user.timezone=UTC",
+    "normalized_command": "TZ=UTC ./gradlew --continue --no-daemon --max-workers=1 --dependency-verification=strict --init-script tools/827/test-worker-heap.init.gradle --init-script tools/827/test-timezone-utc.init.gradle -Dorg.gradle.jvmargs='-Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g -Dcom.android.tools.r8.threadCount=1 -XX:+UnlockExperimentalVMOptions -XX:hashCode=3' build",
+    "path_redactions": "Absolute checkout paths are represented as relative tools/827 paths; private fixture location is omitted.",
+    "source_head": "f71536f6dee918dffa74d52270205d4d744aff5d",
+    "started_at_utc": "2026-10-25T22:23:30.941786+00:00",
+    "test_timezone_init_script_sha256": "sha256:a6f56754799f11d624ec24bddc58fa3f380990fc42187f8c3b493f8bd2cf827a",
+    "test_worker_heap": "2 GiB",
+    "test_worker_heap_init_script_sha256": "sha256:6be6792a4108d3fcaf4ca2778439751dc8a8a9f0a6853fd61f4d27ba46e79aa5",
+    "timezone_env": "UTC",
+    "working_directory": "disposable replay worktree root",
+    "workspace_free_bytes": 14260043776
+  }
+}

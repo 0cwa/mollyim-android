@@ -1,0 +1,14 @@
+DRY RUN ONLY — no git add command was executed.
+Explicit allowlist for later review/staging:
+git add -f -- reports/827/build/all-variant-build-replay1-fixture-utc-input-20261025.log
+git add -f -- reports/827/build/app-only-signal-android-build-replay1-20261026/build.log
+git add -f -- reports/827/build/app-only-signal-android-build-replay1-20261026/public-run-receipt.json
+git add -f -- reports/827/build/full-root-replay1-20261025/run-receipt.json
+git add -f -- reports/827/build/full-root-replay1-20261025/task-outcomes.json
+git add -f -- reports/827/build/local-reconstruction-20261025/prior-attempts-summary.json
+git add -f -- reports/827/build/local-reconstruction-20261025/resource-recovery-summary.json
+git add -f -- reports/827/build/local-reconstruction-20261025/source-replay-lfs-summary.json
+git add -f -- reports/827/build/local-reconstruction-20261025/toolchain-summary.json
+git add -f -- reports/827/build/publication-manifest-20261026.json
+git add -f -- reports/827/build/publication-staging-dry-run-20261026.txt
+git add -f -- reports/827/build/utc-test-matrix-public-20261026.json

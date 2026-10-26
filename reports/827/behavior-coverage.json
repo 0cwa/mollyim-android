@@ -63,11 +63,12 @@
     }
   ],
   "additional_limits": [
-    "API35 synthetic instrumentation verifies ClipDescription.EXTRA_IS_SENSITIVE on MollySocket parameters and account-ID clipboard payloads. It does not test expiry timing, other-app presentation, or a visible OS privacy indicator.",
+    "API35 synthetic instrumentation verifies ClipDescription.EXTRA_IS_SENSITIVE on MollySocket parameters and account-ID clipboard payloads. The synthetic copy methods were invoked through reflection; rendered Settings UI/navigation, expiry timing, other-app presentation, and a visible OS privacy indicator were not tested.",
     "Locked notification presentation, physical-device behavior and Molly's cryptographic database/master-secret lock semantics remain untested.",
+    "The completed current-source UTC full build exited 1: duplicate GeneratedAppGlideModuleImpl in :demo:image-editor:mergeDexRelease and unresolved color/signal_colorOnSurfaceVariant in :lib:video:verifyReleaseResources. All 23 app unit-test variants passed (2,800 tests, 0 failures/errors, 78 skipped each), but the full project matrix did not pass. See reports/827/build/full-root-replay1-20261025/task-outcomes.json and reports/827/build/utc-test-matrix-public-20261026.json.",
     "Signal Firebase/Google dependencies are retained.",
     "Inherited F7 provisioning can leave an orphan linked device when post-registration prekey initialization fails."
   ],
-  "next_capability": "Use a disposable isolated Signal account, test MollySocket/distributor endpoints, and a final-source device for remaining live flows; test locked-notification presentation and clipboard expiry separately. No production account or signing keys were used.",
+  "next_capability": "Resolve the two full-build failures and rerun the unfiltered UTC matrix. Separately, use the documented disposable isolated Signal identity, provided MollySocket/distributor capabilities, and final-source device for the still-blocked live flows; test locked-notification presentation, API35 clipboard expiry/presentation, and cryptographic lock semantics separately. No production account or signing keys were used.",
   "current_api35_runtime_report": "reports/827/security/runtime/api35-20261025/README.md"
 }

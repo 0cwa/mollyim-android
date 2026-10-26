@@ -1,0 +1,26 @@
+{
+  "android_build_tools": "36.0.0",
+  "android_ndk": "28.0.13004108",
+  "android_platform": "android-36.1 revision 1",
+  "build_controls": {
+    "dependency_verification": "strict",
+    "gradle_workers": 1,
+    "production_signing_performed": false,
+    "test_worker_heap": "2 GiB"
+  },
+  "git_lfs": "3.8.1",
+  "gradle_wrapper": "9.4.1",
+  "installation_paths_and_archive_contents_included": false,
+  "installation_receipt": {
+    "name": "installed-toolchain.json",
+    "sha256": "561033eb3f52276f75955f7a3f7d9b07d0e9e13fa280d3d1056cbe6b2ec2fe7b",
+    "size_bytes": 6622
+  },
+  "java": "Temurin 21.0.2",
+  "status": "VERIFIED",
+  "verification_log": {
+    "name": "toolchain-verification.log",
+    "sha256": "db8046e5d298465d1f59636e9a4841b5f1fdd2ad68998fc6ade5c11bb7d17480",
+    "size_bytes": 2170
+  }
+}
