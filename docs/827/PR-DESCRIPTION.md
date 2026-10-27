@@ -1,5 +1,7 @@
 # Draft PR description — external research only
 
+> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+
 ## Summary
 
 This experiment packages selected Molly launcher artwork and UnifiedPush/MollySocket changes as 23 ordered, provenance-preserving mailbox patches on Signal `c47a74ba0961903eeaeda6d22347a990056c3e83`. Two isolated replays match projected source tree `e783cf54487a5b5d78c3241ec977fd8c8cd23f1d`, with 83 owned paths and no unowned changes. Resource comparison reports 1,241 exact changed-element matches plus one QR string whose runtime text matches by aapt2 proof across 33 locale files. The F5 endpoint-retry change is included in the patch series and replay.

@@ -1,4 +1,4 @@
-"""Focused safety checks for the #827 replay manifest and path guards."""
+"""Safety checks for #827 parity evidence and replay (full Git history required)."""
 import gzip
 import json
 from pathlib import Path
@@ -15,7 +15,11 @@ from check_resource_parity import verify_fixture_sources, AAPT_EQUIVALENCE
 from source_tree import project_tree
 
 ROOT = Path(__file__).resolve().parents[2]
-MANIFEST = ROOT / 'patches/827/series.yaml'
+PATCHES = ROOT / 'patches/827'
+EVIDENCE = ROOT / 'docs/827/parity-evidence.json'
+
+def inputs():
+    return replay.load_inputs(PATCHES, EVIDENCE)
 
 
 class ReplaySafetyTests(unittest.TestCase):
@@ -65,9 +69,9 @@ class ReplaySafetyTests(unittest.TestCase):
         self.assertEqual(gzip.decompress(first), payload)
 
     def test_declared_series_checksums_and_provenance(self):
-        result = validate.validate(MANIFEST)
+        result = validate.validate(PATCHES, ROOT, EVIDENCE)
         self.assertEqual(result['status'], 'PASS')
-        manifest = json.loads(MANIFEST.read_text())
+        manifest = inputs()
         self.assertEqual(result['patch_count'], sum(len(f['patches']) for f in manifest['features']))
 
     def test_git_paths_reject_traversal_and_git_metadata(self):
@@ -75,60 +79,76 @@ class ReplaySafetyTests(unittest.TestCase):
             with self.subTest(path=unsafe), self.assertRaises(replay.ReplayError):
                 replay.validate_git_path(unsafe, 'test path')
 
-    def test_manifest_rejects_mismatched_mailbox_provenance(self):
-        data = json.loads(MANIFEST.read_text())
-        data['features'][0]['patches'][0]['mailbox_commit_sha'] = '0' * 40
-        with self.assertRaisesRegex(replay.ReplayError, 'mailbox commit SHA'):
-            replay.validate_manifest(data, MANIFEST.parent)
+    def test_evidence_cannot_override_patch_metadata(self):
+        data = json.loads(EVIDENCE.read_text())
+        for key in ('patches', 'dependencies'):
+            data['features'][0][key] = []
+            with tempfile.TemporaryDirectory() as temp:
+                path = Path(temp) / 'evidence.json'
+                path.write_text(json.dumps(data))
+                with self.assertRaisesRegex(replay.ReplayError, 'unknown feature evidence'):
+                    replay.load_inputs(PATCHES, path)
+            del data['features'][0][key]
 
-    def test_manifest_rejects_parent_patch_path(self):
-        data = json.loads(MANIFEST.read_text())
-        data['features'][0]['patches'][0]['path'] = '../outside.patch'
-        with tempfile.TemporaryDirectory() as temp:
-            manifest = Path(temp) / 'series.yaml'
-            manifest.write_text(json.dumps(data))
-            with self.assertRaises(replay.ReplayError):
-                replay.validate_manifest(data, manifest.parent)
+    def test_evidence_must_cover_exactly_the_live_features(self):
+        data = json.loads(EVIDENCE.read_text())
+        for entries in (data['features'][:-1], data['features'] + [data['features'][0]]):
+            with tempfile.TemporaryDirectory() as temp:
+                path = Path(temp) / 'evidence.json'
+                path.write_text(json.dumps({**data, 'features': entries}))
+                with self.assertRaisesRegex(replay.ReplayError, 'exactly once'):
+                    replay.load_inputs(PATCHES, path)
 
-    def test_manifest_rejects_symlinked_patch_file(self):
-        data = json.loads(MANIFEST.read_text())
-        with tempfile.TemporaryDirectory() as temp:
-            root = Path(temp)
-            (root / 'branding').mkdir()
-            original = MANIFEST.parent / data['features'][0]['patches'][0]['path']
-            link = root / 'branding/linked.patch'
-            link.symlink_to(original)
-            patch = data['features'][0]['patches'][0]
-            patch['path'] = 'branding/linked.patch'
-            with self.assertRaisesRegex(replay.ReplayError, 'symlink'):
-                replay.validate_manifest(data, root)
+    def test_digest_binds_order_topology_patch_bytes_and_assertions(self):
+        original = inputs()
+        digest = replay.audit_digest(original)
+        for mutate in (lambda d: d['features'][1]['patches'].reverse(),
+                       lambda d: d['features'][1]['dependencies'].append('branding'),
+                       lambda d: d['features'][0]['patches'][0].update(sha256='0'*64),
+                       lambda d: d.update(expected_tree_sha='0'*40)):
+            data = json.loads(json.dumps(original))
+            mutate(data)
+            self.assertNotEqual(replay.audit_digest(data), digest)
 
-    def test_manifest_rejects_changed_base_and_target_pins(self):
+    def test_inventory_digest_is_current(self):
+        import csv
+        import hashlib
+        inventory = ROOT / 'reports/827/inventory'
+        ledger = inventory / 'current-series-owned.tsv'
+        with ledger.open() as stream:
+            rows = list(csv.DictReader(stream, delimiter='\t'))
+        self.assertTrue(rows)
+        self.assertEqual({r['inputs_sha256'] for r in rows}, {replay.audit_digest(inputs())})
+        summary = json.loads((inventory / 'summary.json').read_text())
+        self.assertEqual(summary['selected_boundary']['live_manifest_ledger_sha256'],
+                         hashlib.sha256(ledger.read_bytes()).hexdigest())
+
+    def test_evidence_rejects_changed_base_and_target_pins(self):
         for field in ('signal_base', 'molly_expected'):
-            data = json.loads(MANIFEST.read_text())
+            data = inputs()
             data[field] = 'b8d5375b3fb6013f7939935ce73e250b53515381'
             with self.subTest(field=field), self.assertRaisesRegex(replay.ReplayError, field):
-                replay.validate_manifest(data, MANIFEST.parent)
+                replay.validate_evidence(data, PATCHES)
 
-    def test_manifest_supports_paths_required_absent_from_target(self):
-        data = json.loads(MANIFEST.read_text())
+    def test_evidence_supports_paths_required_absent_from_target(self):
+        data = inputs()
         data['features'][1]['added_paths'] = [{
             'path': 'app/src/test/java/example/NewReplayTest.kt',
             'expected_replay_sha256': 'a' * 64,
             'evidence': 'Focused security regression fixture added to exercise locked-state routing invalidation.',
             'tests': ['app/src/test/java/example/NewReplayTest.kt']
         }]
-        _, features = replay.validate_manifest(data, MANIFEST.parent)
+        _, features = replay.validate_evidence(data, PATCHES)
         self.assertEqual(features[1]['added_paths'][0]['path'], 'app/src/test/java/example/NewReplayTest.kt')
         data['features'][1]['added_paths'][0]['expected_replay_sha256'] = 'bad'
         with self.assertRaisesRegex(replay.ReplayError, 'expected_replay_sha256'):
-            replay.validate_manifest(data, MANIFEST.parent)
+            replay.validate_evidence(data, PATCHES)
 
     def test_feature_dependency_must_precede_consumer(self):
-        data = json.loads(MANIFEST.read_text())
+        data = inputs()
         data['features'][0]['dependencies'] = ['unifiedpush']
         with self.assertRaisesRegex(replay.ReplayError, 'dependencies must be listed earlier'):
-            replay.validate_manifest(data, MANIFEST.parent)
+            replay.validate_evidence(data, PATCHES)
 
     def test_full_replay_works_without_identity_and_with_ambient_signing(self):
         with tempfile.TemporaryDirectory() as temp:
@@ -143,7 +163,7 @@ class ReplaySafetyTests(unittest.TestCase):
             alternates = repo / '.git/objects/info/alternates'
             alternates.parent.mkdir(parents=True, exist_ok=True)
             alternates.write_text(str(objects_dir) + '\n')
-            app_commit = json.loads(MANIFEST.read_text())['expected_application_commit']
+            app_commit = inputs()['expected_application_commit']
             subprocess.run(['git', '-C', str(repo), 'update-ref', 'refs/heads/source-app', app_commit], check=True)
             subprocess.run(['git', '-C', str(repo), 'symbolic-ref', 'HEAD', 'refs/heads/source-app'], check=True)
             global_config = temp_root / 'global.gitconfig'
@@ -162,12 +182,12 @@ class ReplaySafetyTests(unittest.TestCase):
             destination = temp_root / 'replayed'
             report = temp_root / 'replay-report.json'
             proc = subprocess.run([sys.executable, str(ROOT / 'tools/827/replay.py'),
-                                   '--repo', str(repo), '--manifest', str(MANIFEST),
+                                   '--repo', str(repo), '--patches', str(PATCHES), '--evidence', str(EVIDENCE),
                                    '--worktree', str(destination), '--report', str(report)],
                                   env=environment, capture_output=True, text=True)
             self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
             result = json.loads(report.read_text())
-            self.assertEqual(result['tree_sha'], json.loads(MANIFEST.read_text())['expected_tree_sha'])
+            self.assertEqual(result['tree_sha'], inputs()['expected_tree_sha'])
             self.assertEqual(result['source_projection_match'], True)
             committer = subprocess.check_output(['git', '-C', str(destination), 'show', '-s',
                                                  '--format=%cn <%ce>', 'HEAD'], text=True).strip()
@@ -178,30 +198,48 @@ class ReplaySafetyTests(unittest.TestCase):
                                                      env=environment, text=True).strip(), 'true')
             subprocess.run(['git', '-C', str(repo), 'worktree', 'remove', '--force', str(destination)], check=True)
 
+    def test_full_replay_supports_nested_features_and_safe_log_names(self):
+        with tempfile.TemporaryDirectory() as temp:
+            temp_root = Path(temp)
+            patches = temp_root / 'patches'
+            shutil.copytree(PATCHES, patches)
+            (patches / 'branding').rename(patches / 'unifiedpush/branding')
+            evidence = json.loads(EVIDENCE.read_text())
+            next(f for f in evidence['features'] if f['id'] == 'branding')['id'] = 'unifiedpush/branding'
+            evidence_path = temp_root / 'evidence.json'
+            evidence_path.write_text(json.dumps(evidence))
+            report = temp_root / 'nested.json'
+            destination = temp_root / 'replayed'
+            try:
+                proc = subprocess.run([sys.executable, str(ROOT / 'tools/827/replay.py'),
+                                       '--repo', str(ROOT), '--patches', str(patches),
+                                       '--evidence', str(evidence_path), '--worktree', str(destination),
+                                       '--report', str(report)], capture_output=True, text=True)
+                self.assertEqual(proc.returncode, 0, proc.stdout + proc.stderr)
+                self.assertEqual(json.loads(report.read_text())['tree_sha'], evidence['expected_tree_sha'])
+                self.assertTrue((temp_root / 'nested-logs/unifiedpush_branding-01.git-am.log').is_file())
+            finally:
+                if destination.exists():
+                    subprocess.run(['git', '-C', str(ROOT), 'worktree', 'remove', '--force', str(destination)],
+                                   check=True, capture_output=True)
+
     def test_replay_twice_failure_json_includes_git_am_error_tail(self):
         with tempfile.TemporaryDirectory() as temp:
             temp_root = Path(temp)
-            manifest = json.loads(MANIFEST.read_text())
-            for feature in manifest['features']:
-                for patch in feature['patches']:
-                    relative = patch['path']
-                    source_patch = MANIFEST.parent / relative
-                    destination = temp_root / relative
-                    destination.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copyfile(source_patch, destination)
-                    if feature['id'] == 'branding' and relative.endswith('.patch'):
-                        raw = destination.read_bytes()
-                        marker = raw.find(b'\n---\n')
-                        self.assertGreater(marker, 0)
-                        damaged = raw[:marker + len(b'\n---\n')] + b'not a unified diff\n'
-                        destination.write_bytes(damaged)
-                        patch['sha256'] = __import__('hashlib').sha256(damaged).hexdigest()
-            manifest_path = temp_root / 'series.yaml'
-            manifest_path.write_text(json.dumps(manifest))
+            patch_root = temp_root / 'patches'
+            shutil.copytree(PATCHES, patch_root)
+            destination = next((patch_root / 'branding').glob('*.patch'))
+            raw = destination.read_bytes()
+            marker = raw.find(b'\ndiff --git ')
+            self.assertGreater(marker, 0)
+            damaged = raw[:marker] + (b'\ndiff --git a/NO-SUCH-FILE b/NO-SUCH-FILE\n'
+                                      b'--- a/NO-SUCH-FILE\n+++ b/NO-SUCH-FILE\n'
+                                      b'@@ -1 +1 @@\n-missing\n+new\n')
+            destination.write_bytes(damaged)
             report = temp_root / 'replay-twice.json'
             prefix = temp_root / 'failed-worktree'
             proc = subprocess.run([sys.executable, str(ROOT / 'tools/827/replay_twice.py'),
-                                   '--repo', str(ROOT), '--manifest', str(manifest_path),
+                                   '--repo', str(ROOT), '--patches', str(patch_root), '--evidence', str(EVIDENCE),
                                    '--worktree-prefix', str(prefix), '--report', str(report)],
                                   capture_output=True, text=True)
             self.assertNotEqual(proc.returncode, 0)
@@ -228,12 +266,12 @@ class ReplaySafetyTests(unittest.TestCase):
             # The CLI check is intentionally performed before git worktree add.
             self.assertTrue(destination.exists())
             with self.assertRaisesRegex(replay.ReplayError, 'REFUSE'):
-                replay.run_replay(type('Args', (), {'repo': ROOT, 'manifest': MANIFEST,
+                replay.run_replay(type('Args', (), {'repo': ROOT, 'patches': PATCHES, 'evidence': EVIDENCE,
                                                     'worktree': destination,
                                                     'report': Path(temp) / 'report.json'})())
 
     def run_for_destination(self, repo, destination, report):
-        return replay.run_replay(type('Args', (), {'repo': repo, 'manifest': MANIFEST,
+        return replay.run_replay(type('Args', (), {'repo': repo, 'patches': PATCHES, 'evidence': EVIDENCE,
                                                    'worktree': destination, 'report': report})())
 
     def test_ordinary_destination_inside_primary_checkout_is_refused(self):

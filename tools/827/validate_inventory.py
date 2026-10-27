@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Cross-check the #827 archaeology tables against the pinned Git trees and live series."""
 import argparse
+import replay
 import csv
 import hashlib
 import json
@@ -16,7 +17,7 @@ SHA256 = re.compile(r'^[0-9a-f]{64}$')
 FULL_FIELDS = {'status', 'old_path', 'path', 'category', 'confidence', 'reason_evidence', 'latest_target_path_commit_candidate'}
 FEATURE_FIELDS = {'feature_id', 'path', 'hunk_ownership', 'molly_source_commit_shas', 'molly_history_candidate_shas', 'reconstruction_mailbox_commit_shas', 'provenance_note', 'target_behavior', 'dependencies', 'security_sensitivity', 'approval_status', 'exclusion_reason'}
 HUNK_FIELDS = {'feature_id', 'path', 'ownership', 'coordinate_tree', 'start_line', 'end_line', 'fragment_id', 'target_sha256', 'reconstruction_mailbox_sha', 'molly_origin_candidate'}
-CURRENT_FIELDS = {'path','feature_id','manifest_role','fragment_ids','present_in_pinned_target_diff','target_parity_claim','target_sha256','expected_replay_sha256','molly_source_commit_shas','reconstruction_mailbox_commit_shas','manifest_sha256'}
+CURRENT_FIELDS = {'path','feature_id','manifest_role','fragment_ids','present_in_pinned_target_diff','target_parity_claim','target_sha256','expected_replay_sha256','molly_source_commit_shas','reconstruction_mailbox_commit_shas','inputs_sha256'}
 
 class CheckError(RuntimeError): pass
 
@@ -92,8 +93,8 @@ def line_ranges(repo, base, head, path):
 def line_num(data, offset): return data[:offset].count(b'\n')+1
 
 def validate(repo: Path):
-    repo=repo.resolve(); manifest_path=repo/'patches/827/series.yaml'
-    manifest=json.loads(manifest_path.read_text())
+    repo=repo.resolve(); manifest_path=repo/'patches/827/base'
+    manifest=replay.load_inputs(manifest_path.parent, repo/'docs/827/parity-evidence.json')
     base=manifest['signal_base']; target=manifest['molly_expected']; head=git(repo,'rev-parse','HEAD').strip()
     for sha in (base,target,head):
         if not SHA.fullmatch(sha): raise CheckError(f'invalid commit id {sha}')
@@ -135,7 +136,7 @@ def validate(repo: Path):
         roles=set(row['manifest_role'].split(';'))
         if roles!=set(expected_roles[p]):raise CheckError(f'current-series-owned role mismatch: {p}')
         if row['present_in_pinned_target_diff'] != str(p in diff_paths).lower():raise CheckError(f'current-series-owned target membership mismatch: {p}')
-        if row['manifest_sha256'] != hashlib.sha256(manifest_path.read_bytes()).hexdigest():raise CheckError('current-series-owned manifest digest is stale')
+        if row['inputs_sha256'] != replay.audit_digest(manifest):raise CheckError('current-series-owned forest/evidence digest is stale')
     patches=patch_paths(repo,manifest_path,manifest)
     if patches != declared:
         raise CheckError(f'manifest owned path set differs from mailbox path set (manifest-only={sorted(declared-patches)[:8]}, patch-only={sorted(patches-declared)[:8]})')

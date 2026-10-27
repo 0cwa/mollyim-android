@@ -1,5 +1,7 @@
 # Molly #827 proof of concept toolchain
 
+> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+
 This record describes the audited source checkout and the Android build inputs used for the patch replay experiment. Update it when a pinned source or build input changes.
 
 ## Source pins

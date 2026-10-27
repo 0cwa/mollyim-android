@@ -1,5 +1,7 @@
 # Security review
 
+> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+
 ## Scope and assumptions
 
 This review covers the UnifiedPush receiver and distributor boundary, lock-screen notification routing, MollySocket provisioning and HTTP calls, plus the Signal linked-device adapter. It assumes the user intentionally selects a UnifiedPush distributor and scans or enters a MollySocket URL. The selected distributor is a trusted push-delivery dependency: it receives the connector registration token and can cause wake-ups, but it should not receive Signal message contents or MollySocket device credentials. The configured MollySocket server receives the account UUID, linked-device ID/password, and push endpoint as part of its connection request.

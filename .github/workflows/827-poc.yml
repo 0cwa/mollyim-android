@@ -7,6 +7,7 @@ on:
       - poc/molly-827-unifiedpush
     paths:
       - '.github/workflows/827-poc.yml'
+      - '.github/workflows/827-patch-forest.yml'
       - 'patches/827/**'
       - 'tools/827/**'
       - 'docs/827/**'
@@ -20,6 +21,7 @@ on:
       - dev/molly-827-reproducible-poc
     paths:
       - '.github/workflows/827-poc.yml'
+      - '.github/workflows/827-patch-forest.yml'
       - 'patches/827/**'
       - 'tools/827/**'
       - 'app/**'
@@ -112,20 +114,21 @@ jobs:
               f.write('\n')
           PY
 
-      - name: Validate manifest and patch ownership
+      - name: Validate patch forest and parity evidence
         run: |
           mkdir -p reports/827/build
-          python3 tools/827/test_replay.py
+          python3 -m unittest discover -s tools/827 -p 'test_*.py'
+          python3 tools/827/forest.py verify --repo . > reports/827/build/forest-verify.json
           python3 tools/827/validate_inventory.py --repo .
           python3 tools/827/validate.py \
-            --manifest patches/827/series.yaml \
-            --report reports/827/build/manifest-validation.json
+            --patches patches/827 --evidence docs/827/parity-evidence.json \
+            --report reports/827/build/forest-validation.json
 
       - name: Replay twice and verify tree and declared parity
         run: |
           python3 tools/827/replay_twice.py \
             --repo . \
-            --manifest patches/827/series.yaml \
+            --patches patches/827 --evidence docs/827/parity-evidence.json \
             --worktree-prefix "$RUNNER_TEMP/molly-827-replay" \
             --report reports/827/build/replay-twice.json
 

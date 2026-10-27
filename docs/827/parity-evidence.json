@@ -1,245 +1,31 @@
 {
-  "schema_version": 2,
-  "signal_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+  "evidence_version": 1,
   "molly_expected": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "expected_tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
+  "known_intentional_target_differences": [
+    "Signal API adaptation in UnifiedPush shared integration points is declared through integration/adaptation checks; this is not a claim of whole-application Molly parity.",
+    "Validation overlays add UnifiedPush F4/F5 regression tests, flavor-aware URI test fixtures, a pinned Gradle distribution checksum, and source compatibility/quote corrections; these changes and test-only paths are absent from the pinned Molly application tree."
+  ],
+  "expected_application_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
+  "metadata_exclusions": [
+    ".github/workflows/827-poc.yml",
+    ".github/workflows/827-patch-forest.yml",
+    "docs/827",
+    "patches/827",
+    "reports/827",
+    "tools/827"
+  ],
   "features": [
     {
       "id": "branding",
-      "patches": [
-        {
-          "path": "branding/0001-branding-default-launcher.patch",
-          "sha256": "5495da4af3342dbcf31968076a496cfc80dca3f8b6d67f1e1ae62b0f62d2513c",
-          "depends_on": [],
-          "mailbox_commit_sha": "ab2f6003d4d649050da47e78ac1d9f1b26d76ee1",
-          "source_commit_shas": [
-            "15aeb5bbc9b67723a2adac5ddeab12aaea9f9f6e",
-            "29cd5ad5dc35008bbfc9529cde1fe3e214b60aed"
-          ],
-          "provenance_kind": "upstream-source"
-        }
-      ],
       "parity_paths": [
         "app/src/main/res/drawable/ic_launcher_background.xml",
         "app/src/main/res/drawable/ic_launcher_foreground.xml",
         "app/src/main/res/drawable/ic_launcher_monochrome.xml"
-      ],
-      "dependencies": []
+      ]
     },
     {
       "id": "unifiedpush",
-      "patches": [
-        {
-          "path": "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch",
-          "sha256": "22142e1bbcfb73b5a65f6424af563f377855b8dc20551da1c8d85a1641344c4d",
-          "depends_on": [],
-          "mailbox_commit_sha": "cfec660c24d5a3427cc5d93b6b9bae68f45072ea",
-          "source_commit_shas": [
-            "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
-            "d5c05fa94603addbaaccc9b63ca19a81520ba1c0",
-            "a688a8d09a5ed40a9d60d9b7d3011757b6dcd398",
-            "7fe38624aa096ae836120904012fc74735ecf965",
-            "3ba16299066e918304664790136a577b29f25203",
-            "6351f730a2c0acc2ab2e013e9a434f8c583e7435"
-          ],
-          "provenance_kind": "upstream-source"
-        },
-        {
-          "path": "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch",
-          "sha256": "7b3a02c86675b7b42ecff2498f8d9cf7950bb9c839a26345ba6b2470db0a9f9d",
-          "depends_on": [
-            "unifiedpush/0001-Add-Molly-UnifiedPush-implementation-sources.patch"
-          ],
-          "mailbox_commit_sha": "334914ce9fd01a40b948e80c8d0ab23ca26caa59",
-          "source_commit_shas": [
-            "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c",
-            "60495667669377971dd19ae18cd04910c89cafcf",
-            "6351f730a2c0acc2ab2e013e9a434f8c583e7435"
-          ],
-          "provenance_kind": "upstream-source"
-        },
-        {
-          "path": "unifiedpush/0003-Add-UnifiedPush-distributor-recovery-prompt.patch",
-          "sha256": "b7fdac0339d9c41a0b4fd8fb879b7e75c0a2ef66d4c24fb89bbff1a88196830b",
-          "depends_on": [
-            "unifiedpush/0002-Wire-UnifiedPush-into-shared-app-integration-points.patch"
-          ],
-          "mailbox_commit_sha": "fbc906a655272ebef9915cfbeee07bb8719db5fd",
-          "source_commit_shas": [
-            "4d00414d22f726821f76c3d0e777f7c9ec2c9e0c"
-          ],
-          "provenance_kind": "upstream-source"
-        },
-        {
-          "path": "unifiedpush/0004-Add-UnifiedPush-notification-settings-UI.patch",
-          "sha256": "b6015ffb68a91d85f9cb816e9f6c5cb5db61df581183825ecb6565824b46a5e7",
-          "depends_on": [
-            "unifiedpush/0003-Add-UnifiedPush-distributor-recovery-prompt.patch"
-          ],
-          "mailbox_commit_sha": "c4fe47a154591e3a5c596c8616f16976ecd2b914",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0005-Harden-UnifiedPush-network-and-secret-handling.patch",
-          "sha256": "08048cd9d174fbfb919545203645ef9e60a3094cdf72822f550ebd2fab97b2f1",
-          "depends_on": [
-            "unifiedpush/0004-Add-UnifiedPush-notification-settings-UI.patch"
-          ],
-          "mailbox_commit_sha": "fab10f9d41df35342d82b6a35cb0303c4591d8a2",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0006-Preserve-initial-FCM-availability-check.patch",
-          "sha256": "f822c8637bd6cd9f09d919865edb3794be566afbce71ea1a74beddb603646807",
-          "depends_on": [
-            "unifiedpush/0005-Harden-UnifiedPush-network-and-secret-handling.patch"
-          ],
-          "mailbox_commit_sha": "1e0f630490ed8cbde3623f6e2a1e40321e69770f",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0007-Fix-notification-delivery-settings-UI-compilation.patch",
-          "sha256": "468a71c529ed096e75191a08a30a1fa3a5eed535bfdc7255322421cc1caf04e8",
-          "depends_on": [
-            "unifiedpush/0006-Preserve-initial-FCM-availability-check.patch"
-          ],
-          "mailbox_commit_sha": "230b41c4f8656ebe986d0f0d81a3b84003fc1e72",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0008-Adapt-UnifiedPush-runtime-to-pinned-Signal-APIs.patch",
-          "sha256": "20f469d15ec82d0cee4f3647d87891fded3c2bc1e25d84a961ee4162a2d0182f",
-          "depends_on": [
-            "unifiedpush/0007-Fix-notification-delivery-settings-UI-compilation.patch"
-          ],
-          "mailbox_commit_sha": "18d276b317a28dbdff56d6a3fb8235515480f5df",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0009-Restart-network-after-notification-method-change.patch",
-          "sha256": "e8fefed05d2aa4801e7e1e59e86e60c35000115ce4175d619e3d0187705f31be",
-          "depends_on": [
-            "unifiedpush/0008-Adapt-UnifiedPush-runtime-to-pinned-Signal-APIs.patch"
-          ],
-          "mailbox_commit_sha": "7b096c75e39c89506153daf5dc4d8d76b61c570c",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0010-Adapt-linked-device-registration-to-Signal-Registrat.patch",
-          "sha256": "acc52a8bdfe1d37d24d9bbb8af971d4f4c464ca6436933f1caad1bb414926d7c",
-          "depends_on": [
-            "unifiedpush/0009-Restart-network-after-notification-method-change.patch"
-          ],
-          "mailbox_commit_sha": "1d647a4bbfb6f68c8989ab4957260b7e7adbc691",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0011-Restore-lock-screen-notification-privacy-control.patch",
-          "sha256": "e39ce0dcc2cab07f16337f685f7b1c7da5679eba4fd5291b9238276f2e638679",
-          "depends_on": [
-            "unifiedpush/0010-Adapt-linked-device-registration-to-Signal-Registrat.patch"
-          ],
-          "mailbox_commit_sha": "e60b61bfd190e97af4924dfa337ba2592bdfa45d",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0012-Fix-notification-settings-Compose-scope.patch",
-          "sha256": "c3b7a852274803bc9bd0cd6339ef36f81b840995a809d58a90c05ed3f355ecf6",
-          "depends_on": [
-            "unifiedpush/0011-Restore-lock-screen-notification-privacy-control.patch"
-          ],
-          "mailbox_commit_sha": "6787d617c5dd990e37ff7995c2dd73a32d3417d8",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0013-Honor-locked-notification-privacy-across-push-and-ba.patch",
-          "sha256": "b8ddd82d3c654d1be9b208b961a53dbccd2b010c7e56f951e9400cf1ab3d7014",
-          "depends_on": [
-            "unifiedpush/0012-Fix-notification-settings-Compose-scope.patch"
-          ],
-          "mailbox_commit_sha": "576af670416160386a6c038e17ea19c838cfe3fc",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0014-Use-Java-application-getter-in-lock-adapter.patch",
-          "sha256": "3e422833891291987e9840462877b954f4bd741314b998ca8eb3d99dac63adb2",
-          "depends_on": [
-            "unifiedpush/0013-Honor-locked-notification-privacy-across-push-and-ba.patch"
-          ],
-          "mailbox_commit_sha": "af892a60b24c5796db3b29c387c19dc2c7fec4d9",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0015-Pin-checksum-for-UnifiedPush-Tink-runtime-dependency.patch",
-          "sha256": "cbe9f2b742cb153a22d1090d3a85d58b12f8a80207bdd6453389c8e0784a2eea",
-          "depends_on": [
-            "unifiedpush/0014-Use-Java-application-getter-in-lock-adapter.patch"
-          ],
-          "mailbox_commit_sha": "0fa81df5d55a8a3f23810d7ee505fc284eff0654",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0016-Format-UnifiedPush-Kotlin-sources-with-ktlint.patch",
-          "sha256": "a9258404abe8cb6ca136294b9853f2dba4db3902ff3828ca5ff33b6d69163491",
-          "depends_on": [
-            "unifiedpush/0015-Pin-checksum-for-UnifiedPush-Tink-runtime-dependency.patch"
-          ],
-          "mailbox_commit_sha": "d538f378dd7b3aab4749eb0b65b2defcdf9376e6",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0017-Restore-locked-state-push-fallback.patch",
-          "sha256": "9aff3d2cb69bb882086b17ddc4ee9cf9e3e6830e41bafee16ae178b7f8446a28",
-          "depends_on": [
-            "unifiedpush/0016-Format-UnifiedPush-Kotlin-sources-with-ktlint.patch"
-          ],
-          "mailbox_commit_sha": "e46df7f69d75e67af4aaf50a50923311db1a9648",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0018-Fix-UnifiedPush-regression-test-static-mocks.patch",
-          "sha256": "75d62a82c08798363516f0f6b4f28b427d932dcfc66c849e97d2e412ccc2a5ea",
-          "depends_on": [
-            "unifiedpush/0017-Restore-locked-state-push-fallback.patch"
-          ],
-          "mailbox_commit_sha": "908db1de74a9937c2b9bc1a0f4ac446f8faef914",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0019-Invalidate-stale-registration-on-endpoint-rotation.patch",
-          "sha256": "289822fe0fe6f4303d6570088a77925ccc990b52a98295ca1fc1b5d9969bd1bc",
-          "depends_on": [
-            "unifiedpush/0018-Fix-UnifiedPush-regression-test-static-mocks.patch"
-          ],
-          "mailbox_commit_sha": "36578d8bb7058f862d5dd379440a12c1fbd7f3af",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "unifiedpush/0020-Apply-FastLint-resource-fixes.patch",
-          "sha256": "71b2f58b87df3527c8b512f6376073403ed571dab74c3bcd0b033830de30f65a",
-          "depends_on": [
-            "unifiedpush/0019-Invalidate-stale-registration-on-endpoint-rotation.patch"
-          ],
-          "mailbox_commit_sha": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        }
-      ],
       "parity_paths": [
         "app/src/main/java/im/molly/unifiedpush/UnifiedPushDistributor.kt",
         "app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanRepository.kt",
@@ -977,7 +763,6 @@
           ]
         }
       ],
-      "dependencies": [],
       "added_paths": [
         {
           "path": "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt",
@@ -992,27 +777,6 @@
     },
     {
       "id": "build-validation",
-      "dependencies": [
-        "unifiedpush"
-      ],
-      "patches": [
-        {
-          "path": "build-validation/0001-Use-variant-application-ID-in-URI-safety-tests.patch",
-          "sha256": "fe3c15983df9ba3e300f061f3f66bdfef4bc3512bc35d342b3a3e58822d5ac19",
-          "depends_on": [],
-          "mailbox_commit_sha": "cb08c452a7e6f0817dd433884823b767d3b7bfb9",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        },
-        {
-          "path": "build-validation/0002-Verify-pinned-Gradle-distribution-checksum.patch",
-          "sha256": "892c0d950e0f8cc8cee0be2ea46ad6b7aaa363e76cbe980a8a5b81e1261a2c7e",
-          "depends_on": [],
-          "mailbox_commit_sha": "0e34c904f72fb899947967e5d2b37f78ca71b70e",
-          "source_commit_shas": [],
-          "provenance_kind": "poc-adaptation"
-        }
-      ],
       "parity_paths": [],
       "integration_paths": [],
       "adaptation_paths": [
@@ -1037,25 +801,5 @@
       ],
       "added_paths": []
     }
-  ],
-  "expected_tree_sha": "e783cf54487a5b5d78c3241ec977fd8c8cd23f1d",
-  "patch_provenance": "mailbox_commit_sha identifies the local reconstructed patch commit in the From header. source_commit_shas identifies original Molly upstream commits explicitly referenced inside that patch; an empty list with provenance_kind poc-adaptation means the patch is a Signal compatibility or PoC correction and makes no claim of a matching Molly source commit.",
-  "expected_validation_commands": [
-    "python3 tools/827/validate.py --repo . --manifest patches/827/series.yaml",
-    "python3 -m unittest discover -s tools/827 -p test_*.py",
-    "python3 tools/827/replay_twice.py --repo . --manifest patches/827/series.yaml --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json"
-  ],
-  "known_intentional_target_differences": [
-    "Signal API adaptation in UnifiedPush shared integration points is declared through integration/adaptation checks; this is not a claim of whole-application Molly parity.",
-    "Validation overlays add UnifiedPush F4/F5 regression tests, flavor-aware URI test fixtures, a pinned Gradle distribution checksum, and source compatibility/quote corrections; these changes and test-only paths are absent from the pinned Molly application tree."
-  ],
-  "patch_count": 23,
-  "expected_application_commit": "d99876269eb6556e37bb2d584ba08e8334e8e5db",
-  "metadata_exclusions": [
-    ".github/workflows/827-poc.yml",
-    "docs/827",
-    "patches/827",
-    "reports/827",
-    "tools/827"
   ]
 }

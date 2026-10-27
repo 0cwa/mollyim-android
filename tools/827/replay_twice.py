@@ -11,11 +11,12 @@ import sys
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo', type=Path, default=Path('.'))
-    parser.add_argument('--manifest', type=Path, default=Path('patches/827/series.yaml'))
+    parser.add_argument('--patches', type=Path, default=Path('patches/827'))
+    parser.add_argument('--evidence', type=Path, default=Path('docs/827/parity-evidence.json'))
     parser.add_argument('--worktree-prefix', required=True, type=Path)
     parser.add_argument('--report', required=True, type=Path)
     args = parser.parse_args()
-    repo, manifest = args.repo.resolve(), args.manifest.resolve()
+    repo, patches, evidence = args.repo.resolve(), args.patches.absolute(), args.evidence.resolve()
     prefix = args.worktree_prefix.absolute()
     worktrees = [Path(f'{prefix}-run-{n}') for n in (1, 2)]
     existing = [str(p) for p in worktrees if os.path.lexists(p)]
@@ -24,17 +25,17 @@ def main():
     args.report.parent.mkdir(parents=True, exist_ok=True)
     try:
         validation = subprocess.run([sys.executable, str(Path(__file__).with_name('validate.py')),
-                                     '--manifest', str(manifest), '--repo', str(repo)], capture_output=True, text=True)
+                                     '--patches', str(patches), '--evidence', str(evidence), '--repo', str(repo)], capture_output=True, text=True)
         if validation.returncode:
-            raise RuntimeError(f'manifest validation failed: {validation.stdout}{validation.stderr}')
-        manifest_data = json.loads(manifest.read_text())
+            raise RuntimeError(f'forest/evidence validation failed: {validation.stdout}{validation.stderr}')
+        manifest_data = json.loads(evidence.read_text())
         result['expected_tree_sha'] = manifest_data['expected_tree_sha']
         if existing:
             raise RuntimeError(f'refusing existing worktree destinations: {existing}')
         for index, worktree in enumerate(worktrees, 1):
             child_report = args.report.parent / f'{args.report.stem}-run-{index}.json'
             cmd = [sys.executable, str(Path(__file__).with_name('replay.py')), '--repo', str(repo),
-                   '--manifest', str(manifest), '--worktree', str(worktree), '--report', str(child_report)]
+                   '--patches', str(patches), '--evidence', str(evidence), '--worktree', str(worktree), '--report', str(child_report)]
             proc = subprocess.run(cmd, capture_output=True, text=True)
             log = args.report.parent / f'{args.report.stem}-run-{index}.log'
             log.write_text(proc.stdout + proc.stderr)

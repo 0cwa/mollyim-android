@@ -1,5 +1,7 @@
 # Molly #827 patch replay runbook
 
+> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+
 This runbook applies to the review branch `dev/molly-827-reproducible-poc` after it is available on the Molly repository. Clone the branch at full history depth (the default `git clone` is not shallow), including submodules:
 
 ```sh
@@ -69,10 +71,10 @@ The PoC work branch is based on the audited candidate HEAD. Preserve that base; 
 
 ## Validate and replay twice
 
-Run the full replay and retain the machine report, logs, and residual diffs under `reports/827/replay/`. `replay_twice.py` invokes manifest validation itself, so this is the one-command replay:
+Run the full replay and retain the machine report, logs, and residual diffs under `reports/827/replay/`. `replay_twice.py` validates the forest and parity evidence itself, so this is the one-command replay:
 
 ```sh
-python3 tools/827/replay_twice.py --repo . --manifest patches/827/series.yaml --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json
+python3 tools/827/replay_twice.py --repo . --patches patches/827 --evidence docs/827/parity-evidence.json --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json
 ```
 
 Run the replay-tool safety and portability tests from the primary checkout:

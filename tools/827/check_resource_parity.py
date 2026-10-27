@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Check selected localized XML resource parity against pinned Molly and preserve Signal resources."""
 import argparse
+import replay
 import hashlib
 import json
 import re
@@ -82,7 +83,7 @@ def names_fingerprint(keys):
     return hashlib.sha256(json.dumps(normalized,separators=(',',':'),ensure_ascii=False).encode()).hexdigest()
 
 def check_resource_parity(repo: Path, write_report=True):
-    repo=repo.resolve();manifest_path=repo/'patches/827/series.yaml';manifest=json.loads(manifest_path.read_text())
+    repo=repo.resolve();manifest=replay.load_inputs(repo/'patches/827',repo/'docs/827/parity-evidence.json')
     base=manifest['signal_base'];target=manifest['molly_expected']
     app_revision=manifest.get('expected_application_commit') or git(repo,'rev-parse','HEAD').strip()
     exclusions=manifest.get('metadata_exclusions',[])

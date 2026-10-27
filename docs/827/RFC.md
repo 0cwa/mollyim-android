@@ -1,5 +1,7 @@
 # RFC: Reproducible Molly #827 feature reconstruction
 
+> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+
 **Status:** external proof of concept; maintainer review requested. No upstream PR or merge has been submitted.
 
 ## Problem

@@ -9,6 +9,8 @@ import os
 import re
 import subprocess
 import sys
+
+from forest import Forest, ForestError
 from pathlib import Path, PurePosixPath
 
 
@@ -16,10 +18,7 @@ SHA = re.compile(r'^[a-f0-9]{40}$')
 HEX64 = re.compile(r'^[a-f0-9]{64}$')
 PINNED_SIGNAL_BASE = 'c47a74ba0961903eeaeda6d22347a990056c3e83'
 PINNED_MOLLY_TARGET = '0e202dda90785771ff8c87526eaaf30c655f54f3'
-ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', 'docs/827', 'patches/827', 'reports/827', 'tools/827'}
-MAILBOX_COMMIT = re.compile(rb'^From ([0-9a-f]{40}) ', re.M)
-SOURCE_COMMIT_FIELD = re.compile(rb'^Source-Commits?:\s*(.*)$', re.M)
-
+ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', '.github/workflows/827-patch-forest.yml', 'docs/827', 'patches/827', 'reports/827', 'tools/827'}
 class ReplayError(RuntimeError):
     pass
 
@@ -34,24 +33,42 @@ def git(repo, *args, check=True, env=None, binary=False):
     p.output = p.stdout
     return p
 
-def resolve_relative(parent, name, suffix=None):
-    if not isinstance(name, str) or not name or '\\' in name or '\0' in name:
-        raise ReplayError(f'invalid relative path: {name!r}')
-    path = Path(name)
-    if path.is_absolute() or any(part in ('.', '..') for part in path.parts):
-        raise ReplayError(f'relative path only, no traversal: {name!r}')
-    if suffix and path.suffix != suffix:
-        raise ReplayError(f'expected {suffix}: {name}')
-    manifest_root = parent.resolve()
-    candidate = manifest_root
-    for part in path.parts:
-        candidate = candidate / part
-        if candidate.is_symlink():
-            raise ReplayError(f'symlink component is not allowed in manifest path: {name}')
-    resolved = candidate.resolve(strict=False)
-    if not resolved.is_relative_to(manifest_root):
-        raise ReplayError(f'symlink path escapes manifest root: {name}')
-    return resolved
+def load_inputs(patch_root, evidence_path):
+    """Join plain patch data with separate application assertions in memory only."""
+    try:
+        forest = Forest(patch_root)
+        evidence = json.loads(Path(evidence_path).read_text(encoding='utf-8'))
+    except (ForestError, OSError, ValueError) as exc:
+        raise ReplayError(f'cannot load patch forest / parity evidence: {exc}') from exc
+    if not isinstance(evidence, dict) or evidence.get('evidence_version') != 1:
+        raise ReplayError('evidence_version must be 1')
+    # The evidence file cannot override patch selection, topology, or the base.
+    forbidden = {'signal_base', 'schema_version', 'patch_count', 'patch_provenance', 'expected_validation_commands'}
+    if forbidden & evidence.keys():
+        raise ReplayError('patch metadata belongs in the forest, not parity evidence')
+    entries = evidence.get('features')
+    if not isinstance(entries, list) or any(not isinstance(f, dict) for f in entries):
+        raise ReplayError('evidence features must be a list of objects')
+    allowed = {'id', 'parity_paths', 'integration_paths', 'adaptation_paths', 'added_paths'}
+    for entry in entries:
+        if set(entry) - allowed:
+            raise ReplayError(f'unknown feature evidence fields: {sorted(set(entry) - allowed)}')
+        if not isinstance(entry.get('id'), str):
+            raise ReplayError('evidence feature needs an id')
+    by_id = {f['id']: f for f in entries}
+    if len(by_id) != len(entries) or set(by_id) != set(forest.features):
+        raise ReplayError('evidence must cover each forest feature exactly once')
+    features = []
+    for feature in forest.order():
+        features.append({**by_id[feature.name], 'dependencies': list(feature.dependencies),
+                         'patches': [forest.metadata[name] for name in feature.patches]})
+    return {**evidence, 'signal_base': forest.base, 'features': features}
+
+
+def audit_digest(inputs):
+    """Digest the derived topology, patch bytes/provenance, and parity assertions."""
+    return hashlib.sha256(json.dumps(inputs, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+
 
 def validate_git_path(name, label):
     if not isinstance(name, str) or not name or '\\' in name or '\0' in name:
@@ -69,10 +86,12 @@ def covers(scope, path):
 def overlap(a, b):
     return covers(a, b) or covers(b, a)
 
-def validate_manifest(manifest, root):
-    version = manifest.get('schema_version')
-    if version not in (1, 2):
-        raise ReplayError('schema_version must be 1 or 2')
+def validate_evidence(manifest, root):
+    version = manifest.get('evidence_version')
+    if version != 1:
+        raise ReplayError('evidence_version must be 1')
+    if not isinstance(manifest.get('expected_tree_sha'), str) or not SHA.fullmatch(manifest['expected_tree_sha']):
+        raise ReplayError('expected_tree_sha must be a full pinned Git tree SHA')
     expected_application_commit = manifest.get('expected_application_commit')
     if not isinstance(expected_application_commit, str) or not SHA.fullmatch(expected_application_commit):
         raise ReplayError('expected_application_commit must be a full pinned commit SHA')
@@ -90,14 +109,14 @@ def validate_manifest(manifest, root):
         raise ReplayError(f'molly_expected must remain pinned to audited Molly target {PINNED_MOLLY_TARGET}')
     features = manifest.get('features')
     if not isinstance(features, list) or len(features) < 2:
-        raise ReplayError('PoC needs at least two ordered feature bundles')
+        raise ReplayError('PoC needs at least two feature bundles')
     ids, claims, prepared = set(), [], []
     ordered_ids = []
     for feature in features:
         if not isinstance(feature, dict):
             raise ReplayError('feature entries must be objects')
         feature_id = feature.get('id')
-        if not isinstance(feature_id, str) or not re.fullmatch(r'[a-z][a-z0-9-]{2,50}', feature_id) or feature_id in ids:
+        if not isinstance(feature_id, str) or not re.fullmatch(r'[a-z][a-z0-9-]*(?:/[a-z][a-z0-9-]*)*', feature_id) or feature_id in ids:
             raise ReplayError('feature IDs must be unique slug strings')
         dependencies = feature.get('dependencies', [])
         if not isinstance(dependencies, list) or any(dep not in ordered_ids for dep in dependencies):
@@ -108,13 +127,9 @@ def validate_manifest(manifest, root):
         if not isinstance(patches, list) or not patches:
             raise ReplayError(f'{feature_id} needs real nonempty patches')
         parity_paths = feature.get('parity_paths', [])
-        if version == 1 and 'integration_paths' in feature:
-            raise ReplayError('schema version 1 does not support integration_paths')
-        integrations = feature.get('integration_paths', []) if version == 2 else []
-        adaptations = feature.get('adaptation_paths', []) if version == 2 else []
-        added_paths = feature.get('added_paths', []) if version == 2 else []
-        if version == 1 and 'adaptation_paths' in feature:
-            raise ReplayError('schema version 1 does not support adaptation_paths')
+        integrations = feature.get('integration_paths', [])
+        adaptations = feature.get('adaptation_paths', [])
+        added_paths = feature.get('added_paths', [])
         if not isinstance(parity_paths, list) or not isinstance(integrations, list) or not isinstance(adaptations, list) or not isinstance(added_paths, list):
             raise ReplayError(f'{feature_id} path declarations must be lists')
         if not parity_paths and not integrations and not adaptations and not added_paths:
@@ -201,46 +216,9 @@ def validate_manifest(manifest, root):
                 if overlap(scope, previous_scope):
                     raise ReplayError(f'overlapping path ownership: {previous_id}:{previous_scope} and {feature_id}:{scope}')
             claims.append((feature_id, scope))
-        patch_prepared = []
-        prior_patch_paths = set()
-        for item in patches:
-            if version == 1:
-                filename, expected = item, None
-            else:
-                if not isinstance(item, dict):
-                    raise ReplayError(f'{feature_id} schema 2 patches must include path and sha256')
-                filename, expected = item.get('path'), item.get('sha256')
-                dependencies = item.get('depends_on', [])
-                if not isinstance(dependencies, list) or any(dep not in prior_patch_paths for dep in dependencies):
-                    raise ReplayError(f'{feature_id} patch dependencies must refer to earlier patches in the same feature')
-                if len(dependencies) != len(set(dependencies)):
-                    raise ReplayError(f'{feature_id} patch dependencies must be unique')
-                if not isinstance(expected, str) or not HEX64.fullmatch(expected):
-                    raise ReplayError(f'{feature_id} patch needs lowercase sha256')
-            patch = resolve_relative(root, filename, '.patch')
-            if not patch.is_file() or patch.is_symlink():
-                raise ReplayError(f'patch must be a regular file: {filename}')
-            data = patch.read_bytes()
-            actual = hashlib.sha256(data).hexdigest()
-            if expected is not None and actual != expected:
-                raise ReplayError(f'patch checksum mismatch before replay: {filename}')
-            if version == 2:
-                mailbox = MAILBOX_COMMIT.search(data)
-                if not mailbox or mailbox.group(1).decode() != item.get('mailbox_commit_sha'):
-                    raise ReplayError(f'{feature_id} mailbox commit SHA does not match patch: {filename}')
-                source_shas = []
-                for field in SOURCE_COMMIT_FIELD.findall(data):
-                    refs = field.decode('ascii', errors='strict').split()
-                    if any(not SHA.fullmatch(ref) for ref in refs):
-                        raise ReplayError(f'{feature_id} malformed Source-Commit reference: {filename}')
-                    source_shas.extend(refs)
-                if source_shas != item.get('source_commit_shas'):
-                    raise ReplayError(f'{feature_id} source commit references do not match patch: {filename}')
-                expected_kind = 'upstream-source' if source_shas else 'poc-adaptation'
-                if item.get('provenance_kind') != expected_kind:
-                    raise ReplayError(f'{feature_id} patch provenance kind mismatch: {filename}')
-            patch_prepared.append({'file': filename, 'resolved': patch, 'sha256': actual})
-            prior_patch_paths.add(filename)
+        # Forest has already validated paths, mailboxes, order, and dependencies.
+        patch_prepared = [{'file': p['path'], 'resolved': root / p['path'], 'sha256': p['sha256']}
+                          for p in patches]
         prepared.append({'id': feature_id, 'parity_paths': [s for k, s in scopes if k == 'parity'],
                          'integration_paths': int_prepared, 'adaptation_paths': adaptation_prepared,
                          'added_paths': added_prepared,
@@ -308,7 +286,7 @@ def conflict_markers(repo, paths):
 
 def run_replay(args):
     source = args.repo.resolve()
-    root = args.manifest.resolve().parent
+    root = args.patches.absolute()
     expected_application_commit = None
     metadata_exclusions = None
     raw_worktree = args.worktree
@@ -325,11 +303,8 @@ def run_replay(args):
     resolved_worktree = worktree.resolve(strict=False)
     if resolved_worktree == source or resolved_worktree.is_relative_to(source):
         raise ReplayError('REFUSE: worktree destination inside source checkout')
-    try:
-        manifest = json.loads(args.manifest.read_text())
-    except Exception as exc:
-        raise ReplayError(f'cannot read manifest: {exc}')
-    version, features = validate_manifest(manifest, root)
+    manifest = load_inputs(root, args.evidence)
+    version, features = validate_evidence(manifest, root)
     expected_application_commit = manifest['expected_application_commit']
     metadata_exclusions = manifest['metadata_exclusions']
     for key in ('signal_base', 'molly_expected'):
@@ -362,7 +337,7 @@ def run_replay(args):
     has_adaptations = any(f['adaptation_paths'] for f in features)
     has_added_paths = any(f['added_paths'] for f in features)
     report = {
-        'status': 'STARTED', 'schema_version': version,
+        'status': 'STARTED', 'evidence_version': version, 'inputs_sha256': audit_digest(manifest),
         'signal_base': manifest['signal_base'], 'molly_expected': manifest['molly_expected'],
         'worktree': str(worktree), 'expected_tree_sha': manifest.get('expected_tree_sha'),
         'expected_application_commit': manifest['expected_application_commit'],
@@ -390,12 +365,13 @@ def run_replay(args):
                 actual = hashlib.sha256(data).hexdigest()
                 if actual != patch_info['sha256']:
                     raise ReplayError(f'patch changed after validation: {patch_info["file"]}')
-                log_path = log_dir / f'{feature["id"]}-{index:02d}.git-am.log'
+                log_path = log_dir / f'{feature["id"].replace("/", "_")}-{index:02d}.git-am.log'
                 cmd = git(worktree, '-c', 'core.hooksPath=/dev/null',
                           '-c', 'user.name=Molly Replay Tool',
                           '-c', 'user.email=molly-replay-tool@example.invalid',
                           '-c', 'commit.gpgSign=false',
-                          'am', '--committer-date-is-author-date', '--3way', str(patch),
+                          '-c', 'rerere.enabled=false', '-c', 'core.autocrlf=false',
+                          'am', '--committer-date-is-author-date', '--no-3way', '--whitespace=nowarn', str(patch),
                           check=False, env=safe_env, binary=True)
                 log_data = cmd.stdout
                 log_path.write_bytes(log_data)
@@ -415,6 +391,8 @@ def run_replay(args):
             if feature_unowned:
                 report['status'] = 'OWNERSHIP_FAILED'
                 raise ReplayError(f'Feature {feature["id"]} changed unowned paths: {feature_unowned}')
+        if git(worktree, 'ls-files', '--', '.hangar').output.strip():
+            raise ReplayError('carrier .hangar state must not enter a release tree')
         report['tree_sha'] = git(worktree, 'rev-parse', 'HEAD^{tree}').output.strip()
         report['expected_tree_match'] = (report['tree_sha'] == manifest['expected_tree_sha']) if manifest.get('expected_tree_sha') else None
         report['source_projection_match'] = report['source_projected_tree_sha'] == report['tree_sha']
@@ -549,7 +527,8 @@ def run_replay(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--repo', required=True, type=Path)
-    parser.add_argument('--manifest', required=True, type=Path)
+    parser.add_argument('--patches', type=Path, default=Path('patches/827'))
+    parser.add_argument('--evidence', type=Path, default=Path('docs/827/parity-evidence.json'))
     parser.add_argument('--worktree', required=True, type=Path)
     parser.add_argument('--report', required=True, type=Path)
     args = parser.parse_args()
