@@ -1,11 +1,53 @@
 # Scope and parity
 
-The #827 proof reconstructs selected launcher artwork and UnifiedPush/MollySocket
-integration from a pinned Signal base. It does not reconstruct the full Molly
-feature set. [PATCH-FOREST.md](PATCH-FOREST.md) describes the patch format and
-[RUNBOOK.md](RUNBOOK.md) gives the validation commands.
+The repository contains two separate reconstructions from the same pinned Signal
+base:
 
-## Pinned scope
+| Forest | Intended result | Scope of equality |
+| --- | --- | --- |
+| [`patches/molly`](../../patches/molly/README.md) | Complete Molly 8.19.2-4 source snapshot | Entire target Git tree, with no exclusions |
+| [`patches/827`](../../patches/827/README.md) | Adapted launcher artwork and UnifiedPush/MollySocket pilot | Declared files/fragments and reviewed adaptation hashes |
+
+The complete forest does not replace the pilot or its additional regression test
+and toolchain adaptations. [PATCH-FOREST.md](PATCH-FOREST.md) describes the common
+patch format; [RUNBOOK.md](RUNBOOK.md) gives the pilot's validation commands.
+
+## Complete pinned source reconstruction
+
+`patches/molly` reconstructs target commit
+`0e202dda90785771ff8c87526eaaf30c655f54f3`, whose complete tree is
+`3cd0bb01cf840e4b702187085432020d163d80ce`, from Signal 8.19.2 commit
+`c47a74ba0961903eeaeda6d22347a990056c3e83`. Molly's upstream merge
+`3e0860a84b4e13c33c11adbaaabbe4cab8f10c63` records that Signal commit as its
+second parent and belongs to the target's ancestry.
+
+The full delta contains 3,178 paths, counting both sides of renames. Sixteen
+disjoint review groups include the application features, shared integration,
+resources, imported code, removed modules, tests, build/release configuration and
+documentation. These groups are not independently buildable feature selections.
+
+```sh
+python3 tools/827/verify_complete.py --repo . --patches patches/molly
+```
+
+The verifier checks pins, merge ancestry and snapshot source trailers; derives
+ownership from the applied commits; rejects overlapping or missing changed paths;
+and compares two legal full replays with the target's entire Git tree. No
+metadata or source paths are projected out. Exact equality covers additions,
+deletions, binary content, modes and symlinks. The target's inherited whitespace
+is preserved and reported rather than normalized.
+
+The materialized index and working files must also be clean, with no untracked
+files, including ignored files. This catches leftover or altered files even
+when the reconstructed commit has the expected tree.
+
+This proves reconstruction of the pinned tracked source contents. It does not
+prove Android compilation, APK reproducibility, current-release parity or
+runtime/security acceptance. LFS pointer equality does not verify downloaded LFS
+payloads. The [complete forest guide](../../patches/molly/README.md) documents the
+source pins, groups and verification prerequisites.
+
+## Pilot pins and application projection
 
 | Input | Commit or tree |
 | --- | --- |
@@ -23,7 +65,7 @@ The authored forest selects and orders mailbox patches. The separate
 [`parity-evidence.json`](parity-evidence.json) records application assertions;
 it cannot override forest topology or patch selection.
 
-## What each assertion means
+## What each pilot assertion means
 
 | Assertion | What the validator checks | Limit |
 | --- | --- | --- |
@@ -43,7 +85,7 @@ owned-path ledger are separate inputs. The current ledger includes test and
 toolchain adaptations as well as feature paths. Their presence does not expand
 the claimed Molly feature coverage.
 
-## Resource comparison
+## Pilot resource comparison
 
 `check_resource_parity.py` compares named XML elements across the base, target,
 and expected application tree. Candidate-changed resource keys must be declared
@@ -59,7 +101,7 @@ not establish general XML equivalence, resource merging, or rendered UI behavior
 
 ## Evidence inputs and generated results
 
-The validators consume the parity assertions, [`feature-inventory.tsv`](feature-inventory.tsv),
+The pilot validators consume the parity assertions, [`feature-inventory.tsv`](feature-inventory.tsv),
 and the inventory ledgers/fixtures under `reports/827/inventory`. These are test
 inputs. Replay reports and CI logs describe individual executions and belong in
 CI artifacts and linked review discussions. A pair of matching replay trees
@@ -68,15 +110,16 @@ APK reproducibility or acceptance on a device.
 
 ## Boundaries
 
-The rest of the Signal-to-Molly difference remains outside this pilot, including
-unrelated Molly functionality, upstream evolution, broad refactors, binary art,
-release infrastructure, and unresolved mixed-origin edits. Shared files are
-covered only by their declared assertions. The application still includes its
-Signal-derived Google/Firebase dependencies.
+The rest of the Signal-to-Molly difference is represented by the separate
+complete forest and remains outside the pilot's assertions. In the pilot, shared
+files are covered only by their declared checks, and the application still
+includes its Signal-derived Google/Firebase dependencies. The historical pilot
+inventory is not a complete feature classification of the Molly target.
 
 Build failures and current verification are tracked in [issue #4](https://github.com/0cwa/mollyim-android/issues/4).
 Live delivery, linking, device behavior, clipboard presentation, and cryptographic
 lock semantics require separate acceptance in [issue #5](https://github.com/0cwa/mollyim-android/issues/5).
-[Issue #3](https://github.com/0cwa/mollyim-android/issues/3) tracks a current matched
-comparison oracle. The pinned proof makes no claim of current-release parity,
-Google-free packaging, complete security signoff, or production readiness.
+[Issue #3](https://github.com/0cwa/mollyim-android/issues/3) tracks the comparison
+oracle and remaining reconstruction validation. Neither source proof establishes
+current-release parity, Google-free APK packaging, complete security signoff or
+production readiness.

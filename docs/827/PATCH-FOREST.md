@@ -1,10 +1,17 @@
 # Patch forest maintenance
 
-The #827 patch forest reconstructs selected launcher artwork and
-UnifiedPush/MollySocket integration on a pinned Signal base. It uses ordinary
-`git format-patch` mailboxes, explicit patch order, and feature prerequisites.
-[PARITY.md](PARITY.md) describes the application scope and validation assertions;
-[RUNBOOK.md](RUNBOOK.md) covers replay and Android checks.
+Two forests use ordinary `git format-patch` mailboxes, explicit patch order and
+declared prerequisites:
+
+| Forest | Reconstruction | Verification |
+| --- | --- | --- |
+| [`patches/molly`](../../patches/molly/README.md) | Complete pinned Molly 8.19.2-4 source tree from its Signal 8.19.2 base | `verify_complete.py` checks the entire target tree without exclusions |
+| [`patches/827`](../../patches/827/README.md) | Adapted launcher artwork and UnifiedPush/MollySocket pilot | `replay_twice.py` checks the pilot's application assertions |
+
+The forests are separate reconstructions from the same Signal base. The complete
+forest does not overwrite or extend the pilot's adaptations. [PARITY.md](PARITY.md)
+defines both scopes; [RUNBOOK.md](RUNBOOK.md) covers the pilot's replay and Android
+checks. The complete forest has its own [usage guide](../../patches/molly/README.md).
 
 ## Format
 
@@ -62,7 +69,7 @@ line and comment syntax as `series`. Unknown features, duplicate or self
 dependencies, repeated implicit parent edges, and cycles are errors. Nesting and
 `depends` are project conventions; Git itself does not define feature graphs.
 
-The current `build-validation` feature explicitly depends on `unifiedpush`. This
+The pilot's `build-validation` feature explicitly depends on `unifiedpush`. This
 retains the pilot's release order. Its URI-test and wrapper-checksum patches are
 validation changes, so that edge does not establish an inherent code dependency
 on UnifiedPush.
@@ -85,8 +92,8 @@ to that application's evidence policy.
 
 ## Inspect and apply
 
-Git and Python 3.10+ are sufficient for the forest commands. Run these from the
-repository root:
+Git and Python 3.10+ are sufficient for the forest commands. The following
+commands use the default `patches/827` pilot. Run them from the repository root:
 
 ```sh
 python3 tools/827/forest.py check
@@ -109,6 +116,22 @@ Use `forest.py apply` to replay that forest. The list alone does not supply the
 runner's destination checks or Git settings; a bare `git am` loop is not an
 equivalent replay command.
 
+For the complete Molly forest, select its patch root explicitly:
+
+```sh
+python3 tools/827/forest.py check --patches patches/molly
+python3 tools/827/forest.py series --patches patches/molly
+python3 tools/827/verify_complete.py --repo . --patches patches/molly
+```
+
+The complete verifier checks source pins, merge ancestry, snapshot provenance,
+actual changed-path ownership and coverage, then replays two legal full orders.
+Both results must equal the entire pinned Molly tree, with a clean index and
+working files and no untracked files, including ignored files. Its sixteen groups organize
+review; they do not promise that a selected subset compiles independently.
+See the [complete forest guide](../../patches/molly/README.md) for pins, grouping
+and the required Git history.
+
 ### Worktree and Git behavior
 
 Every `apply` creates a new detached worktree at `base`. Existing destinations,
@@ -124,6 +147,12 @@ explicit and the committer date follows the author date. Patches apply with
 `git am --no-3way --whitespace=nowarn`, so local whitespace-fix settings cannot
 silently rewrite their content. A final `git diff --check` checks the result.
 Carrier `.hangar` state is rejected in the release tree.
+
+The complete-source verifier handles the pinned target's inherited whitespace
+by requiring an exact trusted target-tree match and reporting those findings.
+The generic CLI retains its strict whitespace policy, so use
+`verify_complete.py` for `patches/molly` rather than the generic `apply`/`verify`
+commands. Neither path silently fixes whitespace.
 
 A failed standalone application retains the worktree and am state. In a normal
 shell without exported Git repository overrides, inspect it with:
@@ -146,7 +175,7 @@ case, including failures. This detects some missing dependencies and ordering
 interactions. It is not exhaustive permutation testing, isolated-feature
 compilation, or proof of semantic independence.
 
-For the application-specific checks:
+For the pilot's application-specific checks:
 
 ```sh
 python3 -m unittest discover -s tools/827 -p 'test_*.py'
@@ -187,7 +216,14 @@ application commit/tree, and parity assertions, so upgrading that proof requires
 reviewing those inputs together. Expected hashes describe the intended result;
 changing them to match an unexplained failure removes the check.
 
-After evidence changes, run `python3 tools/827/refresh_inventory.py --repo .`,
+The complete Molly forest is a snapshot export of the full base-to-target delta.
+Its `Source-Commit:` trailers identify the target snapshot, including imported
+code, upstream fixes and merge resolutions; they are not per-hunk authorship
+claims. Changing that snapshot requires reviewing its base, target and upstream
+merge pins together and verifying the complete resulting tree. Keep adaptations
+to another base separate from a forest that promises exact target equality.
+
+After pilot parity-evidence changes, run `python3 tools/827/refresh_inventory.py --repo .`,
 review the derived inventory diff, and validate again. Checksums are computed
 from authored inputs. Identify the reviewed Git revision when sharing a release.
 

@@ -32,7 +32,7 @@
     "historical_feature_inventory": "docs/827/feature-inventory.tsv",
     "historical_hunk_coordinates": "reports/827/inventory/selected-hunks.tsv",
     "live_manifest_ledger": "reports/827/inventory/current-series-owned.tsv",
-    "live_manifest_ledger_sha256": "470b892ba5479f0ed0ea6477a5ec5eff31cdbb752d2a93002c51380ecaebaae5",
+    "live_manifest_ledger_sha256": "4ff5ed89335ad783a860128413b62699b4118f83a3b14bc521d2dc6e20b39c53",
     "live_manifest_counts_are_recomputed_by": "tools/827/validate_inventory.py",
     "live_manifest_snapshot": {
       "paths": 83,
@@ -45,7 +45,7 @@
         "added-target-absent": 1
       }
     },
-    "hunk_coordinate_tsv_sha256": "93da33d854b59a92761416856f58f19ac3a4d4658a910f927040e32de07f24df",
+    "hunk_coordinate_tsv_sha256": "34dc6e975ba1301aec8293c5e251b0dfcc8744045fed5bf2ac2d141d58ef21fb",
     "historical_feature_inventory_sha256": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f"
   },
   "classification_limit": "Path enumeration covers all records. Ownership/provenance analysis is scoped to selected paths. All remaining records are excluded or unresolved; no whole-tree attribution is claimed.",

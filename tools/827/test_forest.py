@@ -181,6 +181,32 @@ class ForestTests(unittest.TestCase):
             forest.apply(forest.Forest(self.root), self.repo, out)
         self.assertEqual((out / 'one').read_bytes(), b'trailing space \n')
 
+    def test_exact_expected_tree_preserves_and_reports_source_whitespace(self):
+        commit = self.add_feature('one', content=b'trailing space \n')
+        expected_tree = self.git('rev-parse', commit + '^{tree}')
+        self.git('config', 'apply.whitespace', 'fix')
+        out = self.home / 'out'
+        result = forest.apply(forest.Forest(self.root), self.repo, out,
+                              expected_tree=expected_tree)
+        self.assertEqual(result['tree_sha'], expected_tree)
+        self.assertIn('trailing whitespace', result['whitespace_report'])
+        self.assertEqual((out / 'one').read_bytes(), b'trailing space \n')
+
+    def test_expected_tree_mismatch_rejects_source_whitespace(self):
+        self.add_feature('one', content=b'trailing space \n')
+        expected_tree = self.git('rev-parse', self.base + '^{tree}')
+        with self.assertRaisesRegex(forest.ForestError, 'tree mismatch'):
+            forest.apply(forest.Forest(self.root), self.repo, self.home / 'out',
+                         expected_tree=expected_tree)
+
+    def test_expected_tree_requires_full_sha_before_creating_worktree(self):
+        self.add_feature('one')
+        out = self.home / 'out'
+        for expected_tree in ('HEAD^{tree}', self.base[:7], ''):
+            with self.subTest(expected_tree=expected_tree), self.assertRaisesRegex(forest.ForestError, 'full lowercase tree SHA'):
+                forest.apply(forest.Forest(self.root), self.repo, out, expected_tree=expected_tree)
+            self.assertFalse(out.exists())
+
     def test_apply_preserves_author_and_binary_bytes(self):
         data = bytes(range(256)) * 3
         commit = self.add_feature('binary', filename='data.bin', content=data)

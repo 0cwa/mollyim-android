@@ -12,6 +12,7 @@
     ".github/workflows/827-patch-forest.yml",
     "docs/827",
     "patches/827",
+    "patches/molly",
     "reports/827",
     "tools/827"
   ],

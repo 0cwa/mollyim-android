@@ -1,3 +1,5 @@
 # Collapse generated fixture data and historical report deletions in review.
 **/* linguist-generated=true
 **/*.md -linguist-generated
+# Empty final columns are meaningful in tab-separated validation fixtures.
+**/*.tsv whitespace=-blank-at-eol

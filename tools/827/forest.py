@@ -197,8 +197,10 @@ def destination(repo, path):
     return path
 
 
-def apply(forest, repo, worktree, selected=None, reverse=False):
-    """Create a new detached worktree. Never reset or clean a caller's checkout."""
+def apply(forest, repo, worktree, selected=None, reverse=False, *, expected_tree=None):
+    """Replay in a new worktree; only an exact trusted tree permits source whitespace."""
+    if expected_tree is not None and (not isinstance(expected_tree, str) or not SHA.fullmatch(expected_tree)):
+        raise ForestError('expected_tree must be a full lowercase tree SHA')
     worktree = destination(repo, worktree)
     order = forest.order(selected, reverse)
     if git(repo, 'cat-file', '-t', forest.base) != 'commit':
@@ -216,10 +218,19 @@ def apply(forest, repo, worktree, selected=None, reverse=False):
                                   'inspect with git am --show-current-patch; abort with git am --abort.') from exc
     if git(worktree, 'ls-files', '--', '.hangar'):
         raise ForestError('carrier .hangar state must not enter a release tree')
-    git(worktree, 'diff', '--check', forest.base, 'HEAD')
-    return {'status': 'PASS', 'base': forest.base, 'features': [f.name for f in order],
-            'tree_sha': git(worktree, 'rev-parse', 'HEAD^{tree}'),
-            'patches': [forest.metadata[p] for f in order for p in f.patches]}
+    tree_sha = git(worktree, 'rev-parse', 'HEAD^{tree}')
+    if expected_tree is not None and tree_sha != expected_tree:
+        raise ForestError(f'tree mismatch: expected {expected_tree}, got {tree_sha}')
+    # A trusted source tree may contain historical whitespace errors. Preserve its
+    # exact bytes and report them; ordinary feature replay still rejects errors.
+    whitespace_report = git(worktree, 'diff', '--check', forest.base, 'HEAD',
+                            check=expected_tree is None)
+    result = {'status': 'PASS', 'base': forest.base, 'features': [f.name for f in order],
+              'tree_sha': tree_sha,
+              'patches': [forest.metadata[p] for f in order for p in f.patches]}
+    if expected_tree is not None:
+        result['whitespace_report'] = whitespace_report
+    return result
 
 
 def verify(forest, repo):
