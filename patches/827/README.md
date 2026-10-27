@@ -2,9 +2,10 @@
 
 `base` pins the upstream commit. Each feature directory contains ordinary
 `git format-patch` mailboxes and a plain `series` file listing them in order.
-A nested feature depends on its parent feature; an optional `depends` file lists
-additional forest-relative feature prerequisites. Independent siblings have no
-implied dependency. All listed prerequisites apply before the consumer's series.
+A nested feature requires its parent feature; an optional `depends` file lists
+additional forest-relative prerequisites. Siblings have no implicit dependency.
+
+Run from the repository root with Git and Python 3.10+:
 
 ```sh
 python3 tools/827/forest.py check
@@ -13,10 +14,12 @@ python3 tools/827/forest.py apply --repo . --worktree /tmp/molly-replay
 python3 tools/827/forest.py verify --repo .
 ```
 
-Run from the repository root. Standalone application preserves a failed worktree
-for inspection; verification uses disposable temporary worktrees. Application
-parity evidence is separate in `docs/827/parity-evidence.json`, not a patch catalog.
-See [the audit and maintenance guide](../../docs/827/PATCH-FOREST.md) for nested
-features, cross-tree dependencies, re-exporting patches, release gates, and the
-optional git-carrier maintenance boundary. This remains the bounded #827 PoC,
-not a full Molly reconstruction or a claim of production readiness.
+`apply` creates a new detached worktree and preserves it on failure for inspection.
+`verify` uses temporary worktrees to check feature closures and two legal full
+orders. Application assertions are separate in `docs/827/parity-evidence.json`.
+
+See the [maintenance guide](../../docs/827/PATCH-FOREST.md) for dependency semantics,
+patch authoring, Git safety settings, and the optional git-carrier boundary.
+The [runbook](../../docs/827/RUNBOOK.md) covers application checks, and
+[PARITY.md](../../docs/827/PARITY.md) defines this bounded launcher-artwork and
+UnifiedPush proof's scope.

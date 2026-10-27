@@ -1,6 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.thoughtcrime.securesms.probe">
-  <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="30" />
-  <application android:label="P2 Synthetic Instrumentation" android:hasCode="true">
-  </application>
-  <instrumentation android:name="org.thoughtcrime.securesms.probe.ProbeInstrumentation" android:targetPackage="org.thoughtcrime.securesms.benchmark" android:label="P2 local-only probe" />
-</manifest>

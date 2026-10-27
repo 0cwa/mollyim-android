@@ -1,2 +1,0 @@
--P OUTPUT DROP
--A OUTPUT -o lo -j ACCEPT

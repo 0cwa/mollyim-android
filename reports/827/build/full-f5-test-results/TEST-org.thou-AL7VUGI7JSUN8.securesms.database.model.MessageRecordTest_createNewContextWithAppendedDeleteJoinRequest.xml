@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.database.model.MessageRecordTest_createNewContextWithAppendedDeleteJoinRequest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T15:47:17.370Z" hostname="4f1d1be5db40" time="0.217">
-  <properties/>
-  <testcase name="throwOnNonGv2" classname="org.thoughtcrime.securesms.database.model.MessageRecordTest_createNewContextWithAppendedDeleteJoinRequest" time="0.21"/>
-  <testcase name="appendDeleteToExistingContext" classname="org.thoughtcrime.securesms.database.model.MessageRecordTest_createNewContextWithAppendedDeleteJoinRequest" time="0.006"/>
-  <testcase name="throwOnEmptyGv2Change" classname="org.thoughtcrime.securesms.database.model.MessageRecordTest_createNewContextWithAppendedDeleteJoinRequest" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

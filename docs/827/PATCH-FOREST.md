@@ -1,122 +1,92 @@
-# Standard patch forest: audit, design, and maintenance
+# Patch forest maintenance
 
-## Audit and migration decision
+The #827 patch forest reconstructs selected launcher artwork and
+UnifiedPush/MollySocket integration on a pinned Signal base. It uses ordinary
+`git format-patch` mailboxes, explicit patch order, and feature prerequisites.
+[PARITY.md](PARITY.md) describes the application scope and validation assertions;
+[RUNBOOK.md](RUNBOOK.md) covers replay and Android checks.
 
-Audited starting point: `9409c830af377e058155a13cda9da092ed6e260a` on
-`dev/molly-827-reproducible-poc`, not the repository's default `main` branch.
-
-The 23 existing patches were already `git format-patch` mailboxes. The problem
-was the 72,283-byte JSON document named `series.yaml`: it repeated their names,
-order, predecessor links, mailbox commit IDs, source-commit references, checksums,
-and a derived provenance classification. Those facts also existed in the
-filesystem or mailbox. The same document mixed this patch catalog with valuable
-application-specific parity and adaptation assertions. The validator then
-validated both the catalog and its duplication of the patches.
-
-This migration removes the patch catalog, not the evidence. All 23 mailbox files
-retain their exact original bytes, names, authors, messages, and source references.
-The original Signal base, Molly comparison target, expected application commit,
-and expected application tree remain pinned. The current inventory digest binds
-the derived forest inputs and the separate evidence rather than an obsolete
-manifest file. Historical reports and the original attribution ledger remain
-historical evidence, not new test results.
-
-Implementation sequence:
-
-1. Introduce a small forest reader around standard mailbox files and line-based
-   series. Reject ambiguous ordering, unsafe paths, orphan patches, and cycles.
-2. Move parity assertions to `docs/827/parity-evidence.json`; derive all patch
-   information from the forest in memory. Update every live consumer, including
-   resource checks, inventory refresh, validation, and double replay.
-3. Preserve the original release-tree, provenance, ownership, resource, and Android
-   gates. Add independent dependency-closure checks and two legal full replay orders.
-4. Exercise the new runner with real Git fixture repositories and the existing
-   pinned-source replay tests before review. Do not change application source or
-   promote this bounded PoC to a production release system.
-
-## The authored format
+## Format
 
 ```text
 patches/827/
-  base                              # one full upstream commit ID
+  base
   branding/
-    series                          # one local mailbox filename per line
+    series
     0001-branding-default-launcher.patch
   unifiedpush/
-    series                          # the existing 20-patch linear series
+    series
     0001-...patch
     ...
     0020-...patch
   build-validation/
-    depends                         # unifiedpush (inherited release prerequisite)
+    depends
     series
     0001-...patch
     0002-...patch
 ```
 
-`series` is the conventional explicit ordered list of patches, not executable
-shell and not a list of options. Entries are local numbered `*.patch` filenames;
-blank lines and `#` comments are allowed. Filename numbers aid review; **the list
-order is authoritative**. No patch may be unlisted, listed twice, or referenced
-outside its feature directory. Each file contains exactly one format-patch
-message, not a cover letter or concatenated mailbox. Binary Git patches work.
+`base` contains one full upstream commit ID. Each feature's `series` lists its
+local numbered `*.patch` filenames in application order. Blank lines and `#`
+comments are allowed; the file is data, not executable shell. The list order is
+authoritative even when filenames contain sequence numbers. Each mailbox contains
+one format-patch message. Binary patches are supported.
 
-A feature's directory path is its name. Root siblings have no implied dependency.
-A nested feature with its own `series` depends on the *whole series of its immediate
-parent feature*. Every ancestor must therefore also have a `series`; there are no
-ambiguous category-only parent folders. Selecting a child includes its ancestors;
-selecting a parent does not enable all its children. For example:
+The loader rejects unsafe paths, symlinks, unlisted or duplicated patches,
+invalid mailboxes, and malformed dependency graphs. Patches stay in their owning
+feature directory.
+
+### Feature dependencies
+
+A feature's directory path is its name. A nested feature depends on the entire
+series of its immediate parent; each ancestor therefore needs its own `series`.
+Selecting a child includes its prerequisites. Selecting a parent does not enable
+its children. Siblings have no implicit dependency.
 
 ```text
-transport/series                    # shared transport groundwork
-transport/socket/series             # depends on transport, not push
-transport/push/series               # depends on transport, not socket
-privacy/series                      # separate root
-transport/push/privacy/series       # implicit parent: transport/push
-transport/push/privacy/depends      # one extra line: privacy
+transport/series
+transport/socket/series
+transport/push/series
+privacy/series
+transport/push/privacy/series
+transport/push/privacy/depends
 ```
 
-Nesting and `depends` are the only project conventions beyond Git mailbox/series
-files. Git itself does not define feature dependency graphs. A folder tree alone
-cannot represent a feature needing two unrelated prerequisites, so we do not
-pretend it can. `depends` contains forest-relative feature names, one per line.
-There are no per-patch graph IDs, version constraints, priorities, or alternative
-providers. Parent edges are implicit and must not be repeated. Missing edges,
-self-dependencies, duplicate entries, and cycles are rejected.
+In this example, `transport/socket` and `transport/push` both require `transport`
+but do not require each other. `transport/push/privacy` requires its parent
+`transport/push`; a line containing `privacy` in its `depends` file adds the
+separate root feature as another prerequisite.
 
-The existing `build-validation -> unifiedpush` release prerequisite is retained
-conservatively, rather than silently changing the old release policy. These two
-validation patches concern URI test variant IDs and the Gradle wrapper checksum;
-the edge is **not a new claim that they inherently need UnifiedPush code**. Review
-and remove it separately once the desired standalone validation policy is agreed.
-The current patch paths are preserved to avoid unnecessary attribution churn.
+`depends` lists forest-relative feature names, one per line, with the same blank
+line and comment syntax as `series`. Unknown features, duplicate or self
+dependencies, repeated implicit parent edges, and cycles are errors. Nesting and
+`depends` are project conventions; Git itself does not define feature graphs.
 
-## Cross-feature changes
+The current `build-validation` feature explicitly depends on `unifiedpush`. This
+retains the pilot's release order. Its URI-test and wrapper-checksum patches are
+validation changes, so that edge does not establish an inherent code dependency
+on UnifiedPush.
 
-Extract common groundwork into a parent or shared prerequisite feature when two
-features genuinely need it. Keep unrelated changes as siblings. When combining
-otherwise separate features requires glue, put that glue in a small integration
-feature depending on both; do not insert it into one root and rely on alphabetical
-application order. Put the dependency rationale in its README or a `depends`
-comment. If a feature needs only a prefix of another series, split that prefix into
-its own feature instead of adding per-patch dependency syntax.
+### Shared changes
 
-A dependency cycle means the proposed feature boundaries cannot be built in the
-claimed order. Split the shared prerequisite out or combine the mutually dependent
-changes into one series. Do not break the cycle with a priority flag or duplicate
-a patch in multiple folders. Textual overlap alone is not a semantic dependency,
-and clean application alone does not prove behavioral independence.
+Put shared groundwork in a parent or separate prerequisite. Put glue needed to
+combine two otherwise independent features in an integration feature that depends
+on both. Record the rationale in the feature README or a `depends` comment. When
+only a prefix of a series is shared, make that prefix its own feature.
 
-The generic runner permits dependent features to touch the same files. The #827
-parity harness still enforces the pilot's explicit, disjoint file-ownership claims;
-a future integration touching an already-owned file needs an intentional update
-to that project's evidence/ownership policy, not a hidden relaxation during this
-format migration.
+Resolve cycles by extracting a common prerequisite or combining dependent
+changes. Duplicating patches or relying on alphabetical order hides dependencies.
+Textual overlap and clean application alone do not establish semantic independence.
 
-## Daily commands
+The generic forest runner allows dependent features to edit the same file. The
+#827 parity harness additionally enforces its declared disjoint path ownership.
+A new integration that shares an owned file needs a corresponding reviewed change
+to that application's evidence policy.
 
-Git and Python 3.10+ are sufficient for the patch tools. The Android SDK is only
-needed for application checks. Run from the repository root:
+## Inspect and apply
+
+Git and Python 3.10+ are sufficient for the forest commands. Run these from the
+repository root:
 
 ```sh
 python3 tools/827/forest.py check
@@ -127,37 +97,56 @@ python3 tools/827/forest.py apply --repo . --worktree /tmp/molly-feature \
 python3 tools/827/forest.py verify --repo .
 ```
 
-Every `apply` creates a *new detached worktree* at `base`. Existing paths, symlinks,
-parent traversal, and destinations inside the source checkout are refused. The
-source branch, index, and uncommitted files are not reset, cleaned, or committed.
-Hooks, automatic signing, and rerere reuse are disabled for replay. Mailbox author
-identity is preserved; the replay committer identity/date are set explicitly.
-Release application uses `git am --no-3way` even if local Git configuration enables
-three-way fallback. A failing standalone application leaves its worktree and am
-state for inspection; no automatic conflict resolution or history rewriting occurs.
+`--feature` can be repeated to select several features and their prerequisite
+closures. Omitting it selects the full forest. `series` prints the ordered patch
+paths relative to `patches/827`, which is useful for inspection or other tooling:
 
 ```sh
-git -C /tmp/molly-feature am --show-current-patch
-# Inspect the failure; abort only this disposable replay worktree when finished.
-git -C /tmp/molly-feature am --abort
-git worktree remove /tmp/molly-feature
-```
-
-The flattened `series` output is an ordinary ordered patch list relative to
-`patches/827`. No generated copy is checked in. To replay without the Python
-application wrapper after reviewing the flattened list:
-
-```sh
-patch_root="$(pwd)/patches/827"
 python3 tools/827/forest.py series > /tmp/molly.series
-git worktree add --detach /tmp/molly-manual "$(cat "$patch_root/base")"
-while IFS= read -r patch; do
-  git -C /tmp/molly-manual -c core.hooksPath=/dev/null -c rerere.enabled=false \
-    am --no-3way "$patch_root/$patch" || exit 1
-done < /tmp/molly.series
 ```
 
-For an audited release candidate, retain the stronger project checks:
+Use `forest.py apply` to replay that forest. The list alone does not supply the
+runner's destination checks or Git settings; a bare `git am` loop is not an
+equivalent replay command.
+
+### Worktree and Git behavior
+
+Every `apply` creates a new detached worktree at `base`. Existing destinations,
+symlink components, parent traversal, and destinations inside the source checkout
+are refused. The source branch, index, and uncommitted files are not reset,
+cleaned, or committed.
+
+The Git helpers remove inherited repository-location and index overrides before
+running commands against the selected repository. Replay disables hooks, commit
+signing, rerere reuse, and automatic line-ending conversion, and skips LFS
+smudging. Mailbox authorship is preserved; the replay committer identity is
+explicit and the committer date follows the author date. Patches apply with
+`git am --no-3way --whitespace=nowarn`, so local whitespace-fix settings cannot
+silently rewrite their content. A final `git diff --check` checks the result.
+Carrier `.hangar` state is rejected in the release tree.
+
+A failed standalone application retains the worktree and am state. In a normal
+shell without exported Git repository overrides, inspect it with:
+
+```sh
+git -C /tmp/molly-feature status
+git -C /tmp/molly-feature am --show-current-patch
+```
+
+After inspection, `git -C /tmp/molly-feature am --abort` aborts that worktree's
+application; `git worktree remove /tmp/molly-feature` removes it. The runner does
+not resolve conflicts automatically.
+
+### Verification scope
+
+`forest.py verify` applies each feature with only its declared prerequisites,
+then applies the full forest in ascending and descending ready-node order and
+compares the resulting trees. Its temporary worktrees are removed after each
+case, including failures. This detects some missing dependencies and ordering
+interactions. It is not exhaustive permutation testing, isolated-feature
+compilation, or proof of semantic independence.
+
+For the application-specific checks:
 
 ```sh
 python3 -m unittest discover -s tools/827 -p 'test_*.py'
@@ -167,65 +156,54 @@ python3 tools/827/replay_twice.py --repo . \
   --worktree-prefix /tmp/molly827 --report reports/827/replay/replay-twice.json
 ```
 
-The full test suite and project validators require the pinned Git history. Fast
-synthetic runner tests alone use `python3 tools/827/test_forest.py`. `forest verify`
-replays each feature with only its declared prerequisite closure, then replays all
-features in ascending and descending ready-node order and compares the trees.
-Its own temporary worktrees are removed after each check, including failures.
-This detects some hidden dependencies and order interactions; it is **not** an
-exhaustive permutation test, an isolated-feature compilation test, or proof of
-semantic independence. Keep the Android build/test/lint and runtime checks.
+The full suite and validators need pinned history. Synthetic forest tests run
+independently with `python3 tools/827/test_forest.py`; Android checks are in the
+[runbook](RUNBOOK.md).
 
-## Authoring and updating patches
+## Authoring and upgrading
 
-Develop a feature as a linear topic branch based on the upstream base plus its
-prerequisites. Export only that feature's commits, not its prerequisites. The
-maintainer chooses and reviews those exact boundary refs:
+Develop each feature on a linear topic branch based on the upstream base and its
+prerequisites. Export only that feature's commits. With reviewed old and new
+boundary refs:
 
 ```sh
-# FEATURE_BASE and FEATURE_TIP are reviewed commit refs, not arbitrary merge tips.
-test "$(git rev-list --count --merges "$FEATURE_BASE..$FEATURE_TIP")" = 0
+test "$(git rev-list --count --merges "$FEATURE_BASE..$FEATURE_TIP")" = 0 || exit 1
 git format-patch --binary --full-index --output-directory /tmp/feature-v2 \
   "$FEATURE_BASE..$FEATURE_TIP"
 git range-diff "$OLD_FEATURE_BASE..$OLD_FEATURE_TIP" "$FEATURE_BASE..$FEATURE_TIP"
 ```
 
-Review the new mailboxes and the corresponding `series` edit together. Replace
-obsolete patches rather than leaving unlisted files behind. Preserve meaningful
-commit messages, authorship, and `Source-Commit:`/`Source-Commits:` provenance for
-ported upstream changes; those trailers are checked against the pinned Molly
-history by the project validator. The mailbox `From` ID is an export identity,
-not proof of upstream authorship and not a requirement to retain that commit object.
+Review new mailboxes and `series` changes together and remove obsolete patches.
+Retain meaningful commit messages, authorship, and `Source-Commit:` or
+`Source-Commits:` trailers for ported changes. The application validator checks
+those source refs against the pinned Molly history. A mailbox's `From` ID
+identifies the exported commit; it does not itself prove upstream authorship or
+require that reconstructed commit object to remain available.
 
-When upgrading upstream, rebase/resolve in maintenance branches, re-export reviewed
-linear series, and update `base`. The generic forest supports another base; the
-#827 audit intentionally also pins its original base and target in code. Updating
-that audited scope is a separate review of constants, parity evidence, expected
-application commit/tree, and tests. Do not automatically bless new expected hashes
-from a failed replay. After reviewed evidence changes, refresh the live ledger
-with `python3 tools/827/refresh_inventory.py --repo .` and validate it again.
+For an upstream upgrade, resolve conflicts in maintenance branches, export the
+reviewed linear series, and update `base`. The generic runner supports another
+base. The bounded #827 harness also pins its base, comparison target, expected
+application commit/tree, and parity assertions, so upgrading that proof requires
+reviewing those inputs together. Expected hashes describe the intended result;
+changing them to match an unexplained failure removes the check.
 
-Patch hashes are computed for reports and the live inventory's `inputs_sha256`,
-not copied into a hand-maintained catalog. Git commits bind the complete authored
-inputs; releases should identify the exact reviewed repository commit (and, under
-the project's signing policy, a verified tag). A hash alone does not authenticate
-who approved a change. Parity assertions remain JSON because they are structured
-test evidence, but `forest.py` never reads them.
+After evidence changes, run `python3 tools/827/refresh_inventory.py --repo .`,
+review the derived inventory diff, and validate again. Checksums are computed
+from authored inputs. Identify the reviewed Git revision when sharing a release.
 
-## git-carrier boundary
+## Optional git-carrier maintenance
 
-Git-carrier handles a **stopped merge**, not a `git am` session. It is optional
-maintenance tooling, not a release dependency. Keep carrier branches separate:
-`git park` records the stopped-merge state, `git unpark` exposes paths for resolution,
-and `git land` prepares the resolved merge for the maintainer's own commit. Never
-merge the carrier branch directly. Do not run `git park` on an am failure or export
-`.hangar` as release patches. Both replay paths reject carrier state in the result.
+Git-carrier handles a stopped merge, not a `git am` failure. It can assist
+maintenance without becoming a replay dependency: `git park` records stopped
+merge state, `git unpark` exposes paths for resolution, and `git land` prepares
+the resolved merge for a maintainer commit. Carrier branches and `.hangar` state
+are not release patches.
 
-After landing a maintenance merge, reconstruct/review the affected linear feature
-series and compare old and new versions with `git range-diff`. `format-patch` omits
-merge commits, so blindly exporting a carrier/landed merge range can lose conflict
-resolution work. Review the actual feature delta and replayed tree before export
-is accepted. No automated carrier import/export or compatibility claim is made.
+After landing a maintenance merge, reconstruct the affected linear feature
+series and compare it with `git range-diff`. `format-patch` omits merge commits;
+exporting an arbitrary merge range can therefore lose conflict-resolution work.
+Review the feature delta and replayed tree. No automatic carrier adapter is
+provided.
 
 References: [git format-patch](https://git-scm.com/docs/git-format-patch),
 [git am](https://git-scm.com/docs/git-am),

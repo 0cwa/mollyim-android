@@ -1,3 +1,0 @@
-INSTRUMENTATION_RESULT: failure_type=java.lang.NoSuchFieldException
-INSTRUMENTATION_RESULT: fixture_status=FAIL
-INSTRUMENTATION_CODE: 1

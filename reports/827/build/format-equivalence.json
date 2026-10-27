@@ -1,9 +1,0 @@
-{
-  "status": "PASS",
-  "scope": "Official ktlint changed import order only; selected test bodies and import set are identical.",
-  "before_sha256": "31befa0f5dd6e540efb38f1b4d224ead5a10bfd2fd81e2711694d4fb544687fa",
-  "after_sha256": "f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252",
-  "import_set_equal": true,
-  "test_body_equal": true,
-  "source_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af"
-}

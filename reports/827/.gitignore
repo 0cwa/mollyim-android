@@ -1,0 +1,5 @@
+# Keep generated run output in CI artifacts or linked issue evidence.
+/*
+!/.gitignore
+!/.gitattributes
+!/inventory/

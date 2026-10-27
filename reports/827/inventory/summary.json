@@ -1,12 +1,6 @@
 {
   "baseline": "c47a74ba0961903eeaeda6d22347a990056c3e83",
   "target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
-  "candidate": "b8d5375b3fb6013f7939935ce73e250b53515381",
-  "ancestry": {
-    "base_to_target": true,
-    "base_to_candidate": true,
-    "target_to_candidate": false
-  },
   "full_diff": {
     "status_path_records": 3171,
     "path_strings_including_rename_sides": 3178,
@@ -49,37 +43,12 @@
         "adaptation": 62,
         "full-file-parity": 12,
         "added-target-absent": 1
-      },
-      "projected_source_tree": "26956e0f159c0b60719d4a20667aeef8913fa365",
-      "application_commit": "36578d8bb7058f862d5dd379440a12c1fbd7f3af"
+      }
     },
     "hunk_coordinate_tsv_sha256": "93da33d854b59a92761416856f58f19ac3a4d4658a910f927040e32de07f24df",
-    "historical_feature_inventory_sha256": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f",
-    "live_parity_document_sha256": "8f44cc975cdef1877b26932d3930584109981b43fc6a3be2d25f74dacb02d53b"
+    "historical_feature_inventory_sha256": "4dacd7e803dd999670df3e1f2aa167a7a2701366f2fe11828c2dd8fa3587ce2f"
   },
   "classification_limit": "Path enumeration covers all records. Ownership/provenance analysis is scoped to selected paths. All remaining records are excluded or unresolved; no whole-tree attribution is claimed.",
-  "reused_inventory_artifacts": {
-    "tsv": "/workspace/work/inventory/inventory.tsv",
-    "sha256": "c8e63702e4aa33e3c37ca492432cca60ef374c74b991c73f09fcf8d636a408ce",
-    "json": "/workspace/work/inventory/inventory.json",
-    "focus_notes": "/workspace/work/inventory/focus_notes.md"
-  },
-  "source_provenance": {
-    "mailbox_patch_count": 23,
-    "unique_original_molly_source_commits": 9,
-    "original_source_commits_resolving_locally": 9,
-    "mailbox_commit_objects_resolving_locally": 15,
-    "mailbox_commit_objects_unresolved": [
-      "0fa81df5d55a8a3f23810d7ee505fc284eff0654",
-      "1d647a4bbfb6f68c8989ab4957260b7e7adbc691",
-      "576af670416160386a6c038e17ea19c838cfe3fc",
-      "6787d617c5dd990e37ff7995c2dd73a32d3417d8",
-      "af892a60b24c5796db3b29c387c19dc2c7fec4d9",
-      "d538f378dd7b3aab4749eb0b65b2defcdf9376e6",
-      "e60b61bfd190e97af4924dfa337ba2592bdfa45d"
-    ],
-    "distinction": "Source-Commits headers identify original Molly source commits. Mailbox From SHAs identify reconstructed patch commits. Missing mailbox commit objects are not treated as missing Molly origins."
-  },
   "resource_parity": {
     "report": "reports/827/inventory/resource-parity.json",
     "report_sha256": "38e683c7be5f2355fc5141386e5c821054edb8a56a103b86af2ed9c3cca1da1c",

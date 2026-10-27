@@ -1,42 +1,88 @@
-# Security review
+# UnifiedPush and MollySocket security boundaries
 
-> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+This document describes the selected #827 receiver, notification routing,
+MollySocket HTTP calls, and linked-device credentials. Current acceptance work
+and historical probe results are in
+[issue #5](https://github.com/0cwa/mollyim-android/issues/5).
 
-## Scope and assumptions
+## Distributor and server trust
 
-This review covers the UnifiedPush receiver and distributor boundary, lock-screen notification routing, MollySocket provisioning and HTTP calls, plus the Signal linked-device adapter. It assumes the user intentionally selects a UnifiedPush distributor and scans or enters a MollySocket URL. The selected distributor is a trusted push-delivery dependency: it receives the connector registration token and can cause wake-ups, but it should not receive Signal message contents or MollySocket device credentials. The configured MollySocket server receives the account UUID, linked-device ID/password, and push endpoint as part of its connection request.
+The user selects a UnifiedPush distributor and configures a MollySocket server.
+The distributor receives a connector registration token and can cause wake-ups
+and control callbacks. The MollySocket server receives the account UUID,
+linked-device ID/password, and push endpoint in its connection request. Push
+payloads are delivery triggers rather than Signal message contents.
 
-The exported receiver is required by the UnifiedPush connector. Its manifest has no sender permission or signature check. Connector 3.0.10 checks the registration token against its local registration set and resolves the instance before dispatching callbacks; an absent or unknown token returns without dispatch. The connector does not check the sending package signature. This makes the selected distributor and its possession of the connector token the trust boundary. The receiver accepts connector message payloads as delivery triggers and does not deserialize protected Signal message data.
+The [exported receiver](../../app/src/main/AndroidManifest.xml) has no Android
+sender permission or signature check. It subclasses the pinned connector's
+`MessagingReceiver`; callback admission relies on registration-token and
+instance checks rather than sender-package authentication. A selected distributor
+possessing the token can send false control events and observe delivery metadata.
 
-## Findings and disposition
+## Availability and locked callbacks
 
-| ID | Finding | Disposition |
-| --- | --- | --- |
-| F4 | A locked `NEW_ENDPOINT` or `UNREGISTERED` event previously left `registrationStatus=REGISTERED`. `AccountValues.pushAvailable` derives UnifiedPush availability from that status, so an old registration could suppress WebSocket fallback indefinitely. | **FIXED AND TESTED.** Locked endpoint rotation and distributor removal now mark only routing availability `UNKNOWN`, restart the network, and post `PushServiceEvent`. Unregister also invalidates the status when the stored endpoint is already absent. Tests verify `AccountValues.pushAvailable` falls to false, callback effects, and that locked callbacks do not touch protected endpoint/device/VAPID state. The new callback tests passed in the focused Robolectric run. Historical API 30 evidence separately covers refresh-job fallback but does not exercise these new callbacks. |
-| F5 | Endpoint rotation could leave stale registered availability after MollySocket rejected the new endpoint. | **FIXED AND FOCUSED-TESTED.** This behavior is inherited from the pinned Molly target: changing the endpoint queued refresh without first invalidating `REGISTERED`, and the refresh job preserved that state after an `IOException`. A changed non-null endpoint now moves `REGISTERED` to `PENDING` before enqueue; the existing refresh failure path then moves it to `UNKNOWN`. Same-endpoint updates remain idempotent. Retry cadence and live recovery remain source-reviewed; no live MollySocket test ran. |
-| F6 | The receiver is exported and has no Android sender permission. | **BOUNDED by connector token validation.** The compiled connector checks the supplied token/instance against private registration state before calling receiver methods, but does not authenticate the sender package. A malicious selected distributor can send forged control callbacks. Non-selected apps without the token cannot dispatch through the connector path. Robolectric tests passed for missing and unknown tokens against the inherited receiver pipeline. This is an accepted UnifiedPush trust dependency, not sender authentication. |
-| F6 | Lock-screen push payload classification uses string searches for `"urgent":true` and `"test":true`. | **Privacy guarded, payload parsing is brittle.** While locked, the app only posts the generic “may have messages” notice, and only when the existing preference allows it; it does not read or display message contents. Malformed or unexpected payloads can cause false classification or missed wake-ups. Robolectric tests passed for the urgent preference gate, malformed payload, and locked `test:true` behavior. The historical API 30 run covered synthetic message callbacks and notification triggering while unlocked. |
-| F7 | Linked-device setup uses the pinned Signal `DeviceAttributes` registration API and initializes signed/last-resort ACI and PNI prekeys before saving the local MollySocket device record. | **Source contract supported; live registration blocked.** The five serialized `DeviceAttributes` fields match the examined dated Signal-Server `LinkDeviceRequest` contract, and the linked-device handler consumes those fields. The deployed server revision is unknown. No real account or server was used. |
-| F7 | If linked-device creation succeeds but local prekey loading fails before `createDevice()` returns, the newly created linked device can remain orphaned remotely; the local device ID/password are not yet persisted, so automatic cleanup cannot identify it. | **Residual availability risk, inherited flow.** Retries can create additional linked devices until the server limit is reached. Device-limit behavior, interrupted provisioning, and recovery were not exercised against Signal. A focused transactional provisioning change requires a safe way to persist a recovery handle before prekey loading or remove the new device on failure. |
-| F7 | MollySocket credentials are sent in a JSON POST to the configured HTTPS URL. | **Transport controls verified.** The app disables both HTTP and HTTPS redirects for discovery and registration, so the secret-bearing body is not forwarded by an automatic redirect. `MollySocketDevice.toString()` emits only the device ID. The registration DTO probe confirms the password is a body field; it is not a proof of live server behavior. |
-| F7 | QR parsing permits HTTPS URLs with userinfo or fragments. | **Low-severity input hygiene.** A loopback probe using the exact cached OkHttp 5.3.2 artifact showed URL userinfo did not create a Basic Authorization header and the fragment was not sent. Thus the previously suspected credential leak is **not reproduced**. Rejecting ignored URL components could still improve validation. |
-| F7 | Users can copy MollySocket server parameters, which contain the password and endpoint, to the clipboard. | **Intentional credential export with limited lifetime.** This is an explicit user action for provisioning. The existing sensitive clipboard helper is used. Historical API30 synthetic instrumentation exercised clipboard behavior and expiry at 60 seconds. Current-source API35 synthetic instrumentation confirmed `ClipDescription.EXTRA_IS_SENSITIVE=true` for both MollySocket parameters and account ID. API35 expiry timing, another app's view, visible OS privacy-indicator rendering, and real MollySocket provisioning were not tested. Evidence: [API35 runtime report](../../reports/827/security/runtime/api35-20261025/README.md). |
-| F7 | UnifiedPush key/value entries were included in the backup list. | **FIXED in prior patch series.** `UnifiedPushValues.getKeysToIncludeInBackup()` returns an empty list. API 30 synthetic instrumentation verified backup exclusion. The encrypted key/value store retains the MollySocket device password locally. |
+[`UnifiedPushReceiver`](../../app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt)
+uses `KeyCachingService.isLocked()`. Locked endpoint rotation, registration failure,
+and distributor removal invalidate registered availability without reading the
+endpoint/device/VAPID properties. When availability changes from registered, the
+network restarts and a `PushServiceEvent` allows routing to respond to that change.
 
-## Evidence and tests
+An unlocked changed endpoint moves `REGISTERED` to `PENDING` before refresh;
+refresh failure can then mark it `UNKNOWN`. An unchanged endpoint does not enqueue
+another refresh. These transitions do not establish successful live registration.
 
-The focused receiver tests are in [UnifiedPushReceiverAvailabilityTest.kt](../../app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt). They exercise actual receiver callbacks with a real `UnifiedPushValues` and `AccountValues.pushAvailable` backed by an in-memory `KeyValueStore`, a locked-state stub, and mocked network/distributor dependencies. They assert push availability falls from true to false, only the status key is written, endpoint/device/VAPID property getters are not touched by locked callbacks, existing endpoint and credentials remain unchanged, and the network is restarted. An unlocked unregister case covers an already-absent endpoint. Endpoint rotation tests assert `REGISTERED` becomes `PENDING`, an injected `IOException` from the actual refresh-job callback is propagated and leaves status `UNKNOWN` with push availability false, and an unchanged endpoint schedules no job or network reset. The same test class covers locked urgent notice preference behavior, malformed and `test:true` payloads, and connector rejection of missing or unknown registration tokens. The failure-path test mocks the MollySocket repository boundary; it does not exercise HTTP retries or a deployed server.
+While locked, an urgent payload can produce a generic “may have messages” notice
+only when the passphrase-lock notification preference allows it. Classification
+uses string searches for `"urgent":true` and `"test":true`, which can misclassify
+unexpected payloads. The generic notice contains no Signal message contents.
 
-The PoC's `KeyCachingService` adapter tests Signal's UI passphrase lock. Signal's standalone `KeyValueStore` remains accessible in that state, unlike Molly's encrypted database/master-secret lock model. These tests therefore establish callback property-access and write boundaries in this PoC; they do not establish end-to-end Molly lock hardening or protected-credential erasure.
+This PoC uses Signal's UI passphrase lock, with a key/value store that remains
+accessible while locked. Its property-access boundaries do not establish Molly's
+encrypted database/master-secret lock behavior or credential erasure.
 
-The focused command `./gradlew --offline --no-daemon --max-workers=1 --dependency-verification=strict :Signal-Android:testPlayStagingDebugUnitTest --tests org.thoughtcrime.securesms.util.UriUtilTest_isValidExternalUri --tests org.thoughtcrime.securesms.keyvalue.UnifiedPushReceiverAvailabilityTest` passed **25/25** tests on the pre-format F5 source snapshot: 9 receiver security/availability tests and 16 URI validation tests. The log is [testPlayStagingDebug-focused-f5-2g-20261024.log](../../reports/827/build/testPlayStagingDebug-focused-f5-2g-20261024.log). The receiver source SHA-256 was `ae9c95dd4def49683d2b1ee7b1446772b8757f623c9db22bd5b05640b054d320`; the test body was identical to the currently formatted test file (final SHA-256 `f79ff1e6c2916c558065b6418aa348eaba18ca0b119ed55ee563a91a3d34d252`), with only import ordering changed after the focused run. Official ktlint passed on the formatted snapshot. The later full current-source matrix executed 23 app test variants; each passed 2,800 tests with 0 failures/errors and 78 skipped. The complete matrix still failed in two non-app tasks; see the runbook's full-build evidence.
+## Provisioning and HTTP
 
-Historical synthetic Android evidence and local wire/transport probes are bundled under [reports/827/security/runtime](../../reports/827/security/runtime/README.md). The historical API30 run passed selected synthetic registration, endpoint, delivery, unregister, restart, backup-exclusion, clipboard-expiry, and missing-VAPID fallback paths on its recorded older source tree; it does not validate the current fixes. A separate current-source API35 synthetic run passed seed and process-restart phases, including fake local distributor callbacks, backup exclusion, and `EXTRA_IS_SENSITIVE=true` on MollySocket parameters and account-ID clipboard values. The API35 run used a no-permission fake distributor and verified IPv4/IPv6 guest egress-drop rules. Neither run used a live Signal account/server, deployed MollySocket, or production distributor. API35 expiry timing, OS indicator rendering, lock-screen notification behavior, physical-device behavior, and cryptographic data-lock semantics remain untested.
+[`MollySocketRepository`](../../app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt)
+creates a secondary Signal device, then loads prekeys before returning its record.
+If remote registration succeeds and prekey loading fails, the device can remain
+orphaned remotely because its local recovery record has not yet been returned for
+persistence. Repeated failures can consume linked-device slots. Recovery for this
+inherited flow is tracked in [issue #5](https://github.com/0cwa/mollyim-android/issues/5).
 
-The registration request DTO and response mapping, compiled connector callback gate, linked-device server source contract, redirect settings, and OkHttp userinfo behavior have retained source, commands, and raw outputs in the same evidence directory. Exact claims and limits are recorded in its README and checksums.
+MollySocket discovery and registration disable HTTP and HTTPS redirects. The
+registration POST carries credentials in its JSON body.
+[`MollySocket.parseLink`](../../app/src/main/java/im/molly/unifiedpush/model/MollySocket.kt)
+requires HTTPS for web-server links but does not explicitly reject URL userinfo
+or fragments. This input-validation limitation does not by itself demonstrate a
+credential leak or compatibility with a deployed server.
 
-## Remaining risks
+`removeDevice()` throws when the underlying removal API reports failure.
+End-to-end removal, retry, and recovery still require service tests.
 
-The selected distributor can observe delivery metadata and can trigger fetches or false wake-ups. This architecture depends on the connector's unguessable local token and the user's distributor choice; the app does not perform sender-signature validation itself. Compromise of the configured MollySocket server or distributor is outside the confidentiality boundary supplied by UnifiedPush.
+## Credentials and copying
 
-Locked callback behavior and focused receiver tests pass within the PoC's Signal UI passphrase lock model. Current-source API35 instrumentation verifies clipboard sensitivity metadata only while invoking synthetic copy methods through reflection; it does not render Settings UI or test locked notification presentation or cryptographic lock timing. Physical-device behavior, Molly's encrypted database/master-secret lock behavior, protected-credential erasure, visible clipboard privacy-indicator rendering, API35 clipboard expiry, deployed-server compatibility, live device linking/removal, and air-gapped delivery remain unverified. Security acceptance remains BLOCKED; the matrix's two failures and the inherited F7 orphan-device risk are unresolved.
+[`UnifiedPushValues`](../../app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt)
+stores the device password and returns an empty backup-key list.
+[`MollySocketDevice.toString()`](../../app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt)
+prints the device ID without its password. The settings
+[copy methods](../../app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt)
+intentionally export provisioning parameters using `writeSensitiveTextToClipboard`.
+Sensitive metadata and intended lifetime do not establish how every Android
+version or another app presents or retains the content.
+
+## Regression coverage
+
+[`UnifiedPushReceiverAvailabilityTest.kt`](../../app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt)
+uses an in-memory store, a locked-state stub, and mocked network/distributor
+boundaries. It covers availability invalidation, preservation of endpoint/device
+credentials on locked callbacks, changed-endpoint failure fallback, same-endpoint
+idempotence, the urgent-notice preference, malformed/test payloads, and connector
+rejection of missing or unknown registration tokens. The refresh failure test
+injects a repository failure; it does not exercise real HTTP retry timing.
+The [runbook](RUNBOOK.md#build-test-and-lint) provides the focused command.
+
+Live linking and delivery, interrupted provisioning, physical-device behavior,
+clipboard expiry/presentation, locked notification presentation, and cryptographic
+lock semantics require separate evidence. Replay or synthetic callbacks cannot
+establish complete security acceptance; current results belong in
+[issue #5](https://github.com/0cwa/mollyim-android/issues/5).

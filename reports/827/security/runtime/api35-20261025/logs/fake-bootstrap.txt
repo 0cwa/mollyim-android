@@ -1,6 +1,0 @@
-Starting: Intent { cmp=org.example.upfake/.BootstrapActivity }
-Status: ok
-LaunchState: UNKNOWN (0)
-Activity: org.example.upfake/.BootstrapActivity
-WaitTime: 112
-Complete

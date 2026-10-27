@@ -1,8 +1,0 @@
-{
-  "status": "PASS",
-  "checksum_url": "https://services.gradle.org/distributions/gradle-9.4.1-all.zip.sha256",
-  "published_sha256": "708d2c6ecc97ca9a11838ef64a6c2301151b8dd10387e22dc1a12c30557cab5b",
-  "local_archive": "/workspace/gradle-home/wrapper/dists/gradle-9.4.1-all/eckclv9s5vi9exbmnyvpg2a3h/gradle-9.4.1-all.zip",
-  "local_sha256": "708d2c6ecc97ca9a11838ef64a6c2301151b8dd10387e22dc1a12c30557cab5b",
-  "matches": true
-}

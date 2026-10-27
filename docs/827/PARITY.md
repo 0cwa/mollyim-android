@@ -1,38 +1,82 @@
 # Scope and parity
 
-> Patch tooling now uses plain mailbox/series forests. See [PATCH-FOREST.md](PATCH-FOREST.md) for the migration audit and current maintenance commands. Dated test/build results below remain historical evidence, not results of this migration.
+The #827 proof reconstructs selected launcher artwork and UnifiedPush/MollySocket
+integration from a pinned Signal base. It does not reconstruct the full Molly
+feature set. [PATCH-FOREST.md](PATCH-FOREST.md) describes the patch format and
+[RUNBOOK.md](RUNBOOK.md) gives the validation commands.
 
-This proof of concept reconstructs a bounded launcher-artwork and UnifiedPush pilot from Signal base `c47a74ba0961903eeaeda6d22347a990056c3e83` toward Molly target `0e202dda90785771ff8c87526eaaf30c655f54f3`. The audited candidate is `b8d5375b3fb6013f7939935ce73e250b53515381`; the base is an ancestor of both pinned target and candidate. The target is not an ancestor of the candidate. All three objects resolve locally to the exact pinned SHA.
+## Pinned scope
 
-The baseline-to-target archaeology reuses the existing mechanical inventory: 3,171 status/path records (3,178 path strings including both sides of renames), comprising 387 additions, 1,377 modifications, 1,400 deletions, and 7 renames; 290 entries are binary. The textual numstat is 50,554 additions and 92,561 deletions. Every record has a conservative machine-readable category and reason in `reports/827/inventory/full-tree-classification.tsv`: 80 selected pilot paths, 130 other branding-path changes, 2 other Molly-package paths, 1 history-identified upstream/backport record, and 2,958 unresolved records. The unresolved majority has no inferred owner or source. Remaining distinct Molly features, upstream evolution, build/release infrastructure, deletions, binary art, and mixed-origin edits remain excluded or unresolved. See `feature-inventory.tsv`, `reports/827/inventory/full-tree-classification.tsv` (one category/reason per full-diff record), and the reused source inventory artifacts under `/workspace/work/inventory`.
+| Input | Commit or tree |
+| --- | --- |
+| Signal base | `c47a74ba0961903eeaeda6d22347a990056c3e83` |
+| Molly comparison target | `0e202dda90785771ff8c87526eaaf30c655f54f3` |
+| Expected application commit | `d99876269eb6556e37bb2d584ba08e8334e8e5db` |
+| Expected application tree | `e783cf54487a5b5d78c3241ec977fd8c8cd23f1d` |
 
-## Declared scope and replay result
+The application tree excludes the explicitly allowed patch tooling,
+documentation, reports, and workflow metadata. The projection uses a private Git
+index and leaves the checkout's index intact. The expected application tree is a
+validation target, not a statement that a particular current run passed.
 
-The 22 mailbox patches name 9 unique original Molly source commits in `Source-Commits` headers; all 9 original commits resolve locally. Mailbox `From` SHAs identify reconstructed patch commits, of which 15 resolve locally and 7 commit objects are absent. These fields are distinct in the selected inventory; missing mailbox objects are not presented as missing Molly origins. Some patches cite several source commits for multiple touched paths, so the source list is a path-level provenance candidate set rather than proof that each listed commit authored every hunk. Target history candidates are recorded separately. The three pinned baseline/target/candidate commits were independently resolved and checked as described above.
+The authored forest selects and orders mailbox patches. The separate
+[`parity-evidence.json`](parity-evidence.json) records application assertions;
+it cannot override forest topology or patch selection.
 
-Selected hunk coordinates are in `reports/827/inventory/selected-hunks.tsv`: exact files use full target file line spans, the 12 matched fragments record pinned-target line intervals, and adaptation rows record reconstructed-candidate added/changed hunk intervals relative to the Signal base. For adaptations, those ranges identify patch-owned candidate edits; semantic ownership within each hunk remains limited by the explicit adaptation rationale.
+## What each assertion means
 
-The historical target-comparison ledger covers 80 target-diff paths: 12 full-path matches (3 launcher artwork and 9 UnifiedPush files), 12 anchored fragments across 8 shared files, and 60 documented adaptations. `feature-inventory.tsv` preserves that historical boundary. Paths added to the live patch manifest beyond this historical boundary are enumerated separately in `reports/827/inventory/current-series-owned.tsv`; each row identifies its manifest role, target-diff membership, parity claim, source references, and reconstruction mailbox SHA. `tools/827/validate_inventory.py` derives live counts from that manifest, checks the ledger against Git, and runs the resource-element comparison; a target-absent validation path is never counted as Molly target parity. The live 23-patch manifest owns 83 paths: 12 exact-parity paths, 8 integration files with 12 fragments, 62 adaptations, and 1 target-absent regression test. The 83 include the historical 80 plus the URI test adaptation, the new UnifiedPush locked-state regression test, and the Gradle wrapper checksum adaptation. The URI test is in the baseline-to-target diff; the new regression test is absent from the pinned Molly target; the wrapper file exists in the target but is unchanged between base and target. These validation additions do not broaden the claimed Molly feature parity. The current manifest is checked against the mailbox patches and both Git trees. Adaptation hash agreement is a reproducibility check; it does not imply target parity or behavioral equivalence.
-
-The two independent replays applied 23 mailbox patches and produced identical projected source tree hashes, `e783cf54487a5b5d78c3241ec977fd8c8cd23f1d`. Both machine reports record 83 changed paths, 12/12 full-file matches, 12/12 fragment matches, 62/62 expected adaptation hashes, the target-absent regression test, and no unowned changes. Residual differences are preserved as compact diff artifacts in `reports/827/replay/replay-twice-run-{1,2}-residual-diffs/`. Full-path parity is limited to the 12 listed paths; the remaining target tree and APK are not equivalent.
-
-## Adaptation evidence and limits
-
-The historical 60 feature adaptations fall into these behavior-bearing groups. The two additional build-validation adaptations are the URI test package-ID correction and Gradle wrapper checksum pin; they validate test/variant execution and toolchain integrity, not Molly feature parity. Each TSV row links to its applicable evidence; the complete per-path replay hashes and residual diffs are in the machine report.
-
-| Adaptation area | Evidence available | What remains untested |
+| Assertion | What the validator checks | Limit |
 | --- | --- | --- |
-| MollySocket request and linked-device registration | DTO wire tests verify the MollySocket request keys and Signal `DeviceAttributes` JSON shape. A dated public Signal-Server contract check confirms the candidate's five fields are the fields consumed by the examined `/v1/devices/link` handler; both target and candidate use `PUT /v1/devices/link`. Evidence: `reports/followup/review/FOLLOWUP-REPORT.md`, `REGISTRATION-CONTRACT.md`, and `run-dto-wire-test.sh` / `run-registration-attributes-test.sh` results in the source evidence bundle. | No deployed server version or live registration was tested. No end-to-end registration, prekey initialization, device-limit, interrupted provisioning, or real server failure scenario was exercised. |
-| Unlink and cleanup boundary | Compiled `MollySocketRepository.removeDevice` test verifies a false API result throws before subsequent cleanup can proceed and success returns. | The full refresh job, persisted credentials/device state, and retry scheduling were not tested together. |
-| Selected notification method, startup and fallback | Source/bytecode truth table documents default FCM when preference is unset; explicit WebSocket/UnifiedPush takes the non-FCM path; UnifiedPush is disabled on linked devices; leaving non-air-gapped UnifiedPush unregisters. Current-source API35 synthetic instrumentation passes the missing-VAPID refresh transition to WebSocket availability without an endpoint request. | No live distributor registration, FCM delivery, real WebSocket fallback under network loss, or visible Android notification effect was verified. |
-| Locked notification privacy and receiver routing | Source review confirms the UnifiedPush urgent-notice and FCM timeout-placeholder paths reach the shared locked-notice guard. Static merged-manifest and connector bytecode review checks the receiver priorities/actions and connector fallback logic. | No PackageManager resolution, lock-transition timing, NotificationManager rendering, or real broadcast delivery was run on Android. Candidate and target use different lock predicates; the target also checks an in-progress locking transition. |
-| Redirect and QR URL handling | Compiled-code inspection confirms redirects are disabled on discovery/registration clients. A local HTTPS 307/308 probe with fake credentials confirmed OkHttp did not forward an Authorization header or URL fragment. | Probe was not an invocation through the app repository singleton. QR parser acceptance of userinfo/fragments remains hygiene behavior; no server or QR provisioning flow was exercised. |
-| Settings UI, navigation and translations | Whole-file adapted hashes and anchored hook hashes establish reproducible integration. `reports/827/inventory/resource-parity.json` checks that all 1,242 candidate-changed resource keys are owned by the 33 manifest-listed locale files and present in the pinned target delta. 1,241 match the target XML element bytes exactly; the single `MollySocketLink_scan_the_qr_code` quote-balancing correction is separately verified to compile to the same runtime string by SDK aapt2 2.20-13193326 against Android API 36. Its exact target/candidate source and element hashes, fixture commands, compiled APK hashes, and `aapt2 dump resources` output are pinned in `reports/827/inventory/resource-aapt2/aapt2-equivalence.json`. The checker accepts only these exact hashes and dump evidence. It also checks 112 unrelated Signal `values` XML files remain byte-identical to the baseline. Current-source API35 synthetic instrumentation directly invokes the Settings ViewModel copy methods through reflection and verifies sensitive metadata for both values; this checks the helper calls, not rendered Settings UI or navigation. | The resource-content check does not establish Android resource merging or rendered UI behavior. No manual QR scan, real distributor picker, accessibility, localization rendering, API35 clipboard expiry, visible OS privacy indicator, or configuration-change device test was performed. |
+| Full-file parity | The selected path matches the pinned Molly target. | Says nothing about other target files. |
+| Integration fragment | Named, anchored content matches the target within a shared file. | Other content in that file can differ. |
+| Adaptation | The reconstructed file has the reviewed expected hash and declared rationale. | Reproducibility is not semantic equivalence. |
+| Added validation path | A declared test or build input belongs to the patch scope. | A target-absent test is not Molly parity. |
+| Ownership | Applied changes belong to declared feature paths, with no unowned change. | Path ownership does not establish the origin of every hunk. |
+| Source provenance | Cited source commits exist in the pinned target ancestry. | A patch citing several commits does not attribute each hunk to every cited commit. |
 
-These are bounded JVM/source/bytecode checks plus selected current-source synthetic API35 runtime checks, not end-to-end feature acceptance. The API35 probe passed local fake REGISTER/NEW_ENDPOINT, MESSAGE, and UNREGISTERED callback scenarios, checked synthetic connector-token persistence after an app process restart, and verified sensitive clipboard metadata. It did not simulate a remote push or use a real account, server, or distributor. Live UnifiedPush delivery, visible notification rendering, physical-device process behavior, actual distributor/server behavior, and device linking remain unestablished. The completed full all-variant build exited 1: `:demo:image-editor:mergeDexRelease` failed on duplicate `com.bumptech.glide.GeneratedAppGlideModuleImpl`, and `:lib:video:verifyReleaseResources` failed because `color/signal_colorOnSurfaceVariant` is unresolved in `video_player.xml`. All 23 app assemble tasks completed or were up-to-date, and all 23 app unit-test variants produced fresh passing XML; these sub-results do not turn the failed project-wide matrix into a pass. See the build and security reports for exact commands and scope.
+`Source-Commit:` and `Source-Commits:` trailers identify original source refs.
+The mailbox `From` SHA identifies a reconstructed export and is a different
+kind of evidence. The tools preserve that distinction.
 
-## Exclusions and unresolved classes
+The feature inventory's historical target boundary and the current forest's
+owned-path ledger are separate inputs. The current ledger includes test and
+toolchain adaptations as well as feature paths. Their presence does not expand
+the claimed Molly feature coverage.
 
-The rest of the 3,171 baseline-to-target diff is intentionally outside the pilot. Excluded classes include Molly-only functionality unrelated to launcher art or UnifiedPush, product changes that reflect divergence between Signal and Molly, repository and release automation, documentation, large deletions, and binary resources outside the three selected launcher paths. Shared files are included only at the named anchored fragments or as explicitly listed adaptations. Any unselected hunk in those files remains excluded.
+## Resource comparison
 
-Path enumeration does not resolve hunk ownership for all remaining files. Mixed-origin edits, overlapping upstream backports, broad refactors, renames, binaries, and changes whose intent cannot be separated remain unresolved pending focused maintainer review. No claim of all-Molly parity, full Molly migration, or complete attribution of the target diff is made.
+`check_resource_parity.py` compares named XML elements across the base, target,
+and expected application tree. Candidate-changed resource keys must be declared
+and present in the pinned target delta. Unrelated baseline resource files are
+checked for preservation.
+
+One QR instruction has a quote-balancing adaptation. Its target and candidate
+source bytes, element hashes, aapt2 outputs, and compiled runtime text are bound
+by the fixture under
+[`reports/827/inventory/resource-aapt2`](../../reports/827/inventory/resource-aapt2).
+The checker accepts only that specific compiler-proven equivalence. This does
+not establish general XML equivalence, resource merging, or rendered UI behavior.
+
+## Evidence inputs and generated results
+
+The validators consume the parity assertions, [`feature-inventory.tsv`](feature-inventory.tsv),
+and the inventory ledgers/fixtures under `reports/827/inventory`. These are test
+inputs. Replay reports and CI logs describe individual executions and belong in
+CI artifacts and linked review discussions. A pair of matching replay trees
+demonstrates repeatable patch application for those inputs; it does not establish
+APK reproducibility or acceptance on a device.
+
+## Boundaries
+
+The rest of the Signal-to-Molly difference remains outside this pilot, including
+unrelated Molly functionality, upstream evolution, broad refactors, binary art,
+release infrastructure, and unresolved mixed-origin edits. Shared files are
+covered only by their declared assertions. The application still includes its
+Signal-derived Google/Firebase dependencies.
+
+Build failures and current verification are tracked in [issue #4](https://github.com/0cwa/mollyim-android/issues/4).
+Live delivery, linking, device behavior, clipboard presentation, and cryptographic
+lock semantics require separate acceptance in [issue #5](https://github.com/0cwa/mollyim-android/issues/5).
+[Issue #3](https://github.com/0cwa/mollyim-android/issues/3) tracks a current matched
+comparison oracle. The pinned proof makes no claim of current-release parity,
+Google-free packaging, complete security signoff, or production readiness.

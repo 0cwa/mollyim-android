@@ -1,1 +1,0 @@
-cell,bluetooth,uwb,wifi,wimax

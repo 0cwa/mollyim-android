@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.payments.GeographicalRestrictionsTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:07:29.269Z" hostname="4f1d1be5db40" time="0.182">
-  <properties/>
-  <testcase name="e164Allowed_general" classname="org.thoughtcrime.securesms.payments.GeographicalRestrictionsTest" time="0.182"/>
-  <testcase name="e164Allowed_nullNotAllowed" classname="org.thoughtcrime.securesms.payments.GeographicalRestrictionsTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

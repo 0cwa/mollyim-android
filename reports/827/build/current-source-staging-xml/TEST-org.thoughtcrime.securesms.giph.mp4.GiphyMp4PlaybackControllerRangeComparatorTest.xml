@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.giph.mp4.GiphyMp4PlaybackControllerRangeComparatorTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:05:14.719Z" hostname="4f1d1be5db40" time="0.0">
-  <properties/>
-  <testcase name="Given a range of numbers, when I sort with comparator, then I expect an array sorted from the center out" classname="org.thoughtcrime.securesms.giph.mp4.GiphyMp4PlaybackControllerRangeComparatorTest" time="0.0"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

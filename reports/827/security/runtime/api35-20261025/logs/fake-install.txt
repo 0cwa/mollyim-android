@@ -1,4 +1,0 @@
-Serving...
-Performing Incremental Install
-Success
-Install command complete in 105 ms
