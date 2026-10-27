@@ -10,6 +10,7 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from forest import clean_git_env
 import source_tree
 
 RESOURCE_PATH = re.compile(r'^app/src/main/res/(values[^/]*)/strings2\.xml$')
@@ -35,10 +36,10 @@ AAPT_EQUIVALENCE = {
 }
 
 def git(repo, *args, text=True):
-    return subprocess.check_output(['git','-C',str(repo),*args],text=text,stderr=subprocess.DEVNULL)
+    return subprocess.check_output(['git','-C',str(repo),*args],text=text,stderr=subprocess.DEVNULL,env=clean_git_env())
 
 def blob(repo, rev, path):
-    result=subprocess.run(['git','-C',str(repo),'show',f'{rev}:{path}'],capture_output=True)
+    result=subprocess.run(['git','-C',str(repo),'show',f'{rev}:{path}'],capture_output=True,env=clean_git_env())
     return result.stdout if result.returncode==0 else None
 
 def canonical(element):

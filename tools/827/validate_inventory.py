@@ -11,6 +11,7 @@ import subprocess
 from check_resource_parity import check_resource_parity
 from collections import Counter
 from pathlib import Path
+from forest import clean_git_env
 
 SHA = re.compile(r'^[0-9a-f]{40}$')
 SHA256 = re.compile(r'^[0-9a-f]{64}$')
@@ -33,13 +34,13 @@ def read_tsv(path, required):
     return rows
 
 def git(repo, *args, text=True):
-    return subprocess.check_output(['git', '-C', str(repo), *args], text=text)
+    return subprocess.check_output(['git', '-C', str(repo), *args], text=text, env=clean_git_env())
 
 def blob(repo, rev, path):
     return git(repo, 'show', f'{rev}:{path}', text=False)
 
 def has_blob(repo, rev, path):
-    return subprocess.run(['git','-C',str(repo),'cat-file','-e',f'{rev}:{path}'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL).returncode==0
+    return subprocess.run(['git','-C',str(repo),'cat-file','-e',f'{rev}:{path}'],stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,env=clean_git_env()).returncode==0
 
 def digest(path): return hashlib.sha256(path.read_bytes()).hexdigest()
 

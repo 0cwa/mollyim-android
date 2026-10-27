@@ -10,7 +10,7 @@ import re
 import subprocess
 import sys
 
-from forest import Forest, ForestError
+from forest import Forest, ForestError, clean_git_env
 from pathlib import Path, PurePosixPath
 
 
@@ -22,9 +22,13 @@ ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', '.github/workflo
 class ReplayError(RuntimeError):
     pass
 
-def git(repo, *args, check=True, env=None, binary=False):
+def git(repo, *args, check=True, env=None, binary=False, index_file=None):
+    """Use the explicit repository, with an optional caller-created private index."""
     cmd = ['git', '-C', str(repo), *args]
-    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env)
+    run_env = clean_git_env(env)
+    if index_file is not None:
+        run_env['GIT_INDEX_FILE'] = str(index_file)
+    p = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=run_env)
     if check and p.returncode:
         detail = p.stdout.decode(errors='replace')
         raise ReplayError(f"Command failed ({p.returncode}): {' '.join(cmd)}\n{detail}")
@@ -331,7 +335,7 @@ def run_replay(args):
     log_dir = args.report.parent / (args.report.stem + '-logs')
     diff_dir = args.report.parent / (args.report.stem + '-residual-diffs')
     log_dir.mkdir(parents=True, exist_ok=True)
-    safe_env = os.environ.copy()
+    safe_env = clean_git_env()
     safe_env['GIT_LFS_SKIP_SMUDGE'] = '1'
     has_integrations = any(f['integration_paths'] for f in features)
     has_adaptations = any(f['adaptation_paths'] for f in features)

@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Compute a Git tree ID after excluding declared metadata paths, without changing the checkout."""
-import os
 from pathlib import Path
 import tempfile
 
@@ -14,9 +13,9 @@ def project_tree(repo: Path, revision: str, excluded_paths: list[str]) -> str:
     if len(checked) != len(set(checked)):
         raise replay.ReplayError('metadata exclusions must be unique')
     with tempfile.TemporaryDirectory(prefix='molly827-source-index-') as temp:
-        env = os.environ.copy()
-        env['GIT_INDEX_FILE'] = str(Path(temp) / 'index')
-        replay.git(repo, 'read-tree', revision, env=env)
+        index_file = Path(temp) / 'index'
+        replay.git(repo, 'read-tree', revision, index_file=index_file)
         if checked:
-            replay.git(repo, 'rm', '--cached', '-r', '-f', '--ignore-unmatch', '--', *checked, env=env)
-        return replay.git(repo, 'write-tree', env=env).output.strip()
+            replay.git(repo, 'rm', '--cached', '-r', '-f', '--ignore-unmatch', '--', *checked,
+                       index_file=index_file)
+        return replay.git(repo, 'write-tree', index_file=index_file).output.strip()

@@ -155,8 +155,22 @@ class Forest:
         return [p for feature in self.order(selected, reverse) for p in feature.patches]
 
 
+GIT_LOCATION_ENV = frozenset({
+    'GIT_DIR', 'GIT_WORK_TREE', 'GIT_COMMON_DIR', 'GIT_INDEX_FILE',
+    'GIT_OBJECT_DIRECTORY', 'GIT_ALTERNATE_OBJECT_DIRECTORIES',
+    'GIT_PREFIX', 'GIT_NAMESPACE', 'GIT_IMPLICIT_WORK_TREE',
+    'GIT_GRAFT_FILE', 'GIT_SHALLOW_FILE',
+})
+
+
+def clean_git_env(env=None):
+    """Copy the environment without inherited repository, index, or object overrides."""
+    return {key: value for key, value in (os.environ if env is None else env).items()
+            if key not in GIT_LOCATION_ENV}
+
+
 def git(repo, *args, check=True):
-    env = os.environ.copy()
+    env = clean_git_env()
     env['GIT_LFS_SKIP_SMUDGE'] = '1'
     result = subprocess.run(['git', '-C', str(repo), '-c', 'core.hooksPath=/dev/null',
                              '-c', 'commit.gpgSign=false', '-c', 'rerere.enabled=false',

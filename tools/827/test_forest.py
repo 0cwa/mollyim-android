@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import forest
 
@@ -28,10 +29,13 @@ class ForestTests(unittest.TestCase):
         (self.root / 'base').write_text(self.base + '\n')
         self.patch_number = {}
 
-    def git(self, *args, binary=False):
-        env = os.environ.copy()
+    def git_env(self):
+        env = forest.clean_git_env()
         env.update(GIT_CONFIG_NOSYSTEM='1', GIT_CONFIG_GLOBAL=os.devnull)
-        raw = subprocess.check_output(['git', '-C', str(self.repo), *args], env=env, stderr=subprocess.PIPE)
+        return env
+
+    def git(self, *args, binary=False):
+        raw = subprocess.check_output(['git', '-C', str(self.repo), *args], env=self.git_env(), stderr=subprocess.PIPE)
         return raw if binary else raw.decode().strip()
 
     def add_feature(self, name, parent=None, depends=(), filename=None, content=None, message=None):
@@ -183,7 +187,8 @@ class ForestTests(unittest.TestCase):
         f=forest.Forest(self.root); result=forest.apply(f,self.repo,self.home/'out')
         self.assertEqual((self.home/'out/data.bin').read_bytes(),data)
         self.assertEqual(result['tree_sha'],self.git('rev-parse',commit+'^{tree}'))
-        author=subprocess.check_output(['git','-C',str(self.home/'out'),'show','-s','--format=%an <%ae>'],text=True).strip()
+        author=subprocess.check_output(['git','-C',str(self.home/'out'),'show','-s','--format=%an <%ae>'],
+                                       text=True,env=self.git_env()).strip()
         self.assertEqual(author,'Original Author <author@example.invalid>')
 
     def test_apply_twice_exact_tree_without_identity_with_ambient_signing(self):
@@ -204,6 +209,63 @@ class ForestTests(unittest.TestCase):
         self.assertEqual(self.git('rev-parse','HEAD'),before)
         self.assertEqual(self.git('write-tree'),index)
         self.assertEqual(self.git('status','--porcelain'),status)
+
+    def test_apply_ignores_inherited_repository_and_index_overrides(self):
+        expected = self.add_feature('one')
+        expected_tree = self.git('rev-parse', expected + '^{tree}')
+        self.git('checkout', '--detach', '-q', self.base)
+        (self.repo / 'common').write_text('staged\n')
+        self.git('add', 'common')
+        (self.repo / 'common').write_text('unstaged\n')
+        (self.repo / 'untracked').write_text('keep me\n')
+        head = self.git('rev-parse', 'HEAD')
+        index = (self.repo / '.git/index').read_bytes()
+        status = self.git('status', '--porcelain')
+        redirected_index = self.home / 'caller.index'
+        redirected_index.write_bytes(index)
+        overrides = {
+            'GIT_DIR': str(self.repo / '.git'),
+            'GIT_WORK_TREE': str(self.repo),
+            'GIT_COMMON_DIR': str(self.repo / '.git'),
+            'GIT_INDEX_FILE': str(redirected_index),
+        }
+        with patch.dict(os.environ, overrides):
+            environment = dict(os.environ)
+            result = forest.apply(forest.Forest(self.root), self.repo, self.home / 'out')
+            self.assertEqual(dict(os.environ), environment)
+        self.assertEqual(result['tree_sha'], expected_tree)
+        self.assertEqual((self.home / 'out/one').read_text(), 'one\n')
+        self.assertEqual(self.git('rev-parse', 'HEAD'), head)
+        self.assertEqual((self.repo / '.git/index').read_bytes(), index)
+        self.assertEqual(redirected_index.read_bytes(), index)
+        self.assertEqual(self.git('status', '--porcelain'), status)
+        self.assertEqual((self.repo / 'common').read_text(), 'unstaged\n')
+        self.assertEqual((self.repo / 'untracked').read_text(), 'keep me\n')
+
+    def test_verify_ignores_inherited_object_and_history_overrides(self):
+        expected = self.add_feature('one')
+        expected_tree = self.git('rev-parse', expected + '^{tree}')
+        overrides = {
+            'GIT_OBJECT_DIRECTORY': str(self.home / 'missing-objects'),
+            'GIT_ALTERNATE_OBJECT_DIRECTORIES': str(self.home / 'missing-alternates'),
+            'GIT_GRAFT_FILE': str(self.home / 'missing-grafts'),
+            'GIT_SHALLOW_FILE': str(self.home / 'missing-shallow'),
+            'GIT_PREFIX': 'caller/',
+            'GIT_NAMESPACE': 'caller',
+            'GIT_IMPLICIT_WORK_TREE': '0',
+            'GIT_LFS_SKIP_SMUDGE': '1',
+            'GIT_CONFIG_NOSYSTEM': '1',
+            'GIT_CONFIG_GLOBAL': os.devnull,
+        }
+        with patch.dict(os.environ, overrides):
+            environment = dict(os.environ)
+            result = forest.verify(forest.Forest(self.root), self.repo)
+            self.assertEqual(dict(os.environ), environment)
+            self.assertEqual(forest.clean_git_env()['GIT_LFS_SKIP_SMUDGE'], '1')
+            self.assertEqual(forest.clean_git_env()['GIT_CONFIG_GLOBAL'], os.devnull)
+        self.assertEqual(result['closures'], {'one': expected_tree})
+        self.assertEqual(result['full_orders'], [expected_tree, expected_tree])
+        self.assertEqual(self.git('worktree', 'list', '--porcelain').count('worktree '), 1)
 
     def test_destination_guards(self):
         self.add_feature('one'); f=forest.Forest(self.root)
@@ -227,7 +289,8 @@ class ForestTests(unittest.TestCase):
         out=self.home/'out'
         with self.assertRaisesRegex(forest.ForestError,'Worktree preserved'):
             forest.apply(forest.Forest(self.root),self.repo,out)
-        shown=subprocess.run(['git','-C',str(out),'am','--show-current-patch'],capture_output=True)
+        shown=subprocess.run(['git','-C',str(out),'am','--show-current-patch'],
+                             capture_output=True,env=self.git_env())
         self.assertEqual(shown.returncode,0)
         self.assertEqual((out/'common').read_text(),'alpha\n')
 
