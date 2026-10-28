@@ -18,7 +18,7 @@ SHA = re.compile(r'^[a-f0-9]{40}$')
 HEX64 = re.compile(r'^[a-f0-9]{64}$')
 PINNED_SIGNAL_BASE = 'c47a74ba0961903eeaeda6d22347a990056c3e83'
 PINNED_MOLLY_TARGET = '0e202dda90785771ff8c87526eaaf30c655f54f3'
-ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', '.github/workflows/827-patch-forest.yml', 'docs/827', 'patches/827', 'patches/molly', 'reports/827', 'tools/827'}
+ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', '.github/workflows/827-patch-forest.yml', '.github/workflows/molly-signal-port.yml', 'docs/827', 'patches/827', 'patches/molly', 'patches/molly-signal-8.33.2', 'reports/827', 'tools/827'}
 class ReplayError(RuntimeError):
     pass
 

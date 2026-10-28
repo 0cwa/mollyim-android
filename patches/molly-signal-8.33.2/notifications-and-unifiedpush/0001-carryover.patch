@@ -1,0 +1,2221 @@
+From a9e2f7d960be33747d51e1c533982df26b6a355b Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly notifications-and-unifiedpush carryover,
+ part 1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+UnifiedPush/MollySocket, optional push-service selection and notification delivery/presentation.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt b/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..03a37a20bc0435ea955f03d893438b0b265f9916
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/MollySocketRepository.kt
+@@ -0,0 +1,211 @@
++package im.molly.unifiedpush
++
++import com.fasterxml.jackson.core.JsonParseException
++import com.fasterxml.jackson.core.JsonProcessingException
++import com.fasterxml.jackson.databind.JsonMappingException
++import im.molly.unifiedpush.model.ConnectionRequest
++import im.molly.unifiedpush.model.ConnectionResult
++import im.molly.unifiedpush.model.LinkStatus
++import im.molly.unifiedpush.model.MollySocketDevice
++import im.molly.unifiedpush.model.Response
++import okhttp3.HttpUrl
++import okhttp3.MediaType.Companion.toMediaType
++import okhttp3.Request
++import okhttp3.RequestBody.Companion.toRequestBody
++import org.signal.core.util.Base64
++import org.signal.core.util.JsonUtils
++import org.signal.core.util.Util
++import org.signal.core.util.crypto.DeviceNameCipher
++import org.signal.core.util.logging.Log
++import org.signal.libsignal.protocol.SessionBuilder
++import org.signal.libsignal.protocol.SignalProtocolAddress
++import org.signal.libsignal.protocol.util.KeyHelper
++import org.thoughtcrime.securesms.AppCapabilities
++import org.thoughtcrime.securesms.crypto.ReentrantSessionLock
++import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.dependencies.AppDependencies.keysApi
++import org.thoughtcrime.securesms.keyvalue.PhoneNumberPrivacyValues.PhoneNumberDiscoverabilityMode
++import org.thoughtcrime.securesms.keyvalue.SignalStore
++import org.thoughtcrime.securesms.linkdevice.LinkDeviceRepository
++import org.thoughtcrime.securesms.push.AccountManagerFactory
++import org.thoughtcrime.securesms.recipients.Recipient
++import org.thoughtcrime.securesms.registration.data.RegistrationRepository
++import org.whispersystems.signalservice.api.NetworkResultUtil
++import org.whispersystems.signalservice.api.account.AccountAttributes
++import org.whispersystems.signalservice.api.crypto.SignalSessionBuilder
++import org.whispersystems.signalservice.api.push.SignalServiceAddress
++import org.whispersystems.signalservice.internal.push.DeviceLimitExceededException
++import java.io.IOException
++import java.net.MalformedURLException
++
++object MollySocketRepository {
++
++  private val TAG = Log.tag(MollySocketRepository::class)
++
++  private val MEDIA_TYPE_JSON = "application/json; charset=utf-8".toMediaType()
++
++  private const val DEVICE_NAME = "MollySocket"
++
++  @Throws(IOException::class, DeviceLimitExceededException::class)
++  fun createDevice(): MollySocketDevice {
++    Log.d(TAG, "Creating device for MollySocket")
++
++    val password = Util.getSecret(18)
++    val deviceId = verifyNewDevice(password)
++
++    return MollySocketDevice(
++      deviceId = deviceId,
++      password = password,
++    )
++  }
++
++  @Throws(IOException::class, DeviceLimitExceededException::class)
++  private fun verifyNewDevice(password: String): Int {
++    val fetchResult = AppDependencies.linkDeviceApi.getDeviceVerificationCode()
++    val verificationCode = fetchResult.successOrThrow()
++
++    val registrationId = KeyHelper.generateRegistrationId(false)
++    val encryptedDeviceName = DeviceNameCipher.encryptDeviceName(
++      DEVICE_NAME.toByteArray(), SignalStore.account.aciIdentityKey
++    )
++
++    val notDiscoverable = SignalStore.phoneNumberPrivacy.phoneNumberDiscoverabilityMode == PhoneNumberDiscoverabilityMode.NOT_DISCOVERABLE
++
++    val accountAttributes = AccountAttributes(
++      signalingKey = null,
++      registrationId = registrationId,
++      fetchesMessages = true,
++      registrationLock = null,
++      unidentifiedAccessKey = null,
++      unrestrictedUnidentifiedAccess = true,
++      capabilities = AppCapabilities.getCapabilities(storageCapable = false),
++      discoverableByPhoneNumber = !notDiscoverable,
++      name = Base64.encodeWithPadding(encryptedDeviceName),
++      pniRegistrationId = SignalStore.account.pniRegistrationId,
++      recoveryPassword = null
++    )
++
++    val aciPreKeyCollection = RegistrationRepository.generateSignedAndLastResortPreKeys(SignalStore.account.aciIdentityKey, SignalStore.account.aciPreKeys)
++    val pniPreKeyCollection = RegistrationRepository.generateSignedAndLastResortPreKeys(SignalStore.account.pniIdentityKey, SignalStore.account.pniPreKeys)
++
++    val accountManager = AccountManagerFactory.getInstance().createForDeviceLink(AppDependencies.application, password)
++
++    return accountManager.finishNewDeviceRegistration(
++      verificationCode.verificationCode,
++      accountAttributes,
++      aciPreKeyCollection, pniPreKeyCollection,
++      null
++    ).also { deviceId ->
++      SignalStore.account.isMultiDevice = true
++      loadPreKeys(deviceId)
++    }
++  }
++
++  /**
++   * We need to load prekeys, else we get a bug if MollySocket is the only linked device:
++   * - SignalStore.account.isMultiDevice is set to `true` => we try to [sendSyncMessage][org.whispersystems.signalservice.api.SignalServiceMessageSender.sendSyncMessage]
++   * - [SignalServiceAccountDataStore.containsSession] returns false for this device
++   * - So, [getEncryptedMessage][org.whispersystems.signalservice.api.SignalServiceMessageSender.getEncryptedMessage] removes this device => it returns a OutgoingPushMessageList with an empty message list
++   * - [sendMessage][org.whispersystems.signalservice.api.SignalServiceMessageSender.sendMessage] fails with NonSuccessfulResponseCodeException: [400],
++   *     we don't get the Mismatched device exception [409] which allow handling ExtraDevices/MissingDevices.
++   * - We're stuck in a loop where we can't send a message.
++   */
++  private fun loadPreKeys(deviceId: Int) {
++    val recipient = SignalServiceAddress(Recipient.self().requireAci())
++    val localProtocolAddress = SignalProtocolAddress(recipient.identifier, deviceId)
++    val aciStore = AppDependencies.protocolStore.aci()
++    val preKeys = NetworkResultUtil.toPreKeysLegacy(
++      keysApi.getPreKeysSync(
++        destination = recipient, sealedSenderAccess = null, deviceId = deviceId
++      )
++    )
++    preKeys.forEach { preKey ->
++      val preKeyAddress = SignalProtocolAddress(recipient.identifier, preKey.deviceId)
++      val sessionBuilder = SignalSessionBuilder(
++        ReentrantSessionLock.INSTANCE,
++        SessionBuilder(aciStore, preKeyAddress, localProtocolAddress)
++      )
++      sessionBuilder.process(preKey)
++    }
++  }
++
++  @Throws(IOException::class)
++  fun removeDevice(device: MollySocketDevice) {
++    LinkDeviceRepository.removeDevice(device.deviceId)
++  }
++
++  fun getDeviceStatus(device: MollySocketDevice): LinkStatus {
++    return when (device.isLinked()) {
++      true -> LinkStatus.LINKED
++      false -> LinkStatus.NOT_LINKED
++      else -> LinkStatus.UNKNOWN
++    }
++  }
++
++  private fun MollySocketDevice.isLinked(): Boolean? {
++    return LinkDeviceRepository.loadDevices()?.any {
++      it.id == deviceId && it.name == DEVICE_NAME
++    }
++  }
++
++  fun discoverMollySocketServer(url: HttpUrl): Boolean {
++    try {
++      val request = Request.Builder().url(url).build()
++      val client = AppDependencies.okHttpClient.newBuilder().build()
++      client.newCall(request).execute().use { response ->
++        if (!response.isSuccessful) {
++          Log.d(TAG, "Unexpected code: $response")
++          return false
++        }
++        val body = response.body
++        JsonUtils.fromJson(body.byteStream(), Response::class.java)
++      }
++      Log.d(TAG, "URL is OK")
++    } catch (e: Exception) {
++      Log.d(TAG, "Exception: $e")
++      return when (e) {
++        is MalformedURLException,
++        is JsonParseException,
++        is JsonMappingException,
++        is JsonProcessingException -> false
++
++        else -> throw IOException("Can not check server status")
++      }
++    }
++    return true
++  }
++
++  @Throws(IOException::class)
++  fun registerDeviceOnServer(
++    url: HttpUrl,
++    device: MollySocketDevice,
++    endpoint: String,
++    ping: Boolean = false,
++  ): ConnectionResult? {
++    val requestData = ConnectionRequest(
++      uuid = SignalStore.account.requireAci().toString(),
++      deviceId = device.deviceId,
++      password = device.password,
++      endpoint = endpoint,
++      ping = ping,
++    )
++
++    val postBody = JsonUtils.toJson(requestData).toRequestBody(MEDIA_TYPE_JSON)
++    val request = Request.Builder().url(url).post(postBody).build()
++    val client = AppDependencies.okHttpClient.newBuilder().build()
++
++    client.newCall(request).execute().use { response ->
++      if (!response.isSuccessful) {
++        Log.d(TAG, "Unexpected code: $response")
++        return null
++      }
++      val body = response.body
++      val resp = JsonUtils.fromJson(body.byteStream(), Response::class.java)
++
++      val status = resp.mollySocket.status
++      Log.d(TAG, "Status: $status")
++
++      return status
++    }
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt b/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..0d75931b9355755c3372f793273a73e321497dde
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/UnifiedPushDefaultDistributorLinkActivity.kt
+@@ -0,0 +1,55 @@
++package im.molly.unifiedpush
++
++import android.content.Context
++import android.content.Intent
++import android.os.Bundle
++import androidx.activity.result.contract.ActivityResultContract
++import androidx.appcompat.app.AppCompatActivity
++import org.signal.core.util.logging.Log
++import org.unifiedpush.android.connector.LinkActivityHelper
++
++class UnifiedPushDefaultDistributorLinkActivity : AppCompatActivity() {
++  private val helper = LinkActivityHelper(this)
++
++  override fun onCreate(savedInstanceState: Bundle?) {
++    super.onCreate(savedInstanceState)
++
++    if (!helper.startLinkActivityForResult()) {
++      Log.d(TAG, "No distributor with link activity found.")
++      setResult(RESULT_OK)
++      finish()
++    }
++  }
++
++  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
++    super.onActivityResult(requestCode, resultCode, data)
++    if (helper.onLinkActivityResult(requestCode, resultCode, data)) {
++      // The distributor is saved, you can request registrations with UnifiedPush.registerApp now
++      Log.d(TAG, "Found a distributor with link activity found.")
++      val intent = Intent().putExtra(KEY_FOUND, true)
++      setResult(RESULT_OK, intent)
++    } else {
++      // An error occurred, consider no distributor found for the moment
++      Log.d(TAG, "Found a distributor with link activity found but an error occurred.")
++      setResult(RESULT_OK)
++    }
++    finish()
++  }
++
++  class Contract : ActivityResultContract<Unit, Boolean?>() {
++    override fun createIntent(context: Context, input: Unit): Intent {
++      return Intent(context, UnifiedPushDefaultDistributorLinkActivity::class.java)
++    }
++
++    override fun parseResult(resultCode: Int, intent: Intent?): Boolean? {
++      return intent?.let {
++        intent.getBooleanExtra(KEY_FOUND, false)
++      }
++    }
++  }
++
++  companion object {
++    private const val KEY_FOUND = "found"
++    private const val TAG = "UnifiedPushDefaultDistributorLinkActivity"
++  }
++}
+\ No newline at end of file
+diff --git a/app/src/main/java/im/molly/unifiedpush/UnifiedPushDistributor.kt b/app/src/main/java/im/molly/unifiedpush/UnifiedPushDistributor.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..eee0c0f9457460b1b2519ebe64d16959110e945c
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/UnifiedPushDistributor.kt
+@@ -0,0 +1,51 @@
++package im.molly.unifiedpush
++
++import android.content.Context
++import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.keyvalue.SignalStore
++import org.unifiedpush.android.connector.UnifiedPush
++import org.unifiedpush.android.connector.ui.SelectDistributorDialogsBuilder
++import org.unifiedpush.android.connector.ui.UnifiedPushFunctions
++
++object UnifiedPushDistributor {
++
++  @JvmStatic
++  fun registerApp(vapid: String?) {
++    UnifiedPush.registerApp(AppDependencies.application, vapid = vapid)
++  }
++
++  @JvmStatic
++  fun unregisterApp() {
++    UnifiedPush.unregisterApp(AppDependencies.application)
++    // MessagingReceiver.onUnregistered won't be called after the unregistration request
++    SignalStore.unifiedpush.endpoint = null
++  }
++
++  fun selectFirstDistributor() {
++    val context = AppDependencies.application
++    UnifiedPush.getDistributors(context).firstOrNull()?.also {
++      UnifiedPush.saveDistributor(context, it)
++    }
++  }
++
++  @JvmStatic
++  fun showSelectDistributorDialog(context: Context) {
++    SelectDistributorDialogsBuilder(
++      context,
++      object : UnifiedPushFunctions {
++        override fun getAckDistributor(): String? = UnifiedPush.getAckDistributor(context)
++        override fun getDistributors(): List<String> = UnifiedPush.getDistributors(context)
++        override fun registerApp(instance: String) = UnifiedPush.registerApp(context, instance)
++        override fun saveDistributor(distributor: String) = UnifiedPush.saveDistributor(context, distributor)
++        override fun tryUseDefaultDistributor(callback: (Boolean) -> Unit) = UnifiedPush.tryUseDefaultDistributor(context, callback)
++      }
++    ).apply {
++      mayUseCurrent = false
++      mayUseDefault = false
++    }.run()
++  }
++
++  fun checkIfActive(): Boolean {
++    return UnifiedPush.getAckDistributor(AppDependencies.application) != null
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt b/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..7a76c06c2a0162c864b61a0bbb37751dcddcdfa1
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/UnifiedPushNotificationBuilder.kt
+@@ -0,0 +1,79 @@
++package im.molly.unifiedpush
++
++import android.Manifest
++import android.app.Notification
++import android.content.Context
++import android.content.pm.PackageManager
++import android.os.Build
++import androidx.core.app.NotificationCompat
++import androidx.core.app.NotificationManagerCompat
++import androidx.core.content.ContextCompat
++import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.notifications.NotificationChannels
++
++class UnifiedPushNotificationBuilder(val context: Context) {
++
++  companion object {
++    private const val NOTIFICATION_ID = 51215
++    private const val NOTIFICATION_TEST_ID = 51216
++  }
++
++  private val notificationManager = NotificationManagerCompat.from(context)
++
++  private val builder: NotificationCompat.Builder =
++    NotificationCompat.Builder(context, NotificationChannels.getInstance().APP_ALERTS)
++      .setSmallIcon(R.drawable.ic_notification)
++      .setContentTitle(context.getString(R.string.NotificationDeliveryMethod__unifiedpush))
++      .setContentIntent(null)
++      .setPriority(NotificationCompat.PRIORITY_DEFAULT)
++
++  private fun getNotification(content: String): Notification {
++    return builder.setContentText(content).setStyle(
++      NotificationCompat.BigTextStyle()
++        .bigText(content)
++    ).build()
++  }
++
++  private fun notify(notificationId: Int, content: String) {
++    val hasPermission = if (Build.VERSION.SDK_INT >= 33) {
++      ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
++    } else true
++
++    if (hasPermission) {
++      notificationManager.notify(notificationId, getNotification(content))
++    }
++  }
++
++  fun clearAlerts() {
++    notificationManager.cancel(NOTIFICATION_ID)
++  }
++
++  fun setNotificationDeviceLimitExceeded(deviceLimit: Int) {
++    notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_device_limit_hit, deviceLimit - 1))
++  }
++
++
++  fun setNotificationMollySocketForbiddenEndpoint() {
++    notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_forbidden_endpoint))
++  }
++
++  fun setNotificationMollySocketForbiddenUuid() {
++    notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_forbidden_uuid))
++  }
++
++  fun setNotificationMollySocketForbiddenPassword() {
++    notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__mollysocket_forbidden_password))
++  }
++
++  fun setNotificationEndpointChangedAirGapped() {
++    notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__endpoint_changed_air_gapped))
++  }
++
++  fun setNotificationRegistrationFailed() {
++    notify(NOTIFICATION_ID, context.getString(R.string.UnifiedPushNotificationBuilder__registration_failed))
++  }
++
++  fun setNotificationTest() {
++    notify(NOTIFICATION_TEST_ID, context.getString(R.string.UnifiedPushNotificationBuilder__this_is_a_test_notification))
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanRepository.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanRepository.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..02863f0c18138cb42277281023e8657e384dad9e
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanRepository.kt
+@@ -0,0 +1,77 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import android.content.Context
++import android.net.Uri
++import com.bumptech.glide.Glide
++import com.bumptech.glide.load.DecodeFormat
++import im.molly.unifiedpush.MollySocketRepository
++import im.molly.unifiedpush.model.MollySocket
++import io.reactivex.rxjava3.core.Single
++import io.reactivex.rxjava3.schedulers.Schedulers
++import okhttp3.HttpUrl.Companion.toHttpUrl
++import org.signal.core.util.logging.Log
++import org.signal.core.util.toOptional
++import org.signal.qr.QrProcessor
++
++/**
++ * A collection of functions to help with scanning QR codes for MollySocket.
++ */
++object MollySocketQrScanRepository {
++  private const val TAG = "MollySocketQrScanRepository"
++
++  /**
++   * Resolves QR data to a MollySocket link URI, coercing it to a standard set of [QrScanResult]s.
++   */
++  fun lookupQrLink(data: String): Single<QrScanResult> {
++    val uri = Uri.parse(data)
++    return when (val mollySocket = MollySocket.parseLink(uri)) {
++      is MollySocket.AirGapped -> {
++        Single.just(QrScanResult.Success(data))
++      }
++
++      is MollySocket.WebServer -> {
++        checkMollySocketServer(mollySocket.url).map { found ->
++          if (found) {
++            QrScanResult.Success(data)
++          } else {
++            // TODO add network check
++            QrScanResult.NotFound(mollySocket.url)
++          }
++        }.subscribeOn(Schedulers.io())
++      }
++
++      else -> Single.just(QrScanResult.InvalidData)
++    }
++  }
++
++  private fun checkMollySocketServer(url: String): Single<Boolean> {
++    return Single
++      .fromCallable {
++        runCatching {
++          MollySocketRepository.discoverMollySocketServer(url.toHttpUrl())
++        }.getOrElse { e ->
++          Log.e(TAG, "Cannot discover MollySocket", e)
++          false
++        }
++      }.subscribeOn(Schedulers.io())
++  }
++
++  fun scanImageUriForQrCode(context: Context, uri: Uri): Single<QrScanResult> {
++    val loadBitmap = Glide.with(context)
++      .asBitmap()
++      .format(DecodeFormat.PREFER_ARGB_8888)
++      .load(uri)
++      .submit()
++
++    return Single.fromFuture(loadBitmap)
++      .map { QrProcessor().getScannedData(it).toOptional() }
++      .flatMap {
++        if (it.isPresent) {
++          lookupQrLink(it.get())
++        } else {
++          Single.just(QrScanResult.QrNotFound)
++        }
++      }
++      .subscribeOn(Schedulers.io())
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanScreen.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanScreen.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..442807d8daff188a00085675a1eb579d2b982c96
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScanScreen.kt
+@@ -0,0 +1,163 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import androidx.compose.foundation.Image
++import androidx.compose.foundation.background
++import androidx.compose.foundation.layout.Arrangement
++import androidx.compose.foundation.layout.Box
++import androidx.compose.foundation.layout.Column
++import androidx.compose.foundation.layout.fillMaxHeight
++import androidx.compose.foundation.layout.fillMaxSize
++import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.shape.CircleShape
++import androidx.compose.material3.ButtonDefaults
++import androidx.compose.material3.FloatingActionButton
++import androidx.compose.material3.MaterialTheme
++import androidx.compose.material3.Text
++import androidx.compose.runtime.Composable
++import androidx.compose.ui.Alignment
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.graphics.Color
++import androidx.compose.ui.graphics.ColorFilter
++import androidx.compose.ui.res.painterResource
++import androidx.compose.ui.res.stringResource
++import androidx.compose.ui.text.style.TextAlign
++import androidx.compose.ui.unit.dp
++import org.signal.camera.CameraCaptureMode
++import org.signal.camera.CameraScreen
++import org.signal.camera.CameraScreenEvents
++import org.signal.camera.CameraScreenState
++import org.signal.core.ui.compose.Buttons
++import org.signal.core.ui.compose.Dialogs
++import org.signal.core.ui.compose.theme.SignalTheme
++import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.qr.QrCrosshair
++import org.signal.mediasend.R as MediaSendR
++
++/**
++ * A screen that allows you to scan a QR code to start a chat.
++ */
++@Composable
++fun MollySocketQrScanScreen(
++  qrScanResult: QrScanResult?,
++  cameraState: CameraScreenState,
++  cameraEmitter: (CameraScreenEvents) -> Unit,
++  onQrResultHandled: () -> Unit,
++  onOpenCameraClicked: () -> Unit,
++  onOpenGalleryClicked: () -> Unit,
++  onDataFound: (String) -> Unit,
++  hasCameraPermission: Boolean,
++  modifier: Modifier = Modifier
++) {
++  when (qrScanResult) {
++    QrScanResult.InvalidData -> {
++      QrScanResultDialog(message = stringResource(R.string.UsernameLinkSettings_qr_result_invalid), onDismiss = onQrResultHandled)
++    }
++
++    QrScanResult.NetworkError -> {
++      QrScanResultDialog(message = stringResource(R.string.MollySocketLink_experienced_a_network_error_please_try_again), onDismiss = onQrResultHandled)
++    }
++
++    QrScanResult.QrNotFound -> {
++      QrScanResultDialog(
++        title = stringResource(R.string.UsernameLinkSettings_qr_code_not_found),
++        message = stringResource(R.string.MollySocketLink_try_scanning_another_image_containing_a_mollysocket_qr_code),
++        onDismiss = onQrResultHandled
++      )
++    }
++
++    is QrScanResult.NotFound -> {
++      QrScanResultDialog(message = stringResource(R.string.MollySocketLink_mollysocket_server_not_found_at_s, qrScanResult.data), onDismiss = onQrResultHandled)
++    }
++
++    is QrScanResult.Success -> {
++      onDataFound(qrScanResult.data)
++    }
++
++    null -> {}
++  }
++
++  Column(
++    modifier = modifier
++      .fillMaxWidth()
++      .fillMaxHeight()
++  ) {
++    Box(
++      modifier = Modifier
++        .fillMaxWidth()
++        .weight(1f, true)
++        .background(Color.Black)
++    ) {
++      if (hasCameraPermission) {
++        CameraScreen(
++          state = cameraState,
++          emitter = cameraEmitter,
++          enableQrScanning = true,
++          captureMode = CameraCaptureMode.ImageOnly,
++          roundCorners = false,
++          fillViewport = true,
++          modifier = Modifier.fillMaxSize()
++        ) {
++          QrCrosshair(modifier = Modifier.fillMaxSize())
++
++          Text(
++            text = stringResource(R.string.MollySocketLink_scan_the_qr_code),
++            style = MaterialTheme.typography.bodyMedium,
++            color = Color.White,
++            textAlign = TextAlign.Center,
++            modifier = Modifier
++              .align(Alignment.TopCenter)
++              .padding(top = 24.dp)
++              .background(color = Color.Black.copy(alpha = 0.5f), shape = CircleShape)
++              .padding(horizontal = 16.dp, vertical = 8.dp)
++          )
++        }
++      } else {
++        Column(
++          verticalArrangement = Arrangement.Center,
++          horizontalAlignment = Alignment.CenterHorizontally,
++          modifier = Modifier
++            .align(Alignment.Center)
++            .padding(48.dp)
++        ) {
++          Text(
++            text = stringResource(MediaSendR.string.CameraXFragment_to_scan_qr_code_allow_camera),
++            textAlign = TextAlign.Center,
++            style = MaterialTheme.typography.bodyLarge,
++            color = Color.White
++          )
++          Buttons.MediumTonal(
++            colors = ButtonDefaults.filledTonalButtonColors(),
++            onClick = onOpenCameraClicked
++          ) {
++            Text(stringResource(MediaSendR.string.CameraXFragment_allow_access))
++          }
++        }
++      }
++      FloatingActionButton(
++        shape = CircleShape,
++        containerColor = SignalTheme.colors.colorSurface1,
++        modifier = Modifier
++          .align(Alignment.BottomCenter)
++          .padding(bottom = 24.dp),
++        onClick = onOpenGalleryClicked
++      ) {
++        Image(
++          painter = painterResource(id = R.drawable.symbol_album_24),
++          contentDescription = null,
++          colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface)
++        )
++      }
++    }
++  }
++}
++
++@Composable
++private fun QrScanResultDialog(title: String? = null, message: String, onDismiss: () -> Unit) {
++  Dialogs.SimpleMessageDialog(
++    title = title,
++    message = message,
++    dismiss = stringResource(id = android.R.string.ok),
++    onDismiss = onDismiss
++  )
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerActivity.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerActivity.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..62e139e807fbbb7cbe0c0db8363d1b7e0833e0d8
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerActivity.kt
+@@ -0,0 +1,200 @@
++@file:OptIn(ExperimentalPermissionsApi::class)
++
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import android.Manifest
++import android.annotation.SuppressLint
++import android.content.Context
++import android.content.Intent
++import android.net.Uri
++import android.os.Bundle
++import android.widget.Toast
++import androidx.activity.compose.setContent
++import androidx.activity.result.contract.ActivityResultContract
++import androidx.activity.viewModels
++import androidx.appcompat.app.AppCompatActivity
++import androidx.compose.foundation.layout.padding
++import androidx.compose.material3.CenterAlignedTopAppBar
++import androidx.compose.material3.ExperimentalMaterial3Api
++import androidx.compose.material3.Icon
++import androidx.compose.material3.IconButton
++import androidx.compose.material3.Scaffold
++import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
++import androidx.compose.runtime.getValue
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.res.stringResource
++import androidx.lifecycle.viewmodel.compose.viewModel
++import com.google.accompanist.permissions.ExperimentalPermissionsApi
++import com.google.accompanist.permissions.MultiplePermissionsState
++import com.google.accompanist.permissions.PermissionState
++import com.google.accompanist.permissions.isGranted
++import com.google.accompanist.permissions.rememberMultiplePermissionsState
++import com.google.accompanist.permissions.rememberPermissionState
++import im.molly.unifiedpush.model.MollySocket
++import org.signal.camera.CameraScreenEvents
++import org.signal.camera.CameraScreenState
++import org.signal.camera.CameraScreenViewModel
++import org.signal.core.ui.compose.Dialogs
++import org.signal.core.ui.compose.SignalIcons
++import org.signal.core.ui.compose.theme.SignalTheme
++import org.signal.core.ui.permissions.Permissions
++import org.signal.core.util.permissions.PermissionCompat
++import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.components.settings.app.usernamelinks.main.QrImageSelectionActivity
++import org.thoughtcrime.securesms.util.DynamicTheme
++import org.signal.mediasend.R as MediaSendR
++
++/**
++ * Prompts the user to scan a MollySocket QR code. Uses the activity result to communicate the recipient that was found, or null if no valid deeplink were scanned.
++ * See [Contract].
++ */
++class MollySocketQrScannerActivity : AppCompatActivity() {
++
++  private val viewModel: MollySocketQrScannerViewModel by viewModels()
++
++  @SuppressLint("MissingSuperCall")
++  override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
++    Permissions.onRequestPermissionsResult(this, requestCode, permissions, grantResults)
++  }
++
++  override fun onCreate(savedInstanceState: Bundle?) {
++    super.onCreate(savedInstanceState)
++
++    val galleryLauncher = registerForActivityResult(QrImageSelectionActivity.Contract()) { uri ->
++      if (uri != null) {
++        viewModel.onQrImageSelected(this, uri)
++      }
++    }
++
++    setContent {
++      val galleryPermissionState: MultiplePermissionsState = rememberMultiplePermissionsState(permissions = PermissionCompat.forImages().toList()) { grants ->
++        if (grants.values.all { it }) {
++          galleryLauncher.launch(Unit)
++        } else {
++          Toast.makeText(this, R.string.ChatWallpaperPreviewActivity__viewing_your_gallery_requires_the_storage_permission, Toast.LENGTH_SHORT).show()
++        }
++      }
++
++      val cameraPermissionState: PermissionState = rememberPermissionState(permission = Manifest.permission.CAMERA)
++      val state by viewModel.state
++
++      val cameraViewModel: CameraScreenViewModel = viewModel { CameraScreenViewModel() }
++      val cameraState by cameraViewModel.state
++
++      LaunchedEffect(cameraViewModel) {
++        cameraViewModel.qrCodeDetected.collect { url ->
++          viewModel.onQrScanned(url)
++        }
++      }
++
++      SignalTheme(isDarkMode = DynamicTheme.isDarkTheme(LocalContext.current)) {
++        Content(
++          state = state,
++          cameraState = cameraState,
++          cameraEmitter = cameraViewModel::onEvent,
++          galleryPermissionsState = galleryPermissionState,
++          cameraPermissionState = cameraPermissionState,
++          onQrResultHandled = {
++            finish()
++          },
++          onOpenCameraClicked = { askCameraPermissions() },
++          onOpenGalleryClicked = {
++            if (galleryPermissionState.allPermissionsGranted) {
++              galleryLauncher.launch(Unit)
++            } else {
++              galleryPermissionState.launchMultiplePermissionRequest()
++            }
++          },
++          onDataFound = { data ->
++            setResult(RESULT_OK, Intent().setData(Uri.parse(data)))
++            finish()
++          },
++          onBackNavigationPressed = {
++            setResult(RESULT_CANCELED)
++            finish()
++          }
++        )
++      }
++    }
++  }
++
++  private fun askCameraPermissions() {
++    Permissions.with(this)
++      .request(Manifest.permission.CAMERA)
++      .ifNecessary()
++      .withPermanentDenialDialog(
++        getString(MediaSendR.string.CameraXFragment_signal_needs_camera_access_scan_qr_code),
++        null,
++        MediaSendR.string.CameraXFragment_allow_access_camera,
++        MediaSendR.string.CameraXFragment_to_scan_qr_codes,
++        supportFragmentManager
++      )
++      .onAnyDenied { Toast.makeText(this, MediaSendR.string.CameraXFragment_signal_needs_camera_access_scan_qr_code, Toast.LENGTH_LONG).show() }
++      .execute()
++  }
++
++  class Contract : ActivityResultContract<Unit, MollySocket?>() {
++    override fun createIntent(context: Context, input: Unit): Intent {
++      return Intent(context, MollySocketQrScannerActivity::class.java)
++    }
++
++    override fun parseResult(resultCode: Int, intent: Intent?): MollySocket? {
++      return if (resultCode == RESULT_OK) {
++        MollySocket.parseLink(intent?.data!!)
++      } else {
++        null
++      }
++    }
++  }
++}
++
++@OptIn(ExperimentalMaterial3Api::class)
++@Composable
++fun Content(
++  state: MollySocketQrScannerViewModel.ScannerState,
++  cameraState: CameraScreenState,
++  cameraEmitter: (CameraScreenEvents) -> Unit = {},
++  galleryPermissionsState: MultiplePermissionsState,
++  cameraPermissionState: PermissionState,
++  onQrResultHandled: () -> Unit,
++  onOpenCameraClicked: () -> Unit,
++  onOpenGalleryClicked: () -> Unit,
++  onDataFound: (String) -> Unit,
++  onBackNavigationPressed: () -> Unit
++) {
++  Scaffold(
++    topBar = {
++      CenterAlignedTopAppBar(
++        title = {},
++        navigationIcon = {
++          IconButton(
++            onClick = onBackNavigationPressed
++          ) {
++            Icon(
++              painter = SignalIcons.X.painter,
++              contentDescription = stringResource(android.R.string.cancel)
++            )
++          }
++        }
++      )
++    }
++  ) { contentPadding ->
++    MollySocketQrScanScreen(
++      qrScanResult = state.qrScanResult,
++      cameraState = cameraState,
++      cameraEmitter = cameraEmitter,
++      onQrResultHandled = onQrResultHandled,
++      onOpenCameraClicked = onOpenCameraClicked,
++      onOpenGalleryClicked = onOpenGalleryClicked,
++      onDataFound = onDataFound,
++      hasCameraPermission = cameraPermissionState.status.isGranted,
++      modifier = Modifier.padding(contentPadding)
++    )
++
++    if (state.indeterminateProgress) {
++      Dialogs.IndeterminateProgressDialog()
++    }
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerViewModel.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerViewModel.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..ddd616c9dc797cf924b2b07b2b20f75c0037b50b
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/MollySocketQrScannerViewModel.kt
+@@ -0,0 +1,54 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import android.content.Context
++import android.net.Uri
++import androidx.compose.runtime.State
++import androidx.compose.runtime.mutableStateOf
++import androidx.lifecycle.ViewModel
++import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
++import io.reactivex.rxjava3.disposables.CompositeDisposable
++import io.reactivex.rxjava3.kotlin.plusAssign
++import io.reactivex.rxjava3.kotlin.subscribeBy
++
++class MollySocketQrScannerViewModel : ViewModel() {
++
++  private val _state = mutableStateOf(ScannerState(qrScanResult = null, indeterminateProgress = false))
++  val state: State<ScannerState> = _state
++
++  private val disposables = CompositeDisposable()
++
++  fun onQrScanned(data: String) {
++    _state.value = state.value.copy(indeterminateProgress = true)
++
++    disposables += MollySocketQrScanRepository.lookupQrLink(data)
++      .observeOn(AndroidSchedulers.mainThread())
++      .subscribe { result ->
++        _state.value = _state.value.copy(
++          qrScanResult = result,
++          indeterminateProgress = false
++        )
++      }
++  }
++
++  fun onQrImageSelected(context: Context, uri: Uri) {
++    _state.value = state.value.copy(indeterminateProgress = true)
++
++    disposables += MollySocketQrScanRepository.scanImageUriForQrCode(context, uri)
++      .observeOn(AndroidSchedulers.mainThread())
++      .subscribeBy { result ->
++        _state.value = _state.value.copy(
++          qrScanResult = result,
++          indeterminateProgress = false
++        )
++      }
++  }
++
++  override fun onCleared() {
++    disposables.clear()
++  }
++
++  data class ScannerState(
++    val qrScanResult: QrScanResult?,
++    val indeterminateProgress: Boolean
++  )
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/QrScanResult.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/QrScanResult.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..a3013582080897a2fa92e1def7bc76bcefc1456c
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/QrScanResult.kt
+@@ -0,0 +1,13 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++sealed class QrScanResult {
++  class Success(val data: String) : QrScanResult()
++
++  class NotFound(val data: String) : QrScanResult()
++
++  data object InvalidData : QrScanResult()
++
++  data object NetworkError : QrScanResult()
++
++  data object QrNotFound : QrScanResult()
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..d2d0295c5f66dbea51a334156ff1bd3a500a56f4
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsFragment.kt
+@@ -0,0 +1,161 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import android.widget.Toast
++import androidx.activity.result.ActivityResultLauncher
++import androidx.activity.result.launch
++import androidx.annotation.StringRes
++import androidx.lifecycle.ViewModelProvider
++import im.molly.unifiedpush.model.RegistrationStatus
++import org.greenrobot.eventbus.EventBus
++import org.greenrobot.eventbus.Subscribe
++import org.greenrobot.eventbus.ThreadMode
++import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.components.settings.DSLConfiguration
++import org.thoughtcrime.securesms.components.settings.DSLSettingsFragment
++import org.thoughtcrime.securesms.components.settings.DSLSettingsIcon
++import org.thoughtcrime.securesms.components.settings.DSLSettingsText
++import org.thoughtcrime.securesms.components.settings.configure
++import org.thoughtcrime.securesms.conversation.v2.registerForLifecycle
++import org.thoughtcrime.securesms.events.PushServiceEvent
++import org.thoughtcrime.securesms.util.adapter.mapping.MappingAdapter
++
++class UnifiedPushSettingsFragment : DSLSettingsFragment(R.string.NotificationDeliveryMethod__unifiedpush) {
++
++  private lateinit var viewModel: UnifiedPushSettingsViewModel
++
++  private val qrScanLauncher: ActivityResultLauncher<Unit> =
++    registerForActivityResult(MollySocketQrScannerActivity.Contract()) { mollySocket ->
++      if (mollySocket != null) {
++        viewModel.setMollySocket(mollySocket)
++      }
++    }
++
++  override fun bindAdapter(adapter: MappingAdapter) {
++    val factory = UnifiedPushSettingsViewModel.Factory(requireActivity().application)
++
++    viewModel = ViewModelProvider(this, factory)[UnifiedPushSettingsViewModel::class.java]
++
++    viewModel.state.observe(viewLifecycleOwner) {
++      adapter.submitList(getConfiguration(it).toMappingModelList())
++    }
++
++    EventBus.getDefault().registerForLifecycle(subscriber = this, lifecycleOwner = viewLifecycleOwner)
++
++    viewModel.updateRegistration()
++  }
++
++  @Subscribe(threadMode = ThreadMode.MAIN)
++  fun onPushServiceEvent(event: PushServiceEvent) {
++    viewModel.refresh()
++  }
++
++  private fun getConfiguration(state: UnifiedPushSettingsState): DSLConfiguration {
++    return configure {
++      textPref(
++        title = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__status)),
++        summary = DSLSettingsText.from(getStatusSummary(state)),
++      )
++
++      clickPref(
++        title = DSLSettingsText.from(R.string.UnifiedPushSettingsFragment__mollysocket_server),
++        summary = DSLSettingsText.from(
++          if (state.airGapped) {
++            getString(R.string.UnifiedPushSettingsFragment__mollysocket_server_air_gapped)
++          } else {
++            state.mollySocketUrl ?: "Error"
++          }
++        ),
++        onClick = {
++          qrScanLauncher.launch()
++        },
++      )
++
++      if (state.distributors.isEmpty()) {
++        textPref(
++          title = DSLSettingsText.from(R.string.UnifiedPushSettingsFragment__distributor_app),
++          summary = DSLSettingsText.from(R.string.UnifiedPushSettingsFragment__none_available)
++        )
++      } else {
++        radioListPref(
++          title = DSLSettingsText.from(R.string.UnifiedPushSettingsFragment__distributor_app),
++          listItems = state.distributors.map { it.name }.toTypedArray(),
++          selected = state.selected,
++          onSelected = {
++            viewModel.setUnifiedPushDistributor(state.distributors[it].applicationId)
++          },
++        )
++      }
++
++      dividerPref()
++
++      if (state.airGapped) {
++        clickPref(
++          title = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__server_parameters)),
++          summary = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__tap_to_copy_to_clipboard)),
++          iconEnd = DSLSettingsIcon.from(org.signal.core.ui.R.drawable.symbol_copy_android_24),
++          isEnabled = state.serverParameters != null,
++          onClick = {
++            viewModel.copyParamsToClipboard(requireContext())
++          },
++        )
++      } else {
++        val aciOrUnknown = state.aci ?: getString(R.string.Recipient_unknown)
++
++        clickPref(
++          title = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__account_id)),
++          summary = DSLSettingsText.from(aciOrUnknown),
++          iconEnd = DSLSettingsIcon.from(org.signal.core.ui.R.drawable.symbol_copy_android_24),
++          isEnabled = state.aci != null,
++          onClick = {
++            viewModel.copyAciToClipboard(requireContext())
++          },
++        )
++
++        clickPref(
++          title = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__test_configuration)),
++          summary = DSLSettingsText.from(getString(R.string.UnifiedPushSettingsFragment__tap_to_request_a_test_notification_from_mollysocket)),
++          onClick = {
++            viewModel.pingMollySocket()
++            Toast.makeText(context, getString(R.string.UnifiedPushSettingsFragment__a_test_notification_should_appear_in_a_few_moments), Toast.LENGTH_SHORT).show()
++          },
++        )
++      }
++    }
++  }
++
++  @StringRes
++  private fun getStatusSummary(state: UnifiedPushSettingsState): Int {
++    return when {
++      state.distributors.isEmpty() -> R.string.UnifiedPushSettingsFragment__status_summary_no_distributor
++      state.selected == -1 -> R.string.UnifiedPushSettingsFragment__status_summary_distributor_not_selected
++      state.selectedNotAck -> R.string.UnifiedPushSettingsFragment__status_summary_missing_endpoint
++      state.endpoint == null -> R.string.UnifiedPushSettingsFragment__status_summary_missing_endpoint
++      state.mollySocketUrl == null && !state.airGapped -> R.string.UnifiedPushSettingsFragment__status_summary_mollysocket_url_missing
++      state.device == null -> R.string.UnifiedPushSettingsFragment__status_summary_linked_device_error
++      else -> getRegistrationStatusSummary(state)
++    }
++  }
++
++  @StringRes
++  private fun getRegistrationStatusSummary(state: UnifiedPushSettingsState): Int {
++    return if (state.airGapped) {
++      when (state.registrationStatus) {
++        RegistrationStatus.REGISTERED -> android.R.string.ok
++        else -> R.string.UnifiedPushSettingsFragment__status_summary_air_gapped_pending
++      }
++    } else {
++      when (state.registrationStatus) {
++        RegistrationStatus.UNKNOWN,
++        RegistrationStatus.PENDING -> R.string.UnifiedPushSettingsFragment__status_summary_pending
++
++        RegistrationStatus.BAD_RESPONSE,
++        RegistrationStatus.SERVER_ERROR -> R.string.UnifiedPushSettingsFragment__status_summary_bad_response
++
++        RegistrationStatus.REGISTERED -> android.R.string.ok
++        RegistrationStatus.FORBIDDEN_PASSWORD -> R.string.UnifiedPushSettingsFragment__status_summary_pending
++        RegistrationStatus.FORBIDDEN_UUID -> R.string.UnifiedPushSettingsFragment__status_summary_forbidden_uuid
++        RegistrationStatus.FORBIDDEN_ENDPOINT -> R.string.UnifiedPushSettingsFragment__status_summary_forbidden_endpoint
++      }
++    }
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..2a672a4d56f0fd8f05b27ea9033895a8f38bf59a
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsState.kt
+@@ -0,0 +1,28 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import im.molly.unifiedpush.model.MollySocketDevice
++import im.molly.unifiedpush.model.RegistrationStatus
++
++data class Distributor(
++  val applicationId: String,
++  val name: String,
++)
++
++data class UnifiedPushSettingsState(
++  val airGapped: Boolean,
++  val device: MollySocketDevice?,
++  val aci: String?,
++  val registrationStatus: RegistrationStatus,
++  val distributors: List<Distributor>,
++  val selected: Int,
++  val selectedNotAck: Boolean,
++  val endpoint: String?,
++  val mollySocketUrl: String?,
++) {
++  val serverParameters: String?
++    get() {
++      return if (aci != null && device != null && endpoint != null) {
++        "connection add $aci ${device.deviceId} ${device.password} $endpoint"
++      } else null
++    }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..e15ba900bda64f8c9273b5bf41e8458160345554
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/components/settings/app/notifications/UnifiedPushSettingsViewModel.kt
+@@ -0,0 +1,123 @@
++package im.molly.unifiedpush.components.settings.app.notifications
++
++import android.app.Application
++import android.content.Context
++import android.content.pm.PackageManager
++import android.os.Build
++import androidx.lifecycle.LiveData
++import androidx.lifecycle.ViewModel
++import androidx.lifecycle.ViewModelProvider
++import im.molly.unifiedpush.model.MollySocket
++import org.signal.core.util.Util.writeTextToClipboard
++import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob
++import org.thoughtcrime.securesms.keyvalue.SignalStore
++import org.thoughtcrime.securesms.keyvalue.UnifiedPushValues
++import org.thoughtcrime.securesms.util.livedata.Store
++import org.unifiedpush.android.connector.UnifiedPush
++
++class UnifiedPushSettingsViewModel(private val application: Application) : ViewModel() {
++
++  private val store = Store(getState())
++
++  val state: LiveData<UnifiedPushSettingsState> = store.stateLiveData
++
++  fun refresh() {
++    store.update { getState() }
++  }
++
++  fun updateRegistration(pingOnRegister: Boolean = false) {
++    AppDependencies.jobManager.add(UnifiedPushRefreshJob(pingOnRegister))
++  }
++
++  private fun getState(): UnifiedPushSettingsState {
++    val distributorIds = UnifiedPush.getDistributors(application)
++    val saved = UnifiedPush.getSavedDistributor(application)
++    val ack = saved != null && UnifiedPush.getAckDistributor(application) == saved
++
++    val selected = distributorIds.indexOfFirst { it == saved }
++
++    val distributors = distributorIds.map { appId ->
++      val name = try {
++        val ai = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
++          application.packageManager.getApplicationInfo(
++            appId, PackageManager.ApplicationInfoFlags.of(PackageManager.GET_META_DATA.toLong())
++          )
++        } else {
++          application.packageManager.getApplicationInfo(appId, 0)
++        }
++        application.packageManager.getApplicationLabel(ai)
++      } catch (e: PackageManager.NameNotFoundException) {
++        appId
++      } as String
++
++      Distributor(
++        applicationId = appId,
++        name = name,
++      )
++    }
++
++    val mollySocketUrl = SignalStore.unifiedpush.mollySocketUrl
++
++    return UnifiedPushSettingsState(
++      airGapped = SignalStore.unifiedpush.airGapped,
++      device = SignalStore.unifiedpush.device,
++      aci = SignalStore.account.aci?.toString(),
++      registrationStatus = SignalStore.unifiedpush.registrationStatus,
++      distributors = distributors,
++      selected = selected,
++      selectedNotAck = !ack,
++      endpoint = SignalStore.unifiedpush.endpoint,
++      mollySocketUrl = mollySocketUrl,
++    )
++  }
++
++  fun setUnifiedPushDistributor(distributor: String) {
++    SignalStore.unifiedpush.endpoint = null
++    UnifiedPush.saveDistributor(application, distributor)
++    refresh()
++    updateRegistration()
++  }
++
++  fun setMollySocket(mollySocket: MollySocket) {
++    SignalStore.unifiedpush.updateMollySocket(mollySocket)
++    refresh()
++    updateRegistration()
++  }
++
++  fun pingMollySocket() {
++    refresh()
++    updateRegistration(pingOnRegister = true)
++  }
++
++  fun copyParamsToClipboard(context: Context) {
++    val parameters = state.value?.serverParameters ?: ""
++    writeTextToClipboard(context, "Server parameters", parameters)
++  }
++
++  fun copyAciToClipboard(context: Context) {
++    val aci = state.value?.aci ?: ""
++    writeTextToClipboard(context, "Account ID", aci)
++  }
++
++  class Factory(private val application: Application) : ViewModelProvider.Factory {
++    override fun <T : ViewModel> create(modelClass: Class<T>): T {
++      return requireNotNull(modelClass.cast(UnifiedPushSettingsViewModel(application)))
++    }
++  }
++}
++
++fun UnifiedPushValues.updateMollySocket(mollySocket: MollySocket) {
++  airGapped = mollySocket is MollySocket.AirGapped
++  mollySocketUrl = (mollySocket as? MollySocket.WebServer)?.url
++
++  val changed = vapidPublicKey != mollySocket.vapid
++  vapidPublicKey = mollySocket.vapid
++
++  if (changed) {
++    vapidKeySynced = false
++    endpoint = null
++  }
++
++  lastReceivedTime = 0
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt b/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..a21e22197f1925fde88cebf083fe4724dce4b7b0
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/model/ConnectionRequest.kt
+@@ -0,0 +1,30 @@
++package im.molly.unifiedpush.model
++
++import com.fasterxml.jackson.annotation.JsonProperty
++
++data class ConnectionRequest(
++  @JsonProperty("uuid") val uuid: String,
++  @JsonProperty("device_id") val deviceId: Int,
++  @JsonProperty("password") val password: String,
++  @JsonProperty("endpoint") val endpoint: String,
++  @JsonProperty("ping") val ping: Boolean,
++)
++
++data class Response(
++  @JsonProperty("mollysocket") val mollySocket: ResponseMollySocket,
++)
++
++data class ResponseMollySocket(
++  @JsonProperty("version") val version: String,
++  @JsonProperty("status") val status: ConnectionResult?,
++)
++
++enum class ConnectionResult(private val formatted: String) {
++  OK("ok"),
++  FORBIDDEN("forbidden"),
++  INVALID_UUID("invalid_uuid"),
++  INVALID_ENDPOINT("invalid_endpoint"),
++  INTERNAL_ERROR("internal_error");
++
++  override fun toString(): String = formatted
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/model/MollySocket.kt b/app/src/main/java/im/molly/unifiedpush/model/MollySocket.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..8dea76ef675ccc8a497ae169333d2e2f1bd98eda
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/model/MollySocket.kt
+@@ -0,0 +1,36 @@
++package im.molly.unifiedpush.model
++
++import android.net.Uri
++
++sealed class MollySocket(val vapid: String) {
++
++  class AirGapped(vapid: String) : MollySocket(vapid)
++  class WebServer(vapid: String, val url: String) : MollySocket(vapid)
++
++  companion object {
++    fun parseLink(uri: Uri): MollySocket? {
++      if (!uri.isHierarchical || uri.scheme != "mollysocket" || uri.authority != "link") {
++        return null
++      }
++      val vapid = uri.getQueryParameter("vapid")
++      if (vapid?.length != 87) {
++        return null
++      }
++      val type = uri.getQueryParameter("type")
++      return when (type) {
++        "airgapped" -> {
++          AirGapped(vapid)
++        }
++
++        "webserver" -> {
++          val url = uri.getQueryParameter("url") ?: return null
++          val parsedUrl = Uri.parse(url)
++          if (parsedUrl.scheme != "https") return null
++          WebServer(vapid = vapid, url = url)
++        }
++
++        else -> null
++      }
++    }
++  }
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt b/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..b3dc3dab9def195078aeacf19c7745dab08e8f21
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/model/MollySocketDevice.kt
+@@ -0,0 +1,48 @@
++package im.molly.unifiedpush.model
++
++data class MollySocketDevice(
++  val deviceId: Int,
++  val password: String,
++) {
++  override fun toString(): String {
++    return "MollySocketDevice:$deviceId"
++  }
++}
++
++enum class LinkStatus {
++  LINKED,
++  NOT_LINKED,
++  UNKNOWN,
++}
++
++enum class RegistrationStatus(val value: Int) {
++  UNKNOWN(0),
++  PENDING(1),
++  REGISTERED(2),
++  BAD_RESPONSE(3),
++  SERVER_ERROR(4),
++
++  /** The UUID is forbidden by the config of MollySocket */
++  FORBIDDEN_UUID(5),
++
++  /** The endpoint is forbidden by the config of MollySocket */
++  FORBIDDEN_ENDPOINT(6),
++
++  /** The account+password doesn't work anymore, and returns forbidden by Signal server */
++  FORBIDDEN_PASSWORD(7);
++
++  companion object {
++    fun fromValue(value: Int): RegistrationStatus? {
++      return entries.firstOrNull { it.value == value }
++    }
++  }
++}
++
++fun ConnectionResult?.toRegistrationStatus(): RegistrationStatus = when (this) {
++  ConnectionResult.OK -> RegistrationStatus.REGISTERED
++  ConnectionResult.INTERNAL_ERROR -> RegistrationStatus.SERVER_ERROR
++  ConnectionResult.FORBIDDEN -> RegistrationStatus.FORBIDDEN_PASSWORD
++  ConnectionResult.INVALID_UUID -> RegistrationStatus.FORBIDDEN_UUID
++  ConnectionResult.INVALID_ENDPOINT -> RegistrationStatus.FORBIDDEN_ENDPOINT
++  null -> RegistrationStatus.BAD_RESPONSE
++}
+diff --git a/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt b/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..604075eb408405245491a891704541e1364ab290
+--- /dev/null
++++ b/app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt
+@@ -0,0 +1,124 @@
++package im.molly.unifiedpush.receiver
++
++import android.content.Context
++import androidx.core.os.bundleOf
++import com.google.firebase.messaging.RemoteMessage
++import im.molly.unifiedpush.UnifiedPushNotificationBuilder
++import org.signal.core.util.concurrent.SignalExecutors
++import org.signal.core.util.logging.Log
++import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.gcm.FcmFetchManager
++import org.thoughtcrime.securesms.gcm.FcmReceiveService
++import org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJob
++import org.thoughtcrime.securesms.keyvalue.SignalStore
++import org.thoughtcrime.securesms.service.KeyCachingService
++import org.thoughtcrime.securesms.util.TextSecurePreferences
++import org.thoughtcrime.securesms.util.concurrent.SerialMonoLifoExecutor
++import org.unifiedpush.android.connector.FailedReason
++import org.unifiedpush.android.connector.MessagingReceiver
++import org.unifiedpush.android.connector.UnifiedPush
++import org.unifiedpush.android.connector.data.PushEndpoint
++import org.unifiedpush.android.connector.data.PushMessage
++
++class UnifiedPushReceiver : MessagingReceiver() {
++
++  companion object {
++    private val TAG = Log.tag(UnifiedPushReceiver::class.java)
++  }
++
++  private val executor = SerialMonoLifoExecutor(SignalExecutors.UNBOUNDED)
++
++  private val appLocked
++    get() = KeyCachingService.isLocked()
++
++  override fun onNewEndpoint(context: Context, endpoint: PushEndpoint, instance: String) {
++    Log.i(TAG, "onNewEndpoint($instance)")
++    if (!appLocked) {
++      if (refreshEndpoint(endpoint.url) && SignalStore.unifiedpush.airGapped) {
++        updateLastReceivedTime(0)
++        UnifiedPushNotificationBuilder(context).setNotificationEndpointChangedAirGapped()
++      }
++    }
++  }
++
++  override fun onRegistrationFailed(context: Context, reason: FailedReason, instance: String) {
++    // called when the registration is not possible, eg. no network
++    Log.w(TAG, "onRegistrationFailed($instance)")
++    if (!appLocked) {
++      // TODO when `reason` is INTERNAL_ERROR, try to register again _one time_
++      // TODO when `reason` is ACTION_REQUIRED, tell the distributor requires a user interaction
++      // TODO when `reason` is NETWORK, tell to try again when network is back, or implement it.
++      UnifiedPushNotificationBuilder(context).setNotificationRegistrationFailed()
++    }
++  }
++
++  override fun onUnregistered(context: Context, instance: String) {
++    // called when this application is unregistered from receiving push messages
++    // isPushAvailable becomes false => The websocket starts
++    Log.i(TAG, "onUnregistered($instance)")
++    UnifiedPush.forceRemoveDistributor(context)
++    if (!appLocked) {
++      refreshEndpoint(null)
++    }
++  }
++
++  override fun onMessage(context: Context, message: PushMessage, instance: String) {
++    val msg = message.content.toString(Charsets.UTF_8)
++
++    if (appLocked) {
++      onMessageLocked(context, msg)
++    } else {
++      updateLastReceivedTime(System.currentTimeMillis())
++      onMessageUnlocked(context, msg)
++    }
++  }
++
++  private fun onMessageLocked(context: Context, message: String) {
++    when {
++      // We look directly in the message to avoid its deserialization
++      message.contains("\"urgent\":true") -> {
++        if (TextSecurePreferences.isPassphraseLockNotificationsEnabled(context)) {
++          Log.d(TAG, "New urgent message received while app is locked.")
++          FcmFetchManager.postMayHaveMessagesNotification(context)
++        }
++      }
++    }
++  }
++
++  private fun onMessageUnlocked(context: Context, message: String) {
++    when {
++      message.contains("\"test\":true") -> {
++        Log.d(TAG, "Test message received.")
++        UnifiedPushNotificationBuilder(context).setNotificationTest()
++        AppDependencies.jobManager.add(UnifiedPushRefreshJob(testPing = false, fromNewEndpoint = true))
++      }
++
++      else -> {
++        if (SignalStore.account.isRegistered && SignalStore.unifiedpush.enabled) {
++          Log.d(TAG, "New message")
++          executor.enqueue {
++            FcmReceiveService.handleReceivedNotification(context, RemoteMessage(bundleOf("google.delivered_priority" to "high")))
++          }
++        }
++      }
++    }
++  }
++
++  private fun updateLastReceivedTime(timestamp: Long) {
++    SignalStore.unifiedpush.lastReceivedTime = timestamp
++  }
++
++  /**
++   * Update UnifiedPush endpoint
++   *
++   * @return `true` if the endpoint has been updated, `false` if the endpoint is the same
++   */
++  private fun refreshEndpoint(endpoint: String?): Boolean {
++    val stored = SignalStore.unifiedpush.endpoint
++    return if (endpoint != stored) {
++      SignalStore.unifiedpush.endpoint = endpoint
++      AppDependencies.jobManager.add(UnifiedPushRefreshJob(testPing = false, fromNewEndpoint = true))
++      true
++    } else false
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/events/PushServiceEvent.kt b/app/src/main/java/org/thoughtcrime/securesms/events/PushServiceEvent.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..f25eb309b0e68928f7458269c03e905d432402fe
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/events/PushServiceEvent.kt
+@@ -0,0 +1,3 @@
++package org.thoughtcrime.securesms.events
++
++data object PushServiceEvent
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
+index a746ea88d2d66f43c289943fc342c9639fa3c543..f59a2ff52f02b9e62e3b7d9146cd02180d2b02b5 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchManager.kt
+@@ -20,7 +20,6 @@ import org.thoughtcrime.securesms.jobs.MessageFetchJob
+ import org.thoughtcrime.securesms.messages.WebSocketDrainer
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+ import org.thoughtcrime.securesms.notifications.NotificationIds
+-import org.thoughtcrime.securesms.util.RemoteConfig
+ import org.thoughtcrime.securesms.util.SignalLocalMetrics
+ import org.thoughtcrime.securesms.util.concurrent.SerialMonoLifoExecutor
+ import kotlin.time.Duration.Companion.minutes
+@@ -58,7 +57,7 @@ object FcmFetchManager {
+     }
+ 
+   @Volatile
+-  private var activeCount = 0
++  private var last = 0L
+ 
+   @Volatile
+   private var highPriority = false
+@@ -80,9 +79,12 @@ object FcmFetchManager {
+     }
+   }
+ 
+-  private fun postMayHaveMessagesNotification(context: Context) {
+-    if (RemoteConfig.fcmMayHaveMessagesNotificationKillSwitch) {
+-      Log.w(TAG, "May have messages notification kill switch")
++  @JvmStatic
++  fun postMayHaveMessagesNotification(context: Context) {
++    val notificationManager = NotificationManagerCompat.from(context)
++
++    if (notificationManager.getNotificationChannel(NotificationChannels.ADDITIONAL_MESSAGE_NOTIFICATIONS) == null) {
++      Log.e(TAG, "Notification channel for MAY_HAVE_MESSAGES_NOTIFICATION does not exist.")
+       return
+     }
+ 
+@@ -91,10 +93,9 @@ object FcmFetchManager {
+       return
+     }
+ 
+-    Log.w(TAG, "Notifying the user that they may have new messages.")
+-
+-    val mayHaveMessagesNotification: Notification = NotificationCompat.Builder(context, NotificationChannels.getInstance().ADDITIONAL_MESSAGE_NOTIFICATIONS)
++    val mayHaveMessagesNotification: Notification = NotificationCompat.Builder(context, NotificationChannels.ADDITIONAL_MESSAGE_NOTIFICATIONS)
+       .setSmallIcon(R.drawable.ic_notification)
++      .setColor(ContextCompat.getColor(context, R.color.core_ultramarine))
+       .setContentTitle(context.getString(R.string.FcmFetchManager__you_may_have_messages))
+       .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+       .setContentIntent(PendingIntent.getActivity(context, 0, MainActivity.clearTop(context), mutable()))
+@@ -102,7 +103,7 @@ object FcmFetchManager {
+       .setOnlyAlertOnce(true)
+       .build()
+ 
+-    NotificationManagerCompat.from(context)
++    notificationManager
+       .notify(NotificationIds.MAY_HAVE_MESSAGES_NOTIFICATION_ID, mayHaveMessagesNotification)
+   }
+ 
+@@ -111,7 +112,7 @@ object FcmFetchManager {
+     NotificationManagerCompat.from(context).cancel(NotificationIds.MAY_HAVE_MESSAGES_NOTIFICATION_ID)
+   }
+ 
+-  private fun fetch(context: Context) {
++  private fun fetch(context: Context, now: Long) {
+     val hasHighPriorityContext = highPriority
+ 
+     val metricId = SignalLocalMetrics.PushWebsocketFetch.startFetch()
+@@ -127,9 +128,8 @@ object FcmFetchManager {
+     }
+ 
+     synchronized(this) {
+-      activeCount--
+ 
+-      if (activeCount <= 0) {
++      if (last <= now) {
+         Log.i(TAG, "No more active. Stopping.")
+         context.stopService(Intent(context, FcmFetchBackgroundService::class.java))
+         FcmFetchForegroundService.stopServiceIfNecessary(context)
+@@ -150,13 +150,9 @@ object FcmFetchManager {
+       if (highPriority) {
+         this.highPriority = true
+       }
+-      val performedReplace = EXECUTOR.enqueue { fetch(context) }
+-      if (performedReplace) {
+-        Log.i(TAG, "Already have one running and one enqueued. Ignoring.")
+-      } else {
+-        activeCount++
+-        Log.i(TAG, "Incrementing active count to $activeCount")
+-      }
++      last = System.nanoTime()
++      Log.i(TAG, "Updating last event to $last")
++      EXECUTOR.enqueue { fetch(context, last) }
+     }
+   }
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmJobService.java b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmJobService.java
+index 8b600c0e21980d3724e160a14461951857dff0f6..55b868f9253792831c7b3036f7c62511e7f3aeac 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmJobService.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmJobService.java
+@@ -11,8 +11,8 @@ import androidx.annotation.RequiresApi;
+ 
+ import org.signal.core.util.concurrent.SignalExecutors;
+ import org.signal.core.util.logging.Log;
+-import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.messages.WebSocketDrainer;
++import org.thoughtcrime.securesms.service.KeyCachingService;
+ import org.signal.core.util.AppForegroundObserver;
+ import org.signal.core.util.ServiceUtil;
+ 
+@@ -40,8 +40,8 @@ public class FcmJobService extends JobService {
+   public boolean onStartJob(JobParameters params) {
+     Log.d(TAG, "onStartJob()");
+ 
+-    if (AppForegroundObserver.isForegrounded()) {
+-      Log.i(TAG, "App is foregrounded. No need to run.");
++    if (KeyCachingService.isLocked() || AppForegroundObserver.isForegrounded()) {
++      Log.i(TAG, "App is locked or foregrounded. No need to run.");
+       return false;
+     }
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java
+index 8d6d40eef055a7e1c6e1621eb8d29f60e5d66184..601b9c6eba625cc25615156ddb4d57e27a50ec86 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmReceiveService.java
+@@ -15,8 +15,10 @@ import org.thoughtcrime.securesms.jobs.FcmRefreshJob;
+ import org.thoughtcrime.securesms.jobs.SubmitRateLimitPushChallengeJob;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ import org.thoughtcrime.securesms.registration.fcm.PushChallengeRequest;
++import org.thoughtcrime.securesms.service.KeyCachingService;
+ import org.thoughtcrime.securesms.util.NetworkUtil;
+ import org.thoughtcrime.securesms.util.SignalLocalMetrics;
++import org.thoughtcrime.securesms.util.TextSecurePreferences;
+ 
+ import java.util.Locale;
+ 
+@@ -25,7 +27,16 @@ public class FcmReceiveService extends FirebaseMessagingService {
+   private static final String TAG = Log.tag(FcmReceiveService.class);
+ 
+   @Override
+-  public void onMessageReceived(RemoteMessage remoteMessage) {
++  public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
++    if (KeyCachingService.isLocked()) {
++      if (remoteMessage.getPriority() == RemoteMessage.PRIORITY_HIGH &&
++          TextSecurePreferences.isPassphraseLockNotificationsEnabled(this)) {
++        Log.d(TAG, "New urgent message received while app is locked.");
++        FcmFetchManager.postMayHaveMessagesNotification(this);
++      }
++      return;
++    }
++
+     Log.i(TAG, String.format(Locale.US,
+                              "onMessageReceived() ID: %s, Delay: %d (Server offset: %d), Priority: %d, Original Priority: %d, Network: %s",
+                              remoteMessage.getMessageId(),
+@@ -52,14 +63,23 @@ public class FcmReceiveService extends FirebaseMessagingService {
+ 
+   @Override
+   public void onDeletedMessages() {
++    if (KeyCachingService.isLocked()) {
++      return;
++    }
++
+     Log.w(TAG, "onDeleteMessages() -- Messages may have been dropped. Doing a normal message fetch.");
+     handleReceivedNotification(AppDependencies.getApplication(), null);
+   }
+ 
+   @Override
+-  public void onNewToken(String token) {
++  public void onNewToken(@NonNull String token) {
+     Log.i(TAG, "onNewToken()");
+ 
++    if (KeyCachingService.isLocked()) {
++      TextSecurePreferences.setShouldRefreshFcmToken(AppDependencies.getApplication(), true);
++      return;
++    }
++
+     if (!SignalStore.account().isRegistered()) {
+       Log.i(TAG, "Got a new FCM token, but the user isn't registered.");
+       return;
+@@ -78,7 +98,8 @@ public class FcmReceiveService extends FirebaseMessagingService {
+     Log.w(TAG, "onSendError()", e);
+   }
+ 
+-  private static void handleReceivedNotification(Context context, @Nullable RemoteMessage remoteMessage) {
++  // MOLLY: Make this function public to use it from UnifiedPushReceiver
++  public static void handleReceivedNotification(Context context, @Nullable RemoteMessage remoteMessage) {
+     boolean highPriority = remoteMessage != null && remoteMessage.getPriority() == RemoteMessage.PRIORITY_HIGH;
+     try {
+       Log.d(TAG, String.format(Locale.US, "[handleReceivedNotification] API: %s, RemoteMessagePriority: %s", Build.VERSION.SDK_INT, remoteMessage != null ? remoteMessage.getPriority() : "n/a"));
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmUtil.java b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmUtil.java
+index 359c0656213f37184a99e5ff5f694ac93fb0b7c5..445c56d9fc23a2b1e38debfd3aefcb667d94adfd 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmUtil.java
+@@ -5,12 +5,17 @@ import android.text.TextUtils;
+ 
+ import androidx.annotation.WorkerThread;
+ 
++import com.google.android.gms.common.ConnectionResult;
++import com.google.android.gms.common.GooglePlayServicesUtil;
+ import com.google.android.gms.tasks.Tasks;
+ import com.google.firebase.FirebaseApp;
++import com.google.firebase.installations.FirebaseInstallations;
++import com.google.firebase.installations.FirebaseInstallationsException;
+ import com.google.firebase.messaging.FirebaseMessaging;
+ 
+ import org.signal.core.util.logging.Log;
+ 
++import java.io.IOException;
+ import java.util.Optional;
+ import java.util.concurrent.ExecutionException;
+ 
+@@ -23,9 +28,16 @@ public final class FcmUtil {
+    */
+   @WorkerThread
+   public static Optional<String> getToken(Context context) {
++    if (GooglePlayServicesUtil.isGooglePlayServicesAvailable(context) == ConnectionResult.SUCCESS) {
++      return getTokenWithoutAvailCheck(context);
++    }
++    return Optional.empty();
++  }
++
++  @WorkerThread
++  public static Optional<String> getTokenWithoutAvailCheck(Context context) {
+     String token = null;
+ 
+-    // Must be called manually if running outside of main process
+     FirebaseApp.initializeApp(context);
+ 
+     try {
+@@ -38,4 +50,23 @@ public final class FcmUtil {
+ 
+     return Optional.ofNullable(TextUtils.isEmpty(token) ? null : token);
+   }
++
++  @WorkerThread
++  public static void deleteFirebaseInstallationId(Context context) throws IOException {
++    FirebaseApp firebaseApp = FirebaseApp.initializeApp(context);
++
++    if (firebaseApp != null) {
++      try {
++        Tasks.await(FirebaseInstallations.getInstance(firebaseApp).delete());
++      } catch (InterruptedException e) {
++        Log.w(TAG, "FID deletion interrupted");
++      } catch (ExecutionException e) {
++        Throwable cause = e.getCause();
++        Log.w(TAG, "Failed to delete FID", cause);
++        if (cause instanceof FirebaseInstallationsException) {
++          throw new IOException(cause);
++        }
++      }
++    }
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt b/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..4dca4616dff449267c496afa84ae892aa2323811
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/UnifiedPushRefreshJob.kt
+@@ -0,0 +1,264 @@
++package org.thoughtcrime.securesms.jobs
++
++import im.molly.unifiedpush.MollySocketRepository
++import im.molly.unifiedpush.UnifiedPushDistributor
++import im.molly.unifiedpush.UnifiedPushNotificationBuilder
++import im.molly.unifiedpush.model.LinkStatus
++import im.molly.unifiedpush.model.MollySocketDevice
++import im.molly.unifiedpush.model.RegistrationStatus
++import im.molly.unifiedpush.model.toRegistrationStatus
++import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
++import org.greenrobot.eventbus.EventBus
++import org.signal.core.util.logging.Log
++import org.signal.network.exceptions.NonSuccessfulResponseCodeException
++import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.events.PushServiceEvent
++import org.thoughtcrime.securesms.jobmanager.Job
++import org.thoughtcrime.securesms.jobmanager.JsonJobData
++import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint
++import org.thoughtcrime.securesms.keyvalue.SignalStore
++import org.whispersystems.signalservice.internal.push.DeviceLimitExceededException
++import java.io.IOException
++import java.util.concurrent.TimeUnit
++
++/**
++ * Handles UnifiedPush registration and ensures the MollySocket status is up-to-date.
++ * Unregisters if the account is not registered or UnifiedPush is disabled.
++ *
++ * @param testPing Send a ping notification with the registration.
++ *   Used during first registration to a new MollySocket server.
++ * @param fromNewEndpoint Avoid registration cycle: if the Job is run from
++ *   the receiver "onNewEndpoint", it will not register to the distributor.
++ */
++class UnifiedPushRefreshJob private constructor(
++  private val testPing: Boolean,
++  private val fromNewEndpoint: Boolean,
++  parameters: Parameters,
++) : BaseJob(parameters) {
++
++  constructor() : this(testPing = false)
++
++  constructor(testPing: Boolean) : this(testPing = testPing, fromNewEndpoint = false)
++
++  constructor(testPing: Boolean, fromNewEndpoint: Boolean) : this(
++    testPing = testPing,
++    fromNewEndpoint = fromNewEndpoint,
++    parameters = Parameters.Builder()
++      .setQueue(FcmRefreshJob.QUEUE_KEY)
++      .addConstraint(NetworkConstraint.KEY)
++      .setMaxAttempts(3)
++      .setLifespan(TimeUnit.HOURS.toMillis(6))
++      .setMaxInstancesForFactory(2)
++      .build()
++  )
++
++  @Throws(Exception::class)
++  public override fun onRun() {
++    val hasAccount = SignalStore.account.isRegistered
++    val enabled = SignalStore.unifiedpush.enabled
++    val currentStatus = SignalStore.unifiedpush.registrationStatus
++
++    Log.d(TAG, "Current registration status: $currentStatus")
++
++    if (!hasAccount) {
++      Log.w(TAG, "User is not registered. Skipping.")
++      return
++    }
++
++    if (!enabled) {
++      Log.d(TAG, "UnifiedPush is disabled.")
++      cleanupMollySocketDevice()
++      return
++    }
++
++    try {
++      validateMollySocketDevice()
++
++      val newStatus = checkRegistrationStatus()
++      if (currentStatus == newStatus) {
++        Log.d(TAG, "Registration status unchanged.")
++      } else {
++        Log.d(TAG, "Updated registration status: $newStatus")
++        SignalStore.unifiedpush.registrationStatus = newStatus
++      }
++
++      when (newStatus) {
++        RegistrationStatus.REGISTERED -> UnifiedPushNotificationBuilder(context).clearAlerts()
++        RegistrationStatus.FORBIDDEN_ENDPOINT -> UnifiedPushNotificationBuilder(context).setNotificationMollySocketForbiddenEndpoint()
++        RegistrationStatus.FORBIDDEN_UUID -> UnifiedPushNotificationBuilder(context).setNotificationMollySocketForbiddenUuid()
++        RegistrationStatus.FORBIDDEN_PASSWORD -> UnifiedPushNotificationBuilder(context).setNotificationMollySocketForbiddenPassword()
++        else -> {}
++      }
++    } catch (t: Throwable) {
++      Log.e(TAG, "Error checking registration status", t)
++
++      if (currentStatus != RegistrationStatus.REGISTERED) {
++        SignalStore.unifiedpush.registrationStatus = RegistrationStatus.UNKNOWN
++      }
++
++      // Re-throw the exception as IOException for retry
++      when (t) {
++        is IOException -> throw t
++        else -> throw IOException(t)
++      }
++    } finally {
++      AppDependencies.resetNetwork(restartMessageObserver = true)
++      EventBus.getDefault().post(PushServiceEvent)
++    }
++  }
++
++  @Throws(IOException::class)
++  private fun checkRegistrationStatus(): RegistrationStatus {
++    val endpoint = SignalStore.unifiedpush.endpoint
++    val airGapped = SignalStore.unifiedpush.airGapped
++    val mollySocketUrl = SignalStore.unifiedpush.mollySocketUrl?.toHttpUrlOrNull()
++    val lastReceivedTime = SignalStore.unifiedpush.lastReceivedTime
++    val vapid = SignalStore.unifiedpush.vapidPublicKey
++
++    Log.d(TAG, "Last notification received at: $lastReceivedTime")
++
++    if (vapid == null) {
++      Log.e(TAG, "Missing VAPID public key.")
++      return RegistrationStatus.PENDING
++    }
++
++    if (!fromNewEndpoint) {
++      UnifiedPushDistributor.registerApp(vapid)
++    }
++
++    if (!UnifiedPushDistributor.checkIfActive() || endpoint == null) {
++      Log.e(TAG, "Distributor is not active or endpoint is missing.")
++      return RegistrationStatus.PENDING
++    }
++
++    if (!airGapped && mollySocketUrl == null) {
++      Log.e(TAG, "Missing MollySocket URL.")
++      return RegistrationStatus.PENDING
++    }
++
++    val device = SignalStore.unifiedpush.device ?: try {
++      MollySocketRepository.createDevice().also { newDevice ->
++        SignalStore.unifiedpush.device = newDevice
++        SignalStore.unifiedpush.vapidKeySynced = true
++        Log.d(TAG, "Created new MollySocket device: $newDevice")
++      }
++    } catch (e: DeviceLimitExceededException) {
++      Log.e(TAG, "Device limit exceeded: ${e.max} total devices already.")
++      UnifiedPushNotificationBuilder(context).setNotificationDeviceLimitExceeded(e.max)
++      return RegistrationStatus.PENDING
++    }
++
++    if (airGapped) {
++      return if (lastReceivedTime > 0) {
++        Log.d(TAG, "Air-gapped server: Device is registered.")
++        RegistrationStatus.REGISTERED
++      } else {
++        Log.d(TAG, "Air gapped server: Manual registration required!")
++        RegistrationStatus.PENDING
++      }
++    }
++
++    Log.d(TAG, "Re-registering $device on MollySocket server...")
++
++    val result = MollySocketRepository.registerDeviceOnServer(
++      url = mollySocketUrl!!,
++      device = device,
++      endpoint = endpoint,
++      ping = testPing,
++    )
++
++    Log.d(TAG, "Registration result: $result")
++
++    return result.toRegistrationStatus()
++  }
++
++  @Throws(IOException::class)
++  private fun validateMollySocketDevice() {
++    val device = SignalStore.unifiedpush.device ?: return
++    val vapidSynced = SignalStore.unifiedpush.vapidKeySynced
++
++    when (MollySocketRepository.getDeviceStatus(device)) {
++      LinkStatus.LINKED -> {
++        if (!vapidSynced) {
++          Log.w(TAG, "VAPID key mismatch, will remove previous linked $device.")
++          removeAndClearDevice(device)
++        }
++      }
++
++      LinkStatus.NOT_LINKED -> {
++        Log.w(TAG, "$device no longer linked, will be recreated.")
++        clearDevice()
++      }
++
++      LinkStatus.UNKNOWN -> {
++        if (!vapidSynced) {
++          throw IOException("VAPID key mismatch, but cannot determine $device link status.")
++        }
++        return // Optimistically assume the device is linked
++      }
++    }
++  }
++
++  @Throws(IOException::class)
++  private fun cleanupMollySocketDevice() {
++    if (SignalStore.unifiedpush.airGapped) {
++      Log.d(TAG, "MollySocket is air-gapped, cleanup skipped.")
++      return
++    }
++
++    val device = SignalStore.unifiedpush.device ?: return
++    Log.d(TAG, "Cleaning up non-air-gapped $device...")
++
++    when (MollySocketRepository.getDeviceStatus(device)) {
++      LinkStatus.LINKED -> removeAndClearDevice(device)
++      LinkStatus.NOT_LINKED -> clearDevice()
++      LinkStatus.UNKNOWN -> {
++        throw IOException("Cannot determine $device link status during cleanup.")
++      }
++    }
++  }
++
++  @Throws(IOException::class)
++  private fun removeAndClearDevice(device: MollySocketDevice) {
++    MollySocketRepository.removeDevice(device)
++    clearDevice()
++  }
++
++  private fun clearDevice() {
++    SignalStore.unifiedpush.device = null
++  }
++
++  override fun onFailure() = Unit
++
++  public override fun onShouldRetry(throwable: Exception): Boolean {
++    return throwable !is NonSuccessfulResponseCodeException
++  }
++
++  override fun serialize(): ByteArray? {
++    return JsonJobData.Builder()
++      .putBoolean(KEY_PING, testPing)
++      .putBoolean(KEY_FROM_NEW_ENDPOINT, fromNewEndpoint)
++      .serialize()
++  }
++
++  override fun getFactoryKey(): String = KEY
++
++  class Factory : Job.Factory<UnifiedPushRefreshJob?> {
++    override fun create(parameters: Parameters, serializedData: ByteArray?): UnifiedPushRefreshJob {
++      val data = JsonJobData.deserialize(serializedData)
++      return UnifiedPushRefreshJob(
++        testPing = data.getBoolean(KEY_PING),
++        fromNewEndpoint = data.getBoolean(KEY_FROM_NEW_ENDPOINT),
++        parameters = parameters,
++      )
++    }
++  }
++
++  companion object {
++    private val TAG = Log.tag(UnifiedPushRefreshJob::class.java)
++
++    const val KEY = "UnifiedPushRefreshJob"
++    private const val KEY_PING = "ping"
++    private const val KEY_FROM_NEW_ENDPOINT = "fromNewEndpoint"
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..f12d279d7e29b9d5c8f652561f06c5b93add9b3f
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushValues.kt
+@@ -0,0 +1,68 @@
++package org.thoughtcrime.securesms.keyvalue
++
++import im.molly.unifiedpush.model.MollySocketDevice
++import im.molly.unifiedpush.model.RegistrationStatus
++import org.signal.core.util.logging.Log
++
++class UnifiedPushValues(store: KeyValueStore) : SignalStoreValues(store) {
++
++  companion object {
++    private val TAG = Log.tag(UnifiedPushValues::class)
++
++    private const val MOLLYSOCKET_DEVICE_ID = "mollysocket.deviceId"
++    private const val MOLLYSOCKET_PASSWORD = "mollysocket.passwd"
++    private const val MOLLYSOCKET_STATUS = "mollysocket.status"
++    private const val MOLLYSOCKET_AIR_GAPPED = "mollysocket.airGapped"
++    private const val MOLLYSOCKET_URL = "mollysocket.url"
++    private const val MOLLYSOCKET_VAPID = "mollysocket.vapid"
++    private const val MOLLYSOCKET_VAPID_SYNCED = "mollysocket.vapid.synced"
++    private const val UNIFIEDPUSH_ENABLED = "up.enabled"
++    private const val UNIFIEDPUSH_ENDPOINT = "up.endpoint"
++    private const val UNIFIEDPUSH_LAST_RECEIVED_TIME = "up.lastRecvTime"
++  }
++
++  public override fun onFirstEverAppLaunch() = Unit
++
++  public override fun getKeysToIncludeInBackup() = emptyList<String>()
++
++  @get:JvmName("isEnabled")
++  var enabled: Boolean by booleanValue(UNIFIEDPUSH_ENABLED, false)
++
++  var device: MollySocketDevice?
++    get() {
++      return MollySocketDevice(
++        deviceId = getInteger(MOLLYSOCKET_DEVICE_ID, 0),
++        password = getString(MOLLYSOCKET_PASSWORD, null) ?: return null,
++      )
++    }
++    set(device) {
++      store.beginWrite()
++        .putInteger(MOLLYSOCKET_DEVICE_ID, device?.deviceId ?: 0)
++        .putString(MOLLYSOCKET_PASSWORD, device?.password)
++        .apply()
++    }
++
++  fun isMollySocketDevice(deviceId: Int): Boolean =
++    deviceId != 0 && getInteger(MOLLYSOCKET_DEVICE_ID, 0) == deviceId
++
++  var registrationStatus: RegistrationStatus
++    get() = RegistrationStatus.fromValue(getInteger(MOLLYSOCKET_STATUS, -1)) ?: RegistrationStatus.UNKNOWN
++    set(status) {
++      putInteger(MOLLYSOCKET_STATUS, status.value)
++    }
++
++  var endpoint: String? by stringValue(UNIFIEDPUSH_ENDPOINT, null)
++
++  var airGapped: Boolean by booleanValue(MOLLYSOCKET_AIR_GAPPED, false)
++
++  var mollySocketUrl: String? by stringValue(MOLLYSOCKET_URL, null)
++
++  var vapidPublicKey:  String? by stringValue(MOLLYSOCKET_VAPID, null)
++
++  var vapidKeySynced: Boolean by booleanValue(MOLLYSOCKET_VAPID_SYNCED, true)
++
++  var lastReceivedTime: Long by longValue(UNIFIEDPUSH_LAST_RECEIVED_TIME, 0)
++
++  val isAvailableOrAirGapped: Boolean
++    get() = enabled && registrationStatus == RegistrationStatus.REGISTERED
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/LocaleChangedReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/LocaleChangedReceiver.java
+index 3347e31e566827f095d8ec7f5e2eac69aa6a6d0a..539f675f1352999266dbcf05823d5ae06e0d1475 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/LocaleChangedReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/LocaleChangedReceiver.java
+@@ -5,12 +5,17 @@ import android.content.Context;
+ import android.content.Intent;
+ 
+ import org.thoughtcrime.securesms.jobs.EmojiSearchIndexDownloadJob;
++import org.thoughtcrime.securesms.service.KeyCachingService;
++import org.thoughtcrime.securesms.util.DateUtils;
+ 
+ public class LocaleChangedReceiver extends BroadcastReceiver {
+ 
+   @Override
+   public void onReceive(Context context, Intent intent) {
+-    NotificationChannels.getInstance().onLocaleChanged();
+-    EmojiSearchIndexDownloadJob.scheduleImmediately();
++    DateUtils.updateFormat();
++    if (!KeyCachingService.isLocked()) {
++      NotificationChannels.getInstance().onLocaleChanged();
++      EmojiSearchIndexDownloadJob.scheduleImmediately();
++    }
+   }
+ }
+
+--------------false--
+
+

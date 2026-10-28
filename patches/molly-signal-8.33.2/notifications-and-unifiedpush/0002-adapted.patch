@@ -1,0 +1,1034 @@
+From 15960488d06cc4e4d461110c7c90c19b2b573d1f Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly notifications-and-unifiedpush adapted, part
+ 2
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+UnifiedPush/MollySocket, optional push-service selection and notification delivery/presentation.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, at least one endpoint differs from
+its corresponding origin entry. This includes changed upstream
+inputs, merged results and newly introduced port changes.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: adapted
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+index 2596ca448e7ff43a3681f215b0701ce1aedf15a0..9ed577d80f5366a2322f8fb1910fe594cf265e68 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsFragment.kt
+@@ -10,16 +10,20 @@ import android.widget.Toast
+ import androidx.activity.result.ActivityResultCallback
+ import androidx.activity.result.ActivityResultLauncher
+ import androidx.activity.result.contract.ActivityResultContract
++import androidx.activity.result.launch
+ import androidx.compose.foundation.background
+ import androidx.compose.foundation.layout.Box
+ import androidx.compose.foundation.layout.Spacer
+ import androidx.compose.foundation.layout.padding
+ import androidx.compose.foundation.layout.size
+ import androidx.compose.foundation.lazy.LazyColumn
++import androidx.compose.foundation.lazy.rememberLazyListState
+ import androidx.compose.foundation.shape.CircleShape
++import androidx.compose.material3.Icon
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
+ import androidx.compose.runtime.getValue
+ import androidx.compose.runtime.mutableStateOf
+ import androidx.compose.runtime.remember
+@@ -28,6 +32,7 @@ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.res.colorResource
++import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringArrayResource
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.unit.dp
+@@ -37,8 +42,17 @@ import androidx.lifecycle.Lifecycle
+ import androidx.lifecycle.compose.collectAsStateWithLifecycle
+ import androidx.lifecycle.lifecycleScope
+ import androidx.lifecycle.repeatOnLifecycle
++import androidx.lifecycle.withStateAtLeast
+ import androidx.navigation.fragment.findNavController
++import androidx.navigation.fragment.navArgs
++import com.google.android.gms.common.ConnectionResult
++import com.google.android.material.dialog.MaterialAlertDialogBuilder
++import im.molly.unifiedpush.UnifiedPushDefaultDistributorLinkActivity
++import im.molly.unifiedpush.components.settings.app.notifications.MollySocketQrScannerActivity
+ import kotlinx.coroutines.launch
++import org.greenrobot.eventbus.EventBus
++import org.greenrobot.eventbus.Subscribe
++import org.greenrobot.eventbus.ThreadMode
+ import org.signal.core.ui.BottomSheetUtil
+ import org.signal.core.ui.compose.ComposeFragment
+ import org.signal.core.ui.compose.DayNightPreviews
+@@ -56,8 +70,12 @@ import org.thoughtcrime.securesms.components.PromptBatterySaverDialogFragment
+ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRoute
+ import org.thoughtcrime.securesms.components.settings.app.routes.AppSettingsRouter
+ import org.thoughtcrime.securesms.components.settings.models.Banner
++import org.thoughtcrime.securesms.conversation.v2.registerForLifecycle
++import org.thoughtcrime.securesms.events.PushServiceEvent
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+ import org.thoughtcrime.securesms.notifications.TurnOnNotificationsBottomSheet
++import org.thoughtcrime.securesms.util.CommunicationActions
+ import org.thoughtcrime.securesms.util.RingtoneUtil
+ import org.thoughtcrime.securesms.util.navigation.safeNavigate
+ import org.signal.core.ui.R as CoreUiR
+@@ -72,6 +90,8 @@ class NotificationsSettingsFragment : ComposeFragment() {
+     AppSettingsRouter()
+   }
+ 
++  private val args: NotificationsSettingsFragmentArgs by navArgs()
++
+   private lateinit var callbacks: DefaultNotificationsSettingsCallbacks
+ 
+   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+@@ -87,6 +107,10 @@ class NotificationsSettingsFragment : ComposeFragment() {
+               findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_notificationProfilesFragment)
+             }
+ 
++            AppSettingsRoute.NotificationsRoute.UnifiedPushSettings -> {
++              findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_unifiedPushFragment)
++            }
++
+             AppSettingsRoute.NotificationsRoute.MutedNotifications -> {
+               findNavController().safeNavigate(R.id.action_notificationsSettingsFragment_to_mutedNotificationsFragment)
+             }
+@@ -96,6 +120,12 @@ class NotificationsSettingsFragment : ComposeFragment() {
+         }
+       }
+     }
++
++    if (savedInstanceState == null) {
++      viewModel.setPlayServicesErrorCode(args.playServicesErrorCode)
++    }
++
++    EventBus.getDefault().registerForLifecycle(subscriber = this, lifecycleOwner = viewLifecycleOwner)
+   }
+ 
+   override fun onResume() {
+@@ -103,6 +133,11 @@ class NotificationsSettingsFragment : ComposeFragment() {
+     viewModel.refresh()
+   }
+ 
++  @Subscribe(threadMode = ThreadMode.MAIN)
++  fun onPushServiceEvent(event: PushServiceEvent) {
++    viewModel.refresh()
++  }
++
+   @Composable
+   override fun FragmentContent() {
+     val state by viewModel.state.collectAsStateWithLifecycle()
+@@ -166,6 +201,35 @@ open class DefaultNotificationsSettingsCallbacks(
+     callback = {}
+   )
+ 
++  private val linkDefaultDistributorLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
++    contract = UnifiedPushDefaultDistributorLinkActivity.Contract(),
++    callback = { success ->
++      if (success != true) {
++        // If there are no distributors or
++        // if there are multiple distributors installed, but none of them follow the last
++        // specifications,
++        // we try to fall back to the first we found.
++        viewModel.selectFirstDistributor()
++      }
++      activity.lifecycleScope.launch {
++        activity.lifecycle.withStateAtLeast(Lifecycle.State.RESUMED) {
++          onNavigationUnifiedPushSettings()
++        }
++      }
++    }
++  )
++
++  private val qrScanLauncher: ActivityResultLauncher<Unit> = activityResultRegisterer.registerForActivityResult(
++    contract = MollySocketQrScannerActivity.Contract(),
++    callback = { mollySocket ->
++      if (mollySocket != null) {
++        viewModel.initializeMollySocket(mollySocket)
++        viewModel.setPreferredNotificationMethod(NotificationDeliveryMethod.UNIFIEDPUSH)
++        linkDefaultDistributorLauncher.launch()
++      }
++    }
++  )
++
+   override fun onTurnOnNotificationsActionClick() {
+     TurnOnNotificationsBottomSheet.turnOnSystemNotificationsFragment(activity).show(activity.supportFragmentManager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG)
+   }
+@@ -270,6 +334,70 @@ open class DefaultNotificationsSettingsCallbacks(
+     viewModel.setNotifyWhenContactJoinsSignal(enabled)
+   }
+ 
++  override fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) {
++    if (enabled && !isSupported) {
++      MaterialAlertDialogBuilder(activity)
++        .setMessage(R.string.NotificationsSettingsFragment__sorry_this_feature_requires_push_notifications_delivered_via_fcm_or_unifiedpush)
++        .setPositiveButton(android.R.string.ok, null)
++        .show()
++    } else {
++      viewModel.setNotifyWhileLocked(enabled)
++    }
++  }
++
++  override fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) {
++    val (previousMethod, method) = fromToMethods
++    when (method) {
++      NotificationDeliveryMethod.FCM -> viewModel.setPreferredNotificationMethod(method)
++      NotificationDeliveryMethod.WEBSOCKET -> viewModel.setPreferredNotificationMethod(method)
++      NotificationDeliveryMethod.UNIFIEDPUSH -> {
++        if (method != previousMethod) {
++          MaterialAlertDialogBuilder(activity)
++            .setTitle(R.string.NotificationsSettingsFragment__mollysocket_server)
++            .setMessage(R.string.NotificationsSettingsFragment__to_use_unifiedpush_you_need_access_to_a_mollysocket_server)
++            .setPositiveButton(R.string.AddLinkDeviceFragment__scan_qr_code) { _, _ ->
++              qrScanLauncher.launch()
++            }
++            .setNegativeButton(android.R.string.cancel, null)
++            .setNeutralButton(CoreUiR.string.LearnMoreTextView_learn_more) { _, _ ->
++              CommunicationActions.openBrowserLink(activity, activity.getString(R.string.mollysocket_setup_url))
++            }
++            .show()
++        } else {
++          onNavigationUnifiedPushSettings()
++        }
++      }
++    }
++  }
++
++  override fun onNavigationUnifiedPushSettings() {
++    appSettingsRouter.navigateTo(AppSettingsRoute.NotificationsRoute.UnifiedPushSettings)
++  }
++
++  override fun onPlayServicesError(errorCode: Int) {
++    val causeId = when (errorCode) {
++      ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED ->
++        R.string.NotificationsSettingsFragment__the_installed_version_of_google_play_services_on_this_device_is_outdated
++
++      ConnectionResult.SERVICE_UPDATING ->
++        R.string.RegistrationActivity_google_play_services_is_updating_or_unavailable
++
++      else -> R.string.NotificationsSettingsFragment__please_check_if_google_play_services_is_installed_and_enabled
++    }
++
++    MaterialAlertDialogBuilder(activity)
++      .setNegativeButton(android.R.string.ok, null)
++      .setMessage(
++        activity.getString(
++          R.string.NotificationsSettingsFragment__an_error_occurred_while_registering_for_push_notifications_s,
++          activity.getString(causeId)
++        )
++      )
++      .show()
++
++    viewModel.setPlayServicesErrorCode(null)
++  }
++
+   override fun onMutedClicked() {
+     appSettingsRouter.navigateTo(AppSettingsRoute.NotificationsRoute.MutedNotifications)
+   }
+@@ -308,6 +436,10 @@ interface NotificationsSettingsCallbacks {
+   fun setCallVibrateEnabled(enabled: Boolean) = Unit
+   fun onNavigationProfilesClick() = Unit
+   fun setNotifyWhenContactJoinsSignal(enabled: Boolean) = Unit
++  fun setNotifyNewActivityWhileLocked(enabled: Boolean, isSupported: Boolean) = Unit
++  fun onNotificationMethodChanged(fromToMethods: Pair<NotificationDeliveryMethod, NotificationDeliveryMethod>) = Unit
++  fun onNavigationUnifiedPushSettings() = Unit
++  fun onPlayServicesError(errorCode: Int) = Unit
+   fun onMutedClicked() = Unit
+   fun setReactionNotificationEnabled(enabled: Boolean) = Unit
+   fun setUnreadReminderEnabled(enabled: Boolean) = Unit
+@@ -341,7 +473,17 @@ fun NotificationsSettingsScreen(
+     onNavigationClick = callbacks::onNavigationClick,
+     navigationIcon = SignalIcons.ArrowStart.imageVector
+   ) {
++    val errorCode = state.playServicesErrorCode
++    val hasPlayServicesError = errorCode != null && errorCode != ConnectionResult.SUCCESS
++
++    LaunchedEffect(errorCode) {
++      if (hasPlayServicesError) {
++        callbacks.onPlayServicesError(errorCode)
++      }
++    }
++
+     LazyColumn(
++      state = rememberLazyListState(initialFirstVisibleItemIndex = if (hasPlayServicesError) 99 else 0),
+       modifier = Modifier.padding(it)
+     ) {
+       if (!state.messageNotificationsState.canEnableNotifications) {
+@@ -596,12 +738,96 @@ fun NotificationsSettingsScreen(
+       }
+ 
+       item {
++        Texts.SectionHeader(stringResource(R.string.NotificationsSettingsFragment__notify_when))
++      }
++
++      item {
++        Rows.ToggleRow(
++          text = stringResource(R.string.NotificationsSettingsFragment__new_activity_while_locked),
++          label = stringResource(R.string.NotificationsSettingsFragment__receive_notifications_for_messages_or_missed_calls_when_the_app_is_locked),
++          checked = state.notifyWhileLocked,
++          onCheckChanged = { enabled ->
++            callbacks.setNotifyNewActivityWhileLocked(enabled, state.canEnableNotifyWhileLocked)
++          }
++        )
++      }
++
++      item {
+         Rows.TextRow(
+           text = stringResource(R.string.NotificationsSettingsFragment__reset),
+           label = stringResource(R.string.NotificationsSettingsFragment__reset_notifications),
+           onClick = { showDialog = true }
+         )
+       }
++
++      item {
++        Dividers.Default()
++      }
++
++      item {
++        Texts.SectionHeader(stringResource(R.string.NotificationsSettingsFragment__push_notifications))
++      }
++
++      item {
++        Rows.TextRow(
++          text = {
++            Text(
++              text = stringResource(R.string.NotificationsSettingsFragment__select_your_preferred_service_for_push_notifications),
++              style = MaterialTheme.typography.bodyMedium,
++              color = MaterialTheme.colorScheme.onSurfaceVariant,
++            )
++          }
++        )
++      }
++
++      val notificationMethods = NotificationDeliveryMethod.entries.filter { method ->
++        when (method) {
++          NotificationDeliveryMethod.FCM -> true
++          NotificationDeliveryMethod.WEBSOCKET -> true
++          NotificationDeliveryMethod.UNIFIEDPUSH -> !state.isLinkedDevice
++        }
++      }
++
++      val showAlertIcon = when (state.preferredNotificationMethod) {
++        NotificationDeliveryMethod.FCM -> !state.canReceiveFcm
++        NotificationDeliveryMethod.WEBSOCKET -> false
++        NotificationDeliveryMethod.UNIFIEDPUSH -> !state.canReceiveUnifiedPush
++      }
++
++      item {
++        Rows.RadioListRow(
++          text = stringResource(R.string.NotificationsSettingsFragment__delivery_service),
++          labels = notificationMethods.map { method -> stringResource(method.stringId) }.toTypedArray(),
++          values = notificationMethods.map { method -> method.serialize() }.toTypedArray(),
++          selectedValue = state.preferredNotificationMethod.name,
++          trailingIcon = if (showAlertIcon) {
++            {
++              Icon(
++                painter = painterResource(android.R.drawable.ic_dialog_alert),
++                contentDescription = null,
++                tint = colorResource(R.color.signal_alert_primary)
++              )
++            }
++          } else {
++            null
++          },
++          onSelected = { selected ->
++            callbacks.onNotificationMethodChanged(
++              state.preferredNotificationMethod to NotificationDeliveryMethod.deserialize(selected)
++            )
++          },
++        )
++      }
++
++      if (!state.isLinkedDevice) {
++        item {
++          Rows.TextRow(
++            text = stringResource(R.string.NotificationsSettingsFragment__configure_unifiedpush),
++            enabled = state.preferredNotificationMethod == NotificationDeliveryMethod.UNIFIEDPUSH,
++            onClick = callbacks::onNavigationUnifiedPushSettings
++          )
++        }
++      }
+     }
+   }
+ }
+@@ -701,6 +927,13 @@ private fun rememberTestState(): NotificationsSettingsState = remember {
+       ringtone = Uri.EMPTY,
+       vibrateEnabled = true
+     ),
++    notifyWhileLocked = true,
++    canEnableNotifyWhileLocked = true,
++    isLinkedDevice = false,
++    preferredNotificationMethod = NotificationDeliveryMethod.UNIFIEDPUSH,
++    playServicesErrorCode = null,
++    canReceiveFcm = true,
++    canReceiveUnifiedPush = true,
+     notifyWhenContactJoinsSignal = true
+   )
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
+index 348d0ee23539fb287e3ef7f5d847cdec1858bc5a..1f9f427f20cfb7702df03701802c0b1b749d5802 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsState.kt
+@@ -1,10 +1,18 @@
+ package org.thoughtcrime.securesms.components.settings.app.notifications
+ 
+ import android.net.Uri
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
+ 
+ data class NotificationsSettingsState(
+   val messageNotificationsState: MessageNotificationsState,
+   val callNotificationsState: CallNotificationsState,
++  val notifyWhileLocked: Boolean,
++  val canEnableNotifyWhileLocked: Boolean,
++  val isLinkedDevice: Boolean,
++  val preferredNotificationMethod: NotificationDeliveryMethod,
++  val playServicesErrorCode: Int?,
++  val canReceiveFcm: Boolean,
++  val canReceiveUnifiedPush: Boolean,
+   val notifyWhenContactJoinsSignal: Boolean
+ )
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+index 3aeae751b2fea4500067fa47c23ceaab840ba5ff..44b16b58635c876e6a8bb2572bb051360b766804 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/notifications/NotificationsSettingsViewModel.kt
+@@ -6,6 +6,9 @@ import android.provider.Settings
+ import androidx.lifecycle.ViewModel
+ import androidx.lifecycle.ViewModelProvider
+ import androidx.lifecycle.viewModelScope
++import im.molly.unifiedpush.UnifiedPushDistributor
++import im.molly.unifiedpush.components.settings.app.notifications.updateMollySocket
++import im.molly.unifiedpush.model.MollySocket
+ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.flow.MutableStateFlow
+ import kotlinx.coroutines.flow.StateFlow
+@@ -14,6 +17,9 @@ import kotlinx.coroutines.launch
+ import org.signal.core.util.concurrent.SignalDispatchers
+ import org.signal.core.util.logging.Log
+ import org.thoughtcrime.securesms.database.SignalDatabase
++import org.thoughtcrime.securesms.ApplicationContext
++import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfig
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+@@ -22,6 +28,7 @@ import org.thoughtcrime.securesms.preferences.widgets.NotificationPrivacyPrefere
+ import org.thoughtcrime.securesms.recipients.Recipient
+ import org.thoughtcrime.securesms.recipients.RecipientForeverObserver
+ import org.thoughtcrime.securesms.storage.StorageSyncHelper
++import org.thoughtcrime.securesms.util.TextSecurePreferences
+ 
+ class NotificationsSettingsViewModel : ViewModel(), RecipientForeverObserver {
+ 
+@@ -132,6 +139,31 @@ class NotificationsSettingsViewModel : ViewModel(), RecipientForeverObserver {
+     refresh()
+   }
+ 
++  fun setNotifyWhileLocked(enabled: Boolean) {
++    TextSecurePreferences.setPassphraseLockNotificationsEnabled(AppDependencies.application, enabled)
++    refresh()
++  }
++
++  fun setPreferredNotificationMethod(method: NotificationDeliveryMethod) {
++    SignalStore.settings.preferredNotificationMethod = method
++    TextSecurePreferences.setPromptedOptimizeDoze(AppDependencies.application, false)
++    ApplicationContext.getInstance(AppDependencies.application).updatePushNotificationServices()
++    AppDependencies.resetNetwork(true)
++    refresh()
++  }
++
++  fun selectFirstDistributor() {
++    UnifiedPushDistributor.selectFirstDistributor()
++  }
++
++  fun initializeMollySocket(mollySocket: MollySocket) {
++    SignalStore.unifiedpush.updateMollySocket(mollySocket)
++  }
++
++  fun setPlayServicesErrorCode(errorCode: Int?) {
++    store.update { it.copy(playServicesErrorCode = errorCode) }
++  }
++
+   fun setReactionNotificationEnabled(enabled: Boolean) {
+     SignalStore.settings.reactionNotifications = enabled
+     markSelfNeedsSync()
+@@ -211,6 +243,13 @@ class NotificationsSettingsViewModel : ViewModel(), RecipientForeverObserver {
+       ringtone = SignalStore.settings.callRingtone,
+       vibrateEnabled = SignalStore.settings.isCallVibrateEnabled
+     ),
++    notifyWhileLocked = TextSecurePreferences.isPassphraseLockNotificationsEnabled(AppDependencies.application) && SignalStore.account.pushAvailable,
++    canEnableNotifyWhileLocked = SignalStore.account.pushAvailable,
++    isLinkedDevice = SignalStore.account.isLinkedDevice,
++    preferredNotificationMethod = SignalStore.settings.preferredNotificationMethod,
++    playServicesErrorCode = currentState?.playServicesErrorCode,
++    canReceiveFcm = SignalStore.account.canReceiveFcm,
++    canReceiveUnifiedPush = SignalStore.unifiedpush.isAvailableOrAirGapped,
+     notifyWhenContactJoinsSignal = SignalStore.settings.isNotifyWhenContactJoinsSignal
+   )
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchForegroundService.kt b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchForegroundService.kt
+index eba2e66d428f4f2e9649dd1328851c2f3122ad6b..a1ccbf8797c48373ba8fb0f595c342175c3035ec 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchForegroundService.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/gcm/FcmFetchForegroundService.kt
+@@ -14,6 +14,7 @@ import org.thoughtcrime.securesms.MainActivity
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+ import org.thoughtcrime.securesms.notifications.NotificationIds
++import org.thoughtcrime.securesms.service.KeyCachingService
+ import org.thoughtcrime.securesms.util.WakeLockUtil
+ 
+ /**
+@@ -129,9 +130,10 @@ class FcmFetchForegroundService : Service() {
+       Log.w(TAG, "Failed to start foreground service! StopSelf: ${intent?.getBooleanExtra(KEY_STOP_SELF, false)}", e)
+     }
+ 
+-    return if (intent != null && intent.getBooleanExtra(KEY_STOP_SELF, false)) {
++    val appLocked = KeyCachingService.isLocked()
++    return if (appLocked || (intent != null && intent.getBooleanExtra(KEY_STOP_SELF, false))) {
+       WakeLockUtil.release(wakeLock, WAKELOCK_TAG)
+-      stopForeground(true)
++      stopForeground(STOP_FOREGROUND_REMOVE)
+       stopSelf()
+       START_NOT_STICKY
+     } else {
+@@ -145,8 +147,8 @@ class FcmFetchForegroundService : Service() {
+   private fun postForegroundNotification() {
+     startForeground(
+       NotificationIds.FCM_FETCH,
+-      NotificationCompat.Builder(this, NotificationChannels.getInstance().OTHER)
+-        .setSmallIcon(R.drawable.ic_signal_refresh)
++      NotificationCompat.Builder(this, NotificationChannels.BACKGROUND)
++        .setSmallIcon(R.drawable.ic_notification)
+         .setContentTitle(getString(R.string.BackgroundMessageRetriever_checking_for_messages))
+         .setCategory(NotificationCompat.CATEGORY_SERVICE)
+         .setProgress(0, 0, true)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/DeleteNotificationReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/DeleteNotificationReceiver.java
+index 8e995fe8ac905641d797a6576644c52fb08b68fc..a9e4b9f765248c69ecd9ebd679402bbe0a517ec4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/DeleteNotificationReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/DeleteNotificationReceiver.java
+@@ -1,18 +1,17 @@
+ package org.thoughtcrime.securesms.notifications;
+ 
+-
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
+ import org.signal.core.util.concurrent.SignalExecutors;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ import org.thoughtcrime.securesms.database.SignalDatabase;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.notifications.v2.ConversationId;
+ 
+ import java.util.ArrayList;
+ 
+-public class DeleteNotificationReceiver extends BroadcastReceiver {
++public class DeleteNotificationReceiver extends ExportedBroadcastReceiver {
+ 
+   public static String DELETE_NOTIFICATION_ACTION = "org.thoughtcrime.securesms.DELETE_NOTIFICATION";
+ 
+@@ -20,7 +19,7 @@ public class DeleteNotificationReceiver extends BroadcastReceiver {
+   public static final String EXTRA_THREADS        = "threads";
+ 
+   @Override
+-  public void onReceive(final Context context, Intent intent) {
++  public void onReceiveUnlock(final Context context, Intent intent) {
+     if (DELETE_NOTIFICATION_ACTION.equals(intent.getAction())) {
+       MessageNotifier notifier = AppDependencies.getMessageNotifier();
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/MarkReadReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/MarkReadReceiver.java
+index 482b70530f653550df5cb5deb35cca544f28cc50..dba103c2a751aa479f18c439b047583fa5a6e829 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/MarkReadReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/MarkReadReceiver.java
+@@ -22,13 +22,14 @@ import org.thoughtcrime.securesms.jobs.CallLogEventSendJob;
+ import org.thoughtcrime.securesms.jobs.MultiDeviceReadUpdateJob;
+ import org.thoughtcrime.securesms.jobs.SendReadReceiptJob;
+ import org.thoughtcrime.securesms.notifications.v2.ConversationId;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ 
+ import java.util.ArrayList;
+ import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Map;
+ 
+-public class MarkReadReceiver extends BroadcastReceiver {
++public class MarkReadReceiver extends ExportedBroadcastReceiver {
+ 
+   private static final String TAG                   = Log.tag(MarkReadReceiver.class);
+   public static final  String CLEAR_ACTION          = "org.thoughtcrime.securesms.notifications.CLEAR";
+@@ -37,7 +38,7 @@ public class MarkReadReceiver extends BroadcastReceiver {
+ 
+   @SuppressLint("StaticFieldLeak")
+   @Override
+-  public void onReceive(final Context context, Intent intent) {
++  public void onReceiveUnlock(final Context context, Intent intent) {
+     if (!CLEAR_ACTION.equals(intent.getAction()))
+       return;
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/MessageNotifier.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/MessageNotifier.java
+index 6b1e7e63fa0139825ff7995b106580bd447b6aef..53951a23a7e43f1090c87ec10a6707fed9744948 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/MessageNotifier.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/MessageNotifier.java
+@@ -1,6 +1,5 @@
+ package org.thoughtcrime.securesms.notifications;
+ 
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
+@@ -12,6 +11,7 @@ import org.signal.core.util.concurrent.SignalExecutors;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.notifications.v2.ConversationId;
+ import org.thoughtcrime.securesms.recipients.Recipient;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ 
+ import java.util.Optional;
+ import java.util.Set;
+@@ -30,6 +30,7 @@ public interface MessageNotifier {
+   void notifyStoryDeliveryFailed(@NonNull Context context, @NonNull Recipient recipient, @NonNull ConversationId conversationId);
+   void notifyProofRequired(@NonNull Context context, @NonNull Recipient recipient, @NonNull ConversationId conversationId);
+   void cancelDelayedNotifications();
++  boolean clearNotifications(@NonNull Context context);
+   void updateNotification(@NonNull Context context);
+   void updateNotification(@NonNull Context context, @NonNull ConversationId conversationId);
+ 
+@@ -38,9 +39,9 @@ public interface MessageNotifier {
+   void addStickyThread(@NonNull ConversationId conversationId, long earliestTimestamp);
+   void removeStickyThread(@NonNull ConversationId conversationId);
+ 
+-  class ReminderReceiver extends BroadcastReceiver {
++  class ReminderReceiver extends ExportedBroadcastReceiver {
+     @Override
+-    public void onReceive(final Context context, final Intent intent) {
++    public void onReceiveUnlock(final Context context, final Intent intent) {
+       SignalExecutors.BOUNDED.execute(() -> {
+         AppDependencies.getMessageNotifier().updateNotification(context);
+       });
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationChannels.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationChannels.java
+index 41e15d9caf5d368b783623ec37725c5638504341..1d328b3d784217e4d286b8c89a0c89931520151c 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationChannels.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationChannels.java
+@@ -71,14 +71,14 @@ public class NotificationChannels {
+   public final String FAILURES                         = "failures";
+   public final String APP_UPDATES                      = "app_updates";
+   public final String BACKUPS                          = "backups_v2";
+-  public final String LOCKED_STATUS                    = "locked_status_v2";
++  public static final String LOCKED_STATUS             = "locked_status_v2";
+   public final String OTHER                            = "other_v3";
+   public final String VOICE_NOTES                      = "voice_notes";
+   public final String JOIN_EVENTS                      = "join_events";
+-  public final String BACKGROUND                       = "background_connection";
++  public static final String BACKGROUND                = "background_connection";
+   public final String CALL_STATUS                      = "call_status";
+   public final String APP_ALERTS                       = "app_alerts";
+-  public final String ADDITIONAL_MESSAGE_NOTIFICATIONS = "additional_message_notifications";
++  public static final String ADDITIONAL_MESSAGE_NOTIFICATIONS = "additional_message_notifications";
+   public final String NEW_LINKED_DEVICE                = "new_linked_device";
+   public final String INTERNAL_ISSUES                  = "internal_issues";
+   public final String UNREAD_REMINDERS                 = "unread_reminders";
+@@ -661,7 +661,7 @@ public class NotificationChannels {
+ 
+     notificationManager.createNotificationChannels(Arrays.asList(messages, calls, failures, backups, lockedStatus, other, voiceNotes, joinEvents, background, callStatus, appAlerts, additionalMessageNotifications, newLinkedDevice, unreadReminders));
+ 
+-    if (BuildConfig.MANAGES_APP_UPDATES) {
++    if (BuildConfig.MANAGE_MOLLY_UPDATES) {
+       NotificationChannel appUpdates = new NotificationChannel(APP_UPDATES, context.getString(R.string.NotificationChannel_app_updates), NotificationManager.IMPORTANCE_DEFAULT);
+       notificationManager.createNotificationChannel(appUpdates);
+     } else {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationIds.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationIds.kt
+index 044051ad88322ece0f2e2e19939225b7ac887d83..29ae73d77c6222ded0d4bbab848a9ffdea03809e 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationIds.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/NotificationIds.kt
+@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms.notifications
+ import org.thoughtcrime.securesms.notifications.v2.ConversationId
+ 
+ /**
+- * Single-use ids count up by 10 and stay below the first ranged id.
++ * New single-use ids count up by 10 and stay below the first ranged id. Molly-specific ids retain their existing values.
+  *
+  * Ranged ids are a base plus a database id, built by the `getNotificationIdFor*` functions. For example, thread ranges are offset by
+  * thread id, story ranges by the parent story's message id.
+@@ -36,6 +36,10 @@ object NotificationIds {
+   const val USER_NOTIFICATION_MIGRATION: Int = 190
+   const val DONOR_BADGE_FAILURE: Int = 200
+ 
++  const val FCM_FAILURE: Int = 12
++  const val PENDING_MESSAGES: Int = 1111
++  const val MANUAL_BACKUP_NOT_CREATED: Int = 120502
++
+   const val THREAD: Int = 10000000
+   const val MESSAGE_DELIVERY_FAILURE: Int = 20000000
+   const val UNREAD_REMINDER: Int = 30000000
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/OptimizedMessageNotifier.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/OptimizedMessageNotifier.java
+index b83f6ca0a279db02fecd6cb516f7a65dcd08f405..c51b677008ee951bc8c9e00eb668a2a2bb5c0124 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/OptimizedMessageNotifier.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/OptimizedMessageNotifier.java
+@@ -126,6 +126,11 @@ public class OptimizedMessageNotifier implements MessageNotifier {
+   }
+ 
+   @Override
++  public boolean clearNotifications(@NonNull Context context) {
++    return getNotifier().clearNotifications(context);
++  }
++
++  @Override
+   public void forceBubbleNotification(@NonNull Context context, @NonNull ConversationId conversationId) {
+     SignalDatabase.runPostSuccessfulTransaction(() -> {
+       runWithoutLimit(() -> getNotifier().forceBubbleNotification(context, conversationId));
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/RemoteReplyReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/notifications/RemoteReplyReceiver.java
+index 72b7c85faf75a6b646a7043578caa6665a2f809b..855e7b09b644851ccfa01324ab347b78d08d7765 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/RemoteReplyReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/RemoteReplyReceiver.java
+@@ -18,7 +18,6 @@
+ package org.thoughtcrime.securesms.notifications;
+ 
+ import android.annotation.SuppressLint;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Bundle;
+@@ -37,6 +36,7 @@ import org.thoughtcrime.securesms.mms.SlideDeck;
+ import org.thoughtcrime.securesms.notifications.v2.ConversationId;
+ import org.thoughtcrime.securesms.notifications.v2.DefaultMessageNotifier;
+ import org.thoughtcrime.securesms.recipients.Recipient;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ import org.thoughtcrime.securesms.sms.MessageSender;
+ import org.thoughtcrime.securesms.util.MessageUtil;
+ 
+@@ -45,7 +45,7 @@ import java.util.List;
+ /**
+  * Get the response text from the Wearable Device and sends an message as a reply
+  */
+-public class RemoteReplyReceiver extends BroadcastReceiver {
++public class RemoteReplyReceiver extends ExportedBroadcastReceiver {
+ 
+   private static final String TAG = Log.tag(RemoteReplyReceiver.class);
+ 
+@@ -57,7 +57,7 @@ public class RemoteReplyReceiver extends BroadcastReceiver {
+ 
+   @SuppressLint("StaticFieldLeak")
+   @Override
+-  public void onReceive(final Context context, Intent intent) {
++  public void onReceiveUnlock(final Context context, Intent intent) {
+     if (!REPLY_ACTION.equals(intent.getAction())) return;
+ 
+     Bundle remoteInput = RemoteInput.getResultsFromIntent(intent);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/SlowNotificationHeuristics.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/SlowNotificationHeuristics.kt
+index d194cdd7d7b63f0d9ef9f0e667e8e8c3569be694..ec79ede8451e6b786f17a4966fd668c649f73ac2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/SlowNotificationHeuristics.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/SlowNotificationHeuristics.kt
+@@ -62,18 +62,6 @@ object SlowNotificationHeuristics {
+   }
+ 
+   @JvmStatic
+-  fun shouldPromptUserForDelayedNotificationLogs(): Boolean {
+-    if (!LocaleRemoteConfig.isDelayedNotificationPromptEnabled() || SignalStore.uiHints.hasDeclinedToShareNotificationLogs()) {
+-      return false
+-    }
+-    if (System.currentTimeMillis() - SignalStore.uiHints.lastNotificationLogsPrompt < TimeUnit.DAYS.toMillis(7)) {
+-      return false
+-    }
+-
+-    return true
+-  }
+-
+-  @JvmStatic
+   fun shouldPromptBatterySaver(): Boolean {
+     val remoteEnabled = LocaleRemoteConfig.isBatterySaverPromptEnabled() || LocaleRemoteConfig.isDelayedNotificationPromptEnabled()
+     if (!remoteEnabled || SignalStore.uiHints.hasDismissedBatterySaverPrompt()) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt
+index 1b201738ff308168790bd7c43d69e0f688940df6..88596bcf4647c3b4e6fdfb14ba69a6ed15f3169c 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/VitalsViewModel.kt
+@@ -7,21 +7,15 @@ package org.thoughtcrime.securesms.notifications
+ 
+ import android.app.Application
+ import androidx.lifecycle.AndroidViewModel
++import im.molly.unifiedpush.UnifiedPushDistributor
+ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+ import io.reactivex.rxjava3.core.Observable
+ import io.reactivex.rxjava3.core.Single
+ import io.reactivex.rxjava3.schedulers.Schedulers
+ import io.reactivex.rxjava3.subjects.BehaviorSubject
+-import org.thoughtcrime.securesms.crash.CrashConfig
+-import org.thoughtcrime.securesms.database.LogDatabase
+-import org.thoughtcrime.securesms.dependencies.AppDependencies
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.notifications.DeviceSpecificNotificationConfig.ShowCondition
+-import org.thoughtcrime.securesms.util.ConnectivityWarning
+-import org.thoughtcrime.securesms.util.NetworkUtil
+-import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState
+ import java.util.concurrent.TimeUnit
+-import kotlin.time.Duration.Companion.days
+ 
+ /**
+  * View model for checking for various app vitals, like slow notifications and crashes.
+@@ -36,7 +30,7 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
+     vitalsState = checkSubject
+       .subscribeOn(Schedulers.io())
+       .observeOn(Schedulers.io())
+-      .throttleFirst(1, TimeUnit.MINUTES)
++      .throttleFirst(5, TimeUnit.MINUTES)
+       .switchMapSingle {
+         checkHeuristics()
+       }
+@@ -50,6 +44,10 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
+ 
+   private fun checkHeuristics(): Single<State> {
+     return Single.fromCallable {
++      if (SignalStore.unifiedpush.enabled && !UnifiedPushDistributor.checkIfActive()) {
++        return@fromCallable State.PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG
++      }
++
+       val deviceSpecificCondition = SlowNotificationHeuristics.getDeviceSpecificShowCondition()
+ 
+       val shouldShowDeviceSpecificDialog = SlowNotificationHeuristics.shouldShowDeviceSpecificDialog()
+@@ -71,42 +69,14 @@ class VitalsViewModel(private val context: Application) : AndroidViewModel(conte
+         return@fromCallable State.PROMPT_GENERAL_BATTERY_SAVER_DIALOG
+       }
+ 
+-      if (havingDelayedNotifications && SlowNotificationHeuristics.shouldPromptUserForDelayedNotificationLogs()) {
+-        return@fromCallable State.PROMPT_DEBUGLOGS_FOR_NOTIFICATIONS
+-      }
+-
+-      val timeSinceLastConnection = System.currentTimeMillis() - SignalStore.misc.lastWebSocketConnectTime
+-      val timeSinceLastConnectionWarning = System.currentTimeMillis() - SignalStore.misc.lastConnectivityWarningTime
+-      val connectedToWebSocket = AppDependencies.webSocketObserver.value == WebSocketConnectionState.CONNECTED
+-      val isRegistered = SignalStore.account.isRegistered && !SignalStore.account.isUnauthorizedReceived
+-
+-      if (ConnectivityWarning.isEnabled && timeSinceLastConnection > ConnectivityWarning.threshold && timeSinceLastConnectionWarning > 14.days.inWholeMilliseconds && NetworkUtil.isConnected(context) && isRegistered && !connectedToWebSocket) {
+-        return@fromCallable if (ConnectivityWarning.isDebugPromptEnabled) {
+-          State.PROMPT_DEBUGLOGS_FOR_CONNECTIVITY_WARNING
+-        } else {
+-          State.PROMPT_CONNECTIVITY_WARNING
+-        }
+-      }
+-
+-      if (LogDatabase.getInstance(context).crashes.anyMatch(patterns = CrashConfig.patterns, promptThreshold = System.currentTimeMillis() - 14.days.inWholeMilliseconds)) {
+-        val timeSinceLastPrompt = System.currentTimeMillis() - SignalStore.uiHints.lastCrashPrompt
+-
+-        if (timeSinceLastPrompt > 1.days.inWholeMilliseconds) {
+-          return@fromCallable State.PROMPT_DEBUGLOGS_FOR_CRASH
+-        }
+-      }
+-
+       return@fromCallable State.NONE
+     }.subscribeOn(Schedulers.io())
+   }
+ 
+   enum class State {
+     NONE,
++    PROMPT_UNIFIEDPUSH_SELECT_DISTRIBUTOR_DIALOG,
+     PROMPT_SPECIFIC_BATTERY_SAVER_DIALOG,
+     PROMPT_GENERAL_BATTERY_SAVER_DIALOG,
+-    PROMPT_DEBUGLOGS_FOR_NOTIFICATIONS,
+-    PROMPT_DEBUGLOGS_FOR_CRASH,
+-    PROMPT_CONNECTIVITY_WARNING,
+-    PROMPT_DEBUGLOGS_FOR_CONNECTIVITY_WARNING
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/DefaultMessageNotifier.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/DefaultMessageNotifier.kt
+index 8ff407ff1664c5d9b3309c1e8393c88da060f338..44cd5f10e9e5ee2cebfc13abfc42fd26a7dd522e 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/DefaultMessageNotifier.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/DefaultMessageNotifier.kt
+@@ -16,6 +16,7 @@ import org.signal.core.util.PendingIntentFlags
+ import org.signal.core.util.ServiceUtil
+ import org.signal.core.util.logging.Log
+ import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.ScreenLockController
+ import org.thoughtcrime.securesms.database.SignalDatabase
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+@@ -55,7 +56,9 @@ class DefaultMessageNotifier(context: Application) : MessageNotifier {
+ 
+   @Volatile private var lastScheduledReminder: Long = 0
+ 
+-  @Volatile private var previousLockedStatus: Boolean = KeyCachingService.isLocked(context)
++  @Volatile private var previousLockedStatus: Boolean = KeyCachingService.isLocked()
++
++  @Volatile private var previousScreenLockState: Boolean = ScreenLockController.lockScreenAtStart
+ 
+   @Volatile private var previousPrivacyPreference: NotificationPrivacyPreference = SignalStore.settings.messageNotificationsPrivacy
+ 
+@@ -156,11 +159,17 @@ class DefaultMessageNotifier(context: Application) : MessageNotifier {
+       return
+     }
+ 
+-    val currentLockStatus: Boolean = KeyCachingService.isLocked(context)
++    val currentLockStatus: Boolean = KeyCachingService.isLocked()
+     val currentPrivacyPreference: NotificationPrivacyPreference = SignalStore.settings.messageNotificationsPrivacy
+-    val notificationConfigurationChanged: Boolean = currentLockStatus != previousLockedStatus || currentPrivacyPreference != previousPrivacyPreference
++    val currentScreenLockState: Boolean = ScreenLockController.lockScreenAtStart
++    val notificationConfigurationChanged: Boolean = (
++      currentLockStatus != previousLockedStatus ||
++        currentPrivacyPreference != previousPrivacyPreference ||
++        currentScreenLockState != previousScreenLockState
++      )
+     previousLockedStatus = currentLockStatus
+     previousPrivacyPreference = currentPrivacyPreference
++    previousScreenLockState = currentScreenLockState
+ 
+     if (notificationConfigurationChanged) {
+       stickyThreads.clear()
+@@ -196,11 +205,8 @@ class DefaultMessageNotifier(context: Application) : MessageNotifier {
+     stickyThreads.keys.retainAll { retainStickyThreadIds.contains(it) }
+ 
+     if (state.isEmpty) {
+-      Log.i(TAG, "State is empty, cancelling all notifications")
+-      cancelDelayedNotifications()
+-      NotificationCancellationHelper.cancelAllMessageNotifications(context, stickyThreads.map { it.value.notificationId }.toSet())
+-      updateBadge(context, 0)
+-      clearReminderInternal(context)
++      // MOLLY: Extracted to a separate function
++      clearNotifications(context)
+       return
+     }
+ 
+@@ -235,13 +241,24 @@ class DefaultMessageNotifier(context: Application) : MessageNotifier {
+ 
+     if (Build.VERSION.SDK_INT >= 24) {
+       val ids = state.conversations.filter { it.thread != visibleThread.get() }.map { it.notificationId } + stickyThreads.map { (_, stickyThread) -> stickyThread.notificationId }
+-      val notShown = ids - ServiceUtil.getNotificationManager(context).getDisplayedNotificationIds().getOrDefault(emptySet())
++      val notShown = ids - getDisplayedNotificationIds(context)
+       if (notShown.isNotEmpty()) {
+         Log.e(TAG, "Notifications should be showing but are not for ${notShown.size} threads")
+       }
+     }
+   }
+ 
++  override fun clearNotifications(context: Context): Boolean {
++    cancelDelayedNotifications()
++    val activeNotifications = getDisplayedNotificationIds(context)
++    NotificationCancellationHelper.cancelAllMessageNotifications(context)
++    updateBadge(context, 0)
++    clearReminderInternal(context)
++    return activeNotifications.isNotEmpty()
++  }
++
++  private fun getDisplayedNotificationIds(context: Context) = ServiceUtil.getNotificationManager(context).getDisplayedNotificationIds().getOrDefault(emptySet())
++
+   override fun addStickyThread(conversationId: ConversationId, earliestTimestamp: Long) {
+     stickyThreads[conversationId] = StickyThread(conversationId, NotificationIds.getNotificationIdForThread(conversationId), earliestTimestamp)
+   }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationBuilder.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationBuilder.kt
+index 59c3d4572659865d0e619644e8dea4e7a2788b42..e3feb06e91cbab352592dc34f5fdb27e299cd0d2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationBuilder.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationBuilder.kt
+@@ -46,7 +46,7 @@ import org.signal.core.ui.R as CoreUiR
+ sealed class NotificationBuilder(protected val context: Context) {
+ 
+   private val privacy: NotificationPrivacyPreference = SignalStore.settings.messageNotificationsPrivacy
+-  private val isNotLocked: Boolean = !KeyCachingService.isLocked(context)
++  private val isNotLocked: Boolean = !KeyCachingService.isLocked()
+ 
+   abstract fun setSmallIcon(@DrawableRes drawable: Int)
+   abstract fun setColor(@ColorInt color: Int)
+@@ -544,6 +544,6 @@ private fun Bitmap?.toIconCompat(): IconCompat? {
+ private fun ReplyMethod.toLongDescription(): Int {
+   return when (this) {
+     ReplyMethod.GroupMessage -> R.string.MessageNotifier_reply
+-    ReplyMethod.SecureMessage -> R.string.MessageNotifier_signal_message
++    ReplyMethod.SecureMessage -> R.string.NewConversationActivity__message
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationConversation.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationConversation.kt
+index 86652318ad018589b401a32f2a01ecf1a15c0afc..5d3dcae5cfb29c8cb3c8244b963a46845f70edb0 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationConversation.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationConversation.kt
+@@ -66,7 +66,7 @@ data class NotificationConversation(
+   }
+ 
+   fun getSlideBigPictureUri(context: Context): Uri? {
+-    return if (notificationItems.size == 1 && SignalStore.settings.messageNotificationsPrivacy.isDisplayMessage && !KeyCachingService.isLocked(context)) {
++    return if (notificationItems.size == 1 && SignalStore.settings.messageNotificationsPrivacy.isDisplayMessage && !KeyCachingService.isLocked()) {
+       mostRecentNotification.getBigPictureUri()
+     } else {
+       null
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationItem.kt b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationItem.kt
+index 392d8fcd0149f59d1faafce3385206e76fbbd4b1..3154f752b12db0c01c7a5248bf8f0b8f47be7083 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationItem.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/notifications/v2/NotificationItem.kt
+@@ -14,6 +14,7 @@ import org.signal.core.util.Util
+ import org.signal.core.util.logging.Log
+ import org.signal.emoji.EmojiStrings
+ import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.ScreenLockController
+ import org.thoughtcrime.securesms.contactshare.Contact
+ import org.thoughtcrime.securesms.contactshare.ContactUtil
+ import org.thoughtcrime.securesms.database.MentionUtil
+@@ -242,7 +243,7 @@ class MessageNotification(threadRecipient: Recipient, record: MessageRecord, val
+   private var thumbnailInfo: ThumbnailInfo = NotificationThumbnails.getWithoutModifying(this)
+ 
+   override fun getPrimaryTextActual(context: Context): CharSequence {
+-    return if (KeyCachingService.isLocked(context)) {
++    return if (KeyCachingService.isLocked()) {
+       SpanUtil.italic(context.getString(R.string.MessageNotifier_locked_message))
+     } else if (record.isMms && (record as MmsMessageRecord).sharedContacts.isNotEmpty()) {
+       val contact = record.sharedContacts[0]
+@@ -299,7 +300,7 @@ class MessageNotification(threadRecipient: Recipient, record: MessageRecord, val
+   }
+ 
+   override fun getThumbnailInfo(context: Context): ThumbnailInfo {
+-    return if (SignalStore.settings.messageNotificationsPrivacy.isDisplayMessage && !KeyCachingService.isLocked(context)) {
++    return if (SignalStore.settings.messageNotificationsPrivacy.isDisplayMessage && !KeyCachingService.isLocked()) {
+       if (thumbnailInfo.needsShrinking) {
+         thumbnailInfo = NotificationThumbnails.get(context, this)
+       }
+@@ -311,7 +312,7 @@ class MessageNotification(threadRecipient: Recipient, record: MessageRecord, val
+   }
+ 
+   override fun canReply(context: Context): Boolean {
+-    if (KeyCachingService.isLocked(context) ||
++    if (ScreenLockController.lockScreenAtStart ||
+       record.isRemoteDelete ||
+       record.isGroupCall ||
+       record.isViewOnce ||
+@@ -345,7 +346,7 @@ class ReactionNotification(threadRecipient: Recipient, record: MessageRecord, va
+   override val isNewNotification: Boolean = timestamp > notifiedTimestamp
+ 
+   override fun getPrimaryTextActual(context: Context): CharSequence {
+-    return if (KeyCachingService.isLocked(context)) {
++    return if (KeyCachingService.isLocked()) {
+       SpanUtil.italic(context.getString(R.string.MessageNotifier_locked_message))
+     } else {
+       val text: String = SpanUtil.italic(getReactionMessageBody(context)).toString()
+@@ -417,7 +418,7 @@ class VoteNotification(threadRecipient: Recipient, record: MessageRecord, val vo
+   override val isNewNotification: Boolean = timestamp > notifiedTimestamp
+ 
+   override fun getPrimaryTextActual(context: Context): CharSequence {
+-    return if (KeyCachingService.isLocked(context)) {
++    return if (KeyCachingService.isLocked()) {
+       SpanUtil.italic(context.getString(R.string.MessageNotifier_locked_message))
+     } else {
+       context.getString(R.string.MessageNotifier_s_voted_in_poll, EmojiStrings.POLL, authorRecipient.getDisplayName(context), vote.question)
+
+--------------false--
+
+

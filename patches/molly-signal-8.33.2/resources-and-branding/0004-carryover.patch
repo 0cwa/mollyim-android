@@ -1,0 +1,2303 @@
+From 759e9dfcd1bf77c03c2988034047ec9dbe4a9c1a Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly resources-and-branding carryover, part 4
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Shared localized resources, icons, artwork, layouts, XML policy and resource deletions.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/res/drawable/search_bar_end.xml b/app/src/main/res/drawable/search_bar_end.xml
+index cf31e3238444c18a37cd4cbebab6fd032c143f64..2552ffd489cd80743f890db042f29759547d8f43 100644
+--- a/app/src/main/res/drawable/search_bar_end.xml
++++ b/app/src/main/res/drawable/search_bar_end.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android">
+-    <solid android:color="@color/signal_background_primary" />
++    <solid android:color="?attr/signal_background_primary" />
+     <corners android:topRightRadius="100dp" android:bottomRightRadius="100dp" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/search_bar_start.xml b/app/src/main/res/drawable/search_bar_start.xml
+index 8ee0f611ca6742d407c76cd91d094d71fbf9866e..08f199096434d7472eb50f18321e68f5f7fac4f1 100644
+--- a/app/src/main/res/drawable/search_bar_start.xml
++++ b/app/src/main/res/drawable/search_bar_start.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android">
+-    <solid android:color="@color/signal_background_primary" />
++    <solid android:color="?attr/signal_background_primary" />
+     <corners android:topLeftRadius="100dp" android:bottomLeftRadius="100dp" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/search_cursor.xml b/app/src/main/res/drawable/search_cursor.xml
+index 07527610fde61c377ba8620c6ca3443edb0ad8ae..0133220e10e52e42d740106a8c04a2300f26c3cc 100644
+--- a/app/src/main/res/drawable/search_cursor.xml
++++ b/app/src/main/res/drawable/search_cursor.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android">
+     <size android:width="2dp" />
+-    <solid android:color="@color/signal_text_primary" />
++    <solid android:color="?attr/signal_text_primary" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/search_toolbar_background.xml b/app/src/main/res/drawable/search_toolbar_background.xml
+index 57e9012db29c64472b173157c37a59ca1d25b702..6276d86efd12ec56803eed660470b09b8f59599f 100644
+--- a/app/src/main/res/drawable/search_toolbar_background.xml
++++ b/app/src/main/res/drawable/search_toolbar_background.xml
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android"
+     android:shape="rectangle">
+-    <solid android:color="@color/signal_colorSurfaceVariant" />
++    <solid android:color="?attr/contact_filter_edit_background" />
+     <corners android:radius="32dp" />
+ </shape>
+diff --git a/app/src/main/res/drawable/selectable_icon_button.xml b/app/src/main/res/drawable/selectable_icon_button.xml
+index c5b35b5bf2edbfc98ad46478a3b6649c1473205a..12de62fc76cf28047f8a1800f738502fc3ed6e47 100644
+--- a/app/src/main/res/drawable/selectable_icon_button.xml
++++ b/app/src/main/res/drawable/selectable_icon_button.xml
+@@ -5,7 +5,7 @@
+             <item android:drawable="@drawable/icon_button_squircle" />
+             <item>
+                 <shape android:shape="rectangle">
+-                    <solid android:color="@color/signal_colorSecondaryContainer_12" />
++                    <solid android:color="@color/signal_inverse_transparent_10" />
+                     <corners android:radius="18dp" />
+                 </shape>
+             </item>
+diff --git a/app/src/main/res/drawable/selected_dot.xml b/app/src/main/res/drawable/selected_dot.xml
+index a1f301929a1f25a476393555c7c81225195e926b..ace630ba643052aaa7fd8d5925499a92837ad87c 100644
+--- a/app/src/main/res/drawable/selected_dot.xml
++++ b/app/src/main/res/drawable/selected_dot.xml
+@@ -4,5 +4,5 @@
+     android:shape="ring"
+     android:thickness="4dp"
+     android:useLevel="false">
+-    <solid android:color="@color/signal_accent_primary" />
++    <solid android:color="?attr/signal_accent_primary" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/signal_bottom_action_bar_background.xml b/app/src/main/res/drawable/signal_bottom_action_bar_background.xml
+index 3310132ee6e4f1885732b35a17a5ecd54420fbff..429676163141b7266190a13787faa9bee96927ac 100644
+--- a/app/src/main/res/drawable/signal_bottom_action_bar_background.xml
++++ b/app/src/main/res/drawable/signal_bottom_action_bar_background.xml
+@@ -4,6 +4,6 @@
+     android:shape="rectangle">
+ 
+     <corners android:radius="@dimen/signal_context_menu_corner_radius" />
+-    <solid android:color="@color/signal_colorSurface2" />
++    <solid android:color="?attr/colorSurfaceContainer" />
+ 
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/signal_context_menu_background.xml b/app/src/main/res/drawable/signal_context_menu_background.xml
+index 3310132ee6e4f1885732b35a17a5ecd54420fbff..4d97594240b80b5e80233c6ef0818e1d5e52f661 100644
+--- a/app/src/main/res/drawable/signal_context_menu_background.xml
++++ b/app/src/main/res/drawable/signal_context_menu_background.xml
+@@ -4,6 +4,6 @@
+     android:shape="rectangle">
+ 
+     <corners android:radius="@dimen/signal_context_menu_corner_radius" />
+-    <solid android:color="@color/signal_colorSurface2" />
++    <solid android:color="?attr/context_menu_container_color" />
+ 
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/sticky_date_header_background.xml b/app/src/main/res/drawable/sticky_date_header_background.xml
+index 694e2c7be5edae655cbe3e41825114ee8a5b3c42..fd7457815f58241cfe99241cfcfede9704e148fd 100644
+--- a/app/src/main/res/drawable/sticky_date_header_background.xml
++++ b/app/src/main/res/drawable/sticky_date_header_background.xml
+@@ -4,5 +4,5 @@
+     android:shape="rectangle">
+ 
+     <corners android:radius="14dp" />
+-    <solid android:color="@color/signal_colorSurface1" />
++    <solid android:color="?attr/colorSurfaceContainerLow" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/stories_my_story_add_background.xml b/app/src/main/res/drawable/stories_my_story_add_background.xml
+index 83efb6b6ceb20c66d96d54b09e060e9cda3ae0cd..0f9aaa5f23aa2e52b13052a3487ba0ba125ce122 100644
+--- a/app/src/main/res/drawable/stories_my_story_add_background.xml
++++ b/app/src/main/res/drawable/stories_my_story_add_background.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape android:shape="oval" xmlns:android="http://schemas.android.com/apk/res/android">
+-    <solid android:color="@color/signal_colorPrimary" />
+-    <stroke android:color="@color/signal_colorOnPrimary" android:width="3dp" />
++    <solid android:color="?attr/colorPrimary" />
++    <stroke android:color="?attr/colorOnPrimary" android:width="3dp" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/subscription_loading_preference_background.xml b/app/src/main/res/drawable/subscription_loading_preference_background.xml
+index e7801e417c711b452a7b9a920b841f7a260fa88f..79814264b21414591743e08a72921e66b922147f 100644
+--- a/app/src/main/res/drawable/subscription_loading_preference_background.xml
++++ b/app/src/main/res/drawable/subscription_loading_preference_background.xml
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android"
+     android:shape="rectangle">
+-    <solid android:color="@color/signal_button_secondary_stroke" />
++    <solid android:color="?attr/signal_button_secondary_stroke" />
+     <corners android:radius="10dp" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/subscription_row_item_background.xml b/app/src/main/res/drawable/subscription_row_item_background.xml
+index 6d78a752fccdf5ed137ef9d87316ca81ad10917f..dd2365652d4ba0861e880ef5b69be7cffd8ee957 100644
+--- a/app/src/main/res/drawable/subscription_row_item_background.xml
++++ b/app/src/main/res/drawable/subscription_row_item_background.xml
+@@ -2,14 +2,14 @@
+ <selector xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:state_selected="true">
+         <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+-            <solid android:color="@color/signal_colorSecondaryContainer" />
+-            <stroke android:color="@color/signal_colorPrimary" android:width="2dp" />
++            <solid android:color="?attr/colorSecondaryContainer" />
++            <stroke android:color="?attr/colorPrimary" android:width="2dp" />
+             <corners android:radius="12dp" />
+         </shape>
+     </item>
+     <item>
+         <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+-            <solid android:color="@color/signal_colorSurface2" />
++            <solid android:color="?attr/colorSurfaceContainer" />
+             <corners android:radius="12dp" />
+         </shape>
+     </item>
+diff --git a/app/src/main/res/drawable/symbol_arrow_down_tint_24.xml b/app/src/main/res/drawable/symbol_arrow_down_tint_24.xml
+index 862b6da2b9eccecce5030da243d48119b0c9d8cd..7d2442137d990e6f618fcd13b2b286d0de7b1219 100644
+--- a/app/src/main/res/drawable/symbol_arrow_down_tint_24.xml
++++ b/app/src/main/res/drawable/symbol_arrow_down_tint_24.xml
+@@ -5,5 +5,5 @@
+     android:viewportHeight="24">
+   <path
+       android:pathData="M11.125,4.25V15.5l0.126,1.764 -5.132,-5.133A0.875,0.875 0,0 0,4.88 13.37l6.5,6.5a0.875,0.875 0,0 0,1.238 0l6.5,-6.5a0.875,0.875 0,1 0,-1.238 -1.238l-5.132,5.133 0.126,-1.764V4.25a0.875,0.875 0,1 0,-1.75 0Z"
+-      android:fillColor="@color/signal_icon_tint_primary"/>
++      android:fillColor="?attr/signal_icon_tint_primary"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_blur_24_dark_onsurface.xml b/app/src/main/res/drawable/symbol_blur_24_dark_onsurface.xml
+index c3c44b9cca49a6e36b5dd9291ac59492c4e4d8aa..e467d4c0ba6571627f21fc21e426093990ef981d 100644
+--- a/app/src/main/res/drawable/symbol_blur_24_dark_onsurface.xml
++++ b/app/src/main/res/drawable/symbol_blur_24_dark_onsurface.xml
+@@ -4,75 +4,75 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M9.75 1.13C9.27 1.13 8.87 1.52 8.87 2s0.4 0.88 0.88 0.88 0.88-0.4 0.88-0.88-0.4-0.88-0.88-0.88Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M2 8.88c-0.48 0-0.88 0.39-0.88 0.87s0.4 0.88 0.88 0.88 0.88-0.4 0.88-0.88S2.48 8.87 2 8.87Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M1.13 14.25c0-0.48 0.39-0.88 0.87-0.88s0.88 0.4 0.88 0.88-0.4 0.88-0.88 0.88-0.88-0.4-0.88-0.88Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M8.88 22c0-0.48 0.39-0.88 0.87-0.88s0.88 0.4 0.88 0.88-0.4 0.88-0.88 0.88-0.88-0.4-0.88-0.88Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M9.75 12.5C8.78 12.5 8 13.28 8 14.25S8.78 16 9.75 16s1.75-0.78 1.75-1.75-0.78-1.75-1.75-1.75Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M12.5 14.25c0-0.97 0.78-1.75 1.75-1.75S16 13.28 16 14.25 15.22 16 14.25 16s-1.75-0.78-1.75-1.75Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M14.25 8c-0.97 0-1.75 0.78-1.75 1.75s0.78 1.75 1.75 1.75S16 10.72 16 9.75 15.22 8 14.25 8Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M8 9.75C8 8.78 8.78 8 9.75 8s1.75 0.78 1.75 1.75-0.78 1.75-1.75 1.75S8 10.72 8 9.75Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M5.5 8.5c-0.69 0-1.25 0.56-1.25 1.25S4.81 11 5.5 11s1.25-0.56 1.25-1.25S6.19 8.5 5.5 8.5Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M17.25 9.75c0-0.69 0.56-1.25 1.25-1.25s1.25 0.56 1.25 1.25S19.19 11 18.5 11s-1.25-0.56-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M18.5 4.25c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25 1.25-0.56 1.25-1.25-0.56-1.25-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M17.25 18.5c0-0.69 0.56-1.25 1.25-1.25s1.25 0.56 1.25 1.25-0.56 1.25-1.25 1.25-1.25-0.56-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M14.25 4.25C13.56 4.25 13 4.81 13 5.5s0.56 1.25 1.25 1.25S15.5 6.19 15.5 5.5s-0.56-1.25-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M13 18.5c0-0.69 0.56-1.25 1.25-1.25s1.25 0.56 1.25 1.25-0.56 1.25-1.25 1.25S13 19.19 13 18.5Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M9.75 4.25C9.06 4.25 8.5 4.81 8.5 5.5s0.56 1.25 1.25 1.25S11 6.19 11 5.5s-0.56-1.25-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M8.5 18.5c0-0.69 0.56-1.25 1.25-1.25S11 17.81 11 18.5s-0.56 1.25-1.25 1.25S8.5 19.19 8.5 18.5Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M5.5 4.25c-0.69 0-1.25 0.56-1.25 1.25S4.81 6.75 5.5 6.75 6.75 6.19 6.75 5.5 6.19 4.25 5.5 4.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M4.25 18.5c0-0.69 0.56-1.25 1.25-1.25s1.25 0.56 1.25 1.25-0.56 1.25-1.25 1.25-1.25-0.56-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M5.5 13c-0.69 0-1.25 0.56-1.25 1.25S4.81 15.5 5.5 15.5s1.25-0.56 1.25-1.25S6.19 13 5.5 13Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M17.25 14.25c0-0.69 0.56-1.25 1.25-1.25s1.25 0.56 1.25 1.25-0.56 1.25-1.25 1.25-1.25-0.56-1.25-1.25Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M14.25 1.13c-0.48 0-0.88 0.39-0.88 0.87s0.4 0.88 0.88 0.88 0.88-0.4 0.88-0.88-0.4-0.88-0.88-0.88Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M13.38 22c0-0.48 0.39-0.88 0.87-0.88s0.88 0.4 0.88 0.88-0.4 0.88-0.88 0.88-0.88-0.4-0.88-0.88Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M22 8.88c-0.48 0-0.88 0.39-0.88 0.87s0.4 0.88 0.88 0.88 0.88-0.4 0.88-0.88-0.4-0.88-0.88-0.88Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M21.13 14.25c0-0.48 0.39-0.88 0.87-0.88s0.88 0.4 0.88 0.88-0.4 0.88-0.88 0.88-0.88-0.4-0.88-0.88Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_chat_arrow_24.xml b/app/src/main/res/drawable/symbol_chat_arrow_24.xml
+index 2a03300044feb6b3812be4d40309a418f28ffdce..31e554632dbff4efb17f8a8c942d829dab1cfc42 100644
+--- a/app/src/main/res/drawable/symbol_chat_arrow_24.xml
++++ b/app/src/main/res/drawable/symbol_chat_arrow_24.xml
+@@ -8,5 +8,5 @@
+       android:fillColor="#000000"/>
+   <path
+       android:pathData="M11.756,7.631C12.098,7.29 12.652,7.29 12.994,7.631L16.744,11.381C16.908,11.545 17,11.768 17,12C17,12.232 16.908,12.455 16.744,12.619L12.994,16.369C12.652,16.71 12.098,16.71 11.756,16.369C11.415,16.027 11.415,15.473 11.756,15.131L12.375,14.51C13.008,13.877 13.659,13.346 14.421,12.847L14.389,12.776C13.774,12.848 13.17,12.875 12.375,12.875H7.625C7.142,12.875 6.75,12.483 6.75,12C6.75,11.517 7.142,11.125 7.625,11.125H12.375C13.17,11.125 13.774,11.151 14.389,11.224L14.421,11.152C13.659,10.654 13.008,10.123 12.375,9.49L11.756,8.869C11.415,8.527 11.415,7.973 11.756,7.631Z"
+-      android:fillColor="#1B1B1D"/>
++      android:fillColor="#181719"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_check_48.xml b/app/src/main/res/drawable/symbol_check_48.xml
+index c0c9a66813c5f7d7a367f5ddc8138b3fd375351e..0e0fea53e598f4e8c5acb39ef519447f593c91c9 100644
+--- a/app/src/main/res/drawable/symbol_check_48.xml
++++ b/app/src/main/res/drawable/symbol_check_48.xml
+@@ -5,13 +5,13 @@
+     android:viewportHeight="48">
+   <path
+       android:pathData="M24,24m-21.5,0a21.5,21.5 0,1 1,43 0a21.5,21.5 0,1 1,-43 0"
+-      android:fillColor="#D2D8FE"/>
++      android:fillColor="#DAD2FF"/>
+   <path
+       android:pathData="M24,5.5C13.783,5.5 5.5,13.783 5.5,24C5.5,34.217 13.783,42.5 24,42.5C34.217,42.5 42.5,34.217 42.5,24C42.5,13.783 34.217,5.5 24,5.5ZM2.5,24C2.5,12.126 12.126,2.5 24,2.5C35.874,2.5 45.5,12.126 45.5,24C45.5,35.874 35.874,45.5 24,45.5C12.126,45.5 2.5,35.874 2.5,24Z"
+-      android:fillColor="#3B45FD"
++      android:fillColor="#6341FF"
+       android:fillType="evenOdd"/>
+   <path
+       android:pathData="M32.795,15.228C33.498,15.667 33.711,16.593 33.272,17.295L23.272,33.295C23.014,33.707 22.573,33.969 22.087,33.998C21.601,34.026 21.132,33.817 20.829,33.437L14.829,25.937C14.311,25.29 14.416,24.346 15.063,23.829C15.71,23.311 16.654,23.416 17.171,24.063L21.85,29.911L30.728,15.705C31.167,15.002 32.092,14.789 32.795,15.228Z"
+-      android:fillColor="#3B45FD"
++      android:fillColor="#6341FF"
+       android:fillType="evenOdd"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_draw_24_dark_onsurface.xml b/app/src/main/res/drawable/symbol_draw_24_dark_onsurface.xml
+index 4c97642b071041222d92aa82dc0910ccff8f789e..eb9b9a954c9e721952f2f7d661132d1c0cb40e12 100644
+--- a/app/src/main/res/drawable/symbol_draw_24_dark_onsurface.xml
++++ b/app/src/main/res/drawable/symbol_draw_24_dark_onsurface.xml
+@@ -4,6 +4,6 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M10.45 6.7c-2.74 1.99-5.8 4.73-7.81 6.9-0.33 0.35-0.88 0.37-1.24 0.04-0.35-0.33-0.37-0.88-0.04-1.24 2.1-2.24 5.23-5.06 8.05-7.12 1.41-1.03 2.79-1.9 3.94-2.4 0.57-0.26 1.14-0.44 1.67-0.5 0.52-0.04 1.14 0.04 1.6 0.5 0.58 0.58 0.6 1.32 0.43 1.96-0.16 0.6-0.54 1.22-0.97 1.8-0.88 1.2-2.24 2.56-3.55 3.86l-0.38 0.37c-1.2 1.2-2.36 2.34-3.17 3.32-0.36 0.44-0.86 0.98-0.97 1.56 0.37 0.03 0.78-0.16 1.1-0.3 0.96-0.43 2.15-1.2 3.42-2.02l0.3-0.19c1.13-0.75 2.32-1.52 3.32-2.02 0.54-0.27 1.1-0.5 1.61-0.57 0.52-0.08 1.2-0.03 1.67 0.55 0.75 0.92 0.32 2.02-0.08 2.73-0.44 0.77-1.15 1.6-1.78 2.33l-0.04 0.04c-0.65 0.76-1.22 1.42-1.55 1.98-0.1 0.17-0.22 0.37-0.25 0.57 0.09 0.06 0.35 0.18 0.98 0.08 0.7-0.1 1.65-0.46 2.84-1.18 0.41-0.25 0.95-0.11 1.2 0.3s0.11 0.95-0.3 1.2c-1.3 0.78-2.48 1.25-3.46 1.4-0.95 0.16-1.92 0.05-2.56-0.62-0.4-0.42-0.5-0.94-0.43-1.42 0.06-0.45 0.26-0.87 0.48-1.23 0.41-0.7 1.07-1.46 1.67-2.15l0.1-0.12c0.66-0.76 1.24-1.45 1.58-2.05 0.12-0.2 0.26-0.45 0.26-0.69-0.4 0.03-0.8 0.24-1.16 0.42-0.9 0.45-2 1.17-3.18 1.93L13.5 14.9c-1.24 0.8-2.55 1.65-3.66 2.14-0.55 0.24-1.14 0.44-1.68 0.46-0.58 0.03-1.22-0.15-1.63-0.76-0.44-0.66-0.26-1.4-0.03-1.94 0.24-0.55 0.66-1.14 1.14-1.72 0.87-1.06 2.1-2.26 3.28-3.44l0.39-0.38c1.33-1.32 2.59-2.59 3.37-3.65 0.4-0.54 0.62-0.95 0.7-1.24 0.02-0.07 0.04-0.16 0.02-0.23-0.03-0.01-0.09-0.02-0.21 0-0.26 0.01-0.63 0.12-1.12 0.34-0.99 0.43-2.24 1.21-3.61 2.21Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_error_triangle_fill_24.xml b/app/src/main/res/drawable/symbol_error_triangle_fill_24.xml
+index 7b528c439928f88238a75a5bf2075068a006c810..d3bcfb259cca8f4e387119f54a89c2f9aeb24c79 100644
+--- a/app/src/main/res/drawable/symbol_error_triangle_fill_24.xml
++++ b/app/src/main/res/drawable/symbol_error_triangle_fill_24.xml
+@@ -4,6 +4,6 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_icon_tint_primary"
++        android:fillColor="?attr/signal_icon_tint_primary"
+         android:pathData="M9.41 2.93c1.16-1.98 4.02-1.98 5.18 0l7.64 13.05c1.17 2-0.27 4.52-2.59 4.52H4.36c-2.32 0-3.76-2.52-2.59-4.52L9.41 2.93ZM12 6.5c-0.7 0-1.24 0.6-1.2 1.29l0.43 5.5C11.26 13.69 11.6 14 12 14s0.74-0.31 0.77-0.71l0.42-5.5C13.24 7.09 12.7 6.5 12 6.5Zm0 8.75c-0.69 0-1.25 0.56-1.25 1.25s0.56 1.25 1.25 1.25 1.25-0.56 1.25-1.25-0.56-1.25-1.25-1.25Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_info_48.xml b/app/src/main/res/drawable/symbol_info_48.xml
+index a8f33ec15656dcfe1db3b0a813972d23d5faa5cc..216ff1e9e55fd4e00918e5af887a65f40688b8d6 100644
+--- a/app/src/main/res/drawable/symbol_info_48.xml
++++ b/app/src/main/res/drawable/symbol_info_48.xml
+@@ -5,15 +5,15 @@
+     android:viewportHeight="48">
+   <path
+       android:pathData="M24,24m-21.5,0a21.5,21.5 0,1 1,43 0a21.5,21.5 0,1 1,-43 0"
+-      android:fillColor="#D2D8FE"/>
++      android:fillColor="#DAD2FF"/>
+   <path
+       android:pathData="M24.604,20.263C24.775,20.277 24.977,20.31 25.181,20.413C25.463,20.557 25.693,20.787 25.837,21.069C25.94,21.273 25.973,21.475 25.987,21.646C26,21.802 26,21.987 26,22.176L26,32.5H28.5C29.19,32.5 29.75,33.06 29.75,33.75C29.75,34.44 29.19,35 28.5,35H20.5C19.81,35 19.25,34.44 19.25,33.75C19.25,33.06 19.81,32.5 20.5,32.5H23V22.75H21C20.31,22.75 19.75,22.19 19.75,21.5C19.75,20.81 20.31,20.25 21,20.25L24.074,20.25C24.263,20.25 24.448,20.25 24.604,20.263Z"
+-      android:fillColor="#3B45FD"/>
++      android:fillColor="#6341FF"/>
+   <path
+       android:pathData="M21.498,14.502C21.498,13.12 22.618,12 24,12C25.382,12 26.502,13.12 26.502,14.502C26.502,15.884 25.382,17.005 24,17.005C22.618,17.005 21.498,15.884 21.498,14.502Z"
+-      android:fillColor="#3B45FD"/>
++      android:fillColor="#6341FF"/>
+   <path
+       android:pathData="M2.5,24C2.5,12.126 12.126,2.5 24,2.5C35.874,2.5 45.5,12.126 45.5,24C45.5,35.874 35.874,45.5 24,45.5C12.126,45.5 2.5,35.874 2.5,24ZM24,5.5C13.783,5.5 5.5,13.783 5.5,24C5.5,34.217 13.783,42.5 24,42.5C34.217,42.5 42.5,34.217 42.5,24C42.5,13.783 34.217,5.5 24,5.5Z"
+-      android:fillColor="#3B45FD"
++      android:fillColor="#6341FF"
+       android:fillType="evenOdd"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_key_24.xml b/app/src/main/res/drawable/symbol_key_24.xml
+index c0996ce8bf4c60dee13b2136520b3cc8217f9396..66feec17730857db096a2e33c862314d193a1f2e 100644
+--- a/app/src/main/res/drawable/symbol_key_24.xml
++++ b/app/src/main/res/drawable/symbol_key_24.xml
+@@ -4,9 +4,9 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_icon_tint_primary"
++        android:fillColor="?attr/signal_icon_tint_primary"
+         android:pathData="M8.5 16.87c0-0.82-0.67-1.5-1.5-1.5s-1.5 0.68-1.5 1.5c0 0.83 0.67 1.5 1.5 1.5s1.5-0.67 1.5-1.5Z"/>
+     <path
+-        android:fillColor="@color/signal_icon_tint_primary"
++        android:fillColor="?attr/signal_icon_tint_primary"
+         android:pathData="M17.7 2.13c-0.36 0-0.7 0.14-0.97 0.4l-6.5 6.5C9.6 8.86 8.93 8.76 8.25 8.76c-2.95 0-5.47 1.86-6.44 4.47-0.28 0.75-0.43 1.56-0.43 2.4 0 0.76 0.12 1.48 0.34 2.16 0.9 2.74 3.49 4.72 6.53 4.72 3.8 0 6.88-3.08 6.88-6.88 0-0.82-0.15-1.6-0.41-2.34l0.9-0.9H17c0.76 0 1.38-0.62 1.38-1.38V8.88h2.12c0.76 0 1.37-0.62 1.37-1.38v-4c0-0.76-0.61-1.38-1.37-1.38h-2.8Zm0.16 1.75h2.26v3.25H18c-0.76 0-1.37 0.61-1.37 1.37v2.13h-1.17c-0.37 0-0.72 0.14-0.98 0.4l-1.85 1.86 0.26 0.56c0.31 0.66 0.49 1.4 0.49 2.17 0 2.84-2.3 5.13-5.13 5.13-2.27 0-4.2-1.47-4.87-3.52-0.16-0.5-0.25-1.04-0.25-1.6 0-0.64 0.11-1.24 0.32-1.8 0.73-1.95 2.6-3.33 4.8-3.33 0.67 0 1.3 0.13 1.89 0.36l0.54 0.21 7.18-7.2Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_photo_slash_24.xml b/app/src/main/res/drawable/symbol_photo_slash_24.xml
+index 01569947ab976503cb1374fec09ecf83b1bc360f..5f9839ebca06029b6b262ae8948c10431a4ef589 100644
+--- a/app/src/main/res/drawable/symbol_photo_slash_24.xml
++++ b/app/src/main/res/drawable/symbol_photo_slash_24.xml
+@@ -4,12 +4,12 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_icon_tint_primary"
++        android:fillColor="?attr/signal_icon_tint_primary"
+         android:pathData="M3.1 1.87c-0.34-0.35-0.9-0.35-1.23 0-0.35 0.34-0.35 0.9 0 1.23l19 19c0.34 0.35 0.9 0.35 1.23 0 0.35-0.34 0.35-0.9 0-1.23l-19-19Z"/>
+     <path
+-        android:fillColor="@color/signal_icon_tint_primary"
++        android:fillColor="?attr/signal_icon_tint_primary"
+         android:pathData="M2.1 5.51l0.02-0.03 1.37 1.37C3.46 6.99 3.44 7.17 3.42 7.37 3.38 7.91 3.38 8.61 3.38 9.6v4.8 1.48l2.59-2.58c0.97-0.98 2.46-1.1 3.57-0.4l2.4 2.4-0.57 0.57c-0.34 0.34-0.9 0.34-1.24 0L8.8 14.53c-0.44-0.44-1.16-0.44-1.6 0l-3.4 3.4c0.25 0.39 0.6 0.7 1 0.9 0.24 0.13 0.54 0.2 1.07 0.25 0.54 0.04 1.24 0.05 2.23 0.05h7.67l1.73 1.73c-0.45 0.02-0.97 0.02-1.56 0.02H8.06c-0.95 0-1.71 0-2.33-0.06-0.64-0.05-1.2-0.16-1.72-0.42-0.82-0.42-1.49-1.1-1.9-1.91-0.27-0.52-0.38-1.08-0.43-1.72-0.05-0.62-0.05-1.38-0.05-2.33V9.56c0-0.95 0-1.71 0.05-2.33 0.05-0.64 0.16-1.2 0.42-1.72Z"/>
+     <path
+-        android:fillColor="@color/signal_icon_tint_primary"
++        android:fillColor="?attr/signal_icon_tint_primary"
+         android:pathData="M18.03 10.8c-1.09-1.1-2.84-1.13-3.97-0.1l1.24 1.24c0.45-0.34 1.09-0.31 1.5 0.1l3.82 3.81-0.04 0.78c-0.02 0.2-0.04 0.38-0.07 0.52l1.37 1.37 0.02-0.03c0.26-0.52 0.37-1.08 0.42-1.72 0.06-0.62 0.06-1.38 0.06-2.33V9.56c0-0.95 0-1.71-0.06-2.33-0.05-0.64-0.16-1.2-0.42-1.72-0.42-0.82-1.09-1.49-1.91-1.9-0.52-0.27-1.08-0.38-1.72-0.43-0.62-0.06-1.38-0.06-2.33-0.06H8.06c-0.59 0-1.1 0-1.56 0.02l1.73 1.73h7.67c1 0 1.69 0 2.23 0.05 0.53 0.04 0.83 0.12 1.06 0.24 0.5 0.25 0.9 0.65 1.15 1.15 0.12 0.23 0.2 0.53 0.24 1.06 0.04 0.54 0.05 1.24 0.05 2.23v3.79l-2.6-2.6Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_pin_16.xml b/app/src/main/res/drawable/symbol_pin_16.xml
+index 48110ef2f9373cdc11ae63789c52943ce781d05a..1301f07fd18ed98903c668665fe5eb175f292c56 100644
+--- a/app/src/main/res/drawable/symbol_pin_16.xml
++++ b/app/src/main/res/drawable/symbol_pin_16.xml
+@@ -5,6 +5,6 @@
+     android:viewportHeight="16">
+     <path
+         android:pathData="M10.886,1.604C10.563,1.282 10.121,1.109 9.683,1.133C9.23,1.157 8.782,1.396 8.537,1.87C8.151,2.618 8.007,3.457 8.105,4.272L6.662,5.475C5.415,5.064 4.077,5.099 2.929,5.634C2.435,5.865 2.174,6.315 2.138,6.779C2.103,7.227 2.274,7.685 2.608,8.019L4.732,10.143L1.763,13.112C1.59,13.285 1.462,13.497 1.39,13.731L1.139,14.549C1.08,14.741 1.26,14.92 1.451,14.861L2.269,14.61C2.503,14.538 2.715,14.41 2.888,14.237L5.857,11.268L7.981,13.392C8.315,13.726 8.773,13.897 9.221,13.862C9.685,13.826 10.135,13.565 10.366,13.071C10.901,11.924 10.936,10.587 10.526,9.341L11.731,7.896C12.545,7.993 13.384,7.849 14.13,7.463C14.604,7.218 14.843,6.77 14.868,6.317C14.891,5.879 14.719,5.437 14.396,5.114L10.886,1.604ZM9.692,2.467C9.702,2.447 9.71,2.442 9.712,2.441C9.716,2.438 9.729,2.432 9.754,2.431C9.808,2.428 9.894,2.451 9.966,2.524L13.476,6.034C13.549,6.106 13.572,6.192 13.569,6.247C13.568,6.271 13.562,6.284 13.559,6.288C13.558,6.29 13.553,6.298 13.533,6.308C12.938,6.616 12.254,6.7 11.61,6.558L11.224,6.473L9.038,9.096L9.185,9.458C9.615,10.514 9.605,11.626 9.188,12.521C9.177,12.545 9.167,12.552 9.164,12.554C9.159,12.557 9.145,12.564 9.12,12.566C9.064,12.57 8.975,12.548 8.9,12.473L3.527,7.1C3.452,7.025 3.43,6.936 3.434,6.88C3.436,6.855 3.443,6.841 3.446,6.836C3.448,6.833 3.455,6.824 3.479,6.812C4.374,6.395 5.488,6.386 6.545,6.816L6.907,6.963L9.528,4.779L9.442,4.393C9.3,3.748 9.384,3.063 9.692,2.467Z"
+-        android:fillColor="#1B1B1D"
++        android:fillColor="#1A1920"
+         android:fillType="evenOdd"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_sticker_smiley_24_dark_onsurface.xml b/app/src/main/res/drawable/symbol_sticker_smiley_24_dark_onsurface.xml
+index 9752104aa8587ec03e09b4451e6278df94881b12..1fd529bf9768573dfd7cb445041f22de12d2f30d 100644
+--- a/app/src/main/res/drawable/symbol_sticker_smiley_24_dark_onsurface.xml
++++ b/app/src/main/res/drawable/symbol_sticker_smiley_24_dark_onsurface.xml
+@@ -4,12 +4,12 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M8.75 11.25c0.83 0 1.5-0.9 1.5-2s-0.67-2-1.5-2-1.5 0.9-1.5 2 0.67 2 1.5 2Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M15.25 11.25c0.83 0 1.5-0.9 1.5-2s-0.67-2-1.5-2-1.5 0.9-1.5 2 0.67 2 1.5 2Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M8.48 21.88c-1.03 0-1.62 0-2.12-0.1-2.09-0.42-3.72-2.05-4.14-4.14-0.1-0.5-0.1-1.1-0.1-2.12V10.2c0-1.3 0-2.32 0.07-3.14C2.26 6.24 2.4 5.58 2.7 5 3.2 4 4 3.2 5 2.7c0.6-0.3 1.25-0.43 2.07-0.5 0.82-0.06 1.83-0.06 3.14-0.06h3.6c1.3 0 2.32 0 3.14 0.06 0.82 0.07 1.48 0.2 2.07 0.5C20 3.2 20.8 4 21.3 5c0.3 0.6 0.43 1.25 0.5 2.07 0.07 0.82 0.07 1.83 0.07 3.14v0.76c0 0.52 0 0.88-0.1 1.22-0.09 0.3-0.23 0.58-0.42 0.83-0.22 0.28-0.5 0.5-0.93 0.81L10.32 21.3l-0.28 0.2C9.7 21.7 9.3 21.84 8.9 21.87H8.57 8.48Zm2.4-2.77l0.78-0.73 0.05-0.03 5.5-4 0.04-0.04 1-0.55-2 0.12c-0.88 0-1.52 0-2.02 0.03s-0.83 0.1-1.11 0.2c-0.93 0.36-1.65 1.08-2.01 2-0.1 0.29-0.17 0.62-0.2 1.12-0.03 0.48-0.03 1.07-0.04 1.88Zm-2.74 1.02l0.35-0.01c0.32-0.05 0.58-0.3 0.63-0.63v-0.35-0.28c0-0.67 0-1.2 0.03-1.66-0.8-0.4-1.5-0.96-2.07-1.64-0.3-0.38-0.25-0.93 0.12-1.23 0.37-0.31 0.92-0.26 1.23 0.11 0.3 0.38 0.67 0.7 1.08 0.96 0.62-1.51 1.9-2.67 3.5-3.1 0.67-0.18 1.47-0.18 2.85-0.18h2.77l0.78-0.01c0.17-0.01 0.25-0.04 0.3-0.07 0.15-0.07 0.26-0.18 0.33-0.32 0.03-0.06 0.06-0.14 0.07-0.31l0.02-0.79V9.79c0-1.13 0-1.95-0.06-2.6-0.05-0.63-0.15-1.05-0.33-1.4-0.33-0.65-0.87-1.19-1.53-1.52-0.34-0.18-0.76-0.28-1.4-0.33-0.64-0.05-1.46-0.06-2.58-0.06H9.77c-1.13 0-1.95 0-2.6 0.06-0.63 0.05-1.05 0.15-1.4 0.33C5.14 4.59 4.6 5.13 4.27 5.79c-0.18 0.34-0.28 0.76-0.33 1.4-0.05 0.64-0.05 1.46-0.05 2.58v6.1c0 0.72 0 1.03 0.03 1.28 0.23 1.52 1.42 2.7 2.94 2.94 0.25 0.03 0.56 0.04 1.29 0.04Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_tag_filled_64.xml b/app/src/main/res/drawable/symbol_tag_filled_64.xml
+index a766031d91f8836c47935aefabddfc746f13b7bb..50612485d9504b71c5e077bddc47f7efe3662a5c 100644
+--- a/app/src/main/res/drawable/symbol_tag_filled_64.xml
++++ b/app/src/main/res/drawable/symbol_tag_filled_64.xml
+@@ -1,9 +1,9 @@
+ <vector xmlns:android="http://schemas.android.com/apk/res/android" android:autoMirrored="true" android:height="64dp" android:viewportHeight="64" android:viewportWidth="64" android:width="64dp">
+       
+-    <path android:fillColor="#D2D8FE" android:pathData="M45.5,8H33L19,20L7.5,32V40L24,56.5H30L54.5,33L56,17.5L45.5,8Z"/>
++    <path android:fillColor="#DAD2FF" android:pathData="M45.5,8H33L19,20L7.5,32V40L24,56.5H30L54.5,33L56,17.5L45.5,8Z"/>
+       
+-    <path android:fillColor="#3B45FD" android:pathData="M42,18.333C44.025,18.333 45.667,19.975 45.667,22C45.667,24.025 44.025,25.667 42,25.667C39.975,25.667 38.334,24.025 38.334,22C38.334,19.975 39.975,18.333 42,18.333Z"/>
++    <path android:fillColor="#6341FF" android:pathData="M42,18.333C44.025,18.333 45.667,19.975 45.667,22C45.667,24.025 44.025,25.667 42,25.667C39.975,25.667 38.334,24.025 38.334,22C38.334,19.975 39.975,18.333 42,18.333Z"/>
+       
+-    <path android:fillColor="#3B45FD" android:fillType="evenOdd" android:pathData="M41.582,6.667C43.118,6.667 44.211,6.654 45.262,6.906C46.146,7.119 46.992,7.469 47.767,7.944C48.689,8.509 49.453,9.291 50.538,10.376L53.624,13.462C54.709,14.547 55.492,15.312 56.056,16.233C56.532,17.008 56.882,17.854 57.094,18.738C57.346,19.789 57.334,20.883 57.334,22.418V27.582C57.334,29.117 57.346,30.211 57.094,31.262C56.882,32.146 56.532,32.992 56.056,33.767C55.492,34.688 54.709,35.452 53.624,36.538L37.132,53.03C35.571,54.59 34.317,55.847 33.22,56.779C32.105,57.725 31.021,58.452 29.757,58.863C27.749,59.516 25.585,59.516 23.577,58.863C22.313,58.452 21.229,57.725 20.114,56.779C19.017,55.847 17.763,54.59 16.202,53.03L10.97,47.798C9.41,46.238 8.153,44.984 7.222,43.887C6.275,42.772 5.548,41.688 5.137,40.423C4.485,38.415 4.485,36.252 5.137,34.243C5.548,32.979 6.275,31.895 7.222,30.78C8.153,29.683 9.41,28.429 10.97,26.868L27.463,10.376C28.548,9.291 29.312,8.509 30.233,7.944C31.009,7.469 31.854,7.118 32.739,6.906C33.789,6.654 34.883,6.667 36.418,6.667H41.582ZM36.418,10.667C34.693,10.667 34.156,10.679 33.672,10.795C33.196,10.91 32.741,11.098 32.323,11.354C31.899,11.614 31.51,11.985 30.291,13.204L13.799,29.697C12.191,31.304 11.072,32.426 10.271,33.37C9.485,34.295 9.123,34.917 8.94,35.479C8.549,36.684 8.549,37.982 8.94,39.187C9.123,39.75 9.485,40.371 10.271,41.297C11.072,42.24 12.191,43.363 13.799,44.97L19.03,50.202C20.638,51.809 21.76,52.928 22.704,53.729C23.629,54.515 24.251,54.877 24.813,55.06C26.018,55.451 27.316,55.451 28.521,55.06C29.083,54.877 29.705,54.515 30.631,53.729C31.574,52.928 32.696,51.809 34.304,50.202L50.796,33.71C52.016,32.49 52.386,32.101 52.646,31.677C52.902,31.26 53.09,30.804 53.205,30.328C53.321,29.845 53.334,29.307 53.334,27.582V22.418C53.334,20.692 53.321,20.155 53.205,19.672C53.09,19.196 52.902,18.74 52.646,18.323C52.386,17.899 52.016,17.51 50.796,16.29L47.71,13.204C46.49,11.985 46.101,11.614 45.677,11.354C45.26,11.098 44.805,10.91 44.328,10.795C43.845,10.679 43.308,10.667 41.582,10.667H36.418Z"/>
++    <path android:fillColor="#6341FF" android:fillType="evenOdd" android:pathData="M41.582,6.667C43.118,6.667 44.211,6.654 45.262,6.906C46.146,7.119 46.992,7.469 47.767,7.944C48.689,8.509 49.453,9.291 50.538,10.376L53.624,13.462C54.709,14.547 55.492,15.312 56.056,16.233C56.532,17.008 56.882,17.854 57.094,18.738C57.346,19.789 57.334,20.883 57.334,22.418V27.582C57.334,29.117 57.346,30.211 57.094,31.262C56.882,32.146 56.532,32.992 56.056,33.767C55.492,34.688 54.709,35.452 53.624,36.538L37.132,53.03C35.571,54.59 34.317,55.847 33.22,56.779C32.105,57.725 31.021,58.452 29.757,58.863C27.749,59.516 25.585,59.516 23.577,58.863C22.313,58.452 21.229,57.725 20.114,56.779C19.017,55.847 17.763,54.59 16.202,53.03L10.97,47.798C9.41,46.238 8.153,44.984 7.222,43.887C6.275,42.772 5.548,41.688 5.137,40.423C4.485,38.415 4.485,36.252 5.137,34.243C5.548,32.979 6.275,31.895 7.222,30.78C8.153,29.683 9.41,28.429 10.97,26.868L27.463,10.376C28.548,9.291 29.312,8.509 30.233,7.944C31.009,7.469 31.854,7.118 32.739,6.906C33.789,6.654 34.883,6.667 36.418,6.667H41.582ZM36.418,10.667C34.693,10.667 34.156,10.679 33.672,10.795C33.196,10.91 32.741,11.098 32.323,11.354C31.899,11.614 31.51,11.985 30.291,13.204L13.799,29.697C12.191,31.304 11.072,32.426 10.271,33.37C9.485,34.295 9.123,34.917 8.94,35.479C8.549,36.684 8.549,37.982 8.94,39.187C9.123,39.75 9.485,40.371 10.271,41.297C11.072,42.24 12.191,43.363 13.799,44.97L19.03,50.202C20.638,51.809 21.76,52.928 22.704,53.729C23.629,54.515 24.251,54.877 24.813,55.06C26.018,55.451 27.316,55.451 28.521,55.06C29.083,54.877 29.705,54.515 30.631,53.729C31.574,52.928 32.696,51.809 34.304,50.202L50.796,33.71C52.016,32.49 52.386,32.101 52.646,31.677C52.902,31.26 53.09,30.804 53.205,30.328C53.321,29.845 53.334,29.307 53.334,27.582V22.418C53.334,20.692 53.321,20.155 53.205,19.672C53.09,19.196 52.902,18.74 52.646,18.323C52.386,17.899 52.016,17.51 50.796,16.29L47.71,13.204C46.49,11.985 46.101,11.614 45.677,11.354C45.26,11.098 44.805,10.91 44.328,10.795C43.845,10.679 43.308,10.667 41.582,10.667H36.418Z"/>
+     
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_text_24_dark_onsurface.xml b/app/src/main/res/drawable/symbol_text_24_dark_onsurface.xml
+index 4936cae75dc2e8b2ea8fe581d30161dffa217cbb..6953cdae7c5ccfff94012592154ddea3a7f6b45e 100644
+--- a/app/src/main/res/drawable/symbol_text_24_dark_onsurface.xml
++++ b/app/src/main/res/drawable/symbol_text_24_dark_onsurface.xml
+@@ -4,9 +4,9 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M2.32 18.66l1.4-3.79h6.32l1.4 3.78c0.12 0.36 0.46 0.6 0.85 0.6 0.63 0 1.07-0.63 0.85-1.22L8.48 5.23C8.3 4.73 7.8 4.38 7.25 4.38H6.56c-0.54 0-1.03 0.35-1.22 0.86L0.6 18.03c-0.22 0.59 0.22 1.22 0.85 1.22 0.39 0 0.73-0.24 0.86-0.6ZM6.88 6.32l2.56 6.93H4.32l2.56-6.93Z"/>
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M20.45 9.86C20.78 10.14 21 10.6 21 11.38c0 0.28-0.03 0.46-0.07 0.59-0.04 0.1-0.1 0.18-0.21 0.26-0.13 0.08-0.34 0.16-0.69 0.23-0.34 0.07-0.8 0.12-1.39 0.16-1.64 0.1-2.83 0.46-3.62 1.08-0.82 0.63-1.15 1.5-1.15 2.43 0 0.93 0.34 1.75 0.98 2.34 0.64 0.6 1.54 0.9 2.6 0.9 1.37 0 2.52-0.4 3.33-1.2L21 17.94v0.43c0 0.49 0.4 0.88 0.87 0.88 0.49 0 0.88-0.4 0.88-0.88V11.5c0-1.1-0.35-2.04-1.09-2.69-0.72-0.64-1.75-0.94-2.99-0.94-1.64 0-3.12 0.62-4.07 1.87-0.4 0.52-0.08 1.18 0.46 1.33 0.38 0.12 0.77-0.05 0.98-0.33 0.63-0.85 1.6-1.35 2.63-1.35 0.86 0 1.43 0.17 1.78 0.47Zm0.55 3.8v1.18c0 0.9-0.23 1.62-0.69 2.12-0.45 0.49-1.2 0.83-2.38 0.83-0.78 0-1.37-0.19-1.74-0.48-0.36-0.27-0.57-0.67-0.57-1.18 0-0.59 0.17-0.98 0.6-1.27 0.48-0.34 1.33-0.6 2.8-0.7 0.84-0.07 1.5-0.21 1.98-0.5Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_timer_80.xml b/app/src/main/res/drawable/symbol_timer_80.xml
+index 69dbe0696ebff352cd249802f9b73a1b3d57afca..e74504efc763cfe425e6b668aef0d872c10db6e5 100644
+--- a/app/src/main/res/drawable/symbol_timer_80.xml
++++ b/app/src/main/res/drawable/symbol_timer_80.xml
+@@ -5,9 +5,9 @@
+     android:viewportHeight="80">
+   <path
+       android:pathData="M40,22.5C41.381,22.5 42.5,23.619 42.5,25L42.5,39.836C43.994,40.7 45,42.316 45,44.167C45,46.928 42.761,49.167 40,49.167C37.239,49.167 35,46.928 35,44.167C35,42.316 36.006,40.7 37.5,39.836L37.5,25C37.5,23.619 38.619,22.5 40,22.5Z"
+-      android:fillColor="#3B45FD"/>
++      android:fillColor="#6341FF"/>
+   <path
+       android:pathData="M40,2.5C41.381,2.5 42.5,3.619 42.5,5V9.261C49.595,9.801 56.054,12.619 61.145,16.985L64.159,13.972C65.135,12.995 66.718,12.995 67.695,13.972C68.671,14.948 68.671,16.531 67.695,17.507L64.681,20.521C69.555,26.205 72.5,33.592 72.5,41.667C72.5,59.616 57.949,74.167 40,74.167C22.051,74.167 7.5,59.616 7.5,41.667C7.5,24.559 20.719,10.538 37.5,9.261V5C37.5,3.619 38.619,2.5 40,2.5ZM59.424,22.2L59.445,22.221L59.466,22.242C64.431,27.217 67.5,34.083 67.5,41.667C67.5,56.854 55.188,69.167 40,69.167C24.812,69.167 12.5,56.854 12.5,41.667C12.5,26.479 24.812,14.167 40,14.167C47.583,14.167 54.449,17.236 59.424,22.2Z"
+-      android:fillColor="#3B45FD"
++      android:fillColor="#6341FF"
+       android:fillType="evenOdd"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/symbol_undo_24.xml b/app/src/main/res/drawable/symbol_undo_24.xml
+index b76443f9d00769990a3dbd8abd6efa361ddba719..ed48fe11d467f13c0c1a5caf2dc7e384b482dffb 100644
+--- a/app/src/main/res/drawable/symbol_undo_24.xml
++++ b/app/src/main/res/drawable/symbol_undo_24.xml
+@@ -4,6 +4,6 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_dark_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M2.13 9c0-0.23 0.09-0.45 0.25-0.62l5.5-5.5c0.34-0.34 0.9-0.34 1.24 0 0.34 0.34 0.34 0.9 0 1.24L4.99 8.25l1.76-0.13H16c3.52 0 6.38 2.86 6.38 6.38s-2.86 6.38-6.38 6.38h-4c-0.48 0-0.88-0.4-0.88-0.88s0.4-0.88 0.88-0.88h4c2.55 0 4.63-2.07 4.63-4.62 0-2.55-2.08-4.63-4.63-4.63H6.75L4.99 9.76l4.13 4.13c0.34 0.34 0.34 0.9 0 1.24-0.34 0.34-0.9 0.34-1.24 0l-5.5-5.5C2.22 9.45 2.13 9.23 2.13 9Z"/>
+ </vector>
+diff --git a/app/src/main/res/drawable/test_gradient.xml b/app/src/main/res/drawable/test_gradient.xml
+index 655faf8776310f46e242542993a99d110192937a..3759bb23abce204543201d1d4ca663878c50c8d2 100644
+--- a/app/src/main/res/drawable/test_gradient.xml
++++ b/app/src/main/res/drawable/test_gradient.xml
+@@ -3,6 +3,6 @@
+   <gradient
+       android:type="linear"
+       android:angle="135"
+-      android:startColor="@color/signal_accent_primary"
++      android:startColor="?attr/signal_accent_primary"
+       android:endColor="@color/signal_accent_green" />
+ </shape>
+diff --git a/app/src/main/res/drawable/unread_count_background.xml b/app/src/main/res/drawable/unread_count_background.xml
+index 5f7ffdb24153f4724e0d0a222d902e20029cb3c0..c54e6ce4ccff9c8ff0aee969e85e9442b1c1df37 100644
+--- a/app/src/main/res/drawable/unread_count_background.xml
++++ b/app/src/main/res/drawable/unread_count_background.xml
+@@ -5,10 +5,10 @@
+ 
+     <corners android:radius="@dimen/unread_count_bubble_radius" />
+ 
+-    <solid android:color="@color/signal_colorPrimary" />
++    <solid android:color="?attr/colorPrimary" />
+ 
+     <stroke
+-        android:color="@color/signal_colorOnPrimary"
++        android:color="?attr/colorOnPrimary"
+         android:width="1dp"/>
+ 
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/unread_count_background_new.xml b/app/src/main/res/drawable/unread_count_background_new.xml
+index 20951591b526839de8383a2c7200b0edc7fd0dbf..81ef7ac5095ad2dfa9a8bf28e7c07003706e7b1b 100644
+--- a/app/src/main/res/drawable/unread_count_background_new.xml
++++ b/app/src/main/res/drawable/unread_count_background_new.xml
+@@ -4,5 +4,5 @@
+     android:shape="rectangle">
+ 
+     <corners android:radius="@dimen/unread_count_bubble_radius" />
+-    <solid android:color="@color/signal_colorPrimary" />
++    <solid android:color="?attr/colorPrimary" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/username_edit_box_fill.xml b/app/src/main/res/drawable/username_edit_box_fill.xml
+index 3f1672c78ceea9dad6d7820d8f4a7172e476f954..19c68bd3917e4506cc3b7f99cbe84d23a101f704 100644
+--- a/app/src/main/res/drawable/username_edit_box_fill.xml
++++ b/app/src/main/res/drawable/username_edit_box_fill.xml
+@@ -4,6 +4,6 @@
+   -->
+ 
+ <shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android">
+-    <solid android:color="@color/signal_colorSurfaceVariant" />
++    <solid android:color="?attr/colorSurfaceVariant" />
+     <corners android:topLeftRadius="4dp" android:topRightRadius="4dp" />
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/v2_media_count_indicator_background.xml b/app/src/main/res/drawable/v2_media_count_indicator_background.xml
+index 1d2d112e5f52338f6869dd8319e3bef4dbeb31da..e096086bd86731c6e39a1d23c223fd0d7904b344 100644
+--- a/app/src/main/res/drawable/v2_media_count_indicator_background.xml
++++ b/app/src/main/res/drawable/v2_media_count_indicator_background.xml
+@@ -1,5 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle" >
+-    <solid android:color="@color/signal_colorSurfaceVariant"/>
++    <solid android:color="?attr/colorSurfaceVariant"/>
+     <corners android:radius="32dp"/>
+ </shape>
+\ No newline at end of file
+diff --git a/app/src/main/res/drawable/verificationcode_alert_96.xml b/app/src/main/res/drawable/verificationcode_alert_96.xml
+index 2abad8ad9baf12a74666bc3831dcbfda558625fa..daa76086aff8d13d83ed275e379bfd3da06ed8de 100644
+--- a/app/src/main/res/drawable/verificationcode_alert_96.xml
++++ b/app/src/main/res/drawable/verificationcode_alert_96.xml
+@@ -5,7 +5,7 @@
+     android:viewportHeight="96">
+     <path
+         android:fillColor="#FFC3C6FA"
+-        android:strokeColor="#FF3B45FD"
++        android:strokeColor="#FF6341FF"
+         android:strokeWidth="2.5"
+         android:pathData="M59 10.75c4.56 0 8.25 3.7 8.25 8.25v58c0 4.56-3.7 8.25-8.25 8.25H37c-4.56 0-8.25-3.7-8.25-8.25V19c0-4.56 3.7-8.25 8.25-8.25h22Z"/>
+     <path
+@@ -15,7 +15,7 @@
+         android:fillColor="#FFA9ADF8"
+         android:pathData="M62.36 12.86C64.53 14.05 66 16.36 66 19v58c0 3.87-3.13 7-7 7H37c-1.6 0-3.08-0.54-4.27-1.45 1.46-2.02 3.82-3.34 6.5-3.34h15c4.43 0 8-3.58 8-8V14.23c0-0.47 0.05-0.93 0.13-1.37Z"/>
+     <path
+-        android:fillColor="#FF3B45FD"
++        android:fillColor="#FF6341FF"
+         android:pathData="M43 16.5c0-0.83 0.67-1.5 1.5-1.5h7c0.83 0 1.5 0.67 1.5 1.5v0c0 0.83-0.67 1.5-1.5 1.5h-7c-0.83 0-1.5-0.67-1.5-1.5z"/>
+     <path
+         android:fillColor="#FFC34922"
+diff --git a/app/src/main/res/layout/account_locked_fragment.xml b/app/src/main/res/layout/account_locked_fragment.xml
+index d4d5578dd0531492aa8bd9910d34a9457a3d11a5..cfdf4273bbfe5b4a52b582afcd559568f69aad99 100644
+--- a/app/src/main/res/layout/account_locked_fragment.xml
++++ b/app/src/main/res/layout/account_locked_fragment.xml
+@@ -28,7 +28,7 @@
+         android:gravity="center_horizontal"
+         android:minHeight="66dp"
+         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/account_locked_title"
+diff --git a/app/src/main/res/layout/activity_change_number_lock.xml b/app/src/main/res/layout/activity_change_number_lock.xml
+index 1d838f8a58c3ded27fe6cfd65bab9f289ff8658a..1c319be0c7b07d0f287c7f233b93df013613384c 100644
+--- a/app/src/main/res/layout/activity_change_number_lock.xml
++++ b/app/src/main/res/layout/activity_change_number_lock.xml
+@@ -68,7 +68,7 @@
+             android:layout_height="wrap_content"
+             android:layout_marginTop="@dimen/transfer_top_padding"
+             android:indeterminate="true"
+-            app:indicatorColor="@color/signal_accent_primary"
++            app:indicatorColor="?attr/signal_accent_primary"
+             app:indicatorSize="48dp"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+diff --git a/app/src/main/res/layout/activity_map_bottom_sheet_view.xml b/app/src/main/res/layout/activity_map_bottom_sheet_view.xml
+index 7614b31f644703b20c42881a8aef49a5021b0c47..a16897e5897cf42e54ea00a095d925b6b1045e79 100755
+--- a/app/src/main/res/layout/activity_map_bottom_sheet_view.xml
++++ b/app/src/main/res/layout/activity_map_bottom_sheet_view.xml
+@@ -23,7 +23,7 @@
+         <FrameLayout
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:background="@color/signal_colorBackground">
++            android:background="?attr/colorSurface">
+ 
+             <LinearLayout
+                 android:layout_width="match_parent"
+@@ -43,7 +43,7 @@
+                     android:ellipsize="end"
+                     android:fontFamily="sans-serif-medium"
+                     android:maxLines="1"
+-                    android:textColor="@color/signal_text_primary"
++                    android:textColor="?attr/signal_text_primary"
+                     tools:text="Short address" />
+ 
+                 <TextView
+@@ -55,7 +55,7 @@
+                     android:layout_marginEnd="70dp"
+                     android:ellipsize="end"
+                     android:maxLines="1"
+-                    android:textColor="@color/signal_text_secondary"
++                    android:textColor="?attr/signal_text_secondary"
+                     tools:text="Precise address" />
+             </LinearLayout>
+ 
+diff --git a/app/src/main/res/layout/activity_place_picker.xml b/app/src/main/res/layout/activity_place_picker.xml
+index e1ff0d29ce21db56b7bc28fcb0abd57e2b43c00d..77a7970c055b32e084d0ca461dac92d210e3a8e5 100644
+--- a/app/src/main/res/layout/activity_place_picker.xml
++++ b/app/src/main/res/layout/activity_place_picker.xml
+@@ -6,13 +6,14 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="match_parent"
++    android:background="?attr/colorSurface"
+     tools:context="org.thoughtcrime.securesms.maps.PlacePickerActivity">
+ 
+     <com.google.android.gms.maps.MapView
+         android:id="@+id/map_view"
+         android:layout_width="210dp"
+         android:layout_height="210dp"
+-        android:visibility="visible"
++        android:visibility="gone"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintStart_toStartOf="parent"/>
+ 
+@@ -26,8 +27,39 @@
+         app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+-        app:layout_constraintVertical_bias="0.0"
+-        app:backgroundColor="@color/signal_colorBackground"/>
++        app:layout_constraintVertical_bias="0.0" />
++
++    <LinearLayout
++        android:id="@+id/map_type_overlay"
++        android:layout_width="wrap_content"
++        android:layout_height="140dp"
++        android:adjustViewBounds="true"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintVertical_bias="0.0">
++
++        <Button
++            android:id="@+id/btnMapTypeNormal"
++            style="@style/Signal.Widget.Button.Large.Secondary"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="@string/preferences__map_normal" />
++
++        <Button
++            android:id="@+id/btnMapTypeSatellite"
++            style="@style/Signal.Widget.Button.Large.Secondary"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="@string/preferences__map_satellite" />
++
++        <Button
++            android:id="@+id/btnMapTypeTerrain"
++            style="@style/Signal.Widget.Button.Large.Secondary"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:text="@string/preferences__map_terrain" />
++    </LinearLayout>
+ 
+     <ImageView
+         android:id="@+id/marker_shadow_image_view"
+diff --git a/app/src/main/res/layout/add_group_details_fragment.xml b/app/src/main/res/layout/add_group_details_fragment.xml
+index ddcae6b9af7c56526ddd71cf612f8fd09ed4babf..da125bcae505cd6d5c52af31d9ff56be5585755f 100644
+--- a/app/src/main/res/layout/add_group_details_fragment.xml
++++ b/app/src/main/res/layout/add_group_details_fragment.xml
+@@ -23,7 +23,7 @@
+         android:layout_marginStart="@dimen/dsl_settings_gutter"
+         android:layout_marginTop="16dp"
+         android:background="@drawable/tinted_circle"
+-        app:backgroundTint="@color/signal_colorSurfaceVariant"
++        app:backgroundTint="?attr/colorSurfaceVariant"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/toolbar" />
+ 
+@@ -59,7 +59,7 @@
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             app:srcCompat="@drawable/ic_timer_disabled_24"
+-            app:tint="@color/signal_text_primary" />
++            app:tint="?attr/signal_text_primary" />
+ 
+         <TextView
+             android:layout_width="0dp"
+@@ -75,7 +75,7 @@
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:textAppearance="@style/Signal.Text.BodyLarge"
+-            android:textColor="@color/signal_text_secondary"
++            android:textColor="?attr/signal_text_secondary"
+             tools:text="1 week" />
+ 
+     </LinearLayout>
+@@ -86,7 +86,7 @@
+         android:layout_height="2dp"
+         android:layout_marginTop="16dp"
+         android:layout_marginBottom="16dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/colorSurfaceVariant"
+         app:layout_constraintBottom_toTopOf="@id/mms_warning"
+         app:layout_constraintTop_toBottomOf="@id/group_disappearing_messages_row" />
+ 
+@@ -114,7 +114,7 @@
+             android:paddingBottom="16dp"
+             android:text="@string/AddGroupDetailsFragment__youve_selected_a_contact_that_doesnt_support_signal_groups_mms_removal"
+             android:textAppearance="@style/Signal.Text.BodyMedium"
+-            android:textColor="@color/signal_colorOnSurfaceVariant" />
++            android:textColor="?attr/colorOnSurfaceVariant" />
+ 
+     </LinearLayout>
+ 
+@@ -176,7 +176,7 @@
+         android:layout_marginEnd="@dimen/dsl_settings_gutter"
+         android:text="@string/AddGroupDetailsFragment__you_can_add_or_invite_friends_after_creating_this_group"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         android:visibility="gone"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/member_list_header" />
+diff --git a/app/src/main/res/layout/album_thumbnail_view.xml b/app/src/main/res/layout/album_thumbnail_view.xml
+index ddb821a31af98e8b3c146b5f59ce442d0facfee2..1bf7cdeabfa7181ecfdfc11a82149175e1c9cca0 100644
+--- a/app/src/main/res/layout/album_thumbnail_view.xml
++++ b/app/src/main/res/layout/album_thumbnail_view.xml
+@@ -16,7 +16,7 @@
+         android:id="@+id/album_cell_container"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+-        android:background="@color/signal_background_primary"/>
++        android:background="?attr/signal_background_primary"/>
+ 
+     <ViewStub
+         android:id="@+id/album_transfer_controls_stub"
+diff --git a/app/src/main/res/layout/attachment_keyboard.xml b/app/src/main/res/layout/attachment_keyboard.xml
+index 8fd1d230bf9edc59d2a3a9d2fd4cb50b157889bf..690d912c449f653321f1973a0bdf44f41326486c 100644
+--- a/app/src/main/res/layout/attachment_keyboard.xml
++++ b/app/src/main/res/layout/attachment_keyboard.xml
+@@ -10,7 +10,7 @@
+         android:id="@+id/attachment_keyboard_container"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:background="@color/signal_background_primary"
++        android:background="?attr/signal_background_primary"
+         tools:layout_height="200dp">
+ 
+         <androidx.recyclerview.widget.RecyclerView
+@@ -75,8 +75,8 @@
+         <com.google.android.material.button.MaterialButton
+             android:id="@+id/attachment_keyboard_permission_button"
+             style="@style/Signal.Widget.Button.Large.Primary"
+-            app:backgroundTint="@color/signal_colorPrimaryContainer"
+-            android:textColor="@color/signal_colorOnPrimaryContainer"
++            app:backgroundTint="?attr/colorPrimaryContainer"
++            android:textColor="?attr/colorOnPrimaryContainer"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/AttachmentKeyboard_allow_access"
+diff --git a/app/src/main/res/layout/backup_max_files_selector_view.xml b/app/src/main/res/layout/backup_max_files_selector_view.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..57c065a6377b68353fa9a5d926825656375e8b3b
+--- /dev/null
++++ b/app/src/main/res/layout/backup_max_files_selector_view.xml
+@@ -0,0 +1,17 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    tools:viewBindingIgnore="true"
++    android:orientation="horizontal"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:layout_gravity="center"
++    android:gravity="center">
++
++    <NumberPicker
++        android:id="@+id/picker"
++        android:layout_width="wrap_content"
++        android:layout_height="wrap_content"
++        android:layout_marginEnd="8dp" />
++
++</LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/base_settings_header_item.xml b/app/src/main/res/layout/base_settings_header_item.xml
+index 6a7103fa74b2d5c8a2bdb708997504edd6dc92c4..faca66d3fff00261afea0727937c825174dd3670 100644
+--- a/app/src/main/res/layout/base_settings_header_item.xml
++++ b/app/src/main/res/layout/base_settings_header_item.xml
+@@ -8,6 +8,6 @@
+     android:layout_marginStart="16dp"
+     android:layout_marginTop="8dp"
+     android:layout_marginBottom="8dp"
+-    android:textColor="@color/signal_text_secondary"
++    android:textColor="?attr/signal_text_secondary"
+     android:textStyle="bold"
+     tools:text="Recent payments" />
+diff --git a/app/src/main/res/layout/biometric_dialog_background.xml b/app/src/main/res/layout/biometric_dialog_background.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..b9d674c6151c3ff271a7a8b653ee61bb733dfbd1
+--- /dev/null
++++ b/app/src/main/res/layout/biometric_dialog_background.xml
+@@ -0,0 +1,23 @@
++<?xml version="1.0" encoding="utf-8"?>
++<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    tools:viewBindingIgnore="true"
++    android:id="@+id/biometric_dialog_background"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++
++    <ImageView
++        android:id="@+id/logo"
++        android:layout_width="132dp"
++        android:layout_height="132dp"
++        android:layout_centerHorizontal="true"
++        android:importantForAccessibility="no"
++        app:layout_constraintBottom_toBottomOf="parent"
++        app:layout_constraintEnd_toEndOf="parent"
++        app:layout_constraintStart_toStartOf="parent"
++        app:layout_constraintTop_toTopOf="parent"
++        app:layout_constraintVertical_bias="0.36"
++        app:srcCompat="@drawable/logo_round_filled" />
++
++</androidx.constraintlayout.widget.ConstraintLayout>
+diff --git a/app/src/main/res/layout/blocked_users_fragment.xml b/app/src/main/res/layout/blocked_users_fragment.xml
+index 1e9cda0b365cd7695c40f72dd77c1ab0c5056962..229dcb76e7eea71efcc9a63cc5ca22cc06a589d6 100644
+--- a/app/src/main/res/layout/blocked_users_fragment.xml
++++ b/app/src/main/res/layout/blocked_users_fragment.xml
+@@ -29,7 +29,7 @@
+         android:paddingBottom="8dp"
+         android:text="@string/BlockedUsersActivity__blocked_users_will"
+         android:textAppearance="@style/TextAppearance.Signal.Body2"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/add_blocked_user" />
+diff --git a/app/src/main/res/layout/bold_selection_tab_item.xml b/app/src/main/res/layout/bold_selection_tab_item.xml
+index 80bf617207b7d77209adc6511ba98d6d9c78ac64..30339d76bc4b93529caeab37bdbcec2bbe1f5dc4 100644
+--- a/app/src/main/res/layout/bold_selection_tab_item.xml
++++ b/app/src/main/res/layout/bold_selection_tab_item.xml
+@@ -13,7 +13,7 @@
+         android:gravity="center"
+         android:maxLines="1"
+         android:textAppearance="@style/TextAppearance.Signal.Body2"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         tools:text="Media" />
+ 
+     <TextView
+@@ -25,7 +25,7 @@
+         android:gravity="center"
+         android:maxLines="1"
+         android:textAppearance="@style/TextAppearance.Signal.Body2"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         tools:text="Media" />
+ 
+ </org.thoughtcrime.securesms.components.BoldSelectionTabItem>
+diff --git a/app/src/main/res/layout/boost_preference.xml b/app/src/main/res/layout/boost_preference.xml
+index 111dad7b1762e1f6980bea39080a49a33995a401..3e97ca87ac222b94e178383a820a19cf6bdd9285 100644
+--- a/app/src/main/res/layout/boost_preference.xml
++++ b/app/src/main/res/layout/boost_preference.xml
+@@ -15,7 +15,7 @@
+         android:layout_width="0dp"
+         android:layout_height="58sp"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:backgroundTint="@color/signal_selectable_button_background_tint"
+         app:cornerRadius="12dp"
+         app:layout_constraintEnd_toStartOf="@id/boost_2"
+@@ -33,7 +33,7 @@
+         android:layout_marginStart="20dp"
+         android:layout_marginEnd="20dp"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:backgroundTint="@color/signal_selectable_button_background_tint"
+         app:cornerRadius="12dp"
+         app:layout_constraintEnd_toStartOf="@id/boost_3"
+@@ -49,7 +49,7 @@
+         android:layout_width="0dp"
+         android:layout_height="58sp"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:backgroundTint="@color/signal_selectable_button_background_tint"
+         app:cornerRadius="12dp"
+         app:layout_constraintEnd_toEndOf="parent"
+@@ -66,7 +66,7 @@
+         android:layout_height="58sp"
+         android:layout_marginTop="24dp"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:backgroundTint="@color/signal_selectable_button_background_tint"
+         app:cornerRadius="12dp"
+         app:layout_constraintEnd_toStartOf="@id/boost_5"
+@@ -85,7 +85,7 @@
+         android:layout_marginTop="24dp"
+         android:layout_marginEnd="20dp"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:backgroundTint="@color/signal_selectable_button_background_tint"
+         app:cornerRadius="12dp"
+         app:layout_constraintEnd_toStartOf="@id/boost_6"
+@@ -103,7 +103,7 @@
+         android:layout_marginTop="24dp"
+         android:gravity="center"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:backgroundTint="@color/signal_selectable_button_background_tint"
+         app:cornerRadius="12dp"
+         app:layout_constraintEnd_toEndOf="parent"
+@@ -124,8 +124,8 @@
+         android:imeOptions="actionDone"
+         android:inputType="numberDecimal"
+         android:textAppearance="@style/Signal.Text.Body"
+-        android:textColor="@color/signal_text_primary"
+-        android:textColorHint="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
++        android:textColorHint="?attr/signal_text_primary"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/boost_4" />
+@@ -136,7 +136,7 @@
+         android:layout_height="wrap_content"
+         android:textAlignment="center"
+         android:textAppearance="@style/Signal.Text.BodySmall"
+-        android:textColor="@color/signal_colorError"
++        android:textColor="?attr/colorError"
+         android:visibility="gone"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+diff --git a/app/src/main/res/layout/call_log_create_call_link_item.xml b/app/src/main/res/layout/call_log_create_call_link_item.xml
+index 09a15ff023d34be50e9fa60c506fa403de26130e..c4e2be7a63520402afaec9389e34f2ac8cc53b7d 100644
+--- a/app/src/main/res/layout/call_log_create_call_link_item.xml
++++ b/app/src/main/res/layout/call_log_create_call_link_item.xml
+@@ -13,14 +13,14 @@
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+         android:layout_marginStart="12dp"
+-        android:background="@color/signal_colorSecondaryContainer"
++        android:background="?attr/colorSecondaryContainer"
+         android:scaleType="centerInside"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+         app:srcCompat="@drawable/symbol_link_24"
+-        app:tint="@color/signal_colorOnPrimaryContainer" />
++        app:tint="?attr/colorOnPrimaryContainer" />
+ 
+     <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+         android:id="@+id/call_link_title"
+@@ -52,7 +52,7 @@
+         android:text="@string/CreateCallLink__share_a_link_for"
+         android:textAlignment="viewStart"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         app:layout_constraintBottom_toBottomOf="@+id/call_link_icon"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0"
+diff --git a/app/src/main/res/layout/call_log_fragment.xml b/app/src/main/res/layout/call_log_fragment.xml
+index 1ee2d98d19dab1b8466175c48e80deb998ce2e47..e0dc62b4225fe792394d0948d15ba92f52d6f8d2 100644
+--- a/app/src/main/res/layout/call_log_fragment.xml
++++ b/app/src/main/res/layout/call_log_fragment.xml
+@@ -23,7 +23,7 @@
+                 android:id="@+id/pull_view"
+                 android:layout_width="match_parent"
+                 android:layout_height="130dp"
+-                android:background="@color/signal_colorBackground"
++                android:background="?attr/colorSurface"
+                 app:layout_scrollInterpolator="@android:anim/linear_interpolator" />
+ 
+         </com.google.android.material.appbar.CollapsingToolbarLayout>
+@@ -34,7 +34,7 @@
+         android:id="@+id/recycler"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:background="@color/signal_colorBackground"
++        android:background="?attr/colorSurface"
+         android:clipToPadding="false"
+         android:paddingBottom="80dp"
+         android:scrollbars="vertical"
+diff --git a/app/src/main/res/layout/cds_permanent_error_bottom_sheet.xml b/app/src/main/res/layout/cds_permanent_error_bottom_sheet.xml
+index 146d1f9b15091e959937644834e1ef5b1bafb518..06ecc73bf73df38252e8af3e7b7ae0ca21a14626 100644
+--- a/app/src/main/res/layout/cds_permanent_error_bottom_sheet.xml
++++ b/app/src/main/res/layout/cds_permanent_error_bottom_sheet.xml
+@@ -45,7 +45,7 @@
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="16dp"
+             android:textAppearance="@style/Signal.Text.BodyMedium"
+-            android:textColor="@color/signal_colorOnSurfaceVariant"
++            android:textColor="?attr/colorOnSurfaceVariant"
+             android:text="@string/CdsPermanentErrorBottomSheet_body" />
+ 
+         <com.google.android.material.button.MaterialButton
+diff --git a/app/src/main/res/layout/cds_temporary_error_bottom_sheet.xml b/app/src/main/res/layout/cds_temporary_error_bottom_sheet.xml
+index c1e4f86d21a038b5645626feb5b1ebbc83d4531c..d21d4f7c2f1081bc678216b6244160405789b363 100644
+--- a/app/src/main/res/layout/cds_temporary_error_bottom_sheet.xml
++++ b/app/src/main/res/layout/cds_temporary_error_bottom_sheet.xml
+@@ -45,7 +45,7 @@
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="16dp"
+             android:textAppearance="@style/Signal.Text.BodyMedium"
+-            android:textColor="@color/signal_colorOnSurfaceVariant"
++            android:textColor="?attr/colorOnSurfaceVariant"
+             tools:text="@plurals/CdsTemporaryErrorBottomSheet_body1" />
+ 
+         <TextView
+@@ -53,7 +53,7 @@
+             android:layout_height="wrap_content"
+             android:layout_marginBottom="16dp"
+             android:textAppearance="@style/Signal.Text.BodyMedium"
+-            android:textColor="@color/signal_colorOnSurfaceVariant"
++            android:textColor="?attr/colorOnSurfaceVariant"
+             android:text="@string/CdsTemporaryErrorBottomSheet_body2" />
+ 
+         <com.google.android.material.button.MaterialButton
+diff --git a/app/src/main/res/layout/change_passphrase_dialog_view.xml b/app/src/main/res/layout/change_passphrase_dialog_view.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..f9fccef1b6ad69028fd2d5fe527f9a17ffc5bc7f
+--- /dev/null
++++ b/app/src/main/res/layout/change_passphrase_dialog_view.xml
+@@ -0,0 +1,96 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:app="http://schemas.android.com/apk/res-auto"
++    xmlns:tools="http://schemas.android.com/tools"
++    tools:viewBindingIgnore="true"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:importantForAutofill="noExcludeDescendants"
++    android:orientation="vertical"
++    android:padding="15dp"
++    android:paddingStart="25dp"
++    android:paddingEnd="25dp">
++
++    <LinearLayout
++        android:id="@+id/content_container"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:focusableInTouchMode="true"
++        android:orientation="vertical">
++
++        <com.google.android.material.textfield.TextInputLayout
++            android:id="@+id/passphrase_layout"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            app:errorEnabled="true"
++            app:passwordToggleEnabled="true">
++
++            <com.google.android.material.textfield.TextInputEditText
++                android:id="@+id/passphrase_input"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:hint="@string/change_passphrase_activity__old_passphrase"
++                android:imeOptions="actionNext"
++                android:inputType="textPassword" />
++        </com.google.android.material.textfield.TextInputLayout>
++
++        <com.google.android.material.textfield.TextInputLayout
++            android:id="@+id/new_passphrase_layout"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="8dp"
++            app:passwordToggleEnabled="true">
++
++            <com.google.android.material.textfield.TextInputEditText
++                android:id="@+id/new_passphrase_input"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:hint="@string/change_passphrase_activity__new_passphrase"
++                android:imeOptions="actionNext"
++                android:inputType="textPassword" />
++        </com.google.android.material.textfield.TextInputLayout>
++
++        <com.google.android.material.textfield.TextInputLayout
++            android:id="@+id/repeat_passphrase_layout"
++            android:layout_width="match_parent"
++            android:layout_height="wrap_content"
++            android:layout_marginTop="15dp"
++            app:passwordToggleEnabled="true">
++
++            <com.google.android.material.textfield.TextInputEditText
++                android:id="@+id/repeat_passphrase_input"
++                android:layout_width="match_parent"
++                android:layout_height="wrap_content"
++                android:hint="@string/change_passphrase_activity__repeat_new_passphrase"
++                android:imeOptions="actionDone"
++                android:inputType="textPassword" />
++        </com.google.android.material.textfield.TextInputLayout>
++    </LinearLayout>
++
++    <LinearLayout
++        android:id="@+id/progress_container"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:layout_marginTop="5dp"
++        android:gravity="center_vertical"
++        android:orientation="horizontal"
++        android:visibility="gone"
++        tools:visibility="visible">
++
++        <ProgressBar
++            android:id="@+id/progress_bar"
++            android:layout_width="wrap_content"
++            android:layout_height="wrap_content"
++            android:layout_marginEnd="10dp"
++            android:indeterminate="true" />
++
++        <TextView
++            android:id="@+id/progress_text"
++            android:layout_width="0dp"
++            android:layout_height="wrap_content"
++            android:layout_weight="1"
++            android:padding="10dp"
++            android:text="@string/ChangePassphraseDialogFragment_generating_keys_this_may_take_a_while" />
++    </LinearLayout>
++
++</LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/chat_color_custom_adapter_item.xml b/app/src/main/res/layout/chat_color_custom_adapter_item.xml
+index ff7c1073f88f12b22166b78425a8c0ffc45ea865..c4f82805220afc3bb7c2eb75bad105ffe2912f0c 100644
+--- a/app/src/main/res/layout/chat_color_custom_adapter_item.xml
++++ b/app/src/main/res/layout/chat_color_custom_adapter_item.xml
+@@ -16,7 +16,7 @@
+         android:cropToPadding="true"
+         android:padding="16dp"
+         android:contentDescription="@string/ChatColorSelectionFragment__use_custom_colors"
+-        app:backgroundTint="@color/signal_background_secondary"
++        app:backgroundTint="?attr/signal_background_secondary"
+         app:srcCompat="@drawable/ic_plus_24"
+-        app:tint="@color/signal_icon_tint_primary" />
++        app:tint="?attr/signal_icon_tint_primary" />
+ </FrameLayout>
+diff --git a/app/src/main/res/layout/chat_color_selection_adapter_item.xml b/app/src/main/res/layout/chat_color_selection_adapter_item.xml
+index 002ee9c088b0038e9f218c8d11988a1e2bff648b..db896455febba782dcd74eaf5ba890ad91cfd251 100644
+--- a/app/src/main/res/layout/chat_color_selection_adapter_item.xml
++++ b/app/src/main/res/layout/chat_color_selection_adapter_item.xml
+@@ -16,7 +16,7 @@
+         android:cropToPadding="true"
+         android:padding="6dp"
+         android:src="@drawable/circle_tintable"
+-        tools:tint="@color/signal_accent_primary" />
++        tools:tint="?attr/signal_accent_primary" />
+ 
+     <TextView
+         android:id="@+id/auto"
+diff --git a/app/src/main/res/layout/chat_colors_fragment_context_menu.xml b/app/src/main/res/layout/chat_colors_fragment_context_menu.xml
+index 60b6f7c27d34d7f4d6e2650819f62d45de25bf65..bfa5019cb7f217fa516ebccd24a20bfbb36ffd12 100644
+--- a/app/src/main/res/layout/chat_colors_fragment_context_menu.xml
++++ b/app/src/main/res/layout/chat_colors_fragment_context_menu.xml
+@@ -16,7 +16,7 @@
+         android:minHeight="48dp"
+         android:text="@string/ChatColorSelectionFragment__edit"
+         app:drawableEndCompat="@drawable/symbol_edit_24"
+-        app:drawableTint="@color/signal_icon_tint_primary" />
++        app:drawableTint="?attr/signal_icon_tint_primary" />
+ 
+     <androidx.appcompat.widget.AppCompatTextView
+         android:id="@+id/context_menu_duplicate"
+@@ -26,7 +26,7 @@
+         android:minHeight="48dp"
+         android:text="@string/ChatColorSelectionFragment__duplicate"
+         app:drawableEndCompat="@drawable/symbol_copy_android_24"
+-        app:drawableTint="@color/signal_icon_tint_primary" />
++        app:drawableTint="?attr/signal_icon_tint_primary" />
+ 
+     <androidx.appcompat.widget.AppCompatTextView
+         android:id="@+id/context_menu_delete"
+@@ -36,5 +36,5 @@
+         android:minHeight="48dp"
+         android:text="@string/ChatColorSelectionFragment__delete"
+         app:drawableEndCompat="@drawable/symbol_trash_24"
+-        app:drawableTint="@color/signal_icon_tint_primary" />
++        app:drawableTint="?attr/signal_icon_tint_primary" />
+ </LinearLayout>
+diff --git a/app/src/main/res/layout/chat_colors_preview_view.xml b/app/src/main/res/layout/chat_colors_preview_view.xml
+index e5fe51b5f97c62290c8a00f10cf64d246a4db0f6..5f98d293718358af531d56f078f908ee4721be0a 100644
+--- a/app/src/main/res/layout/chat_colors_preview_view.xml
++++ b/app/src/main/res/layout/chat_colors_preview_view.xml
+@@ -64,7 +64,7 @@
+             android:paddingTop="7dp"
+             android:paddingEnd="12dp"
+             android:paddingBottom="7dp"
+-            tools:backgroundTint="@color/signal_background_primary">
++            tools:backgroundTint="?attr/signal_background_primary">
+ 
+             <TextView
+                 android:id="@+id/bubble_1_text"
+@@ -100,7 +100,7 @@
+             android:paddingTop="7dp"
+             android:paddingEnd="12dp"
+             android:paddingBottom="7dp"
+-            tools:backgroundTint="@color/signal_accent_primary">
++            tools:backgroundTint="?attr/signal_accent_primary">
+ 
+             <TextView
+                 android:id="@+id/bubble_2_text"
+@@ -146,7 +146,7 @@
+             android:paddingTop="7dp"
+             android:paddingEnd="12dp"
+             android:paddingBottom="7dp"
+-            tools:backgroundTint="@color/signal_background_primary">
++            tools:backgroundTint="?attr/signal_background_primary">
+ 
+             <TextView
+                 android:id="@+id/bubble_3_text"
+@@ -182,7 +182,7 @@
+             android:paddingEnd="12dp"
+             android:paddingBottom="7dp"
+             android:textColor="@color/core_white"
+-            tools:backgroundTint="@color/signal_accent_primary">
++            tools:backgroundTint="?attr/signal_accent_primary">
+ 
+             <TextView
+                 android:id="@+id/bubble_4_text"
+diff --git a/app/src/main/res/layout/chat_folder_item.xml b/app/src/main/res/layout/chat_folder_item.xml
+index 8ea0f551caf7a5aebe983443fdc0e5eed9d0da46..5a74faf4e5e5922c0e77647ec76bb62cfb6e3d8c 100644
+--- a/app/src/main/res/layout/chat_folder_item.xml
++++ b/app/src/main/res/layout/chat_folder_item.xml
+@@ -9,7 +9,7 @@
+     android:paddingHorizontal="16dp"
+     android:layout_marginVertical="8dp"
+     android:layout_marginEnd="16dp"
+-    android:backgroundTint="@color/signal_colorSurfaceVariant"
++    android:backgroundTint="?attr/colorSurfaceVariant"
+     android:background="@drawable/rounded_rectangle_surface_variant" >
+ 
+     <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+@@ -31,7 +31,7 @@
+         android:gravity="center"
+         android:paddingHorizontal="4dp"
+         android:paddingVertical="2dp"
+-        android:textColor="@color/signal_colorBackground"
++        android:textColor="?attr/colorSurface"
+         tools:text="4" />
+ 
+ </LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/chat_wallpaper_crop_activity.xml b/app/src/main/res/layout/chat_wallpaper_crop_activity.xml
+index 312a6b4f3cb63d5a8f035607683258297f2dccce..f9ef56354c7ed890d7f4d4191a3de515fd796c58 100644
+--- a/app/src/main/res/layout/chat_wallpaper_crop_activity.xml
++++ b/app/src/main/res/layout/chat_wallpaper_crop_activity.xml
+@@ -24,7 +24,7 @@
+         android:id="@+id/image_editor"
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+-        app:imageEditorView_blackoutColor="@color/signal_colorBackground"
++        app:imageEditorView_blackoutColor="?attr/colorSurface"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+@@ -56,7 +56,7 @@
+         android:paddingBottom="4dp"
+         android:text="@string/DateUtils_today"
+         android:textAppearance="@style/TextAppearance.Signal.Subtitle"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/toolbar" />
+@@ -85,7 +85,7 @@
+             android:layout_height="wrap_content"
+             android:text="@string/WallpaperCropActivity__pinch_to_zoom_drag_to_adjust"
+             android:textAppearance="@style/Signal.Text.Body"
+-            android:textColor="@color/signal_text_primary" />
++            android:textColor="?attr/signal_text_primary" />
+ 
+         <TextView
+             android:layout_width="wrap_content"
+@@ -155,7 +155,7 @@
+         android:paddingEnd="6dp"
+         android:paddingBottom="6dp"
+         android:text="@string/WallpaperCropActivity__blur_photo"
+-        android:textColor="@color/signal_button_primary"
++        android:textColor="?attr/signal_button_primary"
+         app:layout_constraintBottom_toTopOf="@+id/preview_guideline"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+diff --git a/app/src/main/res/layout/chat_wallpaper_preview_activity.xml b/app/src/main/res/layout/chat_wallpaper_preview_activity.xml
+index 7910af78adeb5ab1b882e5f0070bcc25ad61188c..62fd689b9faff1fdc888377880785f2e8ef4dbc0 100644
+--- a/app/src/main/res/layout/chat_wallpaper_preview_activity.xml
++++ b/app/src/main/res/layout/chat_wallpaper_preview_activity.xml
+@@ -28,7 +28,7 @@
+         android:id="@+id/toolbar"
+         android:layout_width="match_parent"
+         android:layout_height="?attr/actionBarSize"
+-        android:background="@color/signal_background_primary"
++        android:background="?attr/signal_background_primary"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="@id/status_bar_guideline"
+         app:navigationIcon="@drawable/symbol_arrow_start_24"
+@@ -46,7 +46,7 @@
+         android:paddingBottom="4dp"
+         android:text="@string/DateUtils_today"
+         android:textAppearance="@style/TextAppearance.Signal.Subtitle"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/toolbar" />
+@@ -75,14 +75,14 @@
+             android:layout_height="wrap_content"
+             android:text="@string/ChatWallpaperPreviewActivity__swipe_to_preview_more_wallpapers"
+             android:textAppearance="@style/Signal.Text.Body"
+-            android:textColor="@color/signal_text_primary" />
++            android:textColor="?attr/signal_text_primary" />
+ 
+         <TextView
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/DateUtils_just_now"
+             android:textAppearance="@style/Signal.Text.Caption"
+-            android:textColor="@color/signal_text_secondary" />
++            android:textColor="?attr/signal_text_secondary" />
+ 
+     </LinearLayout>
+ 
+@@ -129,7 +129,7 @@
+         android:id="@+id/preview_guideline"
+         android:layout_width="match_parent"
+         android:layout_height="60dp"
+-        android:background="@color/signal_background_primary"
++        android:background="?attr/signal_background_primary"
+         android:orientation="horizontal"
+         app:layout_constraintBottom_toBottomOf="@id/navigation_bar_guideline" />
+ 
+diff --git a/app/src/main/res/layout/chat_wallpaper_selection_fragment.xml b/app/src/main/res/layout/chat_wallpaper_selection_fragment.xml
+index 7966c5c0be3d75a9aaaa82f2c0857b53cccf7420..947249a8380ffe4b4c8a9b8ec1bfb65eddcf1888 100644
+--- a/app/src/main/res/layout/chat_wallpaper_selection_fragment.xml
++++ b/app/src/main/res/layout/chat_wallpaper_selection_fragment.xml
+@@ -26,9 +26,9 @@
+             android:paddingEnd="@dimen/dsl_settings_gutter"
+             android:text="@string/ChatWallpaperSelectionFragment__choose_from_photos"
+             android:textAppearance="@style/Signal.Text.Body"
+-            android:textColor="@color/signal_text_primary"
++            android:textColor="?attr/signal_text_primary"
+             app:drawableStartCompat="@drawable/ic_gallery_outline_24"
+-            app:drawableTint="@color/signal_icon_tint_primary"
++            app:drawableTint="?attr/signal_icon_tint_primary"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toTopOf="parent" />
+diff --git a/app/src/main/res/layout/choose_initial_my_story_membership_fragment.xml b/app/src/main/res/layout/choose_initial_my_story_membership_fragment.xml
+index ce2b826e011102bd8d6b91f353b8a59d7ce9f673..65696dcacd4aad3a362d7a5ee49d1431c399a25c 100644
+--- a/app/src/main/res/layout/choose_initial_my_story_membership_fragment.xml
++++ b/app/src/main/res/layout/choose_initial_my_story_membership_fragment.xml
+@@ -18,7 +18,7 @@
+             android:layout_height="2dp"
+             android:layout_gravity="center_horizontal"
+             android:layout_marginTop="16dp"
+-            android:background="@color/signal_icon_tint_tab_unselected" />
++            android:background="?attr/signal_icon_tint_tab_unselected" />
+ 
+         <TextView
+             android:id="@+id/choose_initial_my_story_title"
+@@ -39,7 +39,7 @@
+             android:layout_marginTop="24dp"
+             android:gravity="center_horizontal"
+             android:text="@string/ChooseInitialMyStoryMembershipFragment__choose_who_can_see_posts_to_my_story_you_can_always_make_changes_in_settings"
+-            android:textColor="@color/signal_colorOnSurfaceVariant" />
++            android:textColor="?attr/colorOnSurfaceVariant" />
+ 
+         <androidx.constraintlayout.widget.ConstraintLayout
+             android:id="@+id/choose_initial_my_story_all_signal_connnections_row"
+@@ -80,7 +80,7 @@
+                 style="@style/Signal.Text.BodyMedium"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+-                android:textColor="@color/signal_colorOnSurfaceVariant"
++                android:textColor="?attr/colorOnSurfaceVariant"
+                 android:visibility="gone"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="@+id/choose_initial_my_story_all_signal_connnections_message"
+@@ -139,7 +139,7 @@
+                 style="@style/Signal.Text.BodyMedium"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+-                android:textColor="@color/signal_colorOnSurfaceVariant"
++                android:textColor="?attr/colorOnSurfaceVariant"
+                 android:visibility="gone"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="@+id/choose_initial_my_story_all_signal_connnections_except_message"
+@@ -188,7 +188,7 @@
+                 style="@style/Signal.Text.BodyMedium"
+                 android:layout_width="0dp"
+                 android:layout_height="wrap_content"
+-                android:textColor="@color/signal_colorOnSurfaceVariant"
++                android:textColor="?attr/colorOnSurfaceVariant"
+                 android:visibility="gone"
+                 app:layout_constraintBottom_toBottomOf="parent"
+                 app:layout_constraintEnd_toEndOf="@+id/choose_initial_my_story_only_share_with_message"
+diff --git a/app/src/main/res/layout/choose_navigation_bar_style_fragment.xml b/app/src/main/res/layout/choose_navigation_bar_style_fragment.xml
+index 98dd162517df4e92cecec3feb941cdb3f06165a4..72e5fb07730b017fc3179a5f14ae94b512a2927c 100644
+--- a/app/src/main/res/layout/choose_navigation_bar_style_fragment.xml
++++ b/app/src/main/res/layout/choose_navigation_bar_style_fragment.xml
+@@ -4,7 +4,7 @@
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+-    app:cardBackgroundColor="@color/signal_colorSurface2"
++    app:cardBackgroundColor="?attr/colorSurfaceContainer"
+     app:cardCornerRadius="28dp"
+     app:cardElevation="0dp">
+ 
+@@ -16,7 +16,7 @@
+             android:id="@+id/image"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+-            android:background="@color/signal_colorBackground"
++            android:background="?attr/colorSurface"
+             android:importantForAccessibility="no"
+             android:paddingHorizontal="@dimen/gutter"
+             android:paddingBottom="16dp"
+@@ -62,10 +62,10 @@
+                 android:layout_weight="1"
+                 android:text="@string/ChooseNavigationBarStyleFragment__normal"
+                 android:textAllCaps="false"
+-                android:textColor="@color/signal_colorOnSecondaryContainer"
++                android:textColor="?attr/colorOnSecondaryContainer"
+                 app:cornerRadius="12dp"
+                 app:iconGravity="textStart"
+-                app:iconTint="@color/signal_colorOnSecondaryContainer"
++                app:iconTint="?attr/colorOnSecondaryContainer"
+                 app:strokeWidth="1dp"
+                 tools:icon="@drawable/ic_check_20" />
+ 
+@@ -77,10 +77,10 @@
+                 android:layout_weight="1"
+                 android:text="@string/ChooseNavigationBarStyleFragment__compact"
+                 android:textAllCaps="false"
+-                android:textColor="@color/signal_colorOnSecondaryContainer"
++                android:textColor="?attr/colorOnSecondaryContainer"
+                 app:cornerRadius="12dp"
+                 app:iconGravity="textStart"
+-                app:iconTint="@color/signal_colorOnSecondaryContainer"
++                app:iconTint="?attr/colorOnSecondaryContainer"
+                 app:strokeWidth="1dp" />
+         </com.google.android.material.button.MaterialButtonToggleGroup>
+ 
+diff --git a/app/src/main/res/layout/choose_new_admin_activity.xml b/app/src/main/res/layout/choose_new_admin_activity.xml
+index 71b07ee2274f43d05058a5a486361432e61fc6d8..d8fa7c4647fe5cb94facc29766f9c4db0743c811 100644
+--- a/app/src/main/res/layout/choose_new_admin_activity.xml
++++ b/app/src/main/res/layout/choose_new_admin_activity.xml
+@@ -20,7 +20,7 @@
+             android:layout_height="?actionBarSize"
+             android:background="@android:color/transparent"
+             app:title="@string/ChooseNewAdminActivity_choose_new_admin"
+-            app:titleTextColor="@color/signal_text_primary" />
++            app:titleTextColor="?attr/signal_text_primary" />
+ 
+     </com.google.android.material.appbar.AppBarLayout>
+ 
+diff --git a/app/src/main/res/layout/confirm_payment_line_item.xml b/app/src/main/res/layout/confirm_payment_line_item.xml
+index abf49706b602c4197be0b339580d350f557590c9..b84181a7fecebaa42e7ad2ff3db4157995e9f03e 100644
+--- a/app/src/main/res/layout/confirm_payment_line_item.xml
++++ b/app/src/main/res/layout/confirm_payment_line_item.xml
+@@ -27,7 +27,7 @@
+         android:layout_weight="1"
+         android:textAlignment="viewEnd"
+         android:textAppearance="@style/TextAppearance.Signal.Body1"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         tools:text="200MOB" />
+ 
+ </LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/confirm_payment_status.xml b/app/src/main/res/layout/confirm_payment_status.xml
+index db7e0bd71adec60cddc77000ea809998f778f175..a566f32a5bb538dd14b04397e41d5aebb06b36d3 100644
+--- a/app/src/main/res/layout/confirm_payment_status.xml
++++ b/app/src/main/res/layout/confirm_payment_status.xml
+@@ -65,7 +65,7 @@
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_horizontal"
+         android:textAppearance="@style/TextAppearance.Signal.Body1"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         tools:text="Balance: 520 MOB" />
+ 
+ </LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/contact_filter_view.xml b/app/src/main/res/layout/contact_filter_view.xml
+index 23d5749be8d02faff1f81a27e6b9f5aafc33be09..800f6117e75c05a514708ccf35f75f4aee33b3f7 100644
+--- a/app/src/main/res/layout/contact_filter_view.xml
++++ b/app/src/main/res/layout/contact_filter_view.xml
+@@ -33,7 +33,6 @@
+                 android:inputType="textPersonName"
+                 android:lineSpacingExtra="6sp"
+                 android:textAppearance="@style/TextSecure.TitleTextStyle"
+-                android:textColorHint="@color/signal_colorOnSurfaceVariant"
+                 android:textCursorDrawable="@drawable/search_cursor" />
+ 
+             <org.thoughtcrime.securesms.components.AnimatingToggle
+@@ -51,7 +50,7 @@
+                     android:clickable="true"
+                     android:contentDescription="@string/contact_filter_toolbar__show_dial_pad_description"
+                     android:focusable="true"
+-                    android:tint="@color/signal_icon_tint_primary"
++                    android:tint="?attr/signal_icon_tint_primary"
+                     app:srcCompat="@drawable/ic_number_pad_conversation_filter_24" />
+ 
+                 <androidx.appcompat.widget.AppCompatImageView
+@@ -63,7 +62,7 @@
+                     android:clickable="true"
+                     android:contentDescription="@string/contact_filter_toolbar__show_keyboard_description"
+                     android:focusable="true"
+-                    android:tint="@color/signal_icon_tint_primary"
++                    android:tint="?attr/signal_icon_tint_primary"
+                     android:visibility="gone"
+                     app:srcCompat="@drawable/ic_keyboard_24" />
+ 
+diff --git a/app/src/main/res/layout/contact_photo_preview_activity.xml b/app/src/main/res/layout/contact_photo_preview_activity.xml
+index 752aac4be378576358b385d368bc971ac84f5959..8af1f644e4e5465d60af3dff0927b50da722c4c6 100644
+--- a/app/src/main/res/layout/contact_photo_preview_activity.xml
++++ b/app/src/main/res/layout/contact_photo_preview_activity.xml
+@@ -4,8 +4,7 @@
+     tools:viewBindingIgnore="true"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:background="@color/core_grey_95">
++    android:layout_height="match_parent">
+ 
+     <com.github.chrisbanes.photoview.PhotoView
+         android:id="@+id/avatar"
+diff --git a/app/src/main/res/layout/contact_search_chat_type_item.xml b/app/src/main/res/layout/contact_search_chat_type_item.xml
+index 5a1b8d25be7895c1a1a34db2f2b18516cd8e8f5d..c4ed689475b0b32adbc5c290d47e83b781462e97 100644
+--- a/app/src/main/res/layout/contact_search_chat_type_item.xml
++++ b/app/src/main/res/layout/contact_search_chat_type_item.xml
+@@ -16,8 +16,8 @@
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+         android:background="@drawable/color_indicator_circle"
+-        android:backgroundTint="@color/signal_colorSurfaceVariant"
+-        app:tint="@color/signal_colorOnSurface"
++        android:backgroundTint="?attr/colorSurfaceVariant"
++        app:tint="?attr/colorOnSurface"
+         android:scaleType="center"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+@@ -33,7 +33,7 @@
+         android:drawablePadding="4dp"
+         android:singleLine="true"
+         android:textAppearance="@style/TextAppearance.Signal.Body1"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:layout_constraintEnd_toStartOf="@id/check_box"
+         app:layout_constraintStart_toEndOf="@id/image"
+         app:layout_constraintTop_toTopOf="parent"
+diff --git a/app/src/main/res/layout/contact_search_section_header.xml b/app/src/main/res/layout/contact_search_section_header.xml
+index 642e9e202b88eb7f0d534c04b49012531e0a4295..96df809adb97b6b0080001503dd2b0f382096498 100644
+--- a/app/src/main/res/layout/contact_search_section_header.xml
++++ b/app/src/main/res/layout/contact_search_section_header.xml
+@@ -23,7 +23,7 @@
+     <com.google.android.material.button.MaterialButton
+         android:id="@+id/section_header_action"
+         style="@style/Signal.Widget.Button.Small.Secondary"
+-        android:textColor="@color/signal_colorOnSurface"
++        android:textColor="?attr/colorOnSurface"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center_vertical"
+diff --git a/app/src/main/res/layout/contact_search_story_item.xml b/app/src/main/res/layout/contact_search_story_item.xml
+index f27c8f14aefd926d14c35435074ba0f5f62203b6..86c86a407cf466c765a291f4e84c7f93c510db9f 100644
+--- a/app/src/main/res/layout/contact_search_story_item.xml
++++ b/app/src/main/res/layout/contact_search_story_item.xml
+@@ -74,14 +74,14 @@
+         android:ellipsize="marquee"
+         android:singleLine="true"
+         android:textAppearance="@style/TextAppearance.Signal.Body1"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:layout_constraintBottom_toTopOf="@id/number"
+         app:layout_constraintEnd_toStartOf="@id/check_box"
+         app:layout_constraintStart_toEndOf="@id/contact_photo_image"
+         app:layout_constraintTop_toTopOf="parent"
+         app:layout_constraintVertical_chainStyle="packed"
+         tools:drawableStart="@drawable/ic_bell_24"
+-        tools:drawableTint="@color/signal_icon_tint_secondary"
++        tools:drawableTint="?attr/signal_icon_tint_secondary"
+         tools:text="@sample/contacts.json/data/name" />
+ 
+     <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+@@ -92,7 +92,7 @@
+         android:ellipsize="marquee"
+         android:singleLine="true"
+         android:textAppearance="@style/TextAppearance.Signal.Body2"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         android:textDirection="ltr"
+         app:layout_constrainedWidth="true"
+         app:layout_constraintBottom_toBottomOf="parent"
+diff --git a/app/src/main/res/layout/contact_search_unknown_item.xml b/app/src/main/res/layout/contact_search_unknown_item.xml
+index 9feaa1f5c1097f8f5d90cc175d5f0d6d26fd08d6..06a305214cec1a11f7a4e1bef67f3c96421a1d93 100644
+--- a/app/src/main/res/layout/contact_search_unknown_item.xml
++++ b/app/src/main/res/layout/contact_search_unknown_item.xml
+@@ -23,7 +23,7 @@
+         android:layout_height="40dp"
+         android:layout_marginVertical="12dp"
+         android:layout_marginStart="@dimen/gutter"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         app:contentPadding="8dp"
+         app:layout_constraintBottom_toBottomOf="parent"
+@@ -31,7 +31,7 @@
+         app:layout_constraintTop_toBottomOf="@id/contact_header"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+         app:srcCompat="@drawable/symbol_search_24"
+-        app:tint="@color/signal_colorOnSecondaryContainer"
++        app:tint="?attr/filled_tonal_icon_button_icon_color"
+         tools:ignore="UnusedAttribute" />
+ 
+     <androidx.appcompat.widget.AppCompatCheckBox
+@@ -58,7 +58,7 @@
+         android:ellipsize="marquee"
+         android:singleLine="true"
+         android:textAppearance="@style/TextAppearance.Signal.Body1"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         app:layout_constraintBottom_toTopOf="@id/number"
+         app:layout_constraintEnd_toStartOf="@id/check_box"
+         app:layout_constraintStart_toEndOf="@id/contact_photo_image"
+@@ -66,7 +66,7 @@
+         app:layout_constraintVertical_chainStyle="packed"
+         app:layout_goneMarginEnd="@dimen/gutter"
+         tools:drawableStart="@drawable/ic_bell_24"
+-        tools:drawableTint="@color/signal_icon_tint_secondary"
++        tools:drawableTint="?attr/signal_icon_tint_secondary"
+         tools:text="@sample/contacts.json/data/name" />
+ 
+     <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+@@ -77,7 +77,7 @@
+         android:ellipsize="marquee"
+         android:singleLine="true"
+         android:textAppearance="@style/TextAppearance.Signal.Body2"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         android:textDirection="ltr"
+         app:layout_constrainedWidth="true"
+         app:layout_constraintBottom_toBottomOf="parent"
+diff --git a/app/src/main/res/layout/contact_selection_find_by_phone_number_item.xml b/app/src/main/res/layout/contact_selection_find_by_phone_number_item.xml
+index 1ec55382a946b6b4c46cf1d566438ba4bad0463d..0a7fe66318884599271e5ab471903822553dcea0 100644
+--- a/app/src/main/res/layout/contact_selection_find_by_phone_number_item.xml
++++ b/app/src/main/res/layout/contact_selection_find_by_phone_number_item.xml
+@@ -14,7 +14,7 @@
+         android:id="@+id/invite_image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         app:contentPadding="8dp"
+         app:layout_constraintBottom_toBottomOf="parent"
+@@ -22,7 +22,7 @@
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+         app:srcCompat="@drawable/symbol_number_24"
+-        app:tint="@color/signal_colorOnSecondaryContainer" />
++        app:tint="?attr/filled_tonal_icon_button_icon_color" />
+ 
+     <TextView
+         android:id="@+id/invite_text"
+diff --git a/app/src/main/res/layout/contact_selection_find_by_username_item.xml b/app/src/main/res/layout/contact_selection_find_by_username_item.xml
+index 69e60f4e4f92bcdbd1fa2c1e3625b5c7c0b165a5..9b50c6ade78ce2ee0871c50db5597f466cd749b2 100644
+--- a/app/src/main/res/layout/contact_selection_find_by_username_item.xml
++++ b/app/src/main/res/layout/contact_selection_find_by_username_item.xml
+@@ -14,7 +14,7 @@
+         android:id="@+id/invite_image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         app:srcCompat="@drawable/symbol_at_24"
+         app:contentPadding="8dp"
+@@ -22,7 +22,7 @@
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+-        app:tint="@color/signal_colorOnSecondaryContainer" />
++        app:tint="?attr/filled_tonal_icon_button_icon_color" />
+ 
+     <TextView
+         android:id="@+id/invite_text"
+diff --git a/app/src/main/res/layout/contact_selection_find_contacts_banner_item.xml b/app/src/main/res/layout/contact_selection_find_contacts_banner_item.xml
+index af3825ac33ed20506560355cdd695d4c0093bfa8..87d1222ffd28ddc6078548277990eee3242713d4 100644
+--- a/app/src/main/res/layout/contact_selection_find_contacts_banner_item.xml
++++ b/app/src/main/res/layout/contact_selection_find_contacts_banner_item.xml
+@@ -40,7 +40,7 @@
+         android:gravity="center"
+         android:text="@string/ContactSelectionListFragment__allow_access_to_your_contacts_encrypted"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintHorizontal_bias="0.0"
+         app:layout_constraintStart_toStartOf="parent"
+diff --git a/app/src/main/res/layout/contact_selection_find_contacts_item.xml b/app/src/main/res/layout/contact_selection_find_contacts_item.xml
+index 2ddcf305d0924340fa6474e3ad305131b1ca8c45..348f16c4e056dc7a08fdc9108467431b04942e12 100644
+--- a/app/src/main/res/layout/contact_selection_find_contacts_item.xml
++++ b/app/src/main/res/layout/contact_selection_find_contacts_item.xml
+@@ -14,7 +14,7 @@
+         android:id="@+id/image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         android:scaleType="centerInside"
+         app:layout_constraintBottom_toBottomOf="parent"
+@@ -22,7 +22,7 @@
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+         app:srcCompat="@drawable/symbol_person_circle_24"
+-        app:tint="@color/signal_colorOnSurface" />
++        app:tint="?attr/filled_tonal_icon_button_icon_color" />
+ 
+     <TextView
+         android:id="@+id/title"
+@@ -49,7 +49,7 @@
+         android:maxLines="2"
+         android:text="@string/contact_selection_activity__allow_access_to_contacts"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toEndOf="@id/image"
+diff --git a/app/src/main/res/layout/contact_selection_invite_action_item.xml b/app/src/main/res/layout/contact_selection_invite_action_item.xml
+index c5551da35398aaaa29c995e52dfebe20b11b28aa..cd0b5c00e16297dc66dd4bee9a9f6cf010fc9ed9 100644
+--- a/app/src/main/res/layout/contact_selection_invite_action_item.xml
++++ b/app/src/main/res/layout/contact_selection_invite_action_item.xml
+@@ -14,11 +14,11 @@
+         android:id="@+id/invite_image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         android:scaleType="centerInside"
+         android:src="@drawable/symbol_invite_24"
+-        app:tint="@color/signal_colorOnSurface"
++        app:tint="?attr/filled_tonal_icon_button_icon_color"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+diff --git a/app/src/main/res/layout/contact_selection_list_fragment.xml b/app/src/main/res/layout/contact_selection_list_fragment.xml
+index 03bff8762ad2d556d8ea84c6c7614efbd11f396f..891747bf2043984343b0231338a79c501ac4dca8 100644
+--- a/app/src/main/res/layout/contact_selection_list_fragment.xml
++++ b/app/src/main/res/layout/contact_selection_list_fragment.xml
+@@ -45,7 +45,7 @@
+         android:paddingEnd="@dimen/dsl_settings_gutter"
+         android:scrollbars="none"
+         android:visibility="gone"
+-        android:background="@color/signal_colorSurface"
++        android:background="?attr/colorSurfaceContainer"
+         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+         app:layout_constraintTop_toTopOf="parent"
+         tools:listitem="@layout/contact_selection_list_chip"
+diff --git a/app/src/main/res/layout/contact_selection_new_group_item.xml b/app/src/main/res/layout/contact_selection_new_group_item.xml
+index 6bf2f25711fac3976448bf603eeaf26bdf3042fd..2c87976ddd325e94689d34a676d2c0888b4e3720 100644
+--- a/app/src/main/res/layout/contact_selection_new_group_item.xml
++++ b/app/src/main/res/layout/contact_selection_new_group_item.xml
+@@ -14,7 +14,7 @@
+         android:id="@+id/invite_image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         app:srcCompat="@drawable/symbol_group_24"
+         app:contentPadding="8dp"
+@@ -22,7 +22,7 @@
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+-        app:tint="@color/signal_colorOnSecondaryContainer" />
++        app:tint="?attr/filled_tonal_icon_button_icon_color" />
+ 
+     <TextView
+         android:id="@+id/invite_text"
+diff --git a/app/src/main/res/layout/contact_selection_refresh_action_item.xml b/app/src/main/res/layout/contact_selection_refresh_action_item.xml
+index b110396c6e258320592428bca0949bd45e5e3365..25837ed798090a53912c274aced6927c90998874 100644
+--- a/app/src/main/res/layout/contact_selection_refresh_action_item.xml
++++ b/app/src/main/res/layout/contact_selection_refresh_action_item.xml
+@@ -14,7 +14,7 @@
+         android:id="@+id/image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_colorSurfaceVariant"
++        android:background="?attr/filled_tonal_icon_button_container_color"
+         android:importantForAccessibility="no"
+         android:scaleType="centerInside"
+         app:layout_constraintBottom_toBottomOf="parent"
+@@ -22,7 +22,7 @@
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
+         app:srcCompat="@drawable/symbol_refresh_24"
+-        app:tint="@color/signal_colorOnSurface" />
++        app:tint="?attr/filled_tonal_icon_button_icon_color" />
+ 
+     <TextView
+         android:id="@+id/title"
+@@ -49,7 +49,7 @@
+         android:maxLines="2"
+         android:text="@string/contact_selection_activity__missing_someone"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toEndOf="@id/image"
+diff --git a/app/src/main/res/layout/contacts_expand_item.xml b/app/src/main/res/layout/contacts_expand_item.xml
+index f751c316f88937f47ec2e06ff4fed966f42fe78d..7fbac31318cf8e2ff7fcec23082135421b1da70a 100644
+--- a/app/src/main/res/layout/contacts_expand_item.xml
++++ b/app/src/main/res/layout/contacts_expand_item.xml
+@@ -12,7 +12,7 @@
+         android:id="@+id/image"
+         android:layout_width="40dp"
+         android:layout_height="40dp"
+-        android:background="@color/signal_button_secondary_ripple"
++        android:background="?attr/signal_button_secondary_ripple"
+         android:importantForAccessibility="no"
+         android:scaleType="centerInside"
+         app:layout_constraintBottom_toBottomOf="parent"
+@@ -20,7 +20,7 @@
+         app:layout_constraintTop_toTopOf="parent"
+         app:shapeAppearance="@style/ShapeAppearanceOverlay.Signal.Circle"
+         app:srcCompat="@drawable/ic_chevron_down_20"
+-        app:tint="@color/signal_icon_tint_primary" />
++        app:tint="?attr/signal_icon_tint_primary" />
+ 
+     <TextView
+         android:layout_width="0dp"
+diff --git a/app/src/main/res/layout/conversation_activity_attachment_editor_stub.xml b/app/src/main/res/layout/conversation_activity_attachment_editor_stub.xml
+index ddb67e4a45ea3451af3c9dbcbc59802598783cd4..771bf87011c5407e010232701bb8f11080e6293e 100644
+--- a/app/src/main/res/layout/conversation_activity_attachment_editor_stub.xml
++++ b/app/src/main/res/layout/conversation_activity_attachment_editor_stub.xml
+@@ -43,8 +43,8 @@
+             android:paddingStart="12dp"
+             android:visibility="gone"
+             android:background="@drawable/rounded_rectangle_secondary_18"
+-            app:backgroundTintColor="@color/signal_colorSurface2"
+-            app:foregroundTintColor="@color/signal_colorOnSurfaceVariant"
++            app:backgroundTintColor="?attr/colorSurfaceContainer"
++            app:foregroundTintColor="?attr/colorOnSurfaceVariant"
+             app:progressAndPlayTint="@color/audio_play_pause_sent_background_tint"
+             app:waveformPlayedBarsColor="@color/audio_seek_bar_sent_played_color"
+             app:waveformThumbTint="@color/audio_seek_bar_sent_played_color"
+@@ -60,8 +60,8 @@
+             android:paddingEnd="@dimen/message_bubble_horizontal_padding"
+             android:paddingBottom="8dp"
+             android:visibility="gone"
+-            app:doc_captionColor="@color/signal_text_secondary"
+-            app:doc_titleColor="@color/signal_text_primary" />
++            app:doc_captionColor="?attr/signal_text_secondary"
++            app:doc_titleColor="?attr/signal_text_primary" />
+ 
+     </org.thoughtcrime.securesms.components.RemovableEditableMediaView>
+ 
+diff --git a/app/src/main/res/layout/conversation_activity_logged_out_stub.xml b/app/src/main/res/layout/conversation_activity_logged_out_stub.xml
+index 33b10b3dd8becdf05e01f90268b2ec4a90a9aca9..c5bd00a1e25fca48391e89200c4c5b1f622d3323 100644
+--- a/app/src/main/res/layout/conversation_activity_logged_out_stub.xml
++++ b/app/src/main/res/layout/conversation_activity_logged_out_stub.xml
+@@ -13,7 +13,7 @@
+         android:layout_height="wrap_content"
+         android:gravity="center"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         tools:text="This device is no longer registered. Re-register to continue using Signal on this device." />
+ 
+     <com.google.android.material.button.MaterialButton
+diff --git a/app/src/main/res/layout/conversation_activity_scheduled_messages_stub.xml b/app/src/main/res/layout/conversation_activity_scheduled_messages_stub.xml
+index 1f079e9e149d72d966abfb45fd629edd05bd3548..00945926cb74bf5da98e448ac1b8bdd6ac7a17c8 100644
+--- a/app/src/main/res/layout/conversation_activity_scheduled_messages_stub.xml
++++ b/app/src/main/res/layout/conversation_activity_scheduled_messages_stub.xml
+@@ -4,7 +4,7 @@
+     android:layout_height="wrap_content"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:orientation="horizontal"
+-    android:background="@color/signal_colorSurface1">
++    android:background="?attr/colorSurfaceContainerLow">
+ 
+         <TextView
+             android:id="@+id/scheduled_messages_text"
+diff --git a/app/src/main/res/layout/conversation_activity_sms_export_stub.xml b/app/src/main/res/layout/conversation_activity_sms_export_stub.xml
+index 3880db994797b3c28c3a899349c51f1b4b54d336..bca4f22435f14f1fd97dc86e760d4ff82b8d5c92 100644
+--- a/app/src/main/res/layout/conversation_activity_sms_export_stub.xml
++++ b/app/src/main/res/layout/conversation_activity_sms_export_stub.xml
+@@ -13,7 +13,7 @@
+         android:layout_height="wrap_content"
+         android:gravity="center"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         tools:text="SMS is disabled, export sms now yes" />
+ 
+     <com.google.android.material.button.MaterialButton
+diff --git a/app/src/main/res/layout/conversation_cannot_send_announcement_group.xml b/app/src/main/res/layout/conversation_cannot_send_announcement_group.xml
+index 07c33033001206d9e0361d03a221bb4a14382f5a..55d3d8cff96211c52171de5de98170a0c862d563 100644
+--- a/app/src/main/res/layout/conversation_cannot_send_announcement_group.xml
++++ b/app/src/main/res/layout/conversation_cannot_send_announcement_group.xml
+@@ -9,4 +9,4 @@
+     android:padding="17dp"
+     style="@style/Signal.Text.Preview"
+     tools:text="Only admins can send messages."
+-    android:textColor="@color/signal_text_secondary" />
++    android:textColor="?attr/signal_text_secondary" />
+diff --git a/app/src/main/res/layout/conversation_group_terminated.xml b/app/src/main/res/layout/conversation_group_terminated.xml
+index bd4b450b4a9c340be2d008318de70a284e7d34c1..5182661a6769092109761c53c202d6192ed5701b 100644
+--- a/app/src/main/res/layout/conversation_group_terminated.xml
++++ b/app/src/main/res/layout/conversation_group_terminated.xml
+@@ -11,4 +11,4 @@
+     android:paddingEnd="16dp"
+     android:paddingBottom="8dp"
+     android:text="@string/ConversationActivity_you_cant_send_messages_because_group_ended"
+-    android:textColor="@color/signal_text_secondary" />
++    android:textColor="?attr/signal_text_secondary" />
+diff --git a/app/src/main/res/layout/conversation_incognito_mode.xml b/app/src/main/res/layout/conversation_incognito_mode.xml
+index 6d0093b338c73e32395dba6b84f8fcc67e98d532..8b614470ed606cf03493cdd6c8a17bbefffe2732 100644
+--- a/app/src/main/res/layout/conversation_incognito_mode.xml
++++ b/app/src/main/res/layout/conversation_incognito_mode.xml
+@@ -16,7 +16,7 @@
+         android:paddingEnd="16dp"
+         android:paddingBottom="8dp"
+         android:text="@string/DisabledInputView__incognito_mode"
+-        android:textColor="@color/signal_colorOnSurface"
++        android:textColor="?attr/colorOnSurface"
+         android:textSize="14sp" />
+ 
+ </FrameLayout>
+diff --git a/app/src/main/res/layout/conversation_input_quote_view.xml b/app/src/main/res/layout/conversation_input_quote_view.xml
+index 0e7572d66d288b6db456c7327583c90cd7213728..9ad11824c27dbf981dc05b10f71458add7705839 100644
+--- a/app/src/main/res/layout/conversation_input_quote_view.xml
++++ b/app/src/main/res/layout/conversation_input_quote_view.xml
+@@ -8,6 +8,6 @@
+     android:saveEnabled="false"
+     android:visibility="gone"
+     app:message_type="preview"
+-    app:quote_colorPrimary="@color/signal_text_primary"
+-    app:quote_colorSecondary="@color/signal_text_primary"
++    app:quote_colorPrimary="?attr/signal_text_primary"
++    app:quote_colorSecondary="?attr/signal_text_primary"
+     tools:visibility="visible" />
+diff --git a/app/src/main/res/layout/conversation_item_call_to_action.xml b/app/src/main/res/layout/conversation_item_call_to_action.xml
+index 8aa6498ca622ff337f6cd2405f510a07483716b5..0699cf036edfe8b30f12c7b3b496a3935f01ac43 100644
+--- a/app/src/main/res/layout/conversation_item_call_to_action.xml
++++ b/app/src/main/res/layout/conversation_item_call_to_action.xml
+@@ -6,5 +6,5 @@
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:backgroundTint="@color/release_notes_cta_background"
+-    android:textColor="@color/signal_colorOnSurface"
++    android:textColor="?attr/colorOnSurface"
+     tools:text="Click me" />
+diff --git a/app/src/main/res/layout/conversation_item_double_tap_edit_education_sheet.xml b/app/src/main/res/layout/conversation_item_double_tap_edit_education_sheet.xml
+index 5ee2d608be93a50db448db5d22c07120553c393b..fd1fd12959ca34a5bc62596ec56b3ee235f2e260 100644
+--- a/app/src/main/res/layout/conversation_item_double_tap_edit_education_sheet.xml
++++ b/app/src/main/res/layout/conversation_item_double_tap_edit_education_sheet.xml
+@@ -27,7 +27,7 @@
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/handle"
+-        app:tint="@color/signal_icon_tint_primary"
++        app:tint="?attr/signal_icon_tint_primary"
+         app:srcCompat="@drawable/ic_tap_outline_24" />
+ 
+     <TextView
+@@ -51,7 +51,7 @@
+         android:gravity="center"
+         android:text="@string/DoubleTapEditEducationSheet__quickly_tap_twice"
+         android:textAppearance="@style/Signal.Text.BodyLarge"
+-        android:textColor="@color/signal_colorSecondary"
++        android:textColor="?attr/colorSecondary"
+         app:layout_constraintEnd_toEndOf="parent"
+         app:layout_constraintStart_toStartOf="parent"
+         app:layout_constraintTop_toBottomOf="@id/title" />
+@@ -59,8 +59,8 @@
+     <com.google.android.material.button.MaterialButton
+         android:id="@+id/got_it"
+         style="@style/Signal.Widget.Button.Medium.Primary"
+-        android:backgroundTint="@color/signal_colorPrimaryContainer"
+-        android:textColor="@color/signal_colorOnPrimaryContainer"
++        android:backgroundTint="?attr/colorPrimaryContainer"
++        android:textColor="?attr/colorOnPrimaryContainer"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="36dp"
+diff --git a/app/src/main/res/layout/conversation_item_footer.xml b/app/src/main/res/layout/conversation_item_footer.xml
+index 26f33dfff7f26eae6ea4ec757775610ad5ff5c7c..ad188996157e54ef1a2b13c337647ff872c4869c 100644
+--- a/app/src/main/res/layout/conversation_item_footer.xml
++++ b/app/src/main/res/layout/conversation_item_footer.xml
+@@ -94,7 +94,7 @@
+         android:ellipsize="end"
+         android:linksClickable="false"
+         android:maxLines="1"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         app:layout_constraintBottom_toBottomOf="parent"
+         app:layout_constraintEnd_toStartOf="@id/footer_expiration_timer"
+         app:layout_constraintTop_toTopOf="parent"
+diff --git a/app/src/main/res/layout/conversation_item_header.xml b/app/src/main/res/layout/conversation_item_header.xml
+index b7ebeee7013030ea042b842ae4bfda3487e4bdfc..2520e7796566d57d56eb21b4bb6aa4b78afd5af4 100644
+--- a/app/src/main/res/layout/conversation_item_header.xml
++++ b/app/src/main/res/layout/conversation_item_header.xml
+@@ -17,7 +17,7 @@
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         style="@style/Signal.Text.Preview"
+-        android:textColor="@color/conversation_item_update_text_color"
++        android:textColor="?attr/conversation_item_update_text_color"
+         android:paddingStart="10dp"
+         android:paddingEnd="10dp"
+         android:paddingTop="4dp"
+diff --git a/app/src/main/res/layout/conversation_item_last_seen.xml b/app/src/main/res/layout/conversation_item_last_seen.xml
+index f26de09fa42020d81c1745d501fb466a57a30beb..b5dec567d248d564268d2e21ad3b3580354d7794 100644
+--- a/app/src/main/res/layout/conversation_item_last_seen.xml
++++ b/app/src/main/res/layout/conversation_item_last_seen.xml
+@@ -27,7 +27,7 @@
+         android:paddingBottom="4dp"
+         style="@style/Signal.Text.Caption"
+         android:fontFamily="sans-serif-medium"
+-        android:textColor="@color/signal_text_primary"
++        android:textColor="?attr/signal_text_primary"
+         tools:text="3 unread messages" />
+ 
+ </LinearLayout>
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/conversation_item_payment.xml b/app/src/main/res/layout/conversation_item_payment.xml
+deleted file mode 100644
+index 5d6dc73fa43ac20338d74de0b6c856f8cb12ead4..0000000000000000000000000000000000000000
+--- a/app/src/main/res/layout/conversation_item_payment.xml
++++ /dev/null
+@@ -1,4 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<org.thoughtcrime.securesms.conversation.ui.payment.PaymentMessageView xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent" />
+diff --git a/app/src/main/res/layout/conversation_item_received_document.xml b/app/src/main/res/layout/conversation_item_received_document.xml
+index f404f21b49453e739ebc6b7287b8de60e5fbeb7f..1b1a8f43da08584659783c7f4777ecdd05080101 100644
+--- a/app/src/main/res/layout/conversation_item_received_document.xml
++++ b/app/src/main/res/layout/conversation_item_received_document.xml
+@@ -7,7 +7,7 @@
+     android:layout_width="210dp"
+     android:layout_height="wrap_content"
+     android:visibility="gone"
+-    app:doc_captionColor="@color/signal_text_secondary"
++    app:doc_captionColor="?attr/signal_text_secondary"
+     app:doc_downloadButtonTint="@color/core_white"
+-    app:doc_titleColor="@color/signal_text_primary"
++    app:doc_titleColor="?attr/signal_text_primary"
+     tools:visibility="visible" />
+diff --git a/app/src/main/res/layout/conversation_item_received_gift.xml b/app/src/main/res/layout/conversation_item_received_gift.xml
+deleted file mode 100644
+index 02ea43557d5204cbe67a77cd287b7a6300429cfa..0000000000000000000000000000000000000000
+--- a/app/src/main/res/layout/conversation_item_received_gift.xml
++++ /dev/null
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<org.thoughtcrime.securesms.badges.gifts.GiftMessageView xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    tools:viewBindingIgnore="true"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    app:giftMessageView__buttonBackgroundTint="@color/recv_gift_button_tint"
+-    app:giftMessageView__buttonTextColor="@color/signal_text_primary"
+-    app:giftMessageView__textColor="@color/signal_text_primary" />
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/conversation_item_received_revealable.xml b/app/src/main/res/layout/conversation_item_received_revealable.xml
+index 41f61285953eba6621f09aa2646529f5ee57e663..7d5ae27a28e5d0945014d8d788f117c16aee1552 100644
+--- a/app/src/main/res/layout/conversation_item_received_revealable.xml
++++ b/app/src/main/res/layout/conversation_item_received_revealable.xml
+@@ -8,7 +8,7 @@
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:visibility="gone"
+-        app:revealable_textColor="@color/signal_text_primary"
++        app:revealable_textColor="?attr/signal_text_primary"
+         app:revealable_openedIconColor="@color/conversation_item_incoming_view_once_opened"
+         app:revealable_unopenedIconColor="@color/conversation_item_incoming_view_once_unopened"
+         app:revealable_circleColor="@color/conversation_item_incoming_view_once_circle"
+diff --git a/app/src/main/res/layout/conversation_item_received_text_only.xml b/app/src/main/res/layout/conversation_item_received_text_only.xml
+index d68fb025b787ee6cea62f05eb95b4cf3f723d0c1..3bdf0c03bf7ffbc8c65c965b171f414db9765c33 100644
+--- a/app/src/main/res/layout/conversation_item_received_text_only.xml
++++ b/app/src/main/res/layout/conversation_item_received_text_only.xml
+@@ -30,7 +30,7 @@
+             android:layout_height="@dimen/conversation_item_reply_size"
+             android:layout_gravity="center"
+             android:padding="9dp"
+-            android:tint="@color/signal_icon_tint_secondary"
++            android:tint="?attr/signal_icon_tint_secondary"
+             app:srcCompat="@drawable/symbol_reply_24" />
+ 
+     </FrameLayout>
+@@ -49,9 +49,9 @@
+             android:layout_height="32dp"
+             android:layout_gravity="center_vertical"
+             android:background="@drawable/circle_tintable"
+-            android:backgroundTint="@color/signal_colorSurfaceVariant"
++            android:backgroundTint="?attr/colorSurfaceVariant"
+             android:padding="6dp"
+-            android:tint="@color/signal_colorOnSurfaceVariant"
++            android:tint="?attr/colorOnSurfaceVariant"
+             android:visibility="gone"
+             app:srcCompat="@drawable/symbol_chat_arrow_24" />
+ 
+@@ -139,8 +139,8 @@
+             android:layout_marginTop="@dimen/message_bubble_top_padding"
+             android:layout_marginEnd="@dimen/message_bubble_horizontal_padding"
+             android:layout_marginBottom="@dimen/message_bubble_collapsed_footer_padding"
+-            android:textColor="@color/signal_text_primary"
+-            android:textColorLink="@color/signal_text_primary"
++            android:textColor="?attr/signal_text_primary"
++            android:textColorLink="?attr/signal_text_primary"
+             app:emoji_maxLength="1000"
+             app:emoji_renderSpoilers="true"
+             app:measureLastLine="true"
+@@ -159,10 +159,10 @@
+             android:alpha="0.7"
+             android:clipChildren="false"
+             android:clipToPadding="false"
+-            app:footer_icon_color="@color/signal_icon_tint_secondary"
++            app:footer_icon_color="?attr/signal_icon_tint_secondary"
+             app:footer_mode="incoming"
+-            app:footer_reveal_dot_color="@color/signal_icon_tint_secondary"
+-            app:footer_text_color="@color/signal_text_secondary" />
++            app:footer_reveal_dot_color="?attr/signal_icon_tint_secondary"
++            app:footer_text_color="?attr/signal_text_secondary" />
+ 
+         <org.thoughtcrime.securesms.components.ConversationItemFooter
+             android:id="@+id/conversation_item_sticker_footer"
+@@ -178,10 +178,10 @@
+             android:paddingEnd="@dimen/message_bubble_horizontal_padding"
+             android:paddingBottom="3dp"
+             android:visibility="gone"
+-            app:footer_icon_color="@color/signal_icon_tint_secondary"
++            app:footer_icon_color="?attr/signal_icon_tint_secondary"
+             app:footer_mode="incoming"
+-            app:footer_reveal_dot_color="@color/signal_icon_tint_secondary"
+-            app:footer_text_color="@color/signal_text_secondary" />
++            app:footer_reveal_dot_color="?attr/signal_icon_tint_secondary"
++            app:footer_text_color="?attr/signal_text_secondary" />
+ 
+     </org.thoughtcrime.securesms.conversation.ConversationItemBodyBubble>
+ 
+diff --git a/app/src/main/res/layout/conversation_item_sent_gift.xml b/app/src/main/res/layout/conversation_item_sent_gift.xml
+deleted file mode 100644
+index b8c010727c31aee9bbe389054130bcc802568d61..0000000000000000000000000000000000000000
+--- a/app/src/main/res/layout/conversation_item_sent_gift.xml
++++ /dev/null
+@@ -1,10 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<org.thoughtcrime.securesms.badges.gifts.GiftMessageView xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    tools:viewBindingIgnore="true"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    app:giftMessageView__buttonBackgroundTint="@color/sent_gift_button_tint"
+-    app:giftMessageView__buttonTextColor="@color/signal_text_primary"
+-    app:giftMessageView__textColor="@color/conversation_item_sent_text_primary_color" />
+\ No newline at end of file
+diff --git a/app/src/main/res/layout/conversation_item_sent_text_only.xml b/app/src/main/res/layout/conversation_item_sent_text_only.xml
+index 2c95d35767ba60e04ec188b9925f2bc855b6784d..30f52efdde9b6169c4cc65bf9632907d25ad4e2c 100644
+--- a/app/src/main/res/layout/conversation_item_sent_text_only.xml
++++ b/app/src/main/res/layout/conversation_item_sent_text_only.xml
+@@ -28,7 +28,7 @@
+             android:layout_width="@dimen/conversation_item_reply_size"
+             android:layout_height="@dimen/conversation_item_reply_size"
+             android:padding="9dp"
+-            android:tint="@color/signal_icon_tint_secondary"
++            android:tint="?attr/signal_icon_tint_secondary"
+             android:layout_gravity="center"
+             app:srcCompat="@drawable/symbol_reply_24" />
+ 
+@@ -93,10 +93,10 @@
+             android:paddingEnd="@dimen/message_bubble_horizontal_padding"
+             android:paddingBottom="3dp"
+             android:visibility="gone"
+-            app:footer_icon_color="@color/signal_icon_tint_secondary"
++            app:footer_icon_color="?attr/signal_icon_tint_secondary"
+             app:footer_mode="outgoing"
+-            app:footer_reveal_dot_color="@color/signal_icon_tint_secondary"
+-            app:footer_text_color="@color/signal_text_secondary" />
++            app:footer_reveal_dot_color="?attr/signal_icon_tint_secondary"
++            app:footer_text_color="?attr/signal_text_secondary" />
+ 
+     </org.thoughtcrime.securesms.conversation.ConversationItemBodyBubble>
+ 
+@@ -122,9 +122,9 @@
+             android:layout_height="32dp"
+             android:layout_gravity="center_vertical"
+             android:background="@drawable/circle_tintable"
+-            android:backgroundTint="@color/signal_colorSurfaceVariant"
++            android:backgroundTint="?attr/colorSurfaceVariant"
+             android:padding="6dp"
+-            android:tint="@color/signal_colorOnSurfaceVariant"
++            android:tint="?attr/colorOnSurfaceVariant"
+             app:srcCompat="@drawable/symbol_calendar_24" />
+ 
+         <androidx.appcompat.widget.AppCompatImageView
+@@ -133,9 +133,9 @@
+             android:layout_height="32dp"
+             android:layout_gravity="center_vertical"
+             android:background="@drawable/circle_tintable"
+-            android:backgroundTint="@color/signal_colorSurfaceVariant"
++            android:backgroundTint="?attr/colorSurfaceVariant"
+             android:padding="6dp"
+-            android:tint="@color/signal_colorOnSurfaceVariant"
++            android:tint="?attr/colorOnSurfaceVariant"
+             android:visibility="gone"
+             app:srcCompat="@drawable/symbol_chat_arrow_24" />
+ 
+diff --git a/app/src/main/res/layout/conversation_item_starred_source.xml b/app/src/main/res/layout/conversation_item_starred_source.xml
+index b366bf0b7b9ebb6806f75833389fe8d821dd3170..74c484e22c75fe4e2de71a504858c8ff1948b722 100644
+--- a/app/src/main/res/layout/conversation_item_starred_source.xml
++++ b/app/src/main/res/layout/conversation_item_starred_source.xml
+@@ -19,7 +19,7 @@
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_text_secondary"
++        android:textColor="?attr/signal_text_secondary"
+         tools:text="Alice › Book Club" />
+ 
+ </LinearLayout>
+
+--------------false--
+
+

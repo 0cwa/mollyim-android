@@ -1,10 +1,11 @@
 # Scope and parity
 
-The repository contains two separate reconstructions from the same pinned Signal
-base:
+The repository contains three separate reconstructions, each bound to its own
+pinned source inputs:
 
 | Forest | Intended result | Scope of equality |
 | --- | --- | --- |
+| [`patches/molly-signal-8.33.2`](../../patches/molly-signal-8.33.2/README.md) | Derived Molly port onto Signal 8.33.2 | Entire pinned port tree and file-entry classification against original Molly/Signal pins |
 | [`patches/molly`](../../patches/molly/README.md) | Complete Molly 8.19.2-4 source snapshot | Entire target Git tree, with no exclusions |
 | [`patches/827`](../../patches/827/README.md) | Adapted launcher artwork and UnifiedPush/MollySocket pilot | Declared files/fragments and reviewed adaptation hashes |
 
@@ -46,6 +47,27 @@ prove Android compilation, APK reproducibility, current-release parity or
 runtime/security acceptance. LFS pointer equality does not verify downloaded LFS
 payloads. The [complete forest guide](../../patches/molly/README.md) documents the
 source pins, groups and verification prerequisites.
+
+## Derived Signal 8.33.2 port
+
+`patches/molly-signal-8.33.2` starts from Signal release `v8.33.2`, commit
+`6e9dddc01f1b26e608ac683807c51e139c141ed2`. Its `origin-base` and `origin-target`
+pins record the original Signal 8.19.2 / Molly 8.19.2-4 comparison above. Its
+`target` records the reviewed derived source commit, with the Signal 8.33.2
+merge recorded in `upstream-merge`.
+
+The complete verifier proves that this separate forest reconstructs that derived
+target exactly and labels every exported file change correctly. A `carryover`
+mailbox requires identical old/new upstream entries and identical original/new
+Molly entries. An `adapted` mailbox contains the remaining changed paths. A path
+already equal to new Signal needs no patch. The original complete forest remains
+unchanged so its official Molly source proof can be repeated independently.
+
+The derived target is a development port, not an official Molly release. Exact
+reconstruction and passing build tests do not establish equivalent security or
+device behavior. Current Android build results belong in
+[issue #4](https://github.com/0cwa/mollyim-android/issues/4); device acceptance
+belongs in [issue #5](https://github.com/0cwa/mollyim-android/issues/5).
 
 ## Pilot pins and application projection
 
@@ -120,6 +142,6 @@ Build failures and current verification are tracked in [issue #4](https://github
 Live delivery, linking, device behavior, clipboard presentation, and cryptographic
 lock semantics require separate acceptance in [issue #5](https://github.com/0cwa/mollyim-android/issues/5).
 [Issue #3](https://github.com/0cwa/mollyim-android/issues/3) tracks the comparison
-oracle and remaining reconstruction validation. Neither source proof establishes
+oracle and remaining reconstruction validation. Source reconstruction alone does not establish
 current-release parity, Google-free APK packaging, complete security signoff or
 production readiness.

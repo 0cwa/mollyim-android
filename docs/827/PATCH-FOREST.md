@@ -1,16 +1,17 @@
 # Patch forest maintenance
 
-Two forests use ordinary `git format-patch` mailboxes, explicit patch order and
+Three forests use ordinary `git format-patch` mailboxes, explicit patch order and
 declared prerequisites:
 
 | Forest | Reconstruction | Verification |
 | --- | --- | --- |
+| [`patches/molly-signal-8.33.2`](../../patches/molly-signal-8.33.2/README.md) | Derived Molly port onto Signal 8.33.2 | `verify_complete.py` checks the pinned port tree and carryover/adapted categories |
 | [`patches/molly`](../../patches/molly/README.md) | Complete pinned Molly 8.19.2-4 source tree from its Signal 8.19.2 base | `verify_complete.py` checks the entire target tree without exclusions |
 | [`patches/827`](../../patches/827/README.md) | Adapted launcher artwork and UnifiedPush/MollySocket pilot | `replay_twice.py` checks the pilot's application assertions |
 
-The forests are separate reconstructions from the same Signal base. The complete
-forest does not overwrite or extend the pilot's adaptations. [PARITY.md](PARITY.md)
-defines both scopes; [RUNBOOK.md](RUNBOOK.md) covers the pilot's replay and Android
+Each forest starts from its own pinned Signal base. The complete 8.19.2 snapshot
+and pilot are preserved when preparing the separate 8.33.2 port. [PARITY.md](PARITY.md)
+defines their scopes; [RUNBOOK.md](RUNBOOK.md) covers the pilot's replay and Android
 checks. The complete forest has its own [usage guide](../../patches/molly/README.md).
 
 ## Format
@@ -131,6 +132,28 @@ working files and no untracked files, including ignored files. Its sixteen group
 review; they do not promise that a selected subset compiles independently.
 See the [complete forest guide](../../patches/molly/README.md) for pins, grouping
 and the required Git history.
+
+### Porting to another Signal release
+
+The [Signal 8.33.2 port guide](../../patches/molly-signal-8.33.2/README.md) describes
+its source merge, export and build commands. Its feature directories separate
+`carryover` mailboxes from `adapted` mailboxes. Carryover requires unchanged
+upstream file entries and unchanged Molly target entries relative to the two
+origin pins. All other exported file changes are adapted; changes already
+absorbed by upstream need no mailbox. Mode and symlink changes count as changes.
+
+These categories are checked from Git trees, not inferred from a clean patch
+application. They help focus review on affected modules; a carryover file can
+still need runtime validation because its callers or dependencies have changed.
+Each path remains whole and belongs to one feature and one mailbox.
+
+Before starting another port, `port_impact.py` compares the original complete
+forest with a proposed Signal base without editing a checkout:
+
+```sh
+python3 tools/827/port_impact.py --repo . --source-forest patches/molly \
+  --base 6e9dddc01f1b26e608ac683807c51e139c141ed2
+```
 
 ### Worktree and Git behavior
 

@@ -32,7 +32,7 @@
     "historical_feature_inventory": "docs/827/feature-inventory.tsv",
     "historical_hunk_coordinates": "reports/827/inventory/selected-hunks.tsv",
     "live_manifest_ledger": "reports/827/inventory/current-series-owned.tsv",
-    "live_manifest_ledger_sha256": "4ff5ed89335ad783a860128413b62699b4118f83a3b14bc521d2dc6e20b39c53",
+    "live_manifest_ledger_sha256": "9980ffab142d992ff9b82a20107612e41eaf052bef87d9d88bc36867296c71f3",
     "live_manifest_counts_are_recomputed_by": "tools/827/validate_inventory.py",
     "live_manifest_snapshot": {
       "paths": 83,

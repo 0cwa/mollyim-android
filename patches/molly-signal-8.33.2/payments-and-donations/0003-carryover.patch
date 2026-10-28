@@ -1,0 +1,801 @@
+From 3bed48f0041420903e64c247320e0dfa80501e9b Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly payments-and-donations carryover, part 3
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+MobileCoin/billing removal, retained migration compatibility and donation support changes.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_background_image_pressed.9.png b/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_background_image_pressed.9.png
+deleted file mode 100755
+index e544a4f388e6b9f9a1183bf405ece89745b39331..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 3713
+zcmV-{4u0{8P)<h;3K|Lk000e1NJLTq004#n004#v1^@s67<uxM000h1Nkl<ZcmeE{
+zfd+$M5P-LBwbj<1A|Qe=2?Ft>fP00Wqc?B=#pNo-^+$_4KBQ3Jefm!aoc^Hb=p24D
+zWSw2Z(9tk-G>pFQ&&pqOT7e)8K@45jUG_n7k7WBW7Eu7ebxv89H^q&)Q$ZZtham}p
+ze?*pL-bmYe34pJ-!JTr~!cgR4NTT57QV6XL004Z#7;`7=GY`cL?vos&a|(s;L>`A@
+z7!(D?fFw!c$8kIckmq@T*n1(7rs;D+RVlxi`Qk3gF9n0{aR&&CWD$pR7|R%zM+P1b
+zu`!bvvbqi{`%(7#g%m{*4Kz*kG3KqT2OW}61pT7x+B)Zv;7)Ki6o)hr3PThH{Uzv_
+z7|I0*@CCo@ods|kSrUeiG0e=&i7Hl1iflQuwSfvLd$o+grGUc=VW#CUGcz-DViwPc
+zz0ADMbtisRI_KtmwtVp@_owPNt0TYurfJmW*WP-o!osCXt8d)6vB8cVJDTm<wX4;>
+zef!$%-@m`@{-a0lYWKl|?TRNzoFShnpY875yPNOaxwFCI#fxhW89TNj`J@bAnCuUc
+zY6_+pB{+%zhB6c!wnT(zmmeL54<BA>-{He;Zl$LWusa;HWRGX7$Ll@e^ZBllZh8Iw
+zG?w2V;P*oJea+9h|9grOKl}e;pU(0&pQ+dDJ>~Xzc1V(YPIk8C>Ai;zwI4TbTvhf3
+z`-I^TDMlHNFu@3gf=Lv$13wA#z=7qDoIKefCnx7wm&>)#?e*@t`^yCAUoiMpFc|!a
+z-sh3-K;bJ$XBiCU{zRwy4V`f=Dc$4o9g-yJU5mx?;`#IEquD2ViXI}xu+O;mU>_C{
+z4CO+zAQVg?L%})jd5RL7C}m_>EHChrqbK{B5(L5U4@B7p?B~%{_%%h5<5sIRbql4K
+zkt0V|=|wdOr+CrLh{#b$N+}!+5iLT~hlmu<Jo8M2EnBuUx7+P=yk6gVqWE*t&!h(o
+z2J8oOb2*CqLi&Qz%nhg0`7YIU9Ugn^v5I^FGaMW_L|RcQMwP)(NFiLrghG*&lvMuE
+zp+lXrva((!O0W3+!Ov9_ZlSNZZlTmZ=H$tfaqKIGgVPH8kbPOOl~n*kIZ}w0RMZs$
+ziot^iSG#`w`s1?OeT34-7jTBk6bOFnc6&~yXJ)?g!V51{@7=q11@@ijR@kTiDWxzH
+zg{BZ5!;0>M`{-w1e!1$Z_3Je`R_jcveLkZw_A{KJE^%5RIKHsk9V^#u+SK{g@#Cwr
+z??kuKB){GW3k)WVdt)X}L(yWw)T#9^T)O(4)8*R5^#td)|KTslD&pf{pZ&t!i%XWz
+zT)uW~@S;VFnv(x2a7xkSrxekp6bTHGM)<*Og!7YDt1U;7qtdJe3tDDm<t(I7bxYk>
+z4n%V#YqrI@c*WYaouZ<mD)aPIbSVYfS7k61IuTAIB3g8ekFUC5@#0Q4hjWj|=L@L&
+zU?7?&ed3U$<Eu7r*2Nf&)jCkr;Q0on6NL^%0Sxg2OcLL*6KRC=Q(RnJ#m;(tjRo(%
+z8!gH5IU1~dt?q+?eEz_9lG}Zo>I@^Lky`9S_GQ5irAT1#gG3r3K+16_qUce3;k)nZ
+zWLdt+(>K*04)imP&FysWs=H37tIIw#iF8s_FhXY+oJQCPx2PJuz6udnZ{DIs25M6?
+zBVx=A<<XqUy>{)|-d*(i23!ho5lSk<zAZS@C=`s)dm?OvjkSw0R%7FH7cT53dpy|@
+zb2unKy~|gv>PM5VM(jgQC)}Ozuu_c4iwuUiC&I?qXq3*_aOT{($+8?C7)2TX!hZN*
+ztXRFee@tRx<2G7D^^ygnd-sZM42J5RiMqKAh6i9oihZxo=UusSr8!!!Z^AxgUvdFj
+zWH7`SoQsoCFtluxz?eOIc1q-=639#c7z`>tn{rplzT|lZzf_QY+&ZKHEffs?VSW%l
+zSb)JsIULQLIn(5lq@2jO%3z<m65sOW%LkM=7(DR=7!MB^(aFh`!Uuy|RW`!LLcx$E
+zIR}Ry8TLI&U>J?60Rt)pc|2Z#0jV=$KmbDm7)T}If&n37Kma2$UVabz?ouc|;W)L~
+zS7lcMA(glyrpAEW00Sy%FzysLm8gF&1NJ?o0mj2E47l!Kj)7G2pd$tZFd%>-M+z8_
+z2Vg)E-<5<r{)K(@rxG|${R>B>1O|ju68Y-`SRViw;R|43uLOG~7;xcU3BZ65F_Z-`
+zaCa5LZFdL}LsbG8*ek(a$sO#KV6Q}7T?vGHB~a<e4KN_=mB2psN+1llAl!C`00xA;
+z67>nfUI~P~64=LH3G8F91j1fPi3;|yR|5OkD}jCNl|a}lfiTB_@M2&U3c_u72oVFq
+zUJ2}DuLNLVuLQ#1D}nI$N+5s{VS6R8kH3iq;ScgcDo-Va3j!Drz`$!hF~<NH00Vm^
+z*efXj2KGv@SAtX$j*v>QK7jQBfT1jafxQy!m0-YydnEt^Ld1X`AQ<i1{avfo{tFnh
+zXU|TNBq^Kz(>zrl3dFC~$fH!^UAc0lxgZ$q+pxfhjg2iE*S&j10mh6OGg6!`SDHT%
+z_*vZt1Cft@k!9Jnbm`LmB?5+K;J`ofgESh=-vk(1gQ0p{Qc|NSQ>GYgHrr*d&-bmm
+z4+ir2{NFoVuFMZV{IIV8gMC>nFwAE2?+J)MnoOoYhl0^2AB;(pCK<AFa*k1d{E50>
+zeh>SUM!v9Etry>U=bc{BdVLf2A^S46SFf_{+k7AYk$qk~Fyi7Wwu>=Vi_#ezrlzKL
+zy>#jF8i&JSf#cL|pHja2>a}ZIIsM-SLrY+gFWIMIfe{@Y{Z|SzWk?kmj4pb8gJ%a0
+z)Nb3hV?tV5`bjQ8gSojXEJ9IqvTw3;a<1>#wP(`s)YN#6_Uyy3z~G!?rraaINJ>g7
+z-!VSEDjBcWySKT+8<QqIdiMPJHB@JO7YGD?g)>wK#;<;V;Ja%#Ztj0$($vSzk3FV|
+z(&-wq5BVZzpR#Yw`Srzr1qMri!NrM@`duQcTvSw4<><u3+Ipk0MIW=d>*lT7-^|F&
+zyy^4%zkxH<CAwgL$jr)4KXB;qg1&tRBp6JlR#be}jWQT2voG1F?Av02F>v6(dv!+7
+zo`2(Fg+q{NS>qCnnl~p;du-?K-S1FwlS8fYH|p5SfPIeQHiyHx@8H43v*#{&A*QRL
+zGuIcCK5DTK*_S=Zr=eg7zZVLIs56>0X>za5Fq_M0IGvbGRq1`bXkAj<MB^j6VXwXR
+z<hk?bcU!GCJ5x$e?AKrrHAgAc6u<h&2X=?Ued+R*L*w3f<3&Sq_XHX<wCg~%A&(pA
+zeFgR<U+nB#QC}1aM!`Cxb?eq5o!lFZM@LuE#K+gv>bf=MsL`W$f8(ez;|6WtzT?BR
+z^z<}><D1f$hysjY9?vW&wPzkYczEsDu@i>&?*FJMJ~25eF3!-5qXm}&+K@EDzAczW
+zl)+GHTknOQyHP`<*H`JRGuG{*OKM4QXbs7aq>LFianSnp8y22Cb!zX8n>Vjg1d%0K
+z{+z=aJ@KCbONlCv&y>#gdr5YGVYS)Zw{EB3Jbn7?fsLCsy)$LXv{w_2CR0~KN_1>O
+za%*lF;`576?nc;`p<oCoiVQ{*Zd=Xfzw%8N&QD?r%B^dR(b%R-LburXgrww@l<wwN
+zhL3!8`N~xbPMtop|JLoa8`&1CjV5nimrKfZO47&wPLd=G-S>6H$FLN>COuU4S@Jyz
+zdoI^UPN&PqM|(Rh{r0J|=MJu0zwv{SsbhzC@73oYvHxt>EOaY}p&;6ySY~F%_d<5!
+zEHg6;%FLAQm)EE2m7*w;qcXVCl);)gy5KZPAKz0ZjBE>G9xUH>k|9}=skD(5fg#u9
+zkC)+))m0v<-F@)jM9Y{fR1Td#%AUP^^ZLurKR>$r2D(SbCr2iyXD6oS{!dTO7IV`@
+zF*jSIqF4}BKhN7*6{zlWXh;2iv>;mY5HBZZi<ya;xyg~SiP5h9!Jcow|NVaQ>ebsM
+zdypqt)&hz<#+(fD{9tA`5i%n?ss&lfHMkQDd8va#R#$m;B5<(!FmJFQ$HvfBZUspe
+zh02(=HcwkBd)1Eg+g6gk4`TfxQ0il>Q1&rW*(a~&!ZW<XL%hUO>+xGW#%t?)ZmUBa
+zsQmVF`#2dre0V_Fwog{Hkm@E<GjyU3R1bz@Lt%K~50xv&t<W50AZ1(OaFNafdsuy6
+z8Pn3{VW_f4Nt!;6wSE%o{7IzE)8_KRGrYq?yu{Oc76v>Hl?hu>dYA2kLDK?qj7+3b
+zkQJGcoopi26}2H4^;JU#QQ1<Ya?roHQM+L$-y8N&?9583^FY#8>Uxx>H?`Kclv1}v
+zNs`=YF0Zn8c!{Uh-y5`yIF2vei{mq_q--Aynq*Rig6!%y5jPmlmQsF(B5j3%lx>A|
+z$PPDqp;ak$7;<Sdlr@GRq=06{@@iS(BcAd=6OZvavMn9&$$;&HOvr}z(GZFbv?4GB
+z4rwb?4%t>X1XC{;DBP}bK&l82ZFr)`<6eOATD|ZRPw^Iynf34-@5z8FK_;@6l2sXs
+z)q~-HgCRz?6%Ikk;#Lh>xsQij#Gxr|BIc5n$xA%MQ-r^Gjpukz24q1dWJ5+|<$%Hs
+zh6|1=Agr?N#4>wOwgeKY2!de5;URkE^1?&B6yYykOUobwL?&cY1;Pb|1B~W?NcEsp
+zA!#uJiOeD*{++BWN}iWP70=3k3Jm3zfuu?_0b=!FII2gv#fYdRA`b7hdX+sbdo3_H
+zs>G_maKKRoq#hChMMP=i#?5PWDtjtE*TLY1Vk5w)0#bzp6~)p_vT}LhVI2$tgcFJt
+ffWbRnUZRdgA}<?zWKn0Z00000NkvXXu0mjfOY0r3
+
+diff --git a/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_no_shadow_background_image.9.png b/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_no_shadow_background_image.9.png
+deleted file mode 100755
+index dda66dfd0dca9e7cdb6241e55cb59f80d0500f67..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 679
+zcmeAS@N?(olHy`uVBq!ia0vp^4Is?H0wgodS2{2-Fy(o=IEGX(zP-!LBO55<deL_B
+z%G}<p?HlJ_*(SQR@Uhhj>1%~Sx3}fGZOu(yw(;_w|EDYe-;uS}zGnMpq4$4>`UfTU
+z$)XJmED8*a91aX}sw+K8Yn&GKh&&2z_L_3+@J~|){`uE>QWbAooRU13y1-Z_S>1bv
+zL%37dGyVrb?Q%Yes>^qr*0%dR*MwQM<{|HQ%fnS^7uwZ!{A8#IS!}+#(#>hsMWMLO
+z6CYk#kg<+I@9K;La`Qf`US_yoanNv?(Bo%p0kailo=C1_-TO#HIb#-ggS&Ou=Q&p<
+z-P<&=vBDyaLC$V*<uUPWhJ7FBM7D^SGHbZ9i%pym!8~EYhTgmo1LhScBKRgpU1L>y
+zIGZsfUD13kbH#zESF;&^ym_#+lp){JP1v|$!s423d=I$8GxFF33ftaaV^oP*zEtyo
+zWf1pnO|Z9_1mGb6V=6Fs=(1u81H%ZW0uPgcl^+tG*wjAY;ar(IbN>~UCo`t{hpxYL
+zhr=PiG<!pf^)*JDBxT++3|fYb$=4WTlB6018|JO9Zt;0wdVdY$k8{$`goDrU99XC^
+z_r?kCY=(Oq=O&6AzIdd~u)&*mSy9jSn$urSoGQOpI4|<b(X+e^T|&lFdTq{|9FX2-
+zJZYE6^$S7wf}<5>XB>&@D`<Uv=ZwSkou@d>jC$`K5n(<d4>b1a$CduVvo0Gcn=aSn
+s<yhfiC{x^U$QqO^z}}c3R`7@6k+F%&*_)vqzy!$P>FVdQ&MBb@0B8jHtpET3
+
+diff --git a/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_no_shadow_background_image_focused.9.png b/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_no_shadow_background_image_focused.9.png
+deleted file mode 100755
+index 9b71cf6cf63a65cb242dc0db56acb5e14522a62e..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1628
+zcmY*a2~ZPP7!H>pqphN26`>ZbS_RZ;p`yqXA{6mJE)j8x$JnU~QWaE+B1rLS0ky4G
+zbkN`+NtRt8*@O^|0D@?NASHwd0Rl-N7lb6_QXt#6Nu5sLy#3$5?|tw8zyH|T+fk9>
+z3tin^2?WBzh+UyEU_FOFE)GEQN%dj^!5)s<8y5y%!61{_FkDS7XHp=PS`H=yNQ!mZ
+z6bNQez$VOu;o7H9pOzvB`2&&yG06W110(nZS0I#J4kWlphaftNq7Vcj2$NDyr-JJ+
+z140-`6{~_)Q-#*j&^j8Uj?Soq5GFVR-XR2~P$~!n42IcMgkduXm{if(t!*8D^ZJHF
+zqtY>%Os-HUR0^d^CRa+w<-;OzFTcO-H5XU|_5p1Q3}~P*&H;D_Y;nRM7T~n8xvjgW
+zZ&WPRYIS;p!Dup>&1RFy1XQg~r<#})OU8P5f)}lSS*-!)AUX6h+!Rg{sj6vgekFJ-
+z)M&IuqiJwxq`BpFC7lgIh7dZH%BZBVC6aNCR%bLCb-L+snc_ujJ5I@(F$iMYQq5_4
+z**`EeJ*^iGidtT_gACXJKytf!di(kTRe%Jvhee|j={WA<gArcuTe(6tF`@1g3|Q$g
+zhD2fz24K!$HGuLN3<hRRBRHCvR9CYb)oKlk-K17ev4B3M(Ho5*Y=v^d=5csLtkG(L
+z&g&J(6-v>F1f*naT>iTKjSbM%-3uJinRVp|lMI1c)avyHP!2k?9`76&ZyN-u20UqK
+zZFz+?V=&`6jE;^<^#<U}s8UT*D0nqN3HW{ea-|B;7fZ(lZwIY`(_xraR0LXu1`5Yu
+zad5vBG$$v=i{;?~npK(}6B$duJonvZ3Mb9jyQ!i2JF#nBJfg3ZwGK=gXJ$?6p;y$r
+zcrVv^tM*rjEEWtOmhtL?>+HTr<EqU6?%1|1?<Tu%c+X#*)nuBp{C5J>IdkWA@8w1-
+z42b^3@Hv~VK@WSSOK`K6_hb2w0hHDNL<d`dpN}YUX}~ZOzS@Rag<%>1$1IkvCje^M
+z158<Tb;mp~%q%><7PsYd`Mni9b7zz5dNC&7Z12PPGzWaAmm@+$;xg<eA3MOFA%w80
+zVi{|Ul^qqB66MUy9jHDdER4Pxmf%f!F;I=Lc&Qw2(dn+Qe!Q3wA9`(3Snx8-lw)i#
+zwPopWX+!SLurjUt^T_4AntM+YidK+%?^Qk5_Z;f{<%bwI@0(-0P87Osu*~GHm~fgO
+zm(sa3DRd+JYUxL!&#rlew<zyP_YhZ%#@wCiIEVSWk`^4g@gU6ZLOngVnY3VD9icTv
+zch#-(Ch4Iv-R!sjXvkU9{U&r(6c=5eG?n_s-lcnIrjH%Jp1#9*Ce!7(!`6=_8%~nE
+zwl2iJ?kPC8QqfT8_sA~%ZU~i=&C)$wEQ;NIK^P<_4IC6KBR2ULq!OK-J8H{nf*qs$
+zeU>Gj<X$zeCM_N<J+&_n35*WD^bBc?)6Te2gQAH+WeBwSfYP;h_<Y`$x#-2%%bMNA
+z#|FZ;tzVStl=R3ngSF(R$b9(u&!V)PeT24y1rE!P_;V6h=U2Le^|V`oZS`m}L)rtp
+zc>MJ~Kv{PoCrSAh&gm<B#)0@hh(zaE?V9|^XO4kHXHWYQL*B|kzvO_DpQrCD);T`d
+z@!O_P((le@aerUC=;6hL)Dr<EkJMjoV`uC9T+ZJ5GpUHcPeFs8B$CaC3y%~FGenYa
+zH!p#_eG}S4!dGtZyiS;vX2xvvO%NKn#%+YofWFN3Rx_=Gdi32o*u8PPBq7<Zo)d5>
+z^*poRKt__q$$ZcZ#xtIYSY}V{h08K#ns4)r?-kzccbR(?ff+re5nBm%B=O!~8P!Z>
+zTiWN}-|EV0Un2Wy*LH!p@eOL}63EwN>Fv9-lX5I+s|ZS`Z|uymmQ%!%1;zMJA|fm@
+Jw1Rjv_aAZ(0=WPH
+
+diff --git a/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_no_shadow_background_image_pressed.9.png b/lib/donations/src/main/res/drawable-xxhdpi/googlepay_button_no_shadow_background_image_pressed.9.png
+deleted file mode 100755
+index 454df9b85a457c224ad74befefac52fce3fd88e8..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1470
+zcmZ8h2~bm46b(96!J<+piqVRI5UfjU711&k7a|}KQIQ}xAX;o?#041(NQ$T^sHn7P
+z(TH>u5kUzq1gt?&qbOpq<3tF5U-A>g7+fGx$p3vmIMbQFdAYgwzH{z7_r9555G4(9
+zbrHD;1OnHv(BL)Te;5B7H5^#oUuseyaI!>2L`y&j77W8EO29DD1>;@7B0~=FacIZ~
+z76N%3K`0EvAc%%}qyxZPOb-o({}K5*5Uz(Yz6eBgcH#`f=yW<1MIngfxd>kza$Er+
+zju6ISjO;)Vj^i+lfl(52NWyT6AZdzbXai#~7!3^Az+ni|fDzQ^IuJoo6hU-<R)r8S
+zN}xQ^09cICWCYv9FWO)Pm3dV#&i8`wFp>fw6Gbr~33^0P27>q_K5aDeU?3I2!5V5D
+zz)0Hg`7TE(5SvWhfB-b>VVtIUsW9K5W1a|3P&CMcA{1=^`5~@D3<2(-83s%Y(816!
+zf(90B&@~W7QVfREe48lG;<;TIm<f=CAS8kyAg|MLFie8JNQ%Y*9mY|VYHMrj>_oxq
+z0JVBOx^Le;eH0r7-uqJe8tGaA_jP1J9b~p~A1#Rb#9E(GQ&wkJXu8b(1B2E#NXwOj
+zF`h0XJXY0UEO-w_CG&Oi+x@JE4;+hqerTq%m%Q0(XIV#*wYTND_w#4^IFArJ$MxQf
+z_e`g3+$X~^1<SG58v*d??G6rq#c`HC9@xV*v)c23&W5w^?j&)xO+NM!v-WcAz#JDb
+zY5I29;kllOKrl=n7Q8e%!^x~zUNU{XyQIA^WBs1OR7lk*np_<>wtsVb$}#(v*Q!*7
+zB1ZqXsVFfTnxyQLe(F9%m20-U?aeiR+*y=%^4H>vb2GnKQumeUaiIUo*v_&H)q?%O
+zD=Wu}uheCKpVq7w{$5eG`h57QtfE{Jjg)<A?pMMtx3ZEj*DAMZm3LPzIy=)RX<J^J
+z(s~)L4ElSoxgaN~@=)?<;e!Y7%?%I5LSbKVXnAh*rey!t<Bbi2baz_REMa1lx;Cyn
+zG~TQpt({Z6MD4rv<CW6B@(5M>lT&LttZqRQj=TT%vbFAY{)=fl3~`zE=bmRgcKI#O
+zTv5KNFpx=cep|tQGrRK9@Sg1~Rdn~nCSQ2I#i=8Ar1Y$9<6zi=Wm@=$?Akedf{x_d
+z0@;a+$Hhh*^v6$RdEfW83KpuCyPu59yd}Rn$$4vWh(Mm9aVn{oxHOcWDXN{{>UrNg
+zTooB1A6Q@eO!ex(^tnepv~O0aCkAaxsNymbtL~4reh@!Wto2d(mKiv4fuc4wfQfGX
+zLz7?$7jp4h>5udB-i40*X=>_>K;I?<w5|H^fLn8Kvr|IVJ=p=}h(y=BqHKR#O0Ukl
+zUG`-B|8jWsJ=tvjkarr#4FU1$%C3vbm-(Y6aqf%1i>;q=eat-dPMPI}*M*vOF_wq2
+zo_S4EWFZ=vP%hC;&DOm(`Nh8#j(NC2o^A{-T5w4=s2S$dlz7drMx1=3K4tYAYc*CH
+z(0|!WA=`YqLb>Ip>-Y=1wTp~_UKt?)$I9esE$hnj{m*^STy2}IUHYZu=a!aeIDoo(
+zDN?LDdhM6#Nja_0Cj6N!k{y3~F2I0gIoskyF|qSMlt>rdG3G2BNM{chwl|DCJxkD8
+zmR6d1ktywXx8k3PS<cQ47Z`nRUVV1xV2QUdE9W++tQT#N>|pf6-!}<3PChQ-dY}D9
+V1JSslSImEg!z9w+nq?dJ{|hGPt;hfX
+
+diff --git a/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_background_image.9.png b/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_background_image.9.png
+deleted file mode 100755
+index ab905289bc28dc6df2c5e8c1da2b9dda79676c3a..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 4280
+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
+
+diff --git a/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_background_image_focused.9.png b/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_background_image_focused.9.png
+deleted file mode 100755
+index b9223ea3a7013cb10335f2487131fbf2ce1cf744..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 5839
+zcmZWt1z6MF_eZ3pk%o;_kOryY1VkhyluoHh4j3UwONt|v9HoFTP+)|_q{A@~X3!y^
+zbj#?H|L~39`@a9@x!d>IeZKeH&*$88&-t7^yQil?L&-r&L_|cRrFqAI@T@-nP>>P6
+z7vO2mL_{p<T6a{89$#2XZFKFDq*s$q3Q_o!r0E1J?4XbrW{ISfa4Gh$o&K)uFKQ+h
+zd6So2^T(rLava?f;M-6~g$)}B;9+txx|0_&8KxLDxqnJSG;O=9$^&_lZ2aBN+P~52
+z3E!HK>M*&^9skQXbdV&s(sl_&AUt{ZyQ{q{a)6_cPIvC8Qjo%&@-fp}snuI~i`fi!
+zvgJ4HZIwuzUVL0Khl6R3KB*3iO47;yvf>*jY1+3;^zrDf8s0#0CkNhbR-gW&OlOJy
+z+{%eJy+D5O_2`0-iGvPC2>!$Fj<x<J`kdEOudyN3lT}pnx8L3#mZ$<qT0UU$oY)Zk
+zl1G+R+_UoCix`LQPJQzxPaTkCNK7L5qH#$UL|d_b3&zdCCRPi07mC>B{m6i%$`MDo
+zWcB6D&gZ8;JPd9>rdohKMu!slW31I%rPh{|tzBC_d-okB@7~S1lk<`lgmD|gx74q%
+zl7sy(Ob(|-dj%s(`zFPiYiPT1&a-zAW%X9>2n0e1N>Tg0tFO-`Q-RS;`?}o%=!(N~
+zb90!nM4{`Iq?Mlw*$B`2rTxL}fdTa5gTwwj#ZQ~;%5%N#kx#9aeVw%@zIPhlpySSE
+z0J|Dl>_2yq4vGh)FvtsBJ%*_#^q(|(;{_^B1`|09?z(EbmrB(ZFAQ>B#HDa>vU%Nd
+z5cKYQ{UJG$p1k(59v$F-q=k28`MAT<(>hZI(r2TNocorOZoPBcQBNz_<bk=Xhf08!
+zN9f@}(+S=MP0Cz@rxaPt3A|qdlzp8(m^yCY;HukSsz{cDl#wHT`Pr1*P9R@OgI1wH
+z&}&AfV>uew*0dTp8FuE$75MA0W@?!|?66H=Lw$=@um4)Gk~C6O2#jiy9NFi7W&bGD
+zZm1%nK-kmH>ye>~*RH9+o)G)Ih^wYpsZebZW-u$uFo@dr0^?{~ESTus02n-wKp~le
+z<$bEE6UG>uX)Gd-Y1}A9=G|y?3O-5e)Ij=w#0vl75k%dTsDI^M5wKrzUBdTn=>4Io
+z2>b1VxHp{rac3P#qnBe1<yihrrt--ps4a;|X1gAbBUCL`!5f<&Xuqh{*BvoHwf&sI
+ze>%je>1PKOs{l1e;A}~iLcP;mYH(_bjZ}M62~G6Xq1vnSv*qxW9+TYzm%Rfm>9uEu
+zj$<iETpdy;+d&_pG?Eu6te)>T_<7Jf5mh{x&SB{0s<$rngjC0tpVw|F0o8=>CH3;!
+z&kYA6{V}QAki=I`iPYW=(Yf1K7CP>Sc9of^0F<4b-+t*Cqnn@0KrS+yh)GG<a!R}|
+z@jYQReyLmQh<o5H_5kl0bO;~X%X-AQMw4APnqBWvU+*zt=NWfp!v6(*m?u&hoai2b
+zLaiEtU7cOgLxaABsJg*S3qv2*qzj_9e1i2iL!jClky~4l7ItJ{wvNlimGjS_7ucv3
+z@GS@9Py9LpE>HVSxVHxVY$yM;o*^?QK<~7`lqAV5__4oVo+%^Y?2YRrliSz9vEe4t
+zII(TM@&vNYif=({r{uKbQ{xtmE&1&pQ0TkttSr6uYlM&ubXyIUEvhTVknIS&O`Uvb
+z8FwI}%4}0N(d&Vg?X1er39Q*-1FnPJ$%gsXGqR%rlv_g=6srh+QCB*ciF8v>=xvY&
+zqeLS)Wj9++Cl4C72Fk{KSj|ODD(dQ>-#pgK$DDwm$5`@)ik2ylpZp$7v4$MiU7Vd|
+zWKYRtWTzVIV+djPl0d#=2X`#>BG)iIoc)h26}N|ehxX*aD1s3@a4BoI!cp?qLN>RR
+zEOc~qV;K>x*iR$=D6eZ)K&O5YX9<<CL61+Ned^bDhl%%Pgeq^BH$RZ5-Dhtj7RV8l
+zHj#`3QrlfJ#L09bq{&qU7*uHGi(m^~;jx8<g`YHa0F!cJg){s$*K?gsN+)s!rQ};Y
+zP6Zl^9a|$0c3gRPUhg?ne0Wk-Irelc;JO2;^k_SMI<XYkXF;==jbJN}dHcZ05<eBR
+zsd#+2__7r`icOuU_P$Him*6hrka^>XS4sOZE1uZMsNnaVqWBBXXouO)c(ht_B$5eN
+zl3>kF`@C}G*Q6WD`b8$FB*fblC*o-8q$H1_Ok2oniA`b(v}1mL?IuDhoF?A(4-}Ho
+zV)1tU>^-FVQWhj*%L%zc(PzNzM*pC_liAM<F8)PMOtey)WkY?`?DdrfMLnka0O1ux
+zRX9VL?O!o=GtHBBBaJ^A@J4>&Dak$t_}*W+#{Z<PM5<H)<usq3y1;Dg@sJ3&mRv<8
+zVzS$nUy#Sn$<|KkSQ*JHYDa0=-h7=*b+?y6#nFG>BFvIulye|e18wEBug}4el4UM=
+zO|TUjjz)0!`LIPvt3pl+ehB49{EGnTUN2i0pFno>8V_wupJ-C#mlp1YtrOwiGntJg
+zzn7fKk4wPPZ?ApK3AM<!F*5%+e5LV5qu=Jk^pXN0-bflb-O30;+)&)j>|nuE#we`W
+z(Z{tX_tf)jvv%l;I5&LzrN(u7cVcw3X1u{_QIMJ|ux9MT+dhf1Ne9|^nW|4XmaC0m
+zYE0|4hW@>*#1P+8Mp%ekhhzr>X`d~*s#yn9on(w`pB-J~_hQy7qH}F7q&DW?8Kyg@
+zO}e_eat2B*>!}#YX`A`MDBo)IGYcPS8*if68pfvC4l%rurZqRGPR)M+21FFI65>X-
+z9L5q*ytP-$ylzzymqJFf4OvXbU6;qB$6ox(V!Q|7a@kmmqAXo?xX5qTPVFZdbydfX
+z%E8QsB_zL?wg0x?IQ-rKC9>R^l{4sp??^?40QJER*S2_8cLGcxZ8kV3$`uOb6NY3`
+z;N|~!UTi+&arXw|X7>2(v4ACtwIs0LvbXuyw*39-abH?9AGx%`sOL>=YJ?R4<#YDL
+z$B;E3GZrT#@3h9k%;=*Ml(CABYVX{T-Ykfoj%iX=GvK2%A?9_sWH{Q9DIL?vMP^Bj
+z$cy5C)ShgKaBM1{2vIvBnCI5T!g(AhE!n7I;?;Dx*dYQeUS3Y`@cN=U+&&LGp6GMY
+zLyC&NXA86^OPz-`jnAkX1H?%~0x(Bw{od*dwzn!Oz6zF{3v6-ZCEr+zjsVO)g>vBE
+zCdxt7%1MhWqpLC{lP~%o@I~nO^h>;TIPrSy_THh}r!g}w(`rcB3mds0x?E6r!JGkd
+z9=L3sSvAH9Dx&uI!I(0NY95h@HDysIskwEHFx5K@5NiAT$<O$(u41VUilK}UwPaHB
+z`)<5gI7<+mXOoHWd&uINs~Cy-{iL#M5oLgpl3IGgWZGGra~1NpH7HfJw*eQ&Wx{Oj
+zsNtZ++MvYNz^?u#mw7UYc`~V1vc8U6{%y)?f<YX=+exvrE5SOC2;6UvNri>LD4KwX
+zU^=+0kfORJ_zgvMK}qdBnZKdrU$a;fx`7cQta)2|Z;)RE9{3w110>|ohykKv@@^FT
+zjIgwTFjQ3|2n-1uSx}u`R<*WKtme5?%|m5Cb<WQ><TMnb_9XzKW=N%CLV(7+z9vKf
+za!&5t4uRs%{6Nahb8Hq=YP0fxyj05qFZhsG;E;1}nlMkWDYEjM`5bz3tABOaA0SA~
+z;}q4BnF#~<KTj-Wu&o@eJSVt-l;DfQu6HcLuX)_6kV`kKF`n>ZmUD{*&QAL0yAN7W
+zRP$lseAsSLIM3=w<Udgy#&Cv?l^P1FnCLmXg{z2iF=8)WisZuL#H^ETjCO0$3~q3A
+zY5Bqe2Pdbl(Y325Uibe_oR21XySwR{rkmmxn3#-1a0xmHx$dc^M~&9gpW71NIBSEj
+z7|p^@f2O&W5>>gdlbVu}5}VAkGvh`sLP!8v{nd4J`V@c-v1qgDgYbPvM`qnmB4uSF
+z*D8*@tI?%2+4bX7?{74=+nRhyz2_oHr{L+H+iW*r5`-UAko)^OcLMe#W7TxjNycWk
+zPLjixERq%l^Lgs=s)-xpyS-DVWGDRmHO|2vc4`S|MDe-4aT|7jx6ci79vK>W>#U8n
+z{a1P@@3@5#P_G&ng}k;2TCcU^^<NoYzb!ue*7Rh()FmKV;qW2nHs#wDjDD7#giY1>
+zRBcdFK=%-V@qY|`=W$>x6pNg!_~uzaD3h_?Xq?AG@vp<{EkD+i0zV`GvSo$&8y_PM
+zokwjHL$jJ6_q47j5Tp+|Ete62uaq3^;osi=^FD+5u!<*CEw<SEQc|q%{L$iJ%jNs_
+z<aEFZ5d}q0dp(s8ID(cN?i-^jpBFJP5859#qp{c#y3kH6us6IWt!{GscioDvvc;Np
+zLE?BD`+3ICIzva~<o3$s#77Q`d0W?(7j2e5BhOwTHR84PKlO-Am>DQdy*Yxuk@fs#
+z@Ah$cJ$+<#s6bx<Ao{quR!(j~%xtaZKQ-iM$t}l|@3%Y%xixRuL40>|AFGRM+4@x;
+z856&f?V`ld$5xbIvQr}=sGI9vZiXHoC&-UYjPaf5|JL}-i|j$uG~P25;=(K4iYNRH
+z*`6(jtS6NfeJ{Yipqj#o5D#$1s{MYy{Mi?uO;w=MO3F_tq4-CwHB|#A&4wC;hS$(>
+zW%DAY6SBv9Z)4#Sva-kSI{!X(vp=KAet^AMmWqA(q?7B60(a7i(w9^28WHR!(Gj;2
+z-+v_0x`)esNzDo7yUHJ?;-PYw_o8~sCV^AAKMNdI)$Gyf$n7|lu!7M4l$R+)8aq-x
+z4f&K?KZ+q!|FeYQx`-YA-ixu2L1j<*eXEN^AD!1R9UbX@PcGR1bU>9(ad)JCdVP28
+zmA=MRq!TOZx@DrSQXgaSgzbVgRs$ZmFi;~{yvIf)B~ba77BPT@#s99|nO%-%*gE$x
+zWj6eGV2cLVp*d5MU(%u}&ZKtWf$zrTdRFT<Z>LpquE#ewPLqyXWW9AT2k|*C63!f^
+z0h#U^1(G+;?4c7rnUi{ndF~T+=c7ilu2;6M|AEhD#qx5m&O*yqUE>Esq3ZZyZKwVE
+z<E1CZZsv%9w9l+x=29H#TP4R1_Zl~M`@O{@;YZrQm$|pBVt{3BU8r+;;dRTzezNU(
+zk;pJNhJCV~*Xl*xZS?`r(;(0_Mny}=<mppvs#vwo!NEs}B%f4{q3|hlXQ};G_{yUd
+z$PNG1G3aEJ3nQ!O19TGAx4P}mNmig!`hG<hvM&I3zHrb05Hq$l7Qa+a|5v#uoGj=G
+z6)2pOilux~-lHS+87LAAin<HBT9r+G8>TN1Sce613SV#5ychT!WtKK({=OopumU`w
+zt!RL{UucD_P#lj3%DdxVJX}pGw{G2b|JE1w{?Tzbx8Dj-*o$h6R|RAUR8P(6pZQ54
+zm_H>8uX)2XO;<rz@?_fPK7O{c)igBt!&&IbW+!b-Wt0%qj@m7=lZza7K`>p^ItaSf
+zAe7=o>I5Ty3cG}aQFTXrrOcsbRnT-4X-+mq{8FnDUY)U67SyuoY7Q;kG3tL$b9Wu=
+z=Lz;bXpoY26rXIcA1Zd*-D;vkGhA0Ch7~Ks3m|HIKF1OS&?1<*2Tt|RO!<c=KoKH;
+z`XJh}nq$HxTFk5HPWnzn%*3xQiqrT4)Yj<)fqt_02@)>5!o(r#{-tcXEnl_xlSP9^
+z559KM1U0djg`=7t(w`U1uG=_v{kRu0?Kz~e?>lf7m*cbmd$c1guAoo-x2E(WVucaQ
+z!$?eFWd5l;m_5PUW$y}J@R1`~MYsG=R$C<2g{@(Rw_CXkDvn>7iVA4Ut}g77%5O~8
+zn%0M_Y9t~gT`*tGeKOXptD)bn0?|z^9s{_2Irp*S55w!ntpoCB(q{}`qS#pfDP;e-
+zDNK`e2LocwF|i8Aeihk<j5b%#^)|6I@B{+Q5d#&Q?^|rj3|sHd(&h&40YJVx2ZTZ)
+zo-OOYj8lsn$uWCx-#MT5R$jTrwSSm(H=(sUaJ_D%z|^b#zeftWieb)a2lgbaPq8hQ
+zO@XZDBoRfX3tCbS9f=)!a|~8!#bs6llE8TxJsGYGZX<36D6MU|@^QbFsUn{wrI4T<
+z4$y1;mn!_nG;DGfBcm-BpC)a}J9kAb8C(6?F|c)VEL3)1uxh(B*~VaK54e6cbaEph
+z@+vJWqFPPhS8~!VL^s$4ho*Ot9u4`r|GBG%|55N+sg60$>$G6=DB2z)GKft-tOa(z
+zT`jRvJUu<q8gWa8HN_a+xXhgKGvarzH`>8AEcsNCc7|AQhAdGN91aFSxJFWwWWI5K
+z<vjCz9tlYg9n+D5B3!1%p5c#R-st0oOGT9WCBeH8lldC+BBSx$)6_*TsKiUZZ}z=j
+z+CtqT3aJ^W4rbQ>R<&6o@fi}2%*zu((K{bhE<c4sLoZz(OC1APZ&N0xnFl(GCj+mc
+zX!34GcofUU^B|B&<L?X)q?W6z1yk}eG_R!%PU|l(D6hW{4LCHa(l)V@6qd;Re+L7*
+zsPS4bJ&i4+@BTZXt=8D!w81bq;7X0oNuQ>kiKEX&&G?QFmtoT7b~{)=t}5@Ek#wHF
+zzd@_x<s+?-uiG0)PlI{RC*)@p!OUe1I_iJ6#Q$_t47w^MZ8UxyCVJ<Gb}Zn9eP$IP
+zBmqhkpqor8JWk`?4rk8l<jH~lz<_*ub@8w9Usyb{3c~QS@H_3=4TPTfcQ;Cq?SD9A
+zCKkE|>y97mFogHQ0esT>3As`}b~o)v#;wZGw|xqp0fpr;13kL<=PXJuKj?1vnD-`$
+zT)x`$kEW}inN5(u8%B@?UcyE{=%0%;U!QOxLy<BZ@iL5C<exzosdeaM@~<t~)6Ni8
+zd_I-GM;pkKbW52`lhUT)La(*b^sD)Bv!4OCW?mDYWs-8`vHGm(Z+DG7<JyHgSS^wi
+zUmBOR&FYzWc68;J^jv&^Z?;|E22Rg8G_hMNSgPn#2@U7LL_I8GAK9L^bRPx6$l|;<
+zN&HyletcQKqka=u{nC~2J{gUk^9U_c=BK+csA^`%V^728mBwe(*2?r_no;Wpj;b%X
+zXscNEraT{iIoD9Oey!j$9oJ44$(^W_=0t%IHrE1Ez%0jNgZzU^x{KoKH`%@It~-5J
+z$p4n_V-P9NMch;-Zilkal!m>S+Cij@06~H<GSS^9i>is45)n$YSS>M(nEDh{FYqqv
+zX!y*yO}&X{&Z18Vdx8BOWVC<pbv?D&^btzqCMzE4;?Xxt6+h@@AJXsFO8BFiNJ~xc
+KPQ`88i2nlzP#~lL
+
+diff --git a/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_background_image_pressed.9.png b/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_background_image_pressed.9.png
+deleted file mode 100755
+index 894fdcfbcc4dedd9b4ddf9ef3e19e43005de9757..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 4857
+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
+
+diff --git a/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_no_shadow_background_image.9.png b/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_no_shadow_background_image.9.png
+deleted file mode 100755
+index e67fdaf516d74fb33d13a18a39ac4b6c121a14d3..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 819
+zcmeAS@N?(olHy`uVBq!ia0vp^t3a588Ax)iP}u;aRtNZmxB}^+0!&P|xB%U1Q4-`A
+z%)rRR%)!McC?O*&udZQWY;I+19}pB0kyBLBI$_d`B}+GK+Oc>4q4Sq+-g)}`<*N^$
+zzJ34k>(AeR2A`y_FfcIw_jGX#skrs_?)APV2Z^@Cz&EVb?^oQ|*l^}={7t!JCaKK_
+zf0o~W&oys?!NZ0<lf7!KzCH}9ujkSVSrM?%Nz}`C_RpZLVfiM}oa=9{xV~!Xo|$#C
+zv&7ciD=><`vAT3o^v&*{DK|EAJ*y5;j^1*sdF5W)9p&+=R{!70ZTnVoVOv+^W7DfA
+zrtDt4bhG`g@bmnWma^?DFYT{Rw|q6t_?Y&piK|PF&AzOhn8NYLBKO!_uX7#CrDl57
+zKbw<((0t{=w{On;n!5b?FQ2p1tT*3vt*xDYcTMoQV?o__Hx_@~=l@mj+>Yp;h0A=i
+zw^(ZHmfh=FbK&QzdFL*F`&4qdxyoAi_QKDmK4+tupU-|@_d}+DEzE9G)GOcbje1uS
+z?B7mRT6uM0ZOE-R8T_j!Ub&U>`jvC(_Q_EyTkY&)zAlX8|6HZAbz^~T?TUH3GhBjZ
+zmtDFa^znXVnen7sQ9m2)t{jNpx@cwg(yP~iq14JH3JESKqrQLD0t`V+WnhskovHh;
+zW2*kI9O|dy6;S0JaKR@)%`c$FKj2b8fJRV2U2wpakN~Z)fQImpYY_oDQ2|ZSK{sN8
+s^x}eA;;&t0yOYZZaZH_8sMEAxjOWasx9nbR8V*YOp00i_>zopr0K0)M!~g&Q
+
+diff --git a/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_no_shadow_background_image_focused.9.png b/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_no_shadow_background_image_focused.9.png
+deleted file mode 100755
+index 7889152aefc5482610d72208b723241ef3c61294..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1410
+zcmYL}c~nzJ6o-Qpv?8b=RgqI=5qb)!6m7v;1r3UV5iG?JtfHb8X{!Yk*%!siCJ3S&
+z3}RWD@JNhF9sxqwLS!*ikc1R4Jjf=51PDn8lnQj>smI^BZ|2@R-@P+${+JAZ%n{So
+zR;y7cl<83)^hq#3)PJiC!Dup)+KWON#QFOLdV>&%LTM%v>#D13i6pp+1QV;_s%kng
+z;s;AfNrCjLBNCqx^vRm4YM4l>(ZdiR0k1CsB9dtki4GV71TYvl`aZyiXrLQtQC3zD
+zK{N=WzAx0T0wYlv&*@A$qmfbHT-VUbWU(6>+ZviUtR@bV)kY@65Lw?1ltAPfS`Dj(
+z-O25K&F>!^5+cZ`SR|22q;I9bWMfk47&0mu5{^Ln1L(Jg$S{dgOM@HgS?m`bTu?PK
+zDjt_lOiioQ8qKUuH#avoKR>V5X!-pEFWR}_U%;_pMkAZk)h`$nOJoY=<g{u=I}2DH
+zK*6A$)hQH8xVDM&g3A{Sj*ZFHYK>a077mXpl~clD(YRazy3Xq6n2l|SNTSwi!8X$>
+zm2z^5)6NwlqO#%Qb>Ql+M4!Zbk6K>$74~*jC!*B7TV7#o?%;VYt*lA#RyDuDJ@RQw
+z|EPRsVad?M#``+;jb>?S`G4646p0r;h9Db|-8=j563_=^X(>y&_%X4R6>VdMLKz-E
+ziuMY;X)q~Fj}-cBFzSuD$VfkT$@$DeYI>>JyVmoq>N_53e!g#u>z#7qyUmWc5D-@l
+znGh5oZJHNj5SyIPvr~Gm1kO+xpKmSrV_UZPCp7M}98SQd&b%C><O;l7N97M4f1Q@+
+zhVr~vYq+nytV3iD%h_hO`S$e|c0)Gz%5nK<0U<X2fpw16-D&%c<^$nI?oX_*?I(u^
+zlC}?)5S&FBEi12~y7D%5+^zU=)!O3@ufy`~-Thf<xgyy1083+tDQ93aom!PC(nAO<
+z6hf}yT2A@wa!vKNdsSrQ=Vwz@j<S`A4R-yG+Gm;Sev9@%a(n~o^Y6S|R;YaNiZ@^6
+z)nHYrSbT_fwA@CLW=z;<%GqPb;|}a2R~DL!tzQ;ax=>&3^l@|!wG+5?3v<H?o;$pO
+zH98OeZ$FbH*eBz@j!$nSB;v-m$UmXGx<pyKN8$F0w3|okQauyyE4mEinXLIkVMsx{
+zCzE}6rXqs5*<>#{rlltWXJw++MdSF1zH{WBWj`(RfXl?B%dqS^4%5gh%*B|*$>_Pw
+zMgdk5T9!XL8*7F<yDZ*+HUvQ;xShr;uTsLBD;FQ0ah!m)43;j0c~#y7VqM6u@*Naj
+zUy|>I_v=nf20YT2#NFPA;e(tP0Web`aSm7X#Zzj2czAQo+Vk(xCmBOmf#Z9IVo@{F
+zhmDh!>rts|KB2<mpqXShl})hUdh8p#P3fJ}j|DL!r&m>4nC&m#MCXZlkDC{L<+mSI
+zV-t^k>#~F9Skf!8orLe~h`HPqWhaPU?~lLGLZ&|7y(KeB)Xl(Ju5=R%*VML8++V|~
+zr#fWj?Af+CpBgjc<M~JdCF3Ik+}EABEj{5JsT+?>On2)DIu*<h@S#$h!rrO8f{SN7
+zIO_)^w;3lbvu_5+Z~8mnF!jrPkE}AR+|ntWEvW6iMKMm+1x=v33yS)2q`th^B)5hF
+zB)RBMOWxs!m4{-HeWhc;m(GS9NKn=iNPSw-q84+*ttYZLvNpN!pSE8-htNqeQU5l-
+zgg-sFRX~@_mca4>-om}0i(fBq2@0}nO_&eF&F;pph1TC#C>3Nry(LXHpFS~lWNS&a
+P{wY1`jX^&<7@GDUx|%!%
+
+diff --git a/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_no_shadow_background_image_pressed.9.png b/lib/donations/src/main/res/drawable-xxxhdpi/googlepay_button_no_shadow_background_image_pressed.9.png
+deleted file mode 100755
+index c461f63eff566e13feb6f0a76484249d7475cd48..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1421
+zcmY+Dc~DbV6o-RE1kq^}6wN3CMjeGnTcO&b2(oAdL4q<yC>B};)M-R<KnyB~1q-ch
+zz!205(h@g7!4_N-EVdX@nSjG$@{+gZy*#SK7=Z!I(wm@v^vr$to#l7GbLP(6v)kh~
+z&z{MgNu$wbbGAfs!Cz$mT%E!04i_qEG^dp9u{)wb2n>c{wHkpSOa&oo2vunil?GJ-
+z2STQn&0#o>4`?)MHLTLWQ%buSXf&wWu1CO5lB62esWkuvtAG+hUVMN|X+Q?RD2f_H
+z5S7+(3PSB1wf#7xMIpzo(PA1Hvma5RgM&y<4~3#Agy2(yX%QSjaSS7HoWyk`PLMi+
+zL@@$JaWFOnI;sE@3}$CKuyz`Z;22KeI)WhdBuVM@lpf4MQ7BG;?kdQkL3J1oXnKOQ
+zFH&zeQcr=7KnC)_$8-cm4UwcCGzA<K!~_Y*T2u$Y7?=<=(rD4Z;kC!W<sQ!A#wF5h
+zj8AtJUw^87HD<O=bD6t5EUl<c+D{tC&7SKH*S7Z|LvO|=t<LVgQAeBAZ>?6xg-7|i
+z`z466sQ_fe34Z0u(RWs0j=IgNEVI0iK8PG8tL5Eiww)3h&G}nSWcZFer(x(X5uW5Z
+zU3nx`zRfQ}T)j|&9<xP<u9W?poyXj_FS8XB#%>GkX?bY=lT$I`lIvAPegFCk7c7OL
+zkJsPx>16-TN%lXeOk+PYosgbMB9blZW13r6mR;|pH*OW@kA%$06?&Jpx~V>A_obT#
+z0%_6Lvcsg7ynCgICo{u+=%<wAP2ZFel>20FFkB-WWnC<!b5lc}4$UbxdRb*&1$Xx!
+z7u~22SYC6z&RHxJ{J=X+(cZ4_-Y>}hk{RX`|Mpf5ex*cS6q(^7)INv~gj<t`d!1NI
+zGR6+&Oa}E_!A6ECwESEJ-EW<cIF-^Jo>RJ}cC(1}%c5P$x4-Kiwiy1AR7x7eI&X7X
+zkL%r$j<S&G@&aCL^}Ol#b1%j6BIr$xr6<?8>|PMputoOAc>B>9dRjs#q9_VE9R{ID
+zF1C3o!&e;Fss8$aD8z48F@ErlhllH9hEURAViX;|##%Hj0uDOv?RIMv?XFrNbhU*U
+zRZ9#EmX|i0P;lEjMJw`(RZMSd^SsCINcpU>`}M{^hEv*ja?H5x)nIyi=X^KY#ep&7
+z$GLS@!Few;KeenQBGe-*1DmKEeLa!5wqtRGq3!Q5+C)-&MxDl^5pGG<n%IiA0Jue<
+zusg3VXIey~$s#^ax_3fE0O#>keShKqvhU0Nd|n{mu4@szgx}}FZwnNY?3V=l1JeOF
+zob74~-`*sr&&XmX$%1z#CN(gNY70I2U2|FV^nhzC53t>q!pv2|z?e-7;!?X8b4qK2
+zy*5dgWwxvzZcC~!XjX2>;>oLmpI@n&o3nc1)-`)XWByVebt$OVx{c@0ss62Ch6}f3
+zqTeUf_-kJB@~r7Iw&ceU$20QblphV5`m5TG*KZVUET=g>L!UgFd{}Af>Pw&5dYSLG
+zVzrE0#U=+H9x}@1k*Az@aPlW(PCS?-p8R`NQIe@Knr@ymn-p~cM}PXJuX5-4UV}lw
+zw-{f1R3d%!AXkv$iSJGb+GyGHjE|RXH0Q<R*^kEMil}f=-yZF%JGt}YWreL9CYUT+
+zQnl4kSr1)UR-%*~kTkd6=#|a(ukCv7*?8fG$#djl|Fl_*6V4SCRY!VCYQW2*(Ku0Y
+KkxiSvD*6vWu4JwN
+
+diff --git a/lib/donations/src/main/res/drawable-zh-night/donate_with_googlepay_button_content.xml b/lib/donations/src/main/res/drawable-zh-night/donate_with_googlepay_button_content.xml
+deleted file mode 100755
+index 83f3912a685660f0eecc69daaf7bc4a97265d5f9..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/drawable-zh-night/donate_with_googlepay_button_content.xml
++++ /dev/null
+@@ -1,15 +0,0 @@
+-<vector android:width="222dp" android:height="38dp" android:viewportWidth="222" android:viewportHeight="38" xmlns:android="http://schemas.android.com/apk/res/android">
+-  <path android:pathData="M9.288 8.424C7.72 12.54 5.088 16.6 2.344 19.176c.448.616 1.176 2.016 1.428 2.632.924-.924 1.848-2.016 2.716-3.192v15.708h2.464v-19.46c1.064-1.82 1.988-3.752 2.772-5.628l-2.436-.812zm4.676 13.496v-3.556h4.284v3.556h-4.284zm11.284-3.556v3.556h-4.424v-3.556h4.424zm2.492 5.712v-7.868h-6.916V13.8h7.728v-2.38h-7.728V8.648h-2.576v2.772h-7.364v2.38h7.364v2.408h-6.664v7.868h6.496c-.168 1.344-.532 2.632-1.26 3.808-1.288-.952-2.352-2.072-3.136-3.36l-2.128.672c.98 1.708 2.24 3.164 3.752 4.396-1.232 1.036-3.024 1.932-5.516 2.52.56.532 1.288 1.568 1.596 2.156 2.716-.812 4.648-1.904 6.048-3.22 2.716 1.596 6.048 2.632 9.912 3.192.336-.728 1.036-1.792 1.54-2.352-3.864-.392-7.252-1.288-9.94-2.688 1.036-1.54 1.484-3.276 1.708-5.124h7.084zm17.772-.644v-4.144h6.776v4.144h-6.776zm-8.792 0c.084-1.036.112-2.072.112-3.024v-1.12h6.076v4.144H36.72zm6.188-10.528v3.948h-6.076v-3.948h6.076zm9.38 3.948h-6.776v-3.948h6.776v3.948zm2.604-6.44H34.256v9.968c0 3.948-.28 8.904-3.332 12.292.588.308 1.652 1.204 2.044 1.708 2.044-2.268 3.052-5.404 3.5-8.484h6.44v8.008h2.604v-8.008h6.776v5.012c0 .532-.196.7-.7.7-.532 0-2.38.028-4.172-.056.336.672.756 1.82.868 2.52 2.576.028 4.2-.028 5.236-.448 1.008-.392 1.372-1.176 1.372-2.688V10.412z" android:fillColor="#3c4043"/>
+-  <group>
+-    <group>
+-      <path android:pathData="M108.529 9.44664v8.16616h5.036c1.2 0 2.192-.4032 2.976-1.2096.806-.8044 1.209-1.7638 1.209-2.8744 0-1.0882-.403-2.0364-1.209-2.8428-.784-.82685-1.776-1.24122-2.976-1.24122h-5.036v.00186zm0 11.04056v9.4727h-3.008V6.57217h7.978c2.028 0 3.749.67569 5.167 2.0252 1.439 1.34951 2.158 2.99393 2.158 4.93143 0 1.9822-.719 3.6379-2.158 4.965-1.396 1.3289-3.119 1.9916-5.167 1.9916h-4.97v.0018zM123.864 25.0602c0 .784.333 1.4373.998 1.9599s1.444.7839 2.338.7839c1.265 0 2.391-.4686 3.384-1.4036.992-.937 1.487-2.0364 1.487-3.2982-.938-.741-2.246-1.1106-3.924-1.1106-1.222 0-2.24.2949-3.057.8829-.817.5878-1.226 1.3141-1.226 2.1857zm3.892-11.6285c2.224 0 3.979.5935 5.266 1.7807 1.286 1.1871 1.928 2.8147 1.928 4.8828v9.8647h-2.877v-2.2212h-.131c-1.243 1.829-2.9 2.7438-4.97 2.7438-1.766 0-3.244-.5226-4.431-1.5679-1.188-1.0452-1.782-2.3518-1.782-3.9197 0-1.6556.626-2.9717 1.879-3.9515 1.254-.9799 2.927-1.4708 5.02-1.4708 1.786 0 3.258.3266 4.413.9799v-.6869c0-1.0452-.415-1.9318-1.242-2.6616-.83-.7299-1.798-1.0938-2.91-1.0938-1.68 0-3.008.7074-3.989 2.1241l-2.65-1.6668c1.461-2.0906 3.619-3.1358 6.476-3.1358zM151.463 13.9543l-10.04 23.0611h-3.105l3.728-8.069-6.606-14.9921h3.27l4.774 11.4979h.066l4.643-11.4979h3.27z" android:fillColor="#5f6368" android:fillType="evenOdd"/>
+-    </group>
+-    <group>
+-      <path android:pathData="M96.3729 18.4452c0-.9463-.0803-1.8591-.2317-2.7326H83.4536v5.1759h7.2669c-.3121 1.6872-1.2557 3.1227-2.687 4.084v3.3616h4.3369c2.5394-2.3406 4.0025-5.7993 4.0025-9.8889z" android:fillColor="#4285f4" android:fillType="evenOdd"/>
+-      <path android:pathData="M83.4536 31.5782c3.6307 0 6.6876-1.1909 8.9168-3.2441l-4.3369-3.3616c-1.2071.8119-2.7618 1.286-4.5799 1.286-3.5092 0-6.4877-2.363-7.5527-5.5473h-4.4678v3.4624c2.2143 4.3901 6.7642 7.4046 12.0205 7.4046z" android:fillColor="#34a853" android:fillType="evenOdd"/>
+-      <path android:pathData="M75.9009 20.7111c-.2728-.8119-.4222-1.678-.4222-2.5721 0-.894.1494-1.7601.4222-2.572v-3.4625h-4.4677C70.5176 13.9188 70 15.9683 70 18.139c0 2.1708.5176 4.2205 1.4332 6.0346l4.4677-3.4625z" android:fillColor="#fabb05" android:fillType="evenOdd"/>
+-      <path android:pathData="M83.4536 10.0196c1.9826 0 3.7596.6813 5.161 2.0159v.0019l3.8399-3.83578C90.1226 6.03271 87.0824 4.7 83.4536 4.7c-5.2563 0-9.8062 3.01446-12.0205 7.4046l4.4678 3.4624c1.065-3.1843 4.0435-5.5474 7.5527-5.5474z" android:fillColor="#e94235" android:fillType="evenOdd"/>
+-    </group>
+-  </group>
+-  <path android:pathData="M185.512 14.752h-7.364v-3.22h7.364v3.22zm2.548-5.32h-12.348v7.42h12.348v-7.42zm-14.224 10.92c-1.036.308-2.128.616-3.164.896v-4.844h3.444v-2.408h-3.444v-5.46h-2.548v5.46h-3.668v2.408h3.668v5.516c-1.512.392-2.884.756-4.032 1.008l.7 2.492 3.332-.924V31.3c0 .392-.14.532-.532.532-.336.028-1.54.028-2.744-.028.308.672.672 1.736.756 2.352 1.904.028 3.164-.056 3.976-.448.812-.392 1.092-1.064 1.092-2.436v-7.504c1.176-.336 2.352-.644 3.5-.98l-.336-2.436zm4.172 3.668c2.184.448 4.984 1.344 6.44 2.1l1.036-1.988c-1.512-.756-4.312-1.54-6.496-1.932l-.98 1.82zm-.392-3.136h8.624V26.4c-3.332.728-6.664 1.456-8.988 1.848.28-1.624.364-3.248.364-4.62v-2.744zm11.256-2.212h-13.804V23.6c0 2.8-.252 6.608-2.464 9.324.616.28 1.736 1.064 2.156 1.512 1.4-1.736 2.156-3.948 2.492-6.16l.896 2.436c2.324-.588 5.236-1.344 8.092-2.1v2.744c0 .364-.14.476-.532.476-.364.028-1.68.028-2.968-.028.308.672.672 1.708.756 2.408 1.988 0 3.36-.028 4.228-.42.868-.392 1.148-1.092 1.148-2.408V18.672zm15.924.336H193.68v2.128h11.116v-.952c.616.392 1.456.98 1.848 1.344.924-1.54 1.68-3.444 2.324-5.628h6.132c-.336 1.82-.812 3.64-1.26 4.928l2.128.644c.728-1.932 1.54-4.9 2.044-7.504l-1.764-.532-.392.112h-6.3c.336-1.484.616-3.052.84-4.648l-2.548-.336c-.504 4.172-1.428 8.204-3.052 10.976v-.532zm-6.804-3.892h-4.564v2.128h11.648v-2.128h-4.648v-1.988h5.236V11h-5.236V8.676h-2.436V11h-5.208v2.128h5.208v1.988zM194.52 25.84c-.56 1.904-1.428 4.06-2.352 5.516.588.196 1.568.644 2.044.952.84-1.54 1.792-3.864 2.464-5.936l-2.156-.532zm11.424-.756v-2.156H192.42v2.156h5.6v9.1h2.464v-9.1h5.46zm-4.228 1.512c.728 1.428 1.54 3.304 1.876 4.48l2.1-.952c-.392-1.092-1.26-2.94-2.016-4.312l-1.96.784zm10.724-8.736h-2.464v1.288c0 3.668-.42 9.128-5.236 13.356.644.364 1.54 1.204 1.988 1.764 2.52-2.268 3.92-4.9 4.732-7.476 1.12 3.248 2.8 5.852 5.236 7.364.392-.672 1.176-1.652 1.764-2.184-3.22-1.708-5.18-5.6-6.104-10.08.056-.98.084-1.848.084-2.66V17.86z" android:fillColor="#3c4043"/>
+-</vector>
+diff --git a/lib/donations/src/main/res/drawable-zh/donate_with_googlepay_button_content.xml b/lib/donations/src/main/res/drawable-zh/donate_with_googlepay_button_content.xml
+deleted file mode 100755
+index 06ee8ed6ba7aacb7788487b809d4bfe743b57433..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/drawable-zh/donate_with_googlepay_button_content.xml
++++ /dev/null
+@@ -1,15 +0,0 @@
+-<vector android:width="222dp" android:height="38dp" android:viewportWidth="222" android:viewportHeight="38" xmlns:android="http://schemas.android.com/apk/res/android">
+-  <path android:pathData="M9.288 8.424C7.72 12.54 5.088 16.6 2.344 19.176c.448.616 1.176 2.016 1.428 2.632.924-.924 1.848-2.016 2.716-3.192v15.708h2.464v-19.46c1.064-1.82 1.988-3.752 2.772-5.628l-2.436-.812zm4.676 13.496v-3.556h4.284v3.556h-4.284zm11.284-3.556v3.556h-4.424v-3.556h4.424zm2.492 5.712v-7.868h-6.916V13.8h7.728v-2.38h-7.728V8.648h-2.576v2.772h-7.364v2.38h7.364v2.408h-6.664v7.868h6.496c-.168 1.344-.532 2.632-1.26 3.808-1.288-.952-2.352-2.072-3.136-3.36l-2.128.672c.98 1.708 2.24 3.164 3.752 4.396-1.232 1.036-3.024 1.932-5.516 2.52.56.532 1.288 1.568 1.596 2.156 2.716-.812 4.648-1.904 6.048-3.22 2.716 1.596 6.048 2.632 9.912 3.192.336-.728 1.036-1.792 1.54-2.352-3.864-.392-7.252-1.288-9.94-2.688 1.036-1.54 1.484-3.276 1.708-5.124h7.084zm17.772-.644v-4.144h6.776v4.144h-6.776zm-8.792 0c.084-1.036.112-2.072.112-3.024v-1.12h6.076v4.144H36.72zm6.188-10.528v3.948h-6.076v-3.948h6.076zm9.38 3.948h-6.776v-3.948h6.776v3.948zm2.604-6.44H34.256v9.968c0 3.948-.28 8.904-3.332 12.292.588.308 1.652 1.204 2.044 1.708 2.044-2.268 3.052-5.404 3.5-8.484h6.44v8.008h2.604v-8.008h6.776v5.012c0 .532-.196.7-.7.7-.532 0-2.38.028-4.172-.056.336.672.756 1.82.868 2.52 2.576.028 4.2-.028 5.236-.448 1.008-.392 1.372-1.176 1.372-2.688V10.412z" android:fillColor="#ffffff"/>
+-  <group>
+-    <group>
+-      <path android:pathData="M108.529 9.34665v8.16615h5.036c1.2 0 2.192-.4032 2.976-1.2096.806-.8044 1.209-1.7638 1.209-2.8744 0-1.0882-.403-2.0364-1.209-2.8428-.784-.82684-1.776-1.24121-2.976-1.24121h-5.036v.00186zm0 11.04055v9.4727h-3.008V6.47218h7.978c2.028 0 3.749.67569 5.167 2.0252 1.439 1.3495 2.158 2.99392 2.158 4.93142 0 1.9822-.719 3.6379-2.158 4.965-1.396 1.3289-3.119 1.9916-5.167 1.9916h-4.97v.0018zM123.864 24.9602c0 .784.333 1.4373.998 1.9599s1.444.7839 2.338.7839c1.265 0 2.391-.4686 3.384-1.4036.992-.937 1.487-2.0364 1.487-3.2982-.938-.741-2.246-1.1106-3.924-1.1106-1.222 0-2.24.295-3.057.8829-.817.5878-1.226 1.3141-1.226 2.1857zm3.892-11.6285c2.224 0 3.979.5936 5.266 1.7807 1.286 1.1871 1.928 2.8147 1.928 4.8828v9.8647h-2.877v-2.2212h-.131c-1.243 1.829-2.9 2.7438-4.97 2.7438-1.766 0-3.244-.5226-4.431-1.5679-1.188-1.0452-1.782-2.3518-1.782-3.9197 0-1.6556.626-2.9717 1.879-3.9515 1.254-.9799 2.927-1.4708 5.02-1.4708 1.786 0 3.258.3267 4.413.9799v-.6868c0-1.0453-.415-1.9319-1.242-2.6617-.83-.7298-1.798-1.0938-2.91-1.0938-1.68 0-3.008.7074-3.989 2.1241l-2.65-1.6668c1.461-2.0905 3.619-3.1358 6.476-3.1358zM151.463 13.8543l-10.04 23.0611h-3.105l3.728-8.069-6.606-14.9921h3.27l4.774 11.4979h.066l4.643-11.4979h3.27z" android:fillColor="#ffffff" android:fillType="evenOdd"/>
+-    </group>
+-    <group>
+-      <path android:pathData="M96.3729 18.3452c0-.9463-.0803-1.8591-.2317-2.7326H83.4536v5.1759h7.2669c-.3121 1.6872-1.2557 3.1227-2.687 4.084v3.3616h4.3369c2.5394-2.3406 4.0025-5.7993 4.0025-9.8889z" android:fillColor="#4285f4" android:fillType="evenOdd"/>
+-      <path android:pathData="M83.4536 31.4782c3.6307 0 6.6876-1.1909 8.9168-3.2441l-4.3369-3.3616c-1.2071.8119-2.7618 1.286-4.5799 1.286-3.5092 0-6.4877-2.363-7.5527-5.5473h-4.4678v3.4624c2.2143 4.3901 6.7642 7.4046 12.0205 7.4046z" android:fillColor="#34a853" android:fillType="evenOdd"/>
+-      <path android:pathData="M75.9009 20.6111c-.2728-.8119-.4222-1.678-.4222-2.572 0-.8941.1494-1.7602.4222-2.5721v-3.4625h-4.4677C70.5176 13.8188 70 15.8683 70 18.0391c0 2.1707.5176 4.2204 1.4332 6.0345l4.4677-3.4625z" android:fillColor="#fabb05" android:fillType="evenOdd"/>
+-      <path android:pathData="M83.4536 9.91964c1.9826 0 3.7596.68126 5.161 2.01586v.0019l3.8399-3.83577c-2.3319-2.16891-5.3721-3.50162-9.0009-3.50162-5.2563 0-9.8062 3.01446-12.0205 7.40459l4.4678 3.4624c1.065-3.1843 4.0435-5.54736 7.5527-5.54736z" android:fillColor="#e94235" android:fillType="evenOdd"/>
+-    </group>
+-  </group>
+-  <path android:pathData="M185.512 14.752h-7.364v-3.22h7.364v3.22zm2.548-5.32h-12.348v7.42h12.348v-7.42zm-14.224 10.92c-1.036.308-2.128.616-3.164.896v-4.844h3.444v-2.408h-3.444v-5.46h-2.548v5.46h-3.668v2.408h3.668v5.516c-1.512.392-2.884.756-4.032 1.008l.7 2.492 3.332-.924V31.3c0 .392-.14.532-.532.532-.336.028-1.54.028-2.744-.028.308.672.672 1.736.756 2.352 1.904.028 3.164-.056 3.976-.448.812-.392 1.092-1.064 1.092-2.436v-7.504c1.176-.336 2.352-.644 3.5-.98l-.336-2.436zm4.172 3.668c2.184.448 4.984 1.344 6.44 2.1l1.036-1.988c-1.512-.756-4.312-1.54-6.496-1.932l-.98 1.82zm-.392-3.136h8.624V26.4c-3.332.728-6.664 1.456-8.988 1.848.28-1.624.364-3.248.364-4.62v-2.744zm11.256-2.212h-13.804V23.6c0 2.8-.252 6.608-2.464 9.324.616.28 1.736 1.064 2.156 1.512 1.4-1.736 2.156-3.948 2.492-6.16l.896 2.436c2.324-.588 5.236-1.344 8.092-2.1v2.744c0 .364-.14.476-.532.476-.364.028-1.68.028-2.968-.028.308.672.672 1.708.756 2.408 1.988 0 3.36-.028 4.228-.42.868-.392 1.148-1.092 1.148-2.408V18.672zm15.924.336H193.68v2.128h11.116v-.952c.616.392 1.456.98 1.848 1.344.924-1.54 1.68-3.444 2.324-5.628h6.132c-.336 1.82-.812 3.64-1.26 4.928l2.128.644c.728-1.932 1.54-4.9 2.044-7.504l-1.764-.532-.392.112h-6.3c.336-1.484.616-3.052.84-4.648l-2.548-.336c-.504 4.172-1.428 8.204-3.052 10.976v-.532zm-6.804-3.892h-4.564v2.128h11.648v-2.128h-4.648v-1.988h5.236V11h-5.236V8.676h-2.436V11h-5.208v2.128h5.208v1.988zM194.52 25.84c-.56 1.904-1.428 4.06-2.352 5.516.588.196 1.568.644 2.044.952.84-1.54 1.792-3.864 2.464-5.936l-2.156-.532zm11.424-.756v-2.156H192.42v2.156h5.6v9.1h2.464v-9.1h5.46zm-4.228 1.512c.728 1.428 1.54 3.304 1.876 4.48l2.1-.952c-.392-1.092-1.26-2.94-2.016-4.312l-1.96.784zm10.724-8.736h-2.464v1.288c0 3.668-.42 9.128-5.236 13.356.644.364 1.54 1.204 1.988 1.764 2.52-2.268 3.92-4.9 4.732-7.476 1.12 3.248 2.8 5.852 5.236 7.364.392-.672 1.176-1.652 1.764-2.184-3.22-1.708-5.18-5.6-6.104-10.08.056-.98.084-1.848.084-2.66V17.86z" android:fillColor="#ffffff"/>
+-</vector>
+diff --git a/lib/donations/src/main/res/drawable/donate_with_google_pay_rounded_background.xml b/lib/donations/src/main/res/drawable/donate_with_google_pay_rounded_background.xml
+deleted file mode 100644
+index 5c8c27d550700a810b58fb4e410fec54ff9fafa0..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/drawable/donate_with_google_pay_rounded_background.xml
++++ /dev/null
+@@ -1,6 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<shape xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:shape="rectangle">
+-    <solid android:color="@color/donate_with_google_pay_background_color" />
+-    <corners android:radius="55dp" />
+-</shape>
+\ No newline at end of file
+diff --git a/lib/donations/src/main/res/drawable/donate_with_googlepay_button_content.xml b/lib/donations/src/main/res/drawable/donate_with_googlepay_button_content.xml
+deleted file mode 100755
+index ee9b8f74280945deafd87fd00d4d8933fe113b0e..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/drawable/donate_with_googlepay_button_content.xml
++++ /dev/null
+@@ -1,14 +0,0 @@
+-<vector android:width="256dp" android:height="38dp" android:viewportWidth="256" android:viewportHeight="38" xmlns:android="http://schemas.android.com/apk/res/android">
+-  <path android:pathData="M3.90472 30V9.952h6.41198c2.1094 0 3.92.4293 5.432 1.288 1.5307.84 2.7067 2.016 3.528 3.528.84 1.512 1.26 3.248 1.26 5.208 0 1.9787-.42 3.724-1.26 5.236-.8213 1.4933-1.9973 2.6693-3.528 3.528-1.512.84-3.3226 1.26-5.432 1.26H3.90472zm3.08-2.912h3.24798c2.2774 0 4.0414-.6347 5.292-1.904 1.2694-1.2693 1.904-3.0053 1.904-5.208s-.6346-3.9387-1.904-5.208c-1.2506-1.2693-3.0146-1.904-5.292-1.904H6.98472v14.224zm23.17818 3.36c-1.4747 0-2.772-.336-3.892-1.008-1.12-.672-1.9973-1.5773-2.632-2.716-.6347-1.1387-.952-2.4267-.952-3.864 0-1.4187.3173-2.6973.952-3.836.6347-1.1573 1.512-2.072 2.632-2.744 1.12-.672 2.4173-1.008 3.892-1.008 1.456 0 2.744.336 3.864 1.008 1.12.672 1.9973 1.5867 2.632 2.744.6347 1.1387.952 2.4173.952 3.836 0 1.4373-.3173 2.7253-.952 3.864-.6347 1.1387-1.512 2.044-2.632 2.716-1.12.672-2.408 1.008-3.864 1.008zm0-2.772c.784 0 1.512-.1867 2.184-.56.672-.392 1.2133-.9427 1.624-1.652.4293-.728.644-1.596.644-2.604s-.2147-1.8667-.644-2.576c-.4107-.728-.952-1.2787-1.624-1.652-.672-.392-1.4-.588-2.184-.588-.784 0-1.5213.196-2.212.588-.672.3733-1.2227.924-1.652 1.652-.4107.7093-.616 1.568-.616 2.576s.2053 1.876.616 2.604c.4293.7093.98 1.26 1.652 1.652.6907.3733 1.428.56 2.212.56zM40.4226 30V15.72h2.856v1.96h.168c.4107-.6907 1.0173-1.26 1.82-1.708.8213-.4667 1.7173-.7 2.688-.7 1.7547 0 3.0707.5227 3.948 1.568.8773 1.0453 1.316 2.4267 1.316 4.144V30h-2.996v-8.624c0-1.1573-.2893-1.9973-.868-2.52-.5787-.5413-1.3347-.812-2.268-.812-.728 0-1.3627.2053-1.904.616-.5413.392-.9707.9147-1.288 1.568-.2987.6533-.448 1.3533-.448 2.1V30h-3.024zm20.8855.448c-1.0267 0-1.9414-.196-2.744-.588-.8027-.4107-1.428-.98-1.876-1.708-.448-.728-.672-1.5587-.672-2.492 0-1.008.2613-1.8667.784-2.576.5413-.728 1.26-1.2787 2.156-1.652.896-.3733 1.8853-.56 2.968-.56.896 0 1.68.084 2.352.252.6906.168 1.2133.3453 1.568.532V20.9c0-.9333-.336-1.68-1.008-2.24-.672-.56-1.54-.84-2.604-.84-.728 0-1.4187.168-2.072.504-.6534.3173-1.176.756-1.568 1.316l-2.072-1.596c.616-.8587 1.428-1.5307 2.436-2.016 1.0266-.504 2.1466-.756 3.36-.756 2.072 0 3.668.5133 4.788 1.54 1.12 1.008 1.68 2.4267 1.68 4.256V30h-2.94v-1.764h-.168c-.3734.5787-.9334 1.092-1.68 1.54-.7467.448-1.6427.672-2.688.672zm.532-2.464c.784 0 1.4746-.1867 2.072-.56.5973-.3733 1.064-.8587 1.4-1.456.3546-.616.532-1.2787.532-1.988-.4294-.2427-.9334-.4387-1.512-.588-.5787-.168-1.1947-.252-1.848-.252-1.232 0-2.1094.252-2.632.756-.5227.4853-.784 1.0827-.784 1.792 0 .672.252 1.2227.756 1.652s1.176.644 2.016.644zm11.8117-2.128v-7.504h-2.492V15.72h2.492v-4.032h3.024v4.032h3.5v2.632h-3.5v6.86c0 .7093.14 1.2507.42 1.624.2986.3733.7933.56 1.484.56.3546 0 .6533-.0467.896-.14.2613-.0933.5226-.224.784-.392v2.94c-.3174.1307-.6534.2333-1.008.308-.3547.0747-.7747.112-1.26.112-1.3254 0-2.38-.3827-3.164-1.148-.784-.784-1.176-1.8573-1.176-3.22zm15.7026 4.592c-1.4 0-2.6507-.3267-3.752-.98-1.1013-.6533-1.9693-1.5493-2.604-2.688-.616-1.1387-.924-2.436-.924-3.892 0-1.3627.2987-2.6227.896-3.78.5973-1.1573 1.428-2.0813 2.492-2.772 1.0827-.7093 2.324-1.064 3.724-1.064 1.4747 0 2.7253.3173 3.752.952 1.0453.6347 1.8387 1.5027 2.38 2.604.5413 1.1013.812 2.3427.812 3.724 0 .2053-.0093.392-.028.56 0 .168-.0093.2987-.028.392h-11.032c.1493 1.4187.644 2.4827 1.484 3.192.8587.7093 1.8293 1.064 2.912 1.064.9707 0 1.7733-.2147 2.408-.644.6347-.448 1.1387-.9987 1.512-1.652l2.492 1.204c-.616 1.12-1.456 2.0347-2.52 2.744-1.064.6907-2.3893 1.036-3.976 1.036zm-.14-12.6c-1.008 0-1.8667.308-2.576.924-.7093.616-1.1853 1.4373-1.428 2.464h7.924c-.0373-.4853-.196-.9893-.476-1.512-.28-.5227-.7093-.9613-1.288-1.316-.56-.3733-1.2787-.56-2.156-.56zM109.067 30l-4.564-14.28h3.276l2.94 10.276h.112l3.22-10.276h3.108l3.22 10.276h.112l2.94-10.276h3.22L122.059 30h-3.164l-3.304-10.332h-.112L112.203 30h-3.136zm21.571-16.38c-.56 0-1.045-.196-1.456-.588-.392-.4107-.588-.896-.588-1.456 0-.56.196-1.036.588-1.428.411-.392.896-.588 1.456-.588.56 0 1.036.196 1.428.588.411.392.616.868.616 1.428 0 .56-.205 1.0453-.616 1.456-.392.392-.868.588-1.428.588zM129.126 30V15.72h3.024V30h-3.024zm8.452-4.144v-7.504h-2.492V15.72h2.492v-4.032h3.024v4.032h3.5v2.632h-3.5v6.86c0 .7093.14 1.2507.42 1.624.298.3733.793.56 1.484.56.354 0 .653-.0467.896-.14.261-.0933.522-.224.784-.392v2.94c-.318.1307-.654.2333-1.008.308-.355.0747-.775.112-1.26.112-1.326 0-2.38-.3827-3.164-1.148-.784-.784-1.176-1.8573-1.176-3.22zM147.44 30V9.952h3.024v5.488l-.168 2.24h.168c.392-.6907.989-1.26 1.792-1.708.821-.4667 1.726-.7 2.716-.7 1.773 0 3.108.532 4.004 1.596.896 1.0453 1.344 2.4173 1.344 4.116V30h-2.996v-8.624c0-1.1573-.308-1.9973-.924-2.52-.598-.5413-1.335-.812-2.212-.812-.728 0-1.372.2053-1.932.616-.56.4107-.999.952-1.316 1.624-.318.6533-.476 1.3533-.476 2.1V30h-3.024z" android:fillColor="#ffffff"/>
+-  <group>
+-    <group>
+-      <path android:pathData="M212.529 9.34665v8.16615h5.036c1.2 0 2.192-.4032 2.976-1.2096.806-.8044 1.209-1.7638 1.209-2.8744 0-1.0882-.403-2.0364-1.209-2.8428-.784-.82684-1.776-1.24121-2.976-1.24121h-5.036v.00186zm0 11.04055v9.4727h-3.008V6.47218h7.978c2.028 0 3.749.67569 5.167 2.0252 1.439 1.3495 2.158 2.99392 2.158 4.93142 0 1.9822-.719 3.6379-2.158 4.965-1.396 1.3289-3.119 1.9916-5.167 1.9916h-4.97v.0018zM227.864 24.9602c0 .784.333 1.4373.998 1.9599s1.444.7839 2.338.7839c1.265 0 2.391-.4686 3.384-1.4036.992-.937 1.487-2.0364 1.487-3.2982-.938-.741-2.246-1.1106-3.924-1.1106-1.222 0-2.24.295-3.057.8829-.817.5878-1.226 1.3141-1.226 2.1857zm3.892-11.6285c2.224 0 3.979.5936 5.266 1.7807 1.286 1.1871 1.928 2.8147 1.928 4.8828v9.8647h-2.877v-2.2212h-.131c-1.243 1.829-2.9 2.7438-4.97 2.7438-1.766 0-3.244-.5226-4.431-1.5679-1.188-1.0452-1.782-2.3518-1.782-3.9197 0-1.6556.626-2.9717 1.879-3.9515 1.254-.9799 2.927-1.4708 5.02-1.4708 1.786 0 3.258.3267 4.413.9799v-.6868c0-1.0453-.415-1.9319-1.242-2.6617-.83-.7298-1.798-1.0938-2.91-1.0938-1.68 0-3.008.7074-3.989 2.1241l-2.65-1.6668c1.461-2.0905 3.619-3.1358 6.476-3.1358zM255.463 13.8543l-10.039 23.0611h-3.106l3.728-8.069-6.606-14.9921h3.27l4.774 11.4979h.066l4.643-11.4979h3.27z" android:fillColor="#ffffff" android:fillType="evenOdd"/>
+-    </group>
+-    <group>
+-      <path android:pathData="M200.373 18.3452c0-.9463-.08-1.8591-.232-2.7326h-12.687v5.1759h7.266c-.312 1.6872-1.255 3.1227-2.687 4.084v3.3616h4.337c2.54-2.3406 4.003-5.7993 4.003-9.8889z" android:fillColor="#4285f4" android:fillType="evenOdd"/>
+-      <path android:pathData="M187.454 31.4782c3.63 0 6.687-1.1909 8.916-3.2441l-4.337-3.3616c-1.207.8119-2.761 1.286-4.579 1.286-3.51 0-6.488-2.363-7.553-5.5473h-4.468v3.4624c2.214 4.3901 6.764 7.4046 12.021 7.4046z" android:fillColor="#34a853" android:fillType="evenOdd"/>
+-      <path android:pathData="M179.901 20.6111c-.273-.8119-.422-1.678-.422-2.572 0-.8941.149-1.7602.422-2.5721v-3.4625h-4.468c-.915 1.8143-1.433 3.8638-1.433 6.0346 0 2.1707.518 4.2204 1.433 6.0345l4.468-3.4625z" android:fillColor="#fabb05" android:fillType="evenOdd"/>
+-      <path android:pathData="M187.454 9.91964c1.982 0 3.759.68126 5.161 2.01586v.0019l3.84-3.83577c-2.332-2.16891-5.373-3.50162-9.001-3.50162-5.257 0-9.807 3.01446-12.021 7.40459l4.468 3.4624c1.065-3.1843 4.043-5.54736 7.553-5.54736z" android:fillColor="#e94235" android:fillType="evenOdd"/>
+-    </group>
+-  </group>
+-</vector>
+diff --git a/lib/donations/src/main/res/drawable/googlepay_button_overlay.xml b/lib/donations/src/main/res/drawable/googlepay_button_overlay.xml
+deleted file mode 100755
+index 70c7a922710f7661bc8c4a7495b22a55a6ba422e..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/drawable/googlepay_button_overlay.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+-    <item android:state_enabled="false">
+-        <shape
+-            android:shape="rectangle" >
+-            <corners android:radius="4dp"/>
+-            <solid android:color="#7FFFFFFF"/>
+-        </shape>
+-    </item>
+-    <item android:drawable="@android:color/transparent" />
+-</selector>
+-
+diff --git a/lib/donations/src/main/res/layout/donate_with_googlepay_button.xml b/lib/donations/src/main/res/layout/donate_with_googlepay_button.xml
+old mode 100755
+new mode 100644
+index a92730749fff1f536b23e109b443c043a08b067c..bce65f74ad2ecee3470c1c3fe1b6ee83e7184588
+--- a/lib/donations/src/main/res/layout/donate_with_googlepay_button.xml
++++ b/lib/donations/src/main/res/layout/donate_with_googlepay_button.xml
+@@ -1,35 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+-    android:layout_height="44sp"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    android:background="@drawable/donate_with_google_pay_rounded_background"
+-    android:clickable="true"
+-    android:contentDescription="@string/donate_with_googlepay_button_content_description"
+-    android:focusable="true"
+-    android:padding="2sp">
+-
+-    <LinearLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:duplicateParentState="true"
+-        android:gravity="center_vertical"
+-        android:orientation="vertical"
+-        android:weightSum="2">
+-
+-        <androidx.appcompat.widget.AppCompatImageView
+-            android:layout_width="match_parent"
+-            android:layout_height="0dp"
+-            android:layout_weight="1"
+-            android:duplicateParentState="true"
+-            android:scaleType="fitCenter"
+-            app:srcCompat="@drawable/donate_with_googlepay_button_content" />
+-    </LinearLayout>
+-
+-    <ImageView
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:duplicateParentState="true"
+-        android:scaleType="fitXY"
+-        android:src="@drawable/googlepay_button_overlay" />
+-</RelativeLayout>
+\ No newline at end of file
++    android:layout_height="match_parent">
++</LinearLayout>
+diff --git a/lib/donations/src/main/res/values-night/colors.xml b/lib/donations/src/main/res/values-night/colors.xml
+deleted file mode 100644
+index 65f08edef4d60cc8fe56ff8246afc456092808ea..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/values-night/colors.xml
++++ /dev/null
+@@ -1,4 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-    <color name="donate_with_google_pay_background_color">#FFFFFF</color>
+-</resources>
+\ No newline at end of file
+diff --git a/lib/donations/src/main/res/values/colors.xml b/lib/donations/src/main/res/values/colors.xml
+deleted file mode 100644
+index 646f05a640d452d82f5020e07948476632173f63..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/values/colors.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-    <color name="donate_with_google_pay_background_color">#000000</color>
+-    <color name="donate_with_google_pay_content_overlay">#7FFFFFFF</color>
+-</resources>
+\ No newline at end of file
+diff --git a/lib/donations/src/main/res/values/googlepay_strings.xml b/lib/donations/src/main/res/values/googlepay_strings.xml
+deleted file mode 100755
+index 81d01c2b74556f9d0e55e7c6181d090b9c999e9e..0000000000000000000000000000000000000000
+--- a/lib/donations/src/main/res/values/googlepay_strings.xml
++++ /dev/null
+@@ -1,12 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-    <string name="googlepay_button_content_description">Google Pay</string>
+-    <string name="buy_with_googlepay_button_content_description">Buy with Google Pay</string>
+-    <string name="donate_with_googlepay_button_content_description">Donate With Google Pay</string>
+-    <string name="pay_with_googlepay_button_content_description">Pay With Google Pay</string>
+-    <string name="subscribe_with_googlepay_button_content_description">Subscribe With Google Pay</string>
+-    <string name="book_with_googlepay_button_content_description">Book With Google Pay</string>
+-    <string name="checkout_with_googlepay_button_content_description">Checkout With Google Pay</string>
+-    <string name="order_with_googlepay_button_content_description">Order With Google Pay</string>
+-    <string name="view_in_googlepay_button_content_description">View In Google Pay</string>
+-</resources>
+\ No newline at end of file
+diff --git a/lib/donations/src/test/java/org/signal/donations/ResponseFieldLoggerTest.kt b/lib/donations/src/test/java/org/signal/donations/ResponseFieldLoggerTest.kt
+index b5a8dd4838699f9bba7e068012745193b9929155..ba090410672743c76bddce9fc1ba2e3cd24f5e95 100644
+--- a/lib/donations/src/test/java/org/signal/donations/ResponseFieldLoggerTest.kt
++++ b/lib/donations/src/test/java/org/signal/donations/ResponseFieldLoggerTest.kt
+@@ -17,6 +17,7 @@ class ResponseFieldLoggerTest {
+       override fun w(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = println(message)
+       override fun e(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = Unit
+       override fun flush() = Unit
++      override fun clear() = Unit
+     })
+   }
+ 
+
+--------------false--
+
+

@@ -10,9 +10,11 @@
   "metadata_exclusions": [
     ".github/workflows/827-poc.yml",
     ".github/workflows/827-patch-forest.yml",
+    ".github/workflows/molly-signal-port.yml",
     "docs/827",
     "patches/827",
     "patches/molly",
+    "patches/molly-signal-8.33.2",
     "reports/827",
     "tools/827"
   ],

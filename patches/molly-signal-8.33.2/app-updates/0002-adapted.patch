@@ -1,0 +1,795 @@
+From 584464bf206c0574abf37c4c3c611dbbf6bbdf84 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly app-updates adapted, part 2
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Molly APK updating and associated jobs/settings.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, at least one endpoint differs from
+its corresponding origin entry. This includes changed upstream
+inputs, merged results and newly introduced port changes.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: adapted
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateInstaller.kt b/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateInstaller.kt
+index af21018d7d07c0de3c69cd17477b32dbc7ba597f..8a15db63fc2d42d715ad31f6ee6a251ba89ed4cf 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateInstaller.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateInstaller.kt
+@@ -6,14 +6,8 @@
+ package org.thoughtcrime.securesms.apkupdate
+ 
+ import android.app.DownloadManager
+-import android.app.PendingIntent
+ import android.content.Context
+-import android.content.Intent
+-import android.content.pm.PackageInstaller
+-import android.os.Build
+-import org.signal.core.util.AppForegroundObserver
+-import org.signal.core.util.PendingIntentFlags
+-import org.signal.core.util.StreamUtil
++import android.net.Uri
+ import org.signal.core.util.getDownloadManager
+ import org.signal.core.util.logging.Log
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+@@ -22,22 +16,13 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.util.FileUtils
+ import java.io.FileInputStream
+ import java.io.IOException
+-import java.io.InputStream
+ import java.security.MessageDigest
+ 
+ object ApkUpdateInstaller {
+ 
+   private val TAG = Log.tag(ApkUpdateInstaller::class.java)
+ 
+-  /**
+-   * Installs the downloaded APK silently if possible. If not, prompts the user with a notification to install.
+-   * May show errors instead under certain conditions.
+-   *
+-   * A common pattern you may see is that this is called with [userInitiated] = false (or some other state
+-   * that prevents us from auto-updating, like the app being in the foreground), causing this function
+-   * to show an install prompt notification. The user clicks that notification, calling this with
+-   * [userInitiated] = true, and then everything installs.
+-   */
++  /** Verifies the downloaded APK digest and prompts the user to install it. */
+   fun installOrPromptForInstall(context: Context, downloadId: Long, userInitiated: Boolean) {
+     if (downloadId != SignalStore.apkUpdate.downloadId) {
+       Log.w(TAG, "DownloadId doesn't match the one we're waiting for (current: $downloadId, expected: ${SignalStore.apkUpdate.downloadId})! We likely have newer data. Ignoring.")
+@@ -61,87 +46,29 @@ object ApkUpdateInstaller {
+       return
+     }
+ 
+-    if (!userInitiated && !shouldAutoUpdate()) {
+-      if (!isMatchingDigest(context, downloadId, digest)) {
+-        Log.w(TAG, "DownloadId matches, but digest does not! Bad download or inconsistent state. Failing and clearing state.")
+-        SignalStore.apkUpdate.clearDownloadAttributes()
+-        ApkUpdateNotifications.showInstallFailed(context, ApkUpdateNotifications.FailureReason.UNKNOWN)
+-        return
+-      }
+-
+-      Log.w(TAG, "Not user-initiated and not eligible for auto-update. Prompting. (API=${Build.VERSION.SDK_INT}, Foreground=${AppForegroundObserver.isForegrounded()}, AutoUpdate=${SignalStore.apkUpdate.autoUpdate})")
+-      ApkUpdateNotifications.showInstallPrompt(context, downloadId)
+-      return
+-    }
+-
+-    try {
+-      context
+-        .getDownloadManager()
+-        .openDownloadedFile(downloadId)
+-        .use { parcelFileDescriptor ->
+-          val stream = FileInputStream(parcelFileDescriptor.fileDescriptor)
+-
+-          if (!MessageDigest.isEqual(FileUtils.getFileDigest(stream), digest)) {
+-            Log.w(TAG, "DownloadId matches, but digest does not! Bad download or inconsistent state. Failing and clearing state.")
+-            SignalStore.apkUpdate.clearDownloadAttributes()
+-            ApkUpdateNotifications.showInstallFailed(context, ApkUpdateNotifications.FailureReason.UNKNOWN)
+-            return
+-          }
+-
+-          stream.channel.position(0)
+-          installApk(context, downloadId, stream, userInitiated)
+-        }
+-    } catch (e: IOException) {
+-      Log.w(TAG, "Hit IOException when trying to install APK!", e)
+-      SignalStore.apkUpdate.clearDownloadAttributes()
+-      ApkUpdateNotifications.showInstallFailed(context, ApkUpdateNotifications.FailureReason.UNKNOWN)
+-    } catch (e: SecurityException) {
+-      Log.w(TAG, "Hit SecurityException when trying to install APK!", e)
++    if (!isMatchingDigest(context, downloadId, digest)) {
++      Log.w(TAG, "DownloadId matches, but digest does not! Bad download or inconsistent state. Failing and clearing state.")
+       SignalStore.apkUpdate.clearDownloadAttributes()
+       ApkUpdateNotifications.showInstallFailed(context, ApkUpdateNotifications.FailureReason.UNKNOWN)
++      return
+     }
+-  }
+ 
+-  @Throws(IOException::class, SecurityException::class)
+-  private fun installApk(context: Context, downloadId: Long, apkInputStream: InputStream, userInitiated: Boolean) {
+-    Log.d(TAG, "Beginning APK install...")
+-    val packageInstaller: PackageInstaller = context.packageManager.packageInstaller
+-
+-    val sessionParams = PackageInstaller.SessionParams(PackageInstaller.SessionParams.MODE_FULL_INSTALL).apply {
+-      // Reject the session if the APK's declared package name doesn't match ours.
+-      setAppPackageName(context.packageName)
+-      // At this point, we always want to set this if possible, since we've already prompted the user with our own notification when necessary.
+-      // This lets us skip the system-generated notification.
+-      if (Build.VERSION.SDK_INT >= 31) {
+-        setRequireUserAction(PackageInstaller.SessionParams.USER_ACTION_NOT_REQUIRED)
+-      }
++    val apkUri = getDownloadedApkUri(context, downloadId)
++    if (apkUri == null) {
++      Log.w(TAG, "Could not get download APK URI!")
++      return
+     }
+ 
+-    val activeSessionCount = packageInstaller.mySessions.count { it.isActive }
+-    Log.d(TAG, "Active session count: $activeSessionCount")
+-
+-    Log.d(TAG, "Creating install session...")
+-    val sessionId: Int = packageInstaller.createSession(sessionParams)
+-    val session: PackageInstaller.Session = packageInstaller.openSession(sessionId)
++    ApkUpdateNotifications.showInstallPrompt(context, apkUri)
++  }
+ 
+-    Log.d(TAG, "Writing APK data...")
+-    session.use { activeSession ->
+-      val sessionOutputStream = activeSession.openWrite(context.packageName, 0, -1)
+-      StreamUtil.copy(apkInputStream, sessionOutputStream)
++  private fun getDownloadedApkUri(context: Context, downloadId: Long): Uri? {
++    return try {
++      context.getDownloadManager().getUriForDownloadedFile(downloadId)
++    } catch (e: IOException) {
++      Log.w(TAG, e)
++      null
+     }
+-
+-    val installerPendingIntent = PendingIntent.getBroadcast(
+-      context,
+-      sessionId,
+-      Intent(context, ApkUpdatePackageInstallerReceiver::class.java).apply {
+-        putExtra(ApkUpdatePackageInstallerReceiver.EXTRA_USER_INITIATED, userInitiated)
+-        putExtra(ApkUpdatePackageInstallerReceiver.EXTRA_DOWNLOAD_ID, downloadId)
+-      },
+-      PendingIntentFlags.mutable() or PendingIntentFlags.updateCurrent()
+-    )
+-
+-    Log.d(TAG, "Committing session...")
+-    session.commit(installerPendingIntent.intentSender)
+   }
+ 
+   private fun isDownloadSuccessful(context: Context, downloadId: Long): Boolean {
+@@ -184,14 +111,4 @@ object ApkUpdateInstaller {
+       false
+     }
+   }
+-
+-  private fun shouldAutoUpdate(): Boolean {
+-    // Once we have designs for allowing users to opt-out of auto-updates, we can re-enable this
+-    return false
+-
+-//    val webRtcViewModel = EventBus.getDefault().getStickyEvent(WebRtcViewModel::class.java)
+-//    val isCallActive = webRtcViewModel != null && webRtcViewModel.state != WebRtcViewModel.State.IDLE
+-//
+-//    return Build.VERSION.SDK_INT >= 31 && SignalStore.apkUpdate.autoUpdate && !AppForegroundObserver.isForegrounded() && !isCallActive
+-  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateRefreshListener.java b/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateRefreshListener.java
+index 86722b1c4b13ea9b2cd4c38432d5698a0f8c9bf0..5fe4fd1e477db61d15edd5a4e019f70651dc7413 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateRefreshListener.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/apkupdate/ApkUpdateRefreshListener.java
+@@ -14,7 +14,6 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.jobs.ApkUpdateJob;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ import org.thoughtcrime.securesms.service.PersistentAlarmManagerListener;
+-import org.thoughtcrime.securesms.util.Environment;
+ 
+ import java.util.concurrent.TimeUnit;
+ 
+@@ -22,7 +21,7 @@ public class ApkUpdateRefreshListener extends PersistentAlarmManagerListener {
+ 
+   private static final String TAG = Log.tag(ApkUpdateRefreshListener.class);
+ 
+-  private static final long INTERVAL = Environment.IS_NIGHTLY ? TimeUnit.HOURS.toMillis(2) : TimeUnit.HOURS.toMillis(6);
++  private static final long INTERVAL = TimeUnit.HOURS.toMillis(22);
+ 
+   @Override
+   protected long getNextScheduledExecutionTime(Context context) {
+@@ -33,7 +32,7 @@ public class ApkUpdateRefreshListener extends PersistentAlarmManagerListener {
+   protected long onAlarm(Context context, long scheduledTime) {
+     Log.i(TAG, "onAlarm...");
+ 
+-    if (scheduledTime != 0 && BuildConfig.MANAGES_APP_UPDATES) {
++    if (scheduledTime != 0 && BuildConfig.MANAGE_MOLLY_UPDATES) {
+       Log.i(TAG, "Queueing APK update job...");
+       AppDependencies.getJobManager().add(new ApkUpdateJob());
+     }
+@@ -44,8 +43,10 @@ public class ApkUpdateRefreshListener extends PersistentAlarmManagerListener {
+     return newTime;
+   }
+ 
+-  public static void schedule(Context context) {
+-    new ApkUpdateRefreshListener().onReceive(context, getScheduleIntent());
++  public static void scheduleIfAllowed(Context context) {
++    if (BuildConfig.MANAGE_MOLLY_UPDATES) {
++      new ApkUpdateRefreshListener().onReceive(context, getScheduleIntent());
++    }
+   }
+ 
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsFragment.kt
+index df89a63507568498f22bc774e2502c2a86f8d463..60e74013ddf2739b73493118cb0551483b5b7fa6 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsFragment.kt
+@@ -16,7 +16,7 @@ import org.signal.core.ui.compose.CollectActions
+ import org.signal.core.ui.compose.ComposeFragment
+ 
+ /**
+- * Settings around app updates. Only shown for builds that manage their own app updates.
++ * Settings for Molly updates, or app-store guidance for externally managed builds.
+  */
+ class AppUpdatesSettingsFragment : ComposeFragment() {
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModel.kt
+index 7c9f7cc4bead610b7ac649aea421eeb5faa5d18c..b279066257096801df301340909b3f21aa6a21c6 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModel.kt
+@@ -5,7 +5,8 @@
+ 
+ package org.thoughtcrime.securesms.components.settings.app.updates
+ 
+-import android.os.Build
++import android.app.Application
++import im.molly.app.base.ApkInfo
+ import kotlinx.coroutines.channels.Channel
+ import kotlinx.coroutines.flow.Flow
+ import kotlinx.coroutines.flow.MutableStateFlow
+@@ -17,19 +18,24 @@ import org.signal.appsettings.updates.AppUpdatesSettingsEvent
+ import org.signal.appsettings.updates.AppUpdatesSettingsState
+ import org.signal.core.ui.compose.EventDrivenViewModel
+ import org.signal.core.util.logging.Log
++import org.thoughtcrime.securesms.BuildConfig
++import org.thoughtcrime.securesms.apkupdate.ApkUpdateNotifications
++import org.thoughtcrime.securesms.apkupdate.ApkUpdateRefreshListener
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+ import org.thoughtcrime.securesms.jobs.ApkUpdateJob
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
++import org.thoughtcrime.securesms.util.TextSecurePreferences
+ import kotlin.time.Duration.Companion.milliseconds
+ 
+ class AppUpdatesSettingsViewModel(
+-  private val isAutoUpdateSupported: Boolean = Build.VERSION.SDK_INT >= 31
++  private val isAutoUpdateSupported: Boolean = BuildConfig.MANAGE_MOLLY_UPDATES
+ ) : EventDrivenViewModel<AppUpdatesSettingsEvent>(TAG) {
+ 
+   companion object {
+     private val TAG = Log.tag(AppUpdatesSettingsViewModel::class)
+   }
+ 
++  private val application: Application = AppDependencies.application
+   private val _state = MutableStateFlow(readState())
+   private val _actions = Channel<AppUpdatesSettingsAction>(Channel.BUFFERED)
+ 
+@@ -39,18 +45,37 @@ class AppUpdatesSettingsViewModel(
+   override suspend fun processEvent(event: AppUpdatesSettingsEvent) {
+     when (event) {
+       AppUpdatesSettingsEvent.ScreenResumed -> refresh()
+-
+       AppUpdatesSettingsEvent.NavigateBackClicked -> _actions.send(AppUpdatesSettingsAction.NavigateBack)
+-
+       is AppUpdatesSettingsEvent.AutoUpdateToggled -> {
+-        SignalStore.apkUpdate.autoUpdate = event.enabled
+-        refresh()
++        if (isAutoUpdateSupported) {
++          TextSecurePreferences.setUpdateApkEnabled(application, event.enabled)
++          if (event.enabled) {
++            checkForUpdates()
++          }
++          refresh()
++        }
++      }
++      is AppUpdatesSettingsEvent.IncludeBetaToggled -> {
++        if (isAutoUpdateSupported) {
++          TextSecurePreferences.setUpdateApkIncludeBetaEnabled(application, event.enabled)
++          ApkUpdateNotifications.dismissInstallPrompt(application)
++          checkForUpdates()
++          refresh()
++        }
++      }
++      AppUpdatesSettingsEvent.CheckForUpdatesClicked -> {
++        if (isAutoUpdateSupported && _state.value.autoUpdateEnabled) {
++          checkForUpdates()
++        }
+       }
+-
+-      AppUpdatesSettingsEvent.CheckForUpdatesClicked -> AppDependencies.jobManager.add(ApkUpdateJob())
+     }
+   }
+ 
++  private fun checkForUpdates() {
++    ApkUpdateRefreshListener.scheduleIfAllowed(application)
++    AppDependencies.jobManager.add(ApkUpdateJob())
++  }
++
+   private fun refresh() {
+     _state.value = readState()
+   }
+@@ -58,8 +83,10 @@ class AppUpdatesSettingsViewModel(
+   private fun readState(): AppUpdatesSettingsState {
+     return AppUpdatesSettingsState(
+       lastCheckedTime = SignalStore.apkUpdate.lastSuccessfulCheck.milliseconds,
+-      autoUpdateEnabled = SignalStore.apkUpdate.autoUpdate,
+-      isAutoUpdateSupported = isAutoUpdateSupported
++      autoUpdateEnabled = TextSecurePreferences.isUpdateApkEnabled(application),
++      isAutoUpdateSupported = isAutoUpdateSupported,
++      includeBetaEnabled = TextSecurePreferences.isUpdateApkIncludeBetaEnabled(application),
++      versionName = ApkInfo.versionName
+     )
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt b/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt
+index c67ef936870c84514808d0e2ff52b1df9351fc2b..2db68428cce6b0eabbf9b439a8d787cf93a4326f 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt
+@@ -6,7 +6,9 @@ import android.content.Intent
+ import android.content.pm.PackageManager
+ import android.net.Uri
+ import com.fasterxml.jackson.annotation.JsonProperty
++import okhttp3.OkHttpClient
+ import okhttp3.Request
++import org.greenrobot.eventbus.EventBus
+ import org.signal.core.util.Hex
+ import org.signal.core.util.JsonUtils
+ import org.signal.core.util.forEach
+@@ -16,17 +18,21 @@ import org.signal.core.util.requireInt
+ import org.signal.core.util.requireLong
+ import org.signal.core.util.requireString
+ import org.thoughtcrime.securesms.BuildConfig
++import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.apkupdate.ApkUpdateDownloadManagerReceiver
+-import org.thoughtcrime.securesms.dependencies.AppDependencies
++import org.thoughtcrime.securesms.events.ApkUpdateEvent
+ import org.thoughtcrime.securesms.jobmanager.Job
+ import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+-import org.thoughtcrime.securesms.util.Environment
++import org.thoughtcrime.securesms.net.Networking
+ import org.thoughtcrime.securesms.util.FileUtils
++import org.thoughtcrime.securesms.util.TextSecurePreferences
+ import java.io.FileInputStream
+ import java.io.IOException
+ import java.security.MessageDigest
+ 
++private const val FDROID_PACKAGE_NAME = BuildConfig.APPLICATION_ID
++
+ /**
+  * Designed to be a periodic job that checks for new app updates when the user is running a build that
+  * is distributed outside of the play store (like our website build).
+@@ -56,34 +62,52 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+ 
+   @Throws(IOException::class)
+   public override fun onRun() {
+-    if (!BuildConfig.MANAGES_APP_UPDATES) {
+-      Log.w(TAG, "Not an app-updating build! Exiting.")
++    if (!BuildConfig.MANAGE_MOLLY_UPDATES || !TextSecurePreferences.isUpdateApkEnabled(context)) {
++      Log.i(TAG, "In-app updater disabled! Exiting.")
+       return
+     }
+ 
+-    Log.d(TAG, "Checking for APK update at ${BuildConfig.APK_UPDATE_MANIFEST_URL}")
++    val includeBeta = TextSecurePreferences.isUpdateApkIncludeBetaEnabled(context)
++    val url = "${BuildConfig.FDROID_UPDATE_URL}/index-v1.json"
++
++    Log.i(TAG, "Checking for APK update [stable" + (if (includeBeta) ", beta" else "") + "] at $url")
++
++    val client = OkHttpClient().newBuilder()
++      .socketFactory(Networking.socketFactory)
++      .proxySelector(Networking.proxySelectorForSocks)
++      .dns(Networking.dns)
++      .build()
+ 
+-    val client = AppDependencies.okHttpClient
+-    val request = Request.Builder().url(BuildConfig.APK_UPDATE_MANIFEST_URL).build()
++    val request = Request.Builder().url(url).build()
+ 
+-    val rawUpdateDescriptor: String = client.newCall(request).execute().use { response ->
++    val responseBody: String = client.newCall(request).execute().use { response ->
+       if (!response.isSuccessful || response.body == null) {
+-        throw IOException("Failed to read update descriptor")
++        throw IOException("Failed to download F-droid repo index: " + response.message)
+       }
+       response.body!!.string()
+     }
+ 
+-    val updateDescriptor: UpdateDescriptor = JsonUtils.fromJson(rawUpdateDescriptor, UpdateDescriptor::class.java)
++    val repoIndex: RepoIndex = JsonUtils.fromJson(responseBody, RepoIndex::class.java)
+ 
+-    if (updateDescriptor.versionCode <= 0 || updateDescriptor.versionName == null || updateDescriptor.url == null || updateDescriptor.digest == null) {
+-      Log.w(TAG, "Invalid update descriptor! $updateDescriptor")
++    val app = repoIndex.apps.firstOrNull { it.packageName == FDROID_PACKAGE_NAME }
++    val updateDescriptor = if (includeBeta) {
++      repoIndex.packages.updates?.maxByOrNull { it.versionCode }
++    } else {
++      repoIndex.packages.updates?.firstOrNull { it.versionCode == app?.suggestedVersionCode }
++    }
++
++    if (app == null) {
++      Log.w(TAG, "No updates for package $FDROID_PACKAGE_NAME")
++      return
++    } else if (updateDescriptor == null) {
++      Log.w(TAG, "Invalid update descriptor! $repoIndex")
+       return
+     } else {
+       Log.d(TAG, "Got descriptor: $updateDescriptor")
+     }
+ 
+-    if (shouldUpdate(getCurrentAppVersionCode(), updateDescriptor, SignalStore.apkUpdate.lastApkUploadTime, Environment.IS_WEBSITE)) {
+-      Log.i(TAG, "Newer version code available. Current: (versionCode: ${getCurrentAppVersionCode()}, uploadTime: ${SignalStore.apkUpdate.lastApkUploadTime}), Update: (versionCode: ${updateDescriptor.versionCode}, uploadTime: ${updateDescriptor.uploadTimestamp})")
++    val currentVersionCode = getCurrentAppVersionCode()
++    if (updateDescriptor.versionCode > currentVersionCode) {
+       val digest: ByteArray = Hex.fromStringCondensed(updateDescriptor.digest)
+       val downloadStatus: DownloadStatus = getDownloadStatus(updateDescriptor.url, digest)
+ 
+@@ -94,13 +118,14 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+         handleDownloadComplete(downloadStatus.downloadId)
+       } else if (downloadStatus.status == DownloadStatus.Status.MISSING) {
+         Log.i(TAG, "Download status missing, starting download...")
+-        handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest, updateDescriptor.uploadTimestamp ?: 0)
++        handleDownloadStart(updateDescriptor.url, updateDescriptor.versionName, digest)
+       }
+     } else {
+-      Log.d(TAG, "Version code is the same or older than our own. Current: (versionCode: ${getCurrentAppVersionCode()}, uploadTime: ${SignalStore.apkUpdate.lastApkUploadTime}), Update: (versionCode: ${updateDescriptor.versionCode}, uploadTime: ${updateDescriptor.uploadTimestamp})")
++      Log.i(TAG, "No update needed. Current version ($currentVersionCode) is up to date.")
+     }
+ 
+     SignalStore.apkUpdate.lastSuccessfulCheck = System.currentTimeMillis()
++    EventBus.getDefault().post(ApkUpdateEvent)
+   }
+ 
+   public override fun onShouldRetry(e: Exception): Boolean {
+@@ -118,7 +143,7 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+     return packageInfo.versionCode
+   }
+ 
+-  private fun getDownloadStatus(uri: String, remoteDigest: ByteArray): DownloadStatus {
++  private fun getDownloadStatus(uri: Uri, remoteDigest: ByteArray): DownloadStatus {
+     val pendingDownloadId: Long = SignalStore.apkUpdate.downloadId
+     val pendingDigest: ByteArray? = SignalStore.apkUpdate.digest
+ 
+@@ -137,7 +162,7 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+       val jobRemoteUri = cursor.requireString(DownloadManager.COLUMN_URI)
+       val downloadId = cursor.requireLong(DownloadManager.COLUMN_ID)
+ 
+-      if (jobRemoteUri == uri && downloadId == pendingDownloadId) {
++      if (jobRemoteUri == uri.toString() && downloadId == pendingDownloadId) {
+         return if (jobStatus == DownloadManager.STATUS_SUCCESSFUL) {
+           val digest = getDigestForDownloadId(downloadId)
+           if (digest != null && MessageDigest.isEqual(digest, remoteDigest)) {
+@@ -156,21 +181,20 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+     return DownloadStatus(DownloadStatus.Status.MISSING, -1)
+   }
+ 
+-  private fun handleDownloadStart(uri: String?, versionName: String?, digest: ByteArray, uploadTimestamp: Long) {
++  private fun handleDownloadStart(uri: Uri, versionName: String?, digest: ByteArray) {
+     deleteExistingDownloadedApks(context)
+ 
+-    val downloadRequest = DownloadManager.Request(Uri.parse(uri)).apply {
++    val downloadRequest = DownloadManager.Request(uri).apply {
+       setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI)
+-      setTitle("Downloading Signal update")
+-      setDescription("Downloading Signal $versionName")
+-      setDestinationInExternalFilesDir(context, null, "signal-update.apk")
+-      setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN)
++      setTitle("Downloading ${context.getString(R.string.app_name)} update")
++      setDescription("Downloading ${context.getString(R.string.app_name)} $versionName")
++      setDestinationInExternalFilesDir(context, null, "molly-update.apk")
+     }
+ 
+     val downloadId = context.getDownloadManager().enqueue(downloadRequest)
+     // DownloadManager will trigger [UpdateApkReadyListener] when finished via a broadcast
+ 
+-    SignalStore.apkUpdate.setDownloadAttributes(downloadId, digest, uploadTimestamp)
++    SignalStore.apkUpdate.setDownloadAttributes(downloadId, digest)
+   }
+ 
+   private fun handleDownloadComplete(downloadId: Long) {
+@@ -198,7 +222,7 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+     }
+ 
+     for (file in directory.listFiles() ?: emptyArray()) {
+-      if (file.name.startsWith("signal-update")) {
++      if (file.name.startsWith("molly-update")) {
+         if (file.delete()) {
+           Log.d(TAG, "Deleted " + file.name)
+         }
+@@ -206,30 +230,28 @@ class ApkUpdateJob private constructor(parameters: Parameters) : BaseJob(paramet
+     }
+   }
+ 
+-  private fun shouldUpdate(currentVersionCode: Int, updateDescriptor: UpdateDescriptor, lastApkUploadTime: Long, isWebsite: Boolean): Boolean {
+-    return if (isWebsite) {
+-      return updateDescriptor.versionCode > currentVersionCode
+-    } else {
+-      return updateDescriptor.versionCode > currentVersionCode || (updateDescriptor.versionCode == currentVersionCode && (updateDescriptor.uploadTimestamp ?: 0) > lastApkUploadTime)
+-    }
++  private data class RepoIndex(
++    @JsonProperty("apps") val apps: List<App>,
++    @JsonProperty("packages") val packages: Packages,
++  ) {
++    data class App(
++      @JsonProperty("packageName") val packageName: String,
++      @JsonProperty("suggestedVersionCode") val suggestedVersionCode: Int,
++    )
++
++    data class Packages(
++      @JsonProperty(FDROID_PACKAGE_NAME) val updates: List<UpdateDescriptor>?,
++    )
+   }
+ 
+-  private data class UpdateDescriptor(
+-    @JsonProperty
+-    val versionCode: Int = 0,
+-
+-    @JsonProperty
+-    val versionName: String? = null,
+-
+-    @JsonProperty
+-    val url: String? = null,
+-
+-    @JsonProperty("sha256sum")
+-    val digest: String? = null,
+-
+-    @JsonProperty
+-    val uploadTimestamp: Long? = null
+-  )
++  data class UpdateDescriptor(
++    @JsonProperty("versionCode") val versionCode: Int,
++    @JsonProperty("versionName") val versionName: String,
++    @JsonProperty("apkName") val apkName: String,
++    @JsonProperty("hash") val digest: String,
++  ) {
++    val url: Uri = Uri.parse(BuildConfig.FDROID_UPDATE_URL).buildUpon().appendPath(apkName).build()
++  }
+ 
+   private class DownloadStatus(val status: Status, val downloadId: Long) {
+     enum class Status {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ApkUpdateValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ApkUpdateValues.kt
+index d602f7c6ba81c5429f1cca8e1a1a895a9039c217..030c0bc18a30e138ce56ab8d7ee726e0c3082655 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ApkUpdateValues.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ApkUpdateValues.kt
+@@ -14,10 +14,7 @@ class ApkUpdateValues(store: KeyValueStore, context: Context) : SignalStoreValue
+ 
+     private const val DOWNLOAD_ID = "apk_update.download_id"
+     private const val DIGEST = "apk_update.digest"
+-    private const val AUTO_UPDATE = "apk_update.auto_update"
+     private const val LAST_SUCCESSFUL_CHECK = "apk_update.last_successful_check"
+-    private const val LAST_APK_UPLOAD_TIME = "apk_update.last_apk_upload_time"
+-    private const val PENDING_APK_UPLOAD_TIME = "apk_update.pending_apk_upload_time"
+     private const val REFRESH_TIME = "apk_update.refresh_time"
+   }
+ 
+@@ -42,28 +39,15 @@ class ApkUpdateValues(store: KeyValueStore, context: Context) : SignalStoreValue
+ 
+   val downloadId: Long by longValue(DOWNLOAD_ID, -2)
+   val digest: ByteArray? get() = store.getBlob(DIGEST, null)
+-  var autoUpdate: Boolean by booleanValue(AUTO_UPDATE, true)
+   var lastSuccessfulCheck: Long by longValue(LAST_SUCCESSFUL_CHECK, 0)
+ 
+-  /** The upload of the last APK we installed */
+-  var lastApkUploadTime: Long
+-    get() = getLong(LAST_APK_UPLOAD_TIME, 0)
+-    set(value) {
+-      Log.d(TAG, "Setting lastApkUploadTime to $value")
+-      store.beginWrite().putLong(LAST_APK_UPLOAD_TIME, value).commit()
+-    }
+-
+-  /** The upload time of the APK we're trying to install */
+-  val pendingApkUploadTime: Long by longValue(PENDING_APK_UPLOAD_TIME, 0)
+-
+-  fun setDownloadAttributes(id: Long, digest: ByteArray?, apkUploadTime: Long) {
+-    Log.d(TAG, "Saving download attributes. id: $id, apkUploadTime: $apkUploadTime")
++  fun setDownloadAttributes(id: Long, digest: ByteArray?) {
++    Log.d(TAG, "Saving download attributes. id: $id")
+ 
+     store
+       .beginWrite()
+       .putLong(DOWNLOAD_ID, id)
+       .putBlob(DIGEST, digest)
+-      .putLong(PENDING_APK_UPLOAD_TIME, apkUploadTime)
+       .commit()
+   }
+ 
+@@ -74,7 +58,6 @@ class ApkUpdateValues(store: KeyValueStore, context: Context) : SignalStoreValue
+       .beginWrite()
+       .putLong(DOWNLOAD_ID, -1)
+       .putBlob(DIGEST, null)
+-      .putLong(PENDING_APK_UPLOAD_TIME, 0)
+       .commit()
+   }
+ }
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModelTest.kt b/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModelTest.kt
+index 5c5621a6becacc128bdc4ebeb0121163123684ff..65ce3322341e5a3405901200ced11b7119da5edb 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModelTest.kt
++++ b/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/updates/AppUpdatesSettingsViewModelTest.kt
+@@ -12,9 +12,12 @@ import assertk.assertions.isEmpty
+ import assertk.assertions.isEqualTo
+ import assertk.assertions.isFalse
+ import assertk.assertions.isTrue
++import io.mockk.Runs
+ import io.mockk.every
++import io.mockk.just
+ import io.mockk.mockk
+ import io.mockk.mockkObject
++import io.mockk.mockkStatic
+ import io.mockk.unmockkAll
+ import io.mockk.verify
+ import kotlinx.coroutines.Dispatchers
+@@ -37,12 +40,16 @@ import org.robolectric.annotation.Config
+ import org.signal.appsettings.updates.AppUpdatesSettingsAction
+ import org.signal.appsettings.updates.AppUpdatesSettingsEvent
+ import org.signal.appsettings.updates.AppUpdatesSettingsState
++import im.molly.app.base.ApkInfo
++import org.thoughtcrime.securesms.apkupdate.ApkUpdateNotifications
++import org.thoughtcrime.securesms.apkupdate.ApkUpdateRefreshListener
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+ import org.thoughtcrime.securesms.jobs.ApkUpdateJob
+ import org.thoughtcrime.securesms.keyvalue.ApkUpdateValues
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.testing.CoroutineDispatcherRule
+ import org.thoughtcrime.securesms.testutil.MockAppDependenciesRule
++import org.thoughtcrime.securesms.util.TextSecurePreferences
+ import kotlin.time.Duration
+ import kotlin.time.Duration.Companion.milliseconds
+ 
+@@ -64,6 +71,8 @@ class AppUpdatesSettingsViewModelTest {
+   val appDependencies = MockAppDependenciesRule()
+ 
+   private val apkUpdateValues = mockk<ApkUpdateValues>(relaxUnitFun = true)
++  private var updatesEnabled = false
++  private var includeBeta = false
+ 
+   @Before
+   fun setUp() {
+@@ -72,7 +81,14 @@ class AppUpdatesSettingsViewModelTest {
+     mockkObject(SignalStore)
+     every { SignalStore.apkUpdate } returns apkUpdateValues
+     every { apkUpdateValues.lastSuccessfulCheck } returns LAST_SUCCESSFUL_CHECK
+-    every { apkUpdateValues.autoUpdate } returns false
++    mockkStatic(TextSecurePreferences::class, ApkUpdateRefreshListener::class)
++    mockkObject(ApkUpdateNotifications)
++    every { TextSecurePreferences.isUpdateApkEnabled(any()) } answers { updatesEnabled }
++    every { TextSecurePreferences.setUpdateApkEnabled(any(), any()) } answers { updatesEnabled = secondArg() }
++    every { TextSecurePreferences.isUpdateApkIncludeBetaEnabled(any()) } answers { includeBeta }
++    every { TextSecurePreferences.setUpdateApkIncludeBetaEnabled(any(), any()) } answers { includeBeta = secondArg() }
++    every { ApkUpdateRefreshListener.scheduleIfAllowed(any()) } just Runs
++    every { ApkUpdateNotifications.dismissInstallPrompt(any()) } just Runs
+   }
+ 
+   @After
+@@ -83,7 +99,7 @@ class AppUpdatesSettingsViewModelTest {
+ 
+   @Test
+   fun `initial state reflects storage`() = runTest(testDispatcher) {
+-    every { apkUpdateValues.autoUpdate } returns true
++    updatesEnabled = true
+ 
+     val viewModel = createViewModel()
+ 
+@@ -91,13 +107,14 @@ class AppUpdatesSettingsViewModelTest {
+       AppUpdatesSettingsState(
+         lastCheckedTime = LAST_SUCCESSFUL_CHECK.milliseconds,
+         autoUpdateEnabled = true,
+-        isAutoUpdateSupported = true
++        isAutoUpdateSupported = true,
++        versionName = ApkInfo.versionName
+       )
+     )
+   }
+ 
+   @Test
+-  fun `initial state reports a device that cannot auto update`() = runTest(testDispatcher) {
++  fun `initial state reports an externally managed build`() = runTest(testDispatcher) {
+     val viewModel = createViewModel(isAutoUpdateSupported = false)
+ 
+     assertThat(viewModel.state.value.isAutoUpdateSupported).isFalse()
+@@ -125,28 +142,27 @@ class AppUpdatesSettingsViewModelTest {
+   @Test
+   fun `AutoUpdateToggled on saves and shows the new value`() = runTest(testDispatcher) {
+     val viewModel = createViewModel()
+-    every { apkUpdateValues.autoUpdate = true } answers { every { apkUpdateValues.autoUpdate } returns true }
+ 
+     viewModel.onEvent(AppUpdatesSettingsEvent.AutoUpdateToggled(true))
+ 
+-    verify { apkUpdateValues.autoUpdate = true }
++    verify { TextSecurePreferences.setUpdateApkEnabled(any(), true) }
+     assertThat(viewModel.state.value.autoUpdateEnabled).isTrue()
+   }
+ 
+   @Test
+   fun `AutoUpdateToggled off saves and shows the new value`() = runTest(testDispatcher) {
+-    every { apkUpdateValues.autoUpdate } returns true
++    updatesEnabled = true
+     val viewModel = createViewModel()
+-    every { apkUpdateValues.autoUpdate = false } answers { every { apkUpdateValues.autoUpdate } returns false }
+ 
+     viewModel.onEvent(AppUpdatesSettingsEvent.AutoUpdateToggled(false))
+ 
+-    verify { apkUpdateValues.autoUpdate = false }
++    verify { TextSecurePreferences.setUpdateApkEnabled(any(), false) }
+     assertThat(viewModel.state.value.autoUpdateEnabled).isFalse()
+   }
+ 
+   @Test
+   fun `CheckForUpdatesClicked enqueues an update check`() = runTest(testDispatcher) {
++    updatesEnabled = true
+     val viewModel = createViewModel()
+     val actions = collectActions(viewModel.actions)
+ 
+@@ -157,6 +173,40 @@ class AppUpdatesSettingsViewModelTest {
+   }
+ 
+   @Test
++  fun `beta selection clears an old install prompt and checks the selected channel`() = runTest(testDispatcher) {
++    val viewModel = createViewModel()
++
++    viewModel.onEvent(AppUpdatesSettingsEvent.IncludeBetaToggled(true))
++
++    verify { TextSecurePreferences.setUpdateApkIncludeBetaEnabled(any(), true) }
++    verify { ApkUpdateNotifications.dismissInstallPrompt(any()) }
++    verify(exactly = 1) { AppDependencies.jobManager.add(ofType<ApkUpdateJob>()) }
++    assertThat(viewModel.state.value.includeBetaEnabled).isTrue()
++  }
++
++  @Test
++  fun `externally managed builds ignore update actions`() = runTest(testDispatcher) {
++    val viewModel = createViewModel(isAutoUpdateSupported = false)
++
++    viewModel.onEvent(AppUpdatesSettingsEvent.AutoUpdateToggled(true))
++    viewModel.onEvent(AppUpdatesSettingsEvent.IncludeBetaToggled(true))
++    viewModel.onEvent(AppUpdatesSettingsEvent.CheckForUpdatesClicked)
++
++    verify(exactly = 0) { TextSecurePreferences.setUpdateApkEnabled(any(), any()) }
++    verify(exactly = 0) { TextSecurePreferences.setUpdateApkIncludeBetaEnabled(any(), any()) }
++    verify(exactly = 0) { AppDependencies.jobManager.add(ofType<ApkUpdateJob>()) }
++  }
++
++  @Test
++  fun `manual checks do not bypass disabled update checks`() = runTest(testDispatcher) {
++    val viewModel = createViewModel()
++
++    viewModel.onEvent(AppUpdatesSettingsEvent.CheckForUpdatesClicked)
++
++    verify(exactly = 0) { AppDependencies.jobManager.add(ofType<ApkUpdateJob>()) }
++  }
++
++  @Test
+   fun `NavigateBackClicked navigates back`() = runTest(testDispatcher) {
+     val viewModel = createViewModel()
+     val actions = collectActions(viewModel.actions)
+
+--------------false--
+
+

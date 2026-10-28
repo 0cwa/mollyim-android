@@ -11,6 +11,8 @@ on:
       - 'tools/827/**'
       - 'patches/827/**'
       - 'patches/molly/**'
+      - 'patches/molly-signal-8.33.2/**'
+      - '.github/workflows/molly-signal-port.yml'
       - 'docs/827/**'
       - 'reports/827/inventory/**'
   push:
@@ -23,6 +25,8 @@ on:
       - 'tools/827/**'
       - 'patches/827/**'
       - 'patches/molly/**'
+      - 'patches/molly-signal-8.33.2/**'
+      - '.github/workflows/molly-signal-port.yml'
       - 'docs/827/**'
       - 'reports/827/inventory/**'
   workflow_dispatch:

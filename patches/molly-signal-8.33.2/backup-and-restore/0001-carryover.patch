@@ -1,0 +1,293 @@
+From ee6dbfe9c8b1c5c3597296fc3ddacd89020b1409 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly backup-and-restore carryover, part 1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Local/remote backup policy, scheduling, retention, compatibility and restore integration.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/BackupAlertBottomSheet.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/BackupAlertBottomSheet.kt
+index a6eb79b33e82df1c967e8e3e84dc07cd27c9c9b6..7ac5bc5130e802e7c4bc70c956a36fa1d11f2d82 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/BackupAlertBottomSheet.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/BackupAlertBottomSheet.kt
+@@ -31,16 +31,17 @@ import androidx.compose.ui.text.buildAnnotatedString
+ import androidx.compose.ui.text.withLink
+ import androidx.compose.ui.text.withStyle
+ import androidx.compose.ui.unit.dp
+-import androidx.core.content.ContextCompat
+ import androidx.core.os.BundleCompat
+ import androidx.core.os.bundleOf
+ import androidx.fragment.app.DialogFragment
++import com.google.android.material.R as MaterialR
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder
+ import kotlinx.parcelize.Parcelize
+ import org.signal.core.ui.compose.ComposeBottomSheetDialogFragment
+ import org.signal.core.ui.compose.DayNightPreviews
+ import org.signal.core.ui.compose.Previews
+ import org.signal.core.ui.compose.theme.SignalTheme
++import org.signal.core.ui.util.ThemeUtil
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.backup.v2.BackupRepository
+ import org.thoughtcrime.securesms.billing.launchManageBackupsSubscription
+@@ -50,7 +51,6 @@ import org.thoughtcrime.securesms.jobs.BackupMessagesJob
+ import org.thoughtcrime.securesms.keyvalue.protos.BackupDownloadNotifierState
+ import org.thoughtcrime.securesms.util.CommunicationActions
+ import org.thoughtcrime.securesms.util.PlayStoreUtil
+-import org.signal.core.ui.R as CoreUiR
+ 
+ /**
+  * Notifies the user of an issue with their backup.
+@@ -162,7 +162,7 @@ class BackupAlertBottomSheet : ComposeBottomSheetDialogFragment() {
+       .create()
+       .apply {
+         setOnShowListener {
+-          getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(requireContext(), CoreUiR.color.signal_colorError))
++          getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ThemeUtil.getThemedColor(requireContext(), MaterialR.attr.colorError))
+         }
+       }
+       .show()
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/BackupUpgradeAvailabilityChecker.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/BackupUpgradeAvailabilityChecker.kt
+index 35dc26904842b395c5281a734b26a18913d07108..d3d13f270cdd10f5a8746385cefb3cbc550f545b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/BackupUpgradeAvailabilityChecker.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/BackupUpgradeAvailabilityChecker.kt
+@@ -21,16 +21,6 @@ object BackupUpgradeAvailabilityChecker {
+   suspend fun isUpgradeAvailable(
+     context: Context
+   ): Boolean {
+-    val googlePlayServicesCode = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context)
+-    val googlePlayServicesAvailability = GooglePlayServicesAvailability.fromCode(googlePlayServicesCode)
+-
+-    return when (googlePlayServicesAvailability) {
+-      GooglePlayServicesAvailability.UNKNOWN, GooglePlayServicesAvailability.SERVICE_MISSING, GooglePlayServicesAvailability.SERVICE_DISABLED, GooglePlayServicesAvailability.SERVICE_INVALID -> false
+-      GooglePlayServicesAvailability.SERVICE_VERSION_UPDATE_REQUIRED, GooglePlayServicesAvailability.SERVICE_UPDATING -> true
+-      GooglePlayServicesAvailability.SUCCESS -> {
+-        val billingResponseCode = AppDependencies.billingApi.getApiAvailability()
+-        billingResponseCode.isSuccess
+-      }
+-    }
++    return false
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/megaphone/BackupUpsellSchedule.kt b/app/src/main/java/org/thoughtcrime/securesms/megaphone/BackupUpsellSchedule.kt
+deleted file mode 100644
+index 873fb740cbdad62b332cc8f88ec3c9db0274fcbb..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/megaphone/BackupUpsellSchedule.kt
++++ /dev/null
+@@ -1,51 +0,0 @@
+-package org.thoughtcrime.securesms.megaphone
+-
+-import org.thoughtcrime.securesms.database.model.MegaphoneRecord
+-import kotlin.time.Duration.Companion.days
+-
+-/**
+- * Schedule for backup upsell megaphones that combines:
+- * 1. Per-megaphone recurring display timing (like [RecurringSchedule])
+- * 2. Cross-megaphone shared snooze: if any other backup upsell was seen recently, suppress display
+- *
+- * @param records   All megaphone records, used to find the most recent lastSeen across backup upsell events.
+- * @param gaps      Per-megaphone recurring gaps, same semantics as [RecurringSchedule].
+- */
+-class BackupUpsellSchedule(
+-  private val records: Map<Megaphones.Event, MegaphoneRecord>,
+-  vararg val gaps: Long
+-) : MegaphoneSchedule {
+-
+-  companion object {
+-    @JvmField
+-    val BACKUP_UPSELL_EVENTS: Set<Megaphones.Event> = setOf(
+-      Megaphones.Event.BACKUPS_GENERIC_UPSELL,
+-      Megaphones.Event.BACKUP_MESSAGE_COUNT_UPSELL,
+-      Megaphones.Event.BACKUP_MEDIA_SIZE_UPSELL,
+-      Megaphones.Event.BACKUP_LOW_STORAGE_UPSELL
+-    )
+-
+-    @JvmField
+-    val MIN_TIME_BETWEEN_BACKUP_UPSELLS: Long = 60.days.inWholeMilliseconds
+-  }
+-
+-  override fun shouldDisplay(seenCount: Int, lastSeen: Long, firstVisible: Long, currentTime: Long): Boolean {
+-    val lastSeen = lastSeen.coerceAtMost(currentTime)
+-
+-    val lastSeenAnyBackupUpsell: Long = records.entries
+-      .filter { it.key in BACKUP_UPSELL_EVENTS }
+-      .mapNotNull { it.value.lastInteractionTime.takeIf { t -> t > 0 } }
+-      .maxOrNull() ?: 0L
+-
+-    if (currentTime - lastSeenAnyBackupUpsell <= MIN_TIME_BETWEEN_BACKUP_UPSELLS) {
+-      return false
+-    }
+-
+-    if (seenCount == 0) {
+-      return true
+-    }
+-
+-    val gap = gaps[minOf(seenCount - 1, gaps.size - 1)]
+-    return lastSeen + gap <= currentTime
+-  }
+-}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/megaphone/BackupUpsellScheduleTest.kt b/app/src/test/java/org/thoughtcrime/securesms/megaphone/BackupUpsellScheduleTest.kt
+deleted file mode 100644
+index dc7a5b5f5163ce23522d453c5049a4d30567ebaa..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/megaphone/BackupUpsellScheduleTest.kt
++++ /dev/null
+@@ -1,128 +0,0 @@
+-package org.thoughtcrime.securesms.megaphone
+-
+-import org.junit.Assert.assertFalse
+-import org.junit.Assert.assertTrue
+-import org.junit.Test
+-import org.thoughtcrime.securesms.database.model.MegaphoneRecord
+-import org.thoughtcrime.securesms.megaphone.Megaphones.Event
+-import kotlin.time.Duration.Companion.days
+-import kotlin.time.Duration.Companion.hours
+-
+-class BackupUpsellScheduleTest {
+-
+-  private val now = System.currentTimeMillis()
+-
+-  // -- First display (seenCount = 0) --
+-
+-  @Test
+-  fun `shows on first display when no other backup upsell seen`() {
+-    val schedule = schedule(emptyRecords())
+-    assertTrue(schedule.shouldDisplay(0, 0, 0, now))
+-  }
+-
+-  @Test
+-  fun `shows on first display when other upsell was seen outside the threshold`() {
+-    val records = emptyRecords().toMutableMap().apply {
+-      put(Event.BACKUPS_GENERIC_UPSELL, record(Event.BACKUPS_GENERIC_UPSELL, lastSeen = now - 60.days.inWholeMilliseconds - 1))
+-    }
+-    val schedule = schedule(records)
+-    assertTrue(schedule.shouldDisplay(0, 0, 0, now))
+-  }
+-
+-  @Test
+-  fun `suppressed on first display when another upsell was seen within the threshold`() {
+-    val records = emptyRecords().toMutableMap().apply {
+-      put(Event.BACKUPS_GENERIC_UPSELL, record(Event.BACKUPS_GENERIC_UPSELL, lastSeen = now - 60.days.inWholeMilliseconds + 1.hours.inWholeMilliseconds))
+-    }
+-    val schedule = schedule(records)
+-    assertFalse(schedule.shouldDisplay(0, 0, 0, now))
+-  }
+-
+-  // -- Recurring gap logic (seenCount > 0) --
+-
+-  @Test
+-  fun `shows after gap elapsed since last seen`() {
+-    val gapMs = 60.days.inWholeMilliseconds
+-    val schedule = schedule(emptyRecords(), gapMs)
+-    assertTrue(schedule.shouldDisplay(1, now - gapMs - 1, 0, now))
+-  }
+-
+-  @Test
+-  fun `suppressed when gap has not elapsed since last seen`() {
+-    val gapMs = 60.days.inWholeMilliseconds
+-    val schedule = schedule(emptyRecords(), gapMs)
+-    assertFalse(schedule.shouldDisplay(1, now - gapMs + 1.hours.inWholeMilliseconds, 0, now))
+-  }
+-
+-  @Test
+-  fun `uses second gap for second snooze`() {
+-    val firstGap = 60.days.inWholeMilliseconds
+-    val secondGap = 120.days.inWholeMilliseconds
+-    val schedule = schedule(emptyRecords(), firstGap, secondGap)
+-
+-    // seenCount=2 -> uses gaps[1] = 120 days
+-    assertFalse(schedule.shouldDisplay(2, now - 100.days.inWholeMilliseconds, 0, now))
+-    assertTrue(schedule.shouldDisplay(2, now - secondGap - 1, 0, now))
+-  }
+-
+-  @Test
+-  fun `repeats last gap for high seen counts`() {
+-    val firstGap = 60.days.inWholeMilliseconds
+-    val secondGap = 120.days.inWholeMilliseconds
+-    val schedule = schedule(emptyRecords(), firstGap, secondGap)
+-
+-    // seenCount=5 -> clamps to gaps[1] = 120 days
+-    assertFalse(schedule.shouldDisplay(5, now - 100.days.inWholeMilliseconds, 0, now))
+-    assertTrue(schedule.shouldDisplay(5, now - secondGap - 1, 0, now))
+-  }
+-
+-  // -- Combined: cross-event snooze AND recurring gap --
+-
+-  @Test
+-  fun `cross-event snooze blocks even when recurring gap is satisfied`() {
+-    val gapMs = 60.days.inWholeMilliseconds
+-    val records = emptyRecords().toMutableMap().apply {
+-      put(Event.BACKUP_LOW_STORAGE_UPSELL, record(Event.BACKUP_LOW_STORAGE_UPSELL, lastSeen = now - 30.days.inWholeMilliseconds))
+-    }
+-    val schedule = schedule(records, gapMs)
+-
+-    // Own gap satisfied (last seen 90 days ago) but another upsell was seen 30 days ago
+-    assertFalse(schedule.shouldDisplay(1, now - 90.days.inWholeMilliseconds, 0, now))
+-  }
+-
+-  @Test
+-  fun `shows when both cross-event snooze and recurring gap are satisfied`() {
+-    val gapMs = 60.days.inWholeMilliseconds
+-    val records = emptyRecords().toMutableMap().apply {
+-      put(Event.BACKUP_LOW_STORAGE_UPSELL, record(Event.BACKUP_LOW_STORAGE_UPSELL, lastSeen = now - 60.days.inWholeMilliseconds - 1))
+-    }
+-    val schedule = schedule(records, gapMs)
+-    assertTrue(schedule.shouldDisplay(1, now - gapMs - 1, 0, now))
+-  }
+-
+-  // -- Ignores non-backup events --
+-
+-  @Test
+-  fun `ignores non-backup upsell events in cross-event check`() {
+-    val records = emptyRecords().toMutableMap().apply {
+-      put(Event.PIN_REMINDER, record(Event.PIN_REMINDER, lastSeen = now))
+-      put(Event.NOTIFICATIONS, record(Event.NOTIFICATIONS, lastSeen = now))
+-    }
+-    val schedule = schedule(records)
+-    assertTrue(schedule.shouldDisplay(0, 0, 0, now))
+-  }
+-
+-  // -- Helpers --
+-
+-  private fun schedule(records: Map<Event, MegaphoneRecord>, vararg gaps: Long): BackupUpsellSchedule {
+-    return BackupUpsellSchedule(records, *gaps)
+-  }
+-
+-  private fun record(event: Event, seenCount: Int = 1, lastSeen: Long = 0, firstVisible: Long = 0, lastVisible: Long = 0, finished: Boolean = false): MegaphoneRecord {
+-    return MegaphoneRecord(event, seenCount, lastSeen, firstVisible, lastVisible, finished)
+-  }
+-
+-  private fun emptyRecords(): Map<Event, MegaphoneRecord> {
+-    return BackupUpsellSchedule.BACKUP_UPSELL_EVENTS.associateWith { record(it, seenCount = 0) }
+-  }
+-}
+
+--------------false--
+
+

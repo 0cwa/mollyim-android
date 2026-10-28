@@ -1,0 +1,940 @@
+From 275e0e7c6054738e2fcee334d1e5392f7b560cb8 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly appearance adapted, part 2
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Dynamic themes, view colors, wallpapers and UI theme helpers.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, at least one endpoint differs from
+its corresponding origin entry. This includes changed upstream
+inputs, merged results and newly introduced port changes.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: adapted
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperActivity.java b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperActivity.java
+index 709722eb5d2923f41b7141db06803b8fa185f1fb..b6345b327a7a307c8e6610c52299fff7d543d365 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperActivity.java
+@@ -33,11 +33,16 @@ public final class ChatWallpaperActivity extends PassphraseRequiredActivity {
+   }
+ 
+   @Override
++  protected void onPreCreate() {
++    super.onPreCreate();
++    dynamicTheme.onCreate(this);
++  }
++
++  @Override
+   protected void onCreate(Bundle savedInstanceState, boolean ready) {
+     ChatWallpaperViewModel.Factory factory = new ChatWallpaperViewModel.Factory(getIntent().getParcelableExtra(EXTRA_RECIPIENT_ID));
+     new ViewModelProvider(this, factory).get(ChatWallpaperViewModel.class);
+ 
+-    dynamicTheme.onCreate(this);
+     setContentView(R.layout.chat_wallpaper_activity);
+ 
+     if (savedInstanceState == null) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperFragment.java b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperFragment.java
+index bc302f6af23626ae0c73f07b79ed53a84fac5acd..f6907165ab1b66f5842d8afee9c69d9e32cab9bf 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperFragment.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperFragment.java
+@@ -96,7 +96,7 @@ public class ChatWallpaperFragment extends Fragment {
+         ImageViewCompat.setImageTintList(recvBubble, ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.conversation_item_recv_bubble_color_wallpaper)));
+       } else {
+         chatWallpaperPreview.setImageDrawable(null);
+-        ImageViewCompat.setImageTintList(recvBubble, ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.signal_background_secondary)));
++        ImageViewCompat.setImageTintList(recvBubble, ColorStateList.valueOf(ThemeUtil.getThemedColor(requireContext(), R.attr.signal_background_secondary)));
+       }
+     });
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperPreviewActivity.java b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperPreviewActivity.java
+index 728d77d5450ece208ac38ec60dedbe6751a3343a..6a4b82d806211faf886231bf5bae282f9060f020 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperPreviewActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/ChatWallpaperPreviewActivity.java
+@@ -56,9 +56,13 @@ public class ChatWallpaperPreviewActivity extends PassphraseRequiredActivity {
+   }
+ 
+   @Override
+-  protected void onCreate(Bundle savedInstanceState, boolean ready) {
++  protected void onPreCreate() {
++    super.onPreCreate();
+     dynamicTheme.onCreate(this);
++  }
+ 
++  @Override
++  protected void onCreate(Bundle savedInstanceState, boolean ready) {
+     setContentView(R.layout.chat_wallpaper_preview_activity);
+ 
+     adapter       = new ChatWallpaperPreviewAdapter();
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperCropActivity.java b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperCropActivity.java
+index 0782c444bd591abb1b15e830d4fd685e3afbeb2c..77a57a9f455b0542f761c178feb61f46f6ba592a 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperCropActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperCropActivity.java
+@@ -25,20 +25,21 @@ import androidx.window.layout.WindowMetricsCalculator;
+ 
+ import org.signal.core.models.recipients.RecipientId;
+ import org.signal.core.ui.WindowBreakpoint;
++import org.signal.core.ui.util.ThemeUtil;
++import org.signal.core.ui.util.ViewUtil;
+ import org.signal.core.util.logging.Log;
+ import org.signal.imageeditor.core.ImageEditorView;
+ import org.signal.imageeditor.core.model.EditorElement;
+ import org.signal.imageeditor.core.model.EditorModel;
+ import org.signal.imageeditor.core.renderers.FaceBlurRenderer;
+-import org.thoughtcrime.securesms.BaseActivity;
++import org.signal.imageeditor.core.renderers.UriGlideRenderer;
++import org.thoughtcrime.securesms.PassphraseRequiredActivity;
+ import org.thoughtcrime.securesms.R;
+ import org.thoughtcrime.securesms.components.ProgressCard;
+ import org.thoughtcrime.securesms.conversation.colors.ColorizerView;
+-import org.signal.imageeditor.core.renderers.UriGlideRenderer;
+ import org.thoughtcrime.securesms.util.AsynchronousCallback;
+ import org.thoughtcrime.securesms.util.DynamicTheme;
+ import org.thoughtcrime.securesms.util.Projection;
+-import org.signal.core.ui.util.ViewUtil;
+ import org.thoughtcrime.securesms.wallpaper.ChatWallpaper;
+ import org.thoughtcrime.securesms.wallpaper.ChatWallpaperPreviewActivity;
+ 
+@@ -48,7 +49,7 @@ import java.util.Objects;
+ 
+ import static org.signal.core.ui.WindowSizeClassExtensionsKt.getWindowBreakpoint;
+ 
+-public final class WallpaperCropActivity extends BaseActivity {
++public final class WallpaperCropActivity extends PassphraseRequiredActivity {
+ 
+   private static final String TAG = Log.tag(WallpaperCropActivity.class);
+ 
+@@ -78,14 +79,19 @@ public final class WallpaperCropActivity extends BaseActivity {
+   }
+ 
+   @Override
+-  protected void onCreate(Bundle savedInstanceState) {
+-    super.onCreate(savedInstanceState);
++  protected void onPreCreate() {
++    super.onPreCreate();
++    dynamicTheme.onCreate(this);
++  }
++
++  @Override
++  protected void onCreate(Bundle savedInstanceState, boolean ready) {
++    super.onCreate(savedInstanceState, ready);
+ 
+     if (!(getWindowBreakpoint(getResources()) instanceof WindowBreakpoint.Small)) {
+       setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+     }
+ 
+-    dynamicTheme.onCreate(this);
+     setContentView(R.layout.chat_wallpaper_crop_activity);
+ 
+     RecipientId recipientId = getIntent().getParcelableExtra(EXTRA_RECIPIENT_ID);
+@@ -197,7 +203,7 @@ public final class WallpaperCropActivity extends BaseActivity {
+     int   width  = bounds.width();
+     float ratio  = width / (float) height;
+ 
+-    EditorModel editorModel = EditorModel.createForWallpaperEditing(ratio, ContextCompat.getColor(this, org.signal.core.ui.R.color.signal_colorBackground));
++    EditorModel editorModel = EditorModel.createForWallpaperEditing(ratio, ThemeUtil.getThemedColor(this, com.google.android.material.R.attr.colorSurface));
+ 
+     EditorElement image = new EditorElement(new UriGlideRenderer(imageUri, true, width, height, UriGlideRenderer.WEAK_BLUR));
+     image.getFlags()
+@@ -237,8 +243,12 @@ public final class WallpaperCropActivity extends BaseActivity {
+   }
+ 
+   private static final class DynamicWallpaperTheme extends DynamicTheme {
+-    protected @StyleRes int getTheme() {
++    protected @StyleRes int getRegularTheme() {
+       return R.style.Signal_DayNight_WallpaperCropper;
+     }
++
++    protected @StyleRes int getDynamicTheme() {
++      return getRegularTheme();
++    }
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperImageSelectionActivity.java b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperImageSelectionActivity.java
+index 76bbf03df1648cd0c56d98e73ef82a8c1ae6ce55..45d005dbd55fd0f74aa11994e25b442672a91a2f 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperImageSelectionActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/crop/WallpaperImageSelectionActivity.java
+@@ -10,10 +10,12 @@ import androidx.annotation.Nullable;
+ import androidx.appcompat.app.AppCompatActivity;
+ import androidx.appcompat.app.AppCompatDelegate;
+ 
++import org.signal.core.models.media.Media;
+ import org.signal.core.models.recipients.RecipientId;
+ import org.thoughtcrime.securesms.R;
+-import org.signal.core.models.media.Media;
+ import org.thoughtcrime.securesms.mediasend.v2.gallery.MediaGalleryFragment;
++import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme;
++import org.thoughtcrime.securesms.util.DynamicTheme;
+ 
+ public final class WallpaperImageSelectionActivity extends AppCompatActivity
+         implements MediaGalleryFragment.Callbacks
+@@ -21,6 +23,8 @@ public final class WallpaperImageSelectionActivity extends AppCompatActivity
+   private static final String EXTRA_RECIPIENT_ID = "RECIPIENT_ID";
+   private static final int    CROP               = 901;
+ 
++  private final DynamicTheme dynamicTheme = new DynamicNoActionBarTheme();
++
+   public static Intent getIntent(@NonNull Context context,
+                                  @Nullable RecipientId recipientId)
+   {
+@@ -30,6 +34,12 @@ public final class WallpaperImageSelectionActivity extends AppCompatActivity
+   }
+ 
+   @Override
++  protected void onResume() {
++    super.onResume();
++    dynamicTheme.onResume(this);
++  }
++
++  @Override
+   protected void attachBaseContext(@NonNull Context newBase) {
+     getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+     super.attachBaseContext(newBase);
+@@ -39,6 +49,7 @@ public final class WallpaperImageSelectionActivity extends AppCompatActivity
+   protected void onCreate(@Nullable Bundle savedInstanceState) {
+     EdgeToEdge.enable(this);
+     super.onCreate(savedInstanceState);
++    dynamicTheme.onCreate(this);
+ 
+     setContentView(R.layout.wallpaper_image_selection_activity);
+ 
+diff --git a/core/ui/src/main/java/org/signal/core/ui/compose/Buttons.kt b/core/ui/src/main/java/org/signal/core/ui/compose/Buttons.kt
+index ca68f685f9f3111d51524d160d3203375350bb0c..185e619c1fbbfda5cf6552cb3dd0dc8de697d3a2 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/compose/Buttons.kt
++++ b/core/ui/src/main/java/org/signal/core/ui/compose/Buttons.kt
+@@ -28,6 +28,7 @@ import androidx.compose.material3.ButtonElevation
+ import androidx.compose.material3.FilledTonalButton
+ import androidx.compose.material3.FilledTonalIconButton
+ import androidx.compose.material3.Icon
++import androidx.compose.material3.IconButtonDefaults
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.ProvideTextStyle
+ import androidx.compose.material3.Surface
+@@ -44,7 +45,9 @@ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.dp
++import org.signal.core.ui.R
+ import org.signal.core.ui.compose.theme.SignalTheme
++import org.signal.core.ui.compose.theme.colorAttribute
+ 
+ object Buttons {
+ 
+@@ -96,7 +99,10 @@ object Buttons {
+     modifier: Modifier = Modifier,
+     enabled: Boolean = true,
+     shape: Shape = ButtonDefaults.filledTonalShape,
+-    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
++    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
++      containerColor = colorAttribute(R.attr.extended_action_button_container_color),
++      contentColor = colorAttribute(R.attr.extended_action_button_icon_color)
++    ),
+     elevation: ButtonElevation? = ButtonDefaults.filledTonalButtonElevation(),
+     border: BorderStroke? = null,
+     contentPadding: PaddingValues = largeButtonContentPadding,
+@@ -123,7 +129,10 @@ object Buttons {
+     modifier: Modifier = Modifier,
+     enabled: Boolean = true,
+     shape: Shape = ButtonDefaults.filledTonalShape,
+-    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
++    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
++      containerColor = colorAttribute(R.attr.extended_action_button_container_color),
++      contentColor = colorAttribute(R.attr.extended_action_button_icon_color)
++    ),
+     elevation: ButtonElevation? = ButtonDefaults.filledTonalButtonElevation(),
+     border: BorderStroke? = null,
+     contentPadding: PaddingValues = mediumButtonContentPadding,
+@@ -150,10 +159,11 @@ object Buttons {
+     modifier: Modifier = Modifier,
+     enabled: Boolean = true,
+     shape: Shape = ButtonDefaults.shape,
+-    colors: ButtonColors = ButtonDefaults.buttonColors(
+-      containerColor = SignalTheme.colors.colorSurface2,
+-      contentColor = MaterialTheme.colorScheme.onSurface
+-    ),
++    tonal: Boolean = false,
++    colors: ButtonColors = if (tonal) ButtonDefaults.filledTonalButtonColors(
++      containerColor = colorAttribute(R.attr.extended_action_button_container_color),
++      contentColor = colorAttribute(R.attr.extended_action_button_icon_color)
++    ) else ButtonDefaults.buttonColors(),
+     elevation: ButtonElevation? = ButtonDefaults.buttonElevation(),
+     border: BorderStroke? = null,
+     contentPadding: PaddingValues = smallButtonContentPadding,
+@@ -219,7 +229,7 @@ object Buttons {
+         painter = painterResource(iconResId),
+         contentDescription = null,
+         modifier = Modifier.padding(16.dp),
+-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSecondaryContainer)
++        colorFilter = ColorFilter.tint(colorAttribute(R.attr.extended_action_button_icon_color))
+       )
+     }
+   }
+@@ -240,6 +250,10 @@ object Buttons {
+         onClick = onClick,
+         shape = RoundedCornerShape(18.dp),
+         modifier = Modifier.size(56.dp),
++        colors = IconButtonDefaults.filledTonalIconButtonColors(
++          containerColor = colorAttribute(R.attr.extended_action_button_container_color),
++          contentColor = colorAttribute(R.attr.extended_action_button_icon_color)
++        ),
+         enabled = enabled,
+         content = imageContent
+       )
+@@ -384,10 +398,12 @@ private fun SmallButtonPreview() {
+ @Composable
+ private fun SmallButtonSample(
+   darkMode: Boolean,
++  tonal: Boolean = false,
+   enabled: Boolean
+ ) {
+   SampleBox(darkMode) {
+     Buttons.Small(
++      tonal = tonal,
+       onClick = {},
+       enabled = enabled
+     ) {
+@@ -396,6 +412,22 @@ private fun SmallButtonSample(
+   }
+ }
+ 
++@Preview(name = "Buttons.SmallButton(tonal = true)")
++@Composable
++private fun SmallTonalButtonPreview() {
++  Column {
++    Row {
++      SmallButtonSample(darkMode = false, enabled = true, tonal = true)
++      SmallButtonSample(darkMode = true, enabled = true, tonal = true)
++    }
++
++    Row {
++      SmallButtonSample(darkMode = false, enabled = false, tonal = true)
++      SmallButtonSample(darkMode = true, enabled = false, tonal = true)
++    }
++  }
++}
++
+ @Preview(name = "Buttons.ActionButton")
+ @Composable
+ private fun ActionButtonPreview() {
+@@ -425,7 +457,6 @@ private fun ActionButtonSample(
+     ) {
+       Icon(
+         painter = painterResource(android.R.drawable.ic_menu_camera),
+-        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+         contentDescription = null
+       )
+     }
+diff --git a/core/ui/src/main/java/org/signal/core/ui/compose/DropdownMenus.kt b/core/ui/src/main/java/org/signal/core/ui/compose/DropdownMenus.kt
+index 0cfd454a6da180a5fade6831f3e9d90a491e2404..9ed299aed349c0b58105c8741e40883c4c8c9a17 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/compose/DropdownMenus.kt
++++ b/core/ui/src/main/java/org/signal/core/ui/compose/DropdownMenus.kt
+@@ -107,6 +107,7 @@ object DropdownMenus {
+   @Composable
+   fun Item(
+     modifier: Modifier = Modifier,
++    enabled: Boolean = true,
+     contentPadding: PaddingValues = PaddingValues(horizontal = 16.dp),
+     @DrawableRes leadingIconResId: Int? = null,
+     leadingIconSpacing: Dp = 0.dp,
+@@ -133,6 +134,7 @@ object DropdownMenus {
+       },
+       colors = MenuDefaults.itemColors(leadingIconColor = MaterialTheme.colorScheme.onSurface),
+       onClick = onClick,
++      enabled = enabled,
+       modifier = modifier
+     )
+   }
+diff --git a/core/ui/src/main/java/org/signal/core/ui/compose/Rows.kt b/core/ui/src/main/java/org/signal/core/ui/compose/Rows.kt
+index 66f1bf40f516d622333747b02d3455782d63c851..35f12286077fbb1236d12c4ff42f4fed7934bef9 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/compose/Rows.kt
++++ b/core/ui/src/main/java/org/signal/core/ui/compose/Rows.kt
+@@ -159,7 +159,8 @@ object Rows {
+     onSelected: (String) -> Unit,
+     modifier: Modifier = Modifier,
+     enabled: Boolean = true,
+-    requireConfirmation: Boolean = false
++    requireConfirmation: Boolean = false,
++    trailingIcon: (@Composable RowScope.() -> Unit)? = null
+   ) {
+     RadioListRow(
+       text = { selectedIndex ->
+@@ -181,7 +182,8 @@ object Rows {
+       onSelected = onSelected,
+       modifier = modifier,
+       enabled = enabled,
+-      requireConfirmation = requireConfirmation
++      requireConfirmation = requireConfirmation,
++      trailingIcon = trailingIcon
+     )
+   }
+ 
+@@ -199,13 +201,15 @@ object Rows {
+     onSelected: (String) -> Unit,
+     modifier: Modifier = Modifier,
+     enabled: Boolean = true,
+-    requireConfirmation: Boolean = false
++    requireConfirmation: Boolean = false,
++    trailingIcon: (@Composable RowScope.() -> Unit)? = null
+   ) {
+     val selectedIndex = values.indexOf(selectedValue)
+     var displayDialog by remember { mutableStateOf(false) }
+ 
+     TextRow(
+       text = { text(selectedIndex) },
++      trailingIcon = trailingIcon,
+       enabled = enabled,
+       onClick = {
+         displayDialog = true
+@@ -526,6 +530,7 @@ object Rows {
+     text: @Composable RowScope.() -> Unit,
+     modifier: Modifier = Modifier,
+     icon: (@Composable RowScope.() -> Unit)? = null,
++    trailingIcon: (@Composable RowScope.() -> Unit)? = null,
+     onClick: (() -> Unit)? = null,
+     onLongClick: (() -> Unit)? = null,
+     onDisabledClick: (() -> Unit)? = null,
+@@ -551,11 +556,17 @@ object Rows {
+         .padding(defaultPadding()),
+       verticalAlignment = CenterVertically
+     ) {
+-      if (icon != null) {
+-        icon()
+-        Spacer(modifier = Modifier.width(24.dp))
++      Row(modifier = Modifier.weight(1f)) {
++        if (icon != null) {
++          icon()
++          Spacer(modifier = Modifier.width(24.dp))
++        }
++        text()
++      }
++      // MOLLY: Trailing icon aligned to the end
++      if (trailingIcon != null) {
++        trailingIcon()
+       }
+-      text()
+     }
+   }
+ 
+@@ -744,6 +755,9 @@ private fun RadioListRowPreview() {
+       labels = arrayOf("A", "B", "C"),
+       values = arrayOf("a", "b", "c"),
+       selectedValue = selectedValue,
++      trailingIcon = {
++        Icon(painterResource(android.R.drawable.ic_dialog_alert), contentDescription = null)
++      },
+       onSelected = {
+         selectedValue = it
+       }
+diff --git a/core/ui/src/main/java/org/signal/core/ui/compose/theme/SignalTheme.kt b/core/ui/src/main/java/org/signal/core/ui/compose/theme/SignalTheme.kt
+index 08b624188fb649abed27c3c13d1bd2141851c0fc..0f69d2e3a7989a866021f5ccb5c51ea9467fe02b 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/compose/theme/SignalTheme.kt
++++ b/core/ui/src/main/java/org/signal/core/ui/compose/theme/SignalTheme.kt
+@@ -1,21 +1,31 @@
+ package org.signal.core.ui.compose.theme
+ 
++import android.content.Context
+ import android.content.res.Configuration
++import android.os.Build
++import android.util.TypedValue
++import androidx.annotation.AttrRes
+ import androidx.compose.foundation.layout.Column
++import androidx.compose.material3.ColorScheme
+ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.Text
+ import androidx.compose.material3.Typography
+ import androidx.compose.material3.darkColorScheme
++import androidx.compose.material3.dynamicDarkColorScheme
++import androidx.compose.material3.dynamicLightColorScheme
+ import androidx.compose.material3.lightColorScheme
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.CompositionLocalProvider
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.platform.LocalConfiguration
++import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.text.font.FontFamily
+ import androidx.compose.ui.text.font.FontStyle
+ import androidx.compose.ui.tooling.preview.Preview
+ import androidx.compose.ui.unit.sp
+ import org.signal.core.ui.CoreUiDependencies
++import org.signal.core.ui.R
+ import org.signal.core.ui.compose.ProvideIncognitoKeyboard
+ 
+ private val typography = Typography().run {
+@@ -81,25 +91,40 @@ private val typography = Typography().run {
+ }
+ 
+ private val lightColorScheme = lightColorScheme(
+-  primary = Color(0xFF2C58C3),
+-  primaryContainer = Color(0xFFD2DFFB),
+-  secondary = Color(0xFF586071),
+-  secondaryContainer = Color(0xFFDCE5F9),
+-  surface = Color(0xFFFBFCFF),
+-  surfaceContainerLow = Color(0xFFF2F5F9),
+-  surfaceContainerHighest = Color(0xFFE7EBF3),
+-  surfaceVariant = Color(0xFFE7EBF3),
+-  background = Color(0xFFFBFCFF),
+-  error = Color(0xFFBA1B1B),
+-  errorContainer = Color(0xFFFFDAD4),
++  inversePrimary = Color(0xFFAA98FF),
++  surfaceDim = Color(0xFFDED6FF),
++  inverseSurface = Color(0xFF33276A),
++  surfaceBright = Color(0xFFF6F6FF),
++  surfaceContainerLowest = Color(0xFFF9F8FF),
++  surfaceContainerLow = Color(0xFFF3F0FF),
++  surfaceContainer = Color(0xFFEEEAFF),
++  surfaceContainerHigh = Color(0xFFEAE5FF),
++  surfaceContainerHighest = Color(0xFFE5DFFF),
++  inverseOnSurface = Color(0xFFF1EDF6),
++  outlineVariant = Color(0xFF9384E2),
++  onError = Color(0xFFFFFFFF),
++  onErrorContainer = Color(0xFF6D0028),
++  tertiary = Color(0xFF5A5379),
++  onTertiary = Color(0xFFFFFFFF),
++  tertiaryContainer = Color(0xFFD1C6FB),
++  onTertiaryContainer = Color(0xFF180D49),
++  primary = Color(0xFF5335DD),
++  primaryContainer = Color(0xFFC1B4FB),
++  secondary = Color(0xFFC5C1DD),
++  secondaryContainer = Color(0xFFE3DBF9),
++  surface = Color(0xFFF6F6FF),
++  surfaceVariant = Color(0xFFE7E6F2),
++  background = Color(0xFFF6F6FF),
++  error = Color(0xFFE00052),
++  errorContainer = Color(0xFFFDC7DB),
+   onPrimary = Color(0xFFFFFFFF),
+-  onPrimaryContainer = Color(0xFF051845),
++  onPrimaryContainer = Color(0xFF180D49),
+   onSecondary = Color(0xFFFFFFFF),
+-  onSecondaryContainer = Color(0xFF151D2C),
+-  onSurface = Color(0xFF1B1B1D),
+-  onSurfaceVariant = Color(0xFF545863),
+-  onBackground = Color(0xFF1B1D1D),
+-  outline = Color(0xFF808389)
++  onSecondaryContainer = Color(0xFF1E1835),
++  onSurface = Color(0xFF181719),
++  onSurfaceVariant = Color(0xFF585563),
++  onBackground = Color(0xFF171719),
++  outline = Color(0xFF82808A)
+ )
+ 
+ private val lightExtendedColors = ExtendedColors(
+@@ -107,11 +132,11 @@ private val lightExtendedColors = ExtendedColors(
+   neutralFill = Color(0x1A000000),
+   colorOnCustom = Color(0xFFFFFFFF),
+   colorOnCustomVariant = Color(0xB3FFFFFF),
+-  colorSurface1 = Color(0xFFF2F5F9),
+-  colorSurface2 = Color(0xFFEDF0F6),
+-  colorSurface3 = Color(0xFFE8ECF4),
+-  colorSurface4 = Color(0xFFE6EAF3),
+-  colorSurface5 = Color(0xFFE3E7F1),
++  colorSurface1 = Color(0xFFF3F0FF),
++  colorSurface2 = Color(0xFFEEEAFF),
++  colorSurface3 = Color(0xFFEAE5FF),
++  colorSurface4 = Color(0xFFE5DFFF),
++  colorSurface5 = Color(0xFFDED6FF),
+   colorSurfaceVariantFill = Color(0xCCFFFFFF),
+   colorTransparent1 = Color(0x14FFFFFF),
+   colorTransparent2 = Color(0x29FFFFFF),
+@@ -138,11 +163,11 @@ private val darkExtendedColors = ExtendedColors(
+   neutralFill = Color(0x33FFFFFF),
+   colorOnCustom = Color(0xFFFFFFFF),
+   colorOnCustomVariant = Color(0x18FFFFFF),
+-  colorSurface1 = Color(0xFF23242A),
+-  colorSurface2 = Color(0xFF272A31),
+-  colorSurface3 = Color(0xFF2C2F37),
+-  colorSurface4 = Color(0xFF2E3039),
+-  colorSurface5 = Color(0xFF31343E),
++  colorSurface1 = Color(0xFF181137),
++  colorSurface2 = Color(0xFF1E1645),
++  colorSurface3 = Color(0xFF231A4E),
++  colorSurface4 = Color(0xFF281E57),
++  colorSurface5 = Color(0xFF33276A),
+   colorSurfaceVariantFill = Color(0x33FFFFFF),
+   colorTransparent1 = Color(0x0AFFFFFF),
+   colorTransparent2 = Color(0x1FFFFFFF),
+@@ -165,56 +190,80 @@ private val darkExtendedColors = ExtendedColors(
+ )
+ 
+ private val darkColorScheme = darkColorScheme(
+-  primary = Color(0xFFB6C5FA),
+-  primaryContainer = Color(0xFF464B5C),
+-  secondary = Color(0xFFC1C6DD),
+-  secondaryContainer = Color(0xFF414659),
+-  surface = Color(0xFF1B1C1F),
+-  surfaceContainerLow = Color(0xFF23242A),
+-  surfaceContainerHighest = Color(0xFF303133),
+-  surfaceVariant = Color(0xFF303133),
+-  background = Color(0xFF1B1C1F),
+-  error = Color(0xFFFFB4A9),
+-  errorContainer = Color(0xFF930006),
+-  onPrimary = Color(0xFF1E2438),
+-  onPrimaryContainer = Color(0xFFDBE1FC),
+-  onSecondary = Color(0xFF2A3042),
+-  onSecondaryContainer = Color(0xFFDCE1F9),
+-  onSurface = Color(0xFFE2E1E5),
+-  onSurfaceVariant = Color(0xFFBEBFC5),
+-  onBackground = Color(0xFFE2E1E5),
+-  outline = Color(0xFF5C5E65)
++  inversePrimary = Color(0xFF5335DD),
++  surfaceBright = Color(0xFF33276A),
++  inverseSurface = Color(0xFFE5DFFF),
++  surfaceDim = Color(0xFF100E1F),
++  surfaceContainerLowest = Color(0xFF0C0919),
++  surfaceContainerLow = Color(0xFF181137),
++  surfaceContainer = Color(0xFF1E1645),
++  surfaceContainerHigh = Color(0xFF231A4E),
++  surfaceContainerHighest = Color(0xFF281E57),
++  inverseOnSurface = Color(0xFF31303D),
++  outlineVariant = Color(0xFF464257),
++  onError = Color(0xFF63012C),
++  onErrorContainer = Color(0xFFFFDAD6),
++  tertiary = Color(0xFFB3ABDA),
++  onTertiary = Color(0xFF36304F),
++  tertiaryContainer = Color(0xFF423290),
++  onTertiaryContainer = Color(0xFFEAE5FF),
++  primary = Color(0xFFAA98FF),
++  primaryContainer = Color(0xFF483B6A),
++  secondary = Color(0xFFCBC4DE),
++  secondaryContainer = Color(0xFF434159),
++  surface = Color(0xFF100E1F),
++  surfaceVariant = Color(0xFF302F33),
++  background = Color(0xFF100E1F),
++  error = Color(0xFFFE006E),
++  errorContainer = Color(0xFFA40449),
++  onPrimary = Color(0xFF1E1B38),
++  onPrimaryContainer = Color(0xFFDDDCFC),
++  onSecondary = Color(0xFF2E2A42),
++  onSecondaryContainer = Color(0xFFE3DCF9),
++  onSurface = Color(0xFFE3E1E6),
++  onSurfaceVariant = Color(0xFFBEBCC4),
++  onBackground = Color(0xFFE3E1E6),
++  outline = Color(0xFF5D5D66)
+ )
+ 
+-private val lightSnackbarColors = SnackbarColors(
+-  color = darkColorScheme.surface,
+-  contentColor = darkColorScheme.onSurface,
+-  actionColor = darkColorScheme.primary,
+-  actionContentColor = darkColorScheme.primary,
+-  dismissActionContentColor = darkColorScheme.onSurface
+-)
+-
+-private val darkSnackbarColors = SnackbarColors(
+-  color = darkColorScheme.surfaceVariant,
+-  contentColor = darkColorScheme.onSurfaceVariant,
+-  actionColor = darkColorScheme.primary,
+-  actionContentColor = darkColorScheme.primary,
+-  dismissActionContentColor = darkColorScheme.onSurfaceVariant
+-)
++// MOLLY: Replaced by snackbarColors()
+ 
+ @Composable
+ fun SignalTheme(
+   isDarkMode: Boolean = LocalConfiguration.current.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES,
+   incognitoKeyboardEnabled: Boolean = CoreUiDependencies.isIncognitoKeyboardEnabled,
++  useDynamicColors: Boolean? = null,
+   content: @Composable () -> Unit
+ ) {
+-  val extendedColors = if (isDarkMode) darkExtendedColors else lightExtendedColors
+-  val snackbarColors = if (isDarkMode) darkSnackbarColors else lightSnackbarColors
++  val context = LocalContext.current
++  val maySupportDynamicColor = Build.VERSION.SDK_INT >= 31
++  val dynamicColors = maySupportDynamicColor && (useDynamicColors ?: isThemeUsingDynamicColors(context))
++
++  // MOLLY: Apply dynamic color if supported and enabled:
++  // - API 34+: Use Compose's built-in dynamic scheme (matches system Material You).
++  // - API 31–33: Use mapped color resources to approximate system dynamic palette, avoiding Compose's more saturated fallback.
++  // - Otherwise: Use app light/dark color schemes.
++  val colorScheme = when {
++    dynamicColors -> {
++      if (Build.VERSION.SDK_INT >= 34) {
++        if (isDarkMode) dynamicDarkColorScheme(context)
++        else dynamicLightColorScheme(context)
++      } else {
++        if (isDarkMode) systemAlignedDarkColorScheme()
++        else systemAlignedLightColorScheme()
++      }
++    }
++    isDarkMode -> darkColorScheme
++    else -> lightColorScheme
++  }
++
++  val extendedColors = extendedColors(colorScheme, isDarkMode = isDarkMode, isDynamic = dynamicColors)
++  val snackbarColors = snackbarColors(colorScheme, isDarkMode = isDarkMode, isDynamic = dynamicColors)
+ 
+   ProvideIncognitoKeyboard(enabled = incognitoKeyboardEnabled) {
+     CompositionLocalProvider(LocalExtendedColors provides extendedColors, LocalSnackbarColors provides snackbarColors) {
+       MaterialTheme(
+-        colorScheme = if (isDarkMode) darkColorScheme else lightColorScheme,
++        colorScheme = colorScheme,
+         typography = typography,
+         content = content
+       )
+@@ -222,6 +271,128 @@ fun SignalTheme(
+   }
+ }
+ 
++@Composable
++private fun systemAlignedLightColorScheme() = lightColorScheme(
++  primary = colorResource(R.color.dynamic_primary_light),
++  onPrimary = colorResource(R.color.dynamic_on_primary_light),
++  primaryContainer = colorResource(R.color.dynamic_primary_container_light),
++  onPrimaryContainer = colorResource(R.color.dynamic_on_primary_container_light),
++  inversePrimary = colorResource(R.color.dynamic_primary_inverse_light),
++  secondary = colorResource(R.color.dynamic_secondary_light),
++  onSecondary = colorResource(R.color.dynamic_on_secondary_light),
++  secondaryContainer = colorResource(R.color.dynamic_secondary_container_light),
++  onSecondaryContainer = colorResource(R.color.dynamic_on_secondary_container_light),
++  tertiary = colorResource(R.color.dynamic_tertiary_light),
++  onTertiary = colorResource(R.color.dynamic_on_tertiary_light),
++  tertiaryContainer = colorResource(R.color.dynamic_tertiary_container_light),
++  onTertiaryContainer = colorResource(R.color.dynamic_on_tertiary_container_light),
++  background = colorResource(R.color.dynamic_background_light),
++  onBackground = colorResource(R.color.dynamic_on_background_light),
++  surface = colorResource(R.color.dynamic_surface_light),
++  onSurface = colorResource(R.color.dynamic_on_surface_light),
++  surfaceVariant = colorResource(R.color.dynamic_surface_variant_light),
++  onSurfaceVariant = colorResource(R.color.dynamic_on_surface_variant_light),
++  inverseSurface = colorResource(R.color.dynamic_surface_inverse_light),
++  inverseOnSurface = colorResource(R.color.dynamic_on_surface_inverse_light),
++  error = colorResource(R.color.dynamic_error_light),
++  onError = colorResource(R.color.dynamic_on_error_light),
++  errorContainer = colorResource(R.color.dynamic_error_container_light),
++  onErrorContainer = colorResource(R.color.dynamic_on_error_container_light),
++  outline = colorResource(R.color.dynamic_outline_light),
++  outlineVariant = colorResource(R.color.dynamic_outline_variant_light),
++  surfaceBright = colorResource(R.color.dynamic_surface_bright_light),
++  surfaceContainer = colorResource(R.color.dynamic_surface_container_light),
++  surfaceContainerHigh = colorResource(R.color.dynamic_surface_container_high_light),
++  surfaceContainerHighest = colorResource(R.color.dynamic_surface_container_highest_light),
++  surfaceContainerLow = colorResource(R.color.dynamic_surface_container_low_light),
++  surfaceContainerLowest = colorResource(R.color.dynamic_surface_container_lowest_light),
++  surfaceDim = colorResource(R.color.dynamic_surface_dim_light),
++)
++
++@Composable
++private fun systemAlignedDarkColorScheme() = darkColorScheme(
++  primary = colorResource(R.color.dynamic_primary_dark),
++  onPrimary = colorResource(R.color.dynamic_on_primary_dark),
++  primaryContainer = colorResource(R.color.dynamic_primary_container_dark),
++  onPrimaryContainer = colorResource(R.color.dynamic_on_primary_container_dark),
++  inversePrimary = colorResource(R.color.dynamic_primary_inverse_dark),
++  secondary = colorResource(R.color.dynamic_secondary_dark),
++  onSecondary = colorResource(R.color.dynamic_on_secondary_dark),
++  secondaryContainer = colorResource(R.color.dynamic_secondary_container_dark),
++  onSecondaryContainer = colorResource(R.color.dynamic_on_secondary_container_dark),
++  tertiary = colorResource(R.color.dynamic_tertiary_dark),
++  onTertiary = colorResource(R.color.dynamic_on_tertiary_dark),
++  tertiaryContainer = colorResource(R.color.dynamic_tertiary_container_dark),
++  onTertiaryContainer = colorResource(R.color.dynamic_on_tertiary_container_dark),
++  background = colorResource(R.color.dynamic_background_dark),
++  onBackground = colorResource(R.color.dynamic_on_background_dark),
++  surface = colorResource(R.color.dynamic_surface_dark),
++  onSurface = colorResource(R.color.dynamic_on_surface_dark),
++  surfaceVariant = colorResource(R.color.dynamic_surface_variant_dark),
++  onSurfaceVariant = colorResource(R.color.dynamic_on_surface_variant_dark),
++  inverseSurface = colorResource(R.color.dynamic_surface_inverse_dark),
++  inverseOnSurface = colorResource(R.color.dynamic_on_surface_inverse_dark),
++  error = colorResource(R.color.dynamic_error_dark),
++  onError = colorResource(R.color.dynamic_on_error_dark),
++  errorContainer = colorResource(R.color.dynamic_error_container_dark),
++  onErrorContainer = colorResource(R.color.dynamic_on_error_container_dark),
++  outline = colorResource(R.color.dynamic_outline_dark),
++  outlineVariant = colorResource(R.color.dynamic_outline_variant_dark),
++  surfaceBright = colorResource(R.color.dynamic_surface_bright_dark),
++  surfaceContainer = colorResource(R.color.dynamic_surface_container_dark),
++  surfaceContainerHigh = colorResource(R.color.dynamic_surface_container_high_dark),
++  surfaceContainerHighest = colorResource(R.color.dynamic_surface_container_highest_dark),
++  surfaceContainerLow = colorResource(R.color.dynamic_surface_container_low_dark),
++  surfaceContainerLowest = colorResource(R.color.dynamic_surface_container_lowest_dark),
++  surfaceDim = colorResource(R.color.dynamic_surface_dim_dark),
++)
++
++private fun isThemeUsingDynamicColors(context: Context): Boolean {
++  val theme = context.theme
++  val typedValue = TypedValue()
++  return theme.resolveAttribute(R.attr.dynamic_colors, typedValue, false)
++    && typedValue.data != 0
++}
++
++private fun extendedColors(colorScheme: ColorScheme, isDarkMode: Boolean, isDynamic: Boolean): ExtendedColors {
++  return when {
++    isDynamic -> (if (isDarkMode) darkExtendedColors else lightExtendedColors).copy(
++      colorSurface1 = colorScheme.surfaceContainerLow,
++      colorSurface2 = colorScheme.surfaceContainer,
++      colorSurface3 = colorScheme.surfaceContainerHigh,
++      colorSurface4 = colorScheme.surfaceContainerHighest,
++      colorSurface5 = if (isDarkMode) colorScheme.surfaceBright else colorScheme.surfaceDim
++    )
++
++    isDarkMode -> darkExtendedColors
++    else -> lightExtendedColors
++  }
++}
++
++private fun snackbarColors(colorScheme: ColorScheme, isDarkMode: Boolean, isDynamic: Boolean): SnackbarColors {
++  // val surface = if (!isDynamic) colorScheme.surfaceVariant else colorScheme.surface
++  // val onSurface = if (!isDynamic) colorScheme.onSurfaceVariant else colorScheme.onSurface
++
++  return SnackbarColors(
++    color = colorScheme.inverseSurface,
++    contentColor = colorScheme.inverseOnSurface,
++    actionColor = colorScheme.primary,
++    actionContentColor = colorScheme.primary,
++    dismissActionContentColor = colorScheme.inverseOnSurface
++  )
++}
++
++@Composable
++fun colorAttribute(@AttrRes id: Int): Color {
++  val theme = LocalContext.current.theme
++  val typedValue = TypedValue()
++  return if (theme.resolveAttribute(id, typedValue, true) && typedValue.resourceId != 0) {
++    colorResource(typedValue.resourceId)
++  } else {
++    Color.Unspecified
++  }
++}
++
+ /**
+  * Applies the light color scheme to [content] regardless of the ambient theme, leaving typography and shapes untouched.
+  */
+diff --git a/core/ui/src/main/java/org/signal/core/ui/fonts/SignalSymbols.kt b/core/ui/src/main/java/org/signal/core/ui/fonts/SignalSymbols.kt
+index 69daa45c4ea26ee8d9a2d20f01178b48bbfc28a5..40a8e26b26e96230b3b0f920425ff243822c505a 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/fonts/SignalSymbols.kt
++++ b/core/ui/src/main/java/org/signal/core/ui/fonts/SignalSymbols.kt
+@@ -15,7 +15,7 @@ import android.text.style.AbsoluteSizeSpan
+ import android.text.style.ForegroundColorSpan
+ import android.text.style.MetricAffectingSpan
+ import android.view.View
+-import androidx.annotation.ColorRes
++import androidx.annotation.ColorInt
+ import androidx.compose.runtime.Composable
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.platform.LocalContext
+@@ -26,7 +26,6 @@ import androidx.compose.ui.text.font.FontFamily
+ import androidx.compose.ui.text.style.BaselineShift
+ import androidx.compose.ui.text.withStyle
+ import androidx.compose.ui.unit.TextUnit
+-import androidx.core.content.ContextCompat
+ import androidx.core.text.buildSpannedString
+ import org.signal.core.util.BidiUtil
+ 
+@@ -219,7 +218,7 @@ object SignalSymbols {
+     context: Context,
+     weight: Weight,
+     glyph: Glyph,
+-    @ColorRes colorRes: Int = -1
++    @ColorInt color: Int? = null,
+   ): CharSequence {
+     val typeface = getTypeface(context, weight)
+     val span = CustomTypefaceSpan(typeface)
+@@ -227,8 +226,8 @@ object SignalSymbols {
+     val text = SpannableStringBuilder(glyph.unicode.toString())
+     text.setSpan(span, 0, text.length, 0)
+ 
+-    return if (colorRes != -1) {
+-      colorSpan(ContextCompat.getColor(context, colorRes), text)
++    return if (color != null) {
++      colorSpan(color, text)
+     } else {
+       text
+     }
+diff --git a/core/ui/src/main/java/org/signal/core/ui/util/SpanUtil.java b/core/ui/src/main/java/org/signal/core/ui/util/SpanUtil.java
+index 5d913b38fabb00e52bc1c4c13c0f07f5527a81dc..67315b5802764eecfcb3d1cb4ffe4fd9549abaf6 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/util/SpanUtil.java
++++ b/core/ui/src/main/java/org/signal/core/ui/util/SpanUtil.java
+@@ -34,7 +34,6 @@ import androidx.annotation.ColorInt;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.StringRes;
+ import androidx.annotation.StyleRes;
+-import androidx.core.content.ContextCompat;
+ 
+ import org.signal.core.ui.R;
+ import org.signal.core.util.DimensionUnit;
+@@ -111,7 +110,7 @@ public final class SpanUtil {
+     return spannable;
+   }
+ 
+-  public static CharSequence color(int color, CharSequence sequence) {
++  public static CharSequence color(@ColorInt int color, CharSequence sequence) {
+     SpannableString spannable = new SpannableString(sequence);
+     spannable.setSpan(new ForegroundColorSpan(color), 0, sequence.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+     return spannable;
+@@ -199,7 +198,7 @@ public final class SpanUtil {
+   }
+ 
+   public static Spannable clickSubstring(@NonNull Context context, @StringRes int mainString, @StringRes int clickableString, @NonNull View.OnClickListener clickListener) {
+-    return clickSubstring(context, mainString, clickableString, clickListener, false, R.color.signal_accent_primary);
++    return clickSubstring(context, mainString, clickableString, clickListener, false, R.attr.signal_accent_primary);
+   }
+ 
+   /**
+@@ -217,7 +216,7 @@ public final class SpanUtil {
+    *
+    * Can optionally configure the color & if it's underlined. Default is blue with no underline.
+    */
+-  public static Spannable clickSubstring(@NonNull Context context, @StringRes int mainString, @StringRes int clickableString, @NonNull View.OnClickListener clickListener, boolean shouldUnderline, int linkColor) {
++  public static Spannable clickSubstring(@NonNull Context context, @StringRes int mainString, @StringRes int clickableString, @NonNull View.OnClickListener clickListener, boolean shouldUnderline, int linkColorAttr) {
+     String main      = context.getString(mainString, SPAN_PLACE_HOLDER);
+     String clickable = context.getString(clickableString);
+ 
+@@ -236,7 +235,7 @@ public final class SpanUtil {
+       public void updateDrawState(@NonNull TextPaint ds) {
+         super.updateDrawState(ds);
+         ds.setUnderlineText(shouldUnderline);
+-        ds.setColor(context.getResources().getColor(linkColor));
++        ds.setColor(ThemeUtil.getThemedColor(context, linkColorAttr));
+       }
+     }, start, start + clickable.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+ 
+@@ -250,7 +249,7 @@ public final class SpanUtil {
+     return clickSubstring(fullString,
+                           substring,
+                           clickListener,
+-                          ContextCompat.getColor(context, R.color.signal_accent_primary));
++                          ThemeUtil.getThemedColor(context, R.attr.signal_accent_primary));
+   }
+ 
+   public static CharSequence clickSubstring(@NonNull CharSequence fullString,
+diff --git a/core/ui/src/testFixtures/java/org/signal/core/ui/CoreUiDependenciesRule.kt b/core/ui/src/testFixtures/java/org/signal/core/ui/CoreUiDependenciesRule.kt
+index 6eb8c32b347ce4d60a629c765af1566beaa090cc..846ad96aac8e84a43c496b9f5983ac5299f5e6a2 100644
+--- a/core/ui/src/testFixtures/java/org/signal/core/ui/CoreUiDependenciesRule.kt
++++ b/core/ui/src/testFixtures/java/org/signal/core/ui/CoreUiDependenciesRule.kt
+@@ -23,7 +23,7 @@ class CoreUiDependenciesRule(
+   private class Provider(
+     val isIncognitoKeyboardEnabled: Boolean
+   ) : CoreUiDependencies.Provider {
+-    override fun providePackageId(): String = "org.thoughtcrime.securesms"
++    override fun provideBackupBaseDirName(): String = "Test"
+     override fun provideIsIncognitoKeyboardEnabled(): Boolean = isIncognitoKeyboardEnabled
+     override fun provideIsScreenSecurityEnabled(): Boolean = false
+   }
+
+--------------false--
+
+

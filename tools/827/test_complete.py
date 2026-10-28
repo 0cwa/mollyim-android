@@ -91,6 +91,161 @@ class CompleteTests(unittest.TestCase):
             before = exported
         return root
 
+    def make_port_source(self):
+        """Create a real two-parent port with carryovers, adaptations and absorption."""
+        origin_base, origin_target = self.base, self.target
+        self.git('checkout', '--detach', '-q', origin_base)
+        # Mode-only upstream changes must prevent a false carryover classification.
+        (self.repo / 'existing.txt').chmod(0o755)
+        (self.repo / 'binary.bin').write_bytes(b'\0upstream\xfe')
+        (self.repo / 'new.txt').write_text('target whitespace retained  \n')
+        (self.repo / 'upstream-only.txt').write_text('new upstream path pruned by port\n')
+        self.git('add', '.')
+        self.git('commit', '-qm', 'New upstream')
+        new_base = self.git('rev-parse', 'HEAD')
+        self.git('checkout', '--detach', '-q', origin_target)
+        # An unchanged base does not make a changed port endpoint a carryover.
+        (self.repo / self.odd_path).unlink()
+        (self.repo / self.odd_path).symlink_to('existing.txt')
+        appearance = self.repo / 'core/ui/ported-theme.kt'
+        appearance.parent.mkdir(parents=True)
+        appearance.write_text('new port integration\n')
+        self.git('add', '.')
+        tree = self.git('write-tree')
+        target = self.git('commit-tree', tree, '-p', origin_target, '-p', new_base,
+                          '-m', 'Port Molly to new Signal')
+        self.git('checkout', '--detach', '-q', target)
+        return {'base': new_base, 'target': target, 'upstream_merge': target,
+                'origin_base': origin_base, 'origin_target': origin_target}
+
+    def test_port_batches_classify_whole_entries_and_preserve_caller_state(self):
+        source = self.make_port_source()
+        expected = {
+            b'delete.txt': 'carryover', b'mode.sh': 'carryover', b'link': 'carryover',
+            b'existing.txt': 'adapted', b'binary.bin': 'adapted',
+            os.fsencode(self.odd_path): 'adapted', b'upstream-only.txt': 'adapted',
+            b'core/ui/ported-theme.kt': 'adapted',
+        }
+        actual = verify_complete.origin_categories(
+            self.repo, source['base'], source['target'], source['origin_base'], source['origin_target'])
+        self.assertEqual(actual, expected)
+        self.assertNotIn(b'new.txt', actual)  # Already absorbed by the new upstream.
+        (self.repo / 'existing.txt').write_text('caller staged state\n')
+        self.git('add', 'existing.txt')
+        (self.repo / 'existing.txt').write_text('caller unstaged state\n')
+        original_index = (self.repo / '.git/index').read_bytes()
+        original_status = self.git('status', '--porcelain=v1', '-z', binary=True)
+        caller_index = self.home / 'port-caller-index'
+        caller_index.write_bytes(b'caller-owned bytes')
+        outputs = [self.home / 'port-one', self.home / 'port-two']
+        overrides = {'GIT_DIR': str(self.repo / '.git'), 'GIT_WORK_TREE': str(self.repo),
+                     'GIT_INDEX_FILE': str(caller_index), 'GIT_COMMON_DIR': str(self.repo / '.git'),
+                     'GIT_OBJECT_DIRECTORY': str(self.repo / '.git/objects')}
+        with patch.dict(os.environ, overrides), patch.object(export_complete, 'MAX_BATCH_PATHS', 2):
+            environment = dict(os.environ)
+            exported = export_complete.export(self.repo, output_path=outputs[0], **source)
+            export_complete.export(self.repo, output_path=outputs[1], **source)
+            result = verify_complete.verify(outputs[0], self.repo)
+            self.assertEqual(dict(os.environ), environment)
+        snapshots = [{path.relative_to(root).as_posix(): path.read_bytes()
+                      for path in root.rglob('*') if path.is_file()} for root in outputs]
+        self.assertEqual(snapshots[0], snapshots[1])
+        self.assertEqual(exported['changed_paths'], 8)
+        self.assertEqual(exported['patch_count'], 5)
+        self.assertEqual(exported['groups']['build-and-release']['partitions'], {
+            'carryover': {'paths': 3, 'patches': 2}, 'adapted': {'paths': 4, 'patches': 2}})
+        self.assertEqual(result['features']['appearance']['partitions'], {
+            'carryover': {'changed_paths': 0, 'patches': 0},
+            'adapted': {'changed_paths': 1, 'patches': 1}})
+        self.assertEqual(result['origin_target'], source['origin_target'])
+        self.assertEqual([entry['tree'] for entry in result['replays']],
+                         [self.git('rev-parse', source['target'] + '^{tree}')] * 2)
+        data = forest.Forest(outputs[0])
+        self.assertEqual(data.features['build-and-release'].patches, (
+            'build-and-release/0001-carryover.patch', 'build-and-release/0002-carryover.patch',
+            'build-and-release/0003-adapted.patch', 'build-and-release/0004-adapted.patch'))
+        self.assertTrue(all(record['source_commit_shas'] == [source['target']]
+                            for record in data.metadata.values()))
+        self.assertEqual(self.git('rev-parse', 'HEAD'), source['target'])
+        self.assertEqual((self.repo / '.git/index').read_bytes(), original_index)
+        self.assertEqual(self.git('status', '--porcelain=v1', '-z', binary=True), original_status)
+        self.assertEqual(caller_index.read_bytes(), b'caller-owned bytes')
+
+    def test_port_category_cannot_be_relabelled_even_when_target_tree_matches(self):
+        source = self.make_port_source()
+        root = self.home / 'mislabelled-port'
+        export_complete.export(self.repo, output_path=root, **source)
+        feature = root / 'appearance'
+        original = feature / '0001-adapted.patch'
+        (feature / '0001-carryover.patch').write_bytes(
+            original.read_bytes().replace(b'Port-Category: adapted', b'Port-Category: carryover'))
+        original.unlink()
+        (feature / 'series').write_text('0001-carryover.patch\n')
+        with self.assertRaisesRegex(forest.ForestError, 'carryover classification does not match'):
+            verify_complete.verify(root, self.repo)
+
+    def test_port_pins_and_trailers_are_required_and_must_agree(self):
+        source = self.make_port_source()
+        root = self.home / 'provenance-port'
+        export_complete.export(self.repo, output_path=root, **source)
+        for names in (('origin-base',), ('origin-base', 'origin-target')):
+            with self.subTest(missing=names):
+                saved = {name: (root / name).read_bytes() for name in names}
+                for name in names:
+                    (root / name).unlink()
+                with self.assertRaisesRegex(forest.ForestError, 'origin-base and origin-target'):
+                    verify_complete.verify(root, self.repo)
+                for name, contents in saved.items():
+                    (root / name).write_bytes(contents)
+        mailbox = root / 'appearance/0001-adapted.patch'
+        contents = mailbox.read_bytes()
+        mailbox.write_bytes(contents.replace(
+            f'Origin-Target: {source["origin_target"]}'.encode(),
+            f'Origin-Target: {source["target"]}'.encode()))
+        with self.assertRaisesRegex(forest.ForestError, 'Origin-Target must match'):
+            verify_complete.verify(root, self.repo)
+        mailbox.write_bytes(contents)
+        (root / 'origin-target').write_text(self.target_tree + '\n')
+        with self.assertRaisesRegex(forest.ForestError, 'origin-target must resolve to a commit'):
+            verify_complete.verify(root, self.repo)
+
+    def test_port_origin_validation_precedes_output_creation(self):
+        source = self.make_port_source()
+        output = self.home / 'invalid-origin-port'
+        for missing in ('origin_base', 'origin_target'):
+            args = dict(source)
+            del args[missing]
+            with self.assertRaisesRegex(forest.ForestError, 'must be supplied together'):
+                export_complete.export(self.repo, output_path=output, **args)
+            self.assertFalse(output.exists())
+        unrelated = self.git('commit-tree', self.target_tree, '-m', 'Unrelated source')
+        args = dict(source, origin_target=unrelated)
+        with self.assertRaisesRegex(forest.ForestError, 'origin-base must be an ancestor'):
+            export_complete.export(self.repo, output_path=output, **args)
+        self.assertFalse(output.exists())
+
+    def test_port_path_cannot_be_split_between_mailboxes(self):
+        source = self.make_port_source()
+        root = self.home / 'split-port'
+        export_complete.export(self.repo, output_path=root, **source)
+        name = 'core/ui/ported-theme.kt'
+        final_contents = (self.repo / name).read_bytes()
+        self.git('checkout', '--detach', '-q', source['base'])
+        path = self.repo / name
+        path.parent.mkdir(parents=True, exist_ok=True)
+        message = (f'Port intermediate\n\nSource-Commit: {source["target"]}\n'
+                   f'Origin-Base: {source["origin_base"]}\n'
+                   f'Origin-Target: {source["origin_target"]}\nPort-Category: adapted')
+        for number, contents in enumerate((b'intermediate port state\n', final_contents), start=1):
+            path.write_bytes(contents)
+            self.git('add', name)
+            self.git('commit', '-qm', message)
+            (root / f'appearance/{number:04d}-adapted.patch').write_bytes(
+                self.git('format-patch', '--binary', '--full-index', '--stdout', '-1', 'HEAD', binary=True))
+        (root / 'appearance/series').write_text('0001-adapted.patch\n0002-adapted.patch\n')
+        with self.assertRaisesRegex(forest.ForestError, 'port path belongs to multiple mailboxes'):
+            verify_complete.verify(root, self.repo)
+
     def test_exact_tree_covers_all_change_types_and_preserves_source(self):
         root = self.make_forest()
         (self.repo / 'existing.txt').write_text('local staged change\n')

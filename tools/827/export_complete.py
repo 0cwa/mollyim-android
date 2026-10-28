@@ -14,6 +14,7 @@ import sys
 import tempfile
 
 from forest import Forest, ForestError, SHA, clean_git_env
+from verify_complete import PORT_CATEGORIES, origin_categories, validate_origin
 
 
 MAX_BATCH_PATHS = 100
@@ -252,10 +253,26 @@ def diff_batches(repo, base, target, paths):
         yield from split(paths[start:start + MAX_BATCH_PATHS])
 
 
-def export(repo, base, target, upstream_merge, output_path):
+def export_batches(repo, base, target, paths, categories):
+    """Keep legacy batches unchanged; optional port batches never mix categories."""
+    if categories is None:
+        for batch, difference in diff_batches(repo, base, target, paths):
+            yield None, batch, difference
+    else:
+        for category in PORT_CATEGORIES:
+            selected = [path for path in paths if categories[os.fsencode(path)] == category]
+            for batch, difference in diff_batches(repo, base, target, selected):
+                yield category, batch, difference
+
+
+def export(repo, base, target, upstream_merge, output_path, *, origin_base=None, origin_target=None):
     """Build synthetic commit objects and mailboxes using only a private index."""
     repo = Path(repo).resolve()
     target_tree = validate_source(repo, base, target, upstream_merge)
+    categories = None
+    if origin_base is not None or origin_target is not None:
+        validate_origin(repo, base, target, origin_base, origin_target)
+        categories = origin_categories(repo, base, target, origin_base, origin_target)
     changed = git(repo, 'diff', '--no-renames', '--name-only', '-z', base, target)
     paths = [os.fsdecode(path) for path in sorted(changed.split(b'\0')) if path]
     if not paths:
@@ -276,9 +293,14 @@ def export(repo, base, target, upstream_merge, output_path):
     output = new_output(output_path)
     for filename, revision in (('base', base), ('target', target), ('upstream-merge', upstream_merge)):
         (output / filename).write_text(revision + '\n', encoding='utf-8')
+    if categories is not None:
+        (output / 'origin-base').write_text(origin_base + '\n', encoding='utf-8')
+        (output / 'origin-target').write_text(origin_target + '\n', encoding='utf-8')
     summary = {'status': 'PASS', 'base': base, 'target': target, 'upstream_merge': upstream_merge,
                'target_tree': target_tree, 'changed_paths': len(paths), 'patch_count': 0,
                'groups': {}, 'output': str(output)}
+    if categories is not None:
+        summary.update(origin_base=origin_base, origin_target=origin_target)
     parent = base
     with tempfile.TemporaryDirectory(prefix='molly-complete-export-') as temp:
         index_file = Path(temp) / 'index'
@@ -290,14 +312,43 @@ def export(repo, base, target, upstream_merge, output_path):
                 (directory / 'depends').write_text('\n'.join(dependencies[group]) + '\n', encoding='utf-8')
             record = {'paths': len(groups[group]), 'patches': 0, 'mailbox_bytes': 0,
                       'oversized_single_paths': []}
-            for number, (batch, difference) in enumerate(diff_batches(repo, base, target, groups[group]), start=1):
+            if categories is not None:
+                record['partitions'] = {category: {'paths': 0, 'patches': 0}
+                                        for category in PORT_CATEGORIES}
+            batches = export_batches(repo, base, target, groups[group], categories)
+            for number, (category, batch, difference) in enumerate(batches, start=1):
                 if number > 9999:
                     raise ExportError(f'{group}: too many batches for four-digit series names')
                 git(repo, 'apply', '--cached', '--binary', '--whitespace=nowarn',
                     data=difference, index_file=index_file)
                 tree = git(repo, 'write-tree', index_file=index_file).decode().strip()
+                partition_name = f' {category}' if category is not None else ''
+                origin_note = ''
+                origin_trailers = ''
+                if category is not None:
+                    if category == 'carryover':
+                        origin_note = (
+                            'For every path in this batch, the new base entry equals the origin\n'
+                            'base entry, and the port target entry equals the origin target entry.\n'
+                        )
+                    else:
+                        origin_note = (
+                            'For every path in this batch, at least one endpoint differs from\n'
+                            'its corresponding origin entry. This includes changed upstream\n'
+                            'inputs, merged results and newly introduced port changes.\n'
+                        )
+                    origin_note += (
+                        'Entries compare file mode, object type and object ID, including absence.\n'
+                        'The category describes whole-file deltas, not conflict history or\n'
+                        'build/runtime compatibility.\n\n'
+                    )
+                    origin_trailers = (
+                        f'Origin-Base: {origin_base}\n'
+                        f'Origin-Target: {origin_target}\n'
+                        f'Port-Category: {category}\n'
+                    )
                 message = (
-                    f'Reconstruct Molly {group}, part {number}\n\n'
+                    f'Reconstruct Molly {group}{partition_name}, part {number}\n\n'
                     f'{GROUP_DESCRIPTIONS[group]}\n\n'
                     f'Export the complete file deltas for this review batch from\n'
                     f'{base} to {target}.\n'
@@ -307,20 +358,26 @@ def export(repo, base, target, upstream_merge, output_path):
                     'Source-Commit identifies the pinned source-tree snapshot, not the\n'
                     'historical author of these changes. The mailbox identity records\n'
                     'this mechanical reconstruction.\n\n'
+                    f'{origin_note}'
                     f'Source-Commit: {target}\n'
+                    f'{origin_trailers}'
                 ).encode('utf-8')
                 commit = git(repo, 'commit-tree', tree, '-p', parent, '-F', '-',
                              data=message, identity=identity).decode().strip()
                 mailbox = git(repo, 'format-patch', '--stdout', '--no-stat', '--no-signature',
                               '--no-numbered', '--no-thread', '--no-cover-letter', '--no-notes',
                               '--subject-prefix=PATCH', *DIFF_OPTIONS, '-1', commit)
-                filename = f'{number:04d}-target-snapshot.patch'
+                filename = (f'{number:04d}-{category}.patch' if category is not None
+                            else f'{number:04d}-target-snapshot.patch')
                 (directory / filename).write_bytes(mailbox)
                 with (directory / 'series').open('a', encoding='utf-8') as series:
                     series.write(filename + '\n')
                 parent = commit
                 record['patches'] += 1
                 record['mailbox_bytes'] += len(mailbox)
+                if category is not None:
+                    record['partitions'][category]['paths'] += len(batch)
+                    record['partitions'][category]['patches'] += 1
                 if len(difference) > MAX_BATCH_BYTES:
                     record['oversized_single_paths'].append(batch[0])
             summary['groups'][group] = record
@@ -341,10 +398,13 @@ def main():
     parser.add_argument('--base', required=True, help='full reviewed upstream commit SHA')
     parser.add_argument('--target', required=True, help='full reviewed Molly source commit SHA')
     parser.add_argument('--upstream-merge', required=True, help='Molly merge whose second parent is the base')
+    parser.add_argument('--origin-base', help='original upstream commit; requires --origin-target')
+    parser.add_argument('--origin-target', help='original Molly commit; splits carryover/adapted batches')
     parser.add_argument('--output', type=Path, required=True, help='new directory; existing destinations are refused')
     args = parser.parse_args()
     try:
-        result = export(args.repo, args.base, args.target, args.upstream_merge, args.output)
+        result = export(args.repo, args.base, args.target, args.upstream_merge, args.output,
+                        origin_base=args.origin_base, origin_target=args.origin_target)
     except (ExportError, ForestError, OSError, UnicodeError) as exc:
         print(f'complete export: {exc}\nAny partial export is retained at {args.output}.', file=sys.stderr)
         return 1

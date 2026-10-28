@@ -1,0 +1,1554 @@
+From c238b79e5f87beaf3d2a16e398dceba22c668f3f Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly backup-and-restore adapted, part 2
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Local/remote backup policy, scheduling, retention, compatibility and restore integration.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, at least one endpoint differs from
+its corresponding origin entry. This includes changed upstream
+inputs, merged results and newly introduced port changes.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: adapted
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/BackupFileIOError.java b/app/src/main/java/org/thoughtcrime/securesms/backup/BackupFileIOError.java
+index 23d855e5d03645a3839df7e66a88567a59c0772d..da5c0f2fa2d27cb9a867fda1062d6047c2fd1ffe 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/BackupFileIOError.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/BackupFileIOError.java
+@@ -53,7 +53,7 @@ public enum BackupFileIOError {
+ 
+     PendingIntent pendingIntent           = PendingIntent.getActivity(context, -1, AppSettingsActivity.backups(context), PendingIntentFlags.mutable());
+     Notification backupFailedNotification = new NotificationCompat.Builder(context, NotificationChannels.getInstance().FAILURES)
+-                                                                  .setSmallIcon(org.signal.core.ui.R.drawable.ic_signal_backup)
++                                                                  .setSmallIcon(R.drawable.ic_notification_backup)
+                                                                   .setContentTitle(context.getString(titleId))
+                                                                   .setContentText(context.getString(messageId))
+                                                                   .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(messageId)))
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupExporter.java b/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupExporter.java
+index 69d3dd32112ef85555d3e5ff1948933519df07d0..e1330d6febf348cf29848396094ca364526f7c68 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupExporter.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupExporter.java
+@@ -21,9 +21,9 @@ import org.signal.core.util.eventbus.EventBus;
+ import org.signal.core.util.logging.Log;
+ import org.signal.core.models.database.AttachmentId;
+ import org.thoughtcrime.securesms.backup.proto.KeyValue;
++import org.thoughtcrime.securesms.backup.proto.SharedPreference;
+ import org.thoughtcrime.securesms.backup.proto.SqlStatement;
+ import org.signal.core.util.crypto.AttachmentSecret;
+-import org.signal.core.util.crypto.ClassicDecryptingPartInputStream;
+ import org.signal.core.util.crypto.ModernDecryptingPartInputStream;
+ import org.thoughtcrime.securesms.database.AttachmentTable;
+ import org.thoughtcrime.securesms.database.BackupMediaSnapshotTable;
+@@ -52,6 +52,7 @@ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.keyvalue.KeyValueDataSet;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ import org.thoughtcrime.securesms.profiles.AvatarHelper;
++import org.thoughtcrime.securesms.util.TextSecurePreferences;
+ 
+ import java.io.BufferedOutputStream;
+ import java.io.File;
+@@ -85,7 +86,6 @@ public class FullBackupExporter extends FullBackupBase {
+   private static final long TABLE_RECORD_COUNT_MULTIPLIER    = 3L;
+   private static final long IDENTITY_KEY_BACKUP_RECORD_COUNT = 2L;
+   private static final long FINAL_MESSAGE_COUNT              = 1L;
+-  private static final long EXPIRATION_BACKUP_THRESHOLD      = TimeUnit.DAYS.toMillis(1);
+ 
+   /**
+    * Tables in list will still have their *schema* exported (so the tables will be created),
+@@ -199,6 +199,14 @@ public class FullBackupExporter extends FullBackupBase {
+         stopwatch.split("table::" + table);
+       }
+ 
++      for (SharedPreference preference : TextSecurePreferences.getPreferencesToSaveToBackup(context)) {
++        throwIfCanceled(cancellationSignal);
++        EventBus.getDefault().post(new BackupEvent(BackupEvent.Type.PROGRESS, ++count, estimatedCount));
++        outputStream.write(preference);
++      }
++
++      stopwatch.split("molly_preferences");
++
+       count = exportKeyValues(outputStream, SignalStore.getKeysToIncludeInBackup(), count, estimatedCount, cancellationSignal);
+ 
+       stopwatch.split("key_values");
+@@ -243,6 +251,7 @@ public class FullBackupExporter extends FullBackupBase {
+     }
+ 
+     count += IDENTITY_KEY_BACKUP_RECORD_COUNT;
++    count += TextSecurePreferences.getPreferencesToSaveToBackupCount(context);
+ 
+     KeyValueDataSet dataSet = KeyValueDatabase.getInstance(AppDependencies.getApplication())
+                                               .getDataSet();
+@@ -532,11 +541,7 @@ public class FullBackupExporter extends FullBackupBase {
+   }
+ 
+   private static InputStream openAttachmentStream(@NonNull AttachmentSecret attachmentSecret, @Nullable byte[] random, @NonNull String data) throws IOException {
+-    if (random != null && random.length == 32) {
+-      return ModernDecryptingPartInputStream.createFor(attachmentSecret, random, new File(data), 0);
+-    } else {
+-      return ClassicDecryptingPartInputStream.createFor(attachmentSecret, new File(data));
+-    }
++    return ModernDecryptingPartInputStream.createFor(attachmentSecret, random, new File(data), 0);
+   }
+ 
+   private static int exportKeyValues(@NonNull BackupFrameOutputStream outputStream,
+@@ -591,7 +596,8 @@ public class FullBackupExporter extends FullBackupBase {
+     return count;
+   }
+ 
+-  private static boolean isNonExpiringMessage(@NonNull SQLiteDatabase db, @NonNull Cursor cursor) {
++  @VisibleForTesting
++  static boolean isNonExpiringMessage(@NonNull SQLiteDatabase db, @NonNull Cursor cursor) {
+     return isNonExpiringMessage(db,
+                                 CursorUtil.requireLong(cursor, MessageTable.ID),
+                                 CursorUtil.requireLong(cursor, MessageTable.EXPIRE_STARTED),
+@@ -609,9 +615,13 @@ public class FullBackupExporter extends FullBackupBase {
+     Set<Long> visited = new HashSet<>();
+ 
+     while (latestRevisionId > 0 && latestRevisionId != id) {
++      // An edited revision must not reintroduce a message whose expiration has already started.
++      if (expiresIn > 0 && expireStarted > 0) {
++        return false;
++      }
+       if (!visited.add(id)) {
+-        Log.w(TAG, "Detected a cycle in the message revision chain! Stopping the walk at " + id);
+-        break;
++        Log.w(TAG, "Detected a cycle in the message revision chain! Excluding message " + id);
++        return false;
+       }
+ 
+       try (Cursor cursor = db.query(MessageTable.TABLE_NAME, columns, where, SqlUtil.buildArgs(latestRevisionId), null, null, null)) {
+@@ -626,10 +636,8 @@ public class FullBackupExporter extends FullBackupBase {
+       }
+     }
+ 
+-    long expiresAt     = expireStarted + expiresIn;
+-    long timeRemaining = expiresAt - System.currentTimeMillis();
+-
+-    return !(expireStarted > 0 && timeRemaining <= EXPIRATION_BACKUP_THRESHOLD);
++    // Molly excludes every message whose disappearing-message timer has started, regardless of time remaining.
++    return expiresIn <= 0 || expireStarted <= 0;
+   }
+ 
+   private static boolean isForNonExpiringMessage(@NonNull SQLiteDatabase db, long messageId) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupImporter.java b/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupImporter.java
+index 7bb9b70c8411f0af3f10c705ad1607ad2d68513b..2c0a6cab56e8e19f890439e596ef47c832ee83b4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupImporter.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/FullBackupImporter.java
+@@ -17,6 +17,7 @@ import org.signal.core.database.SqlUtil;
+ import org.signal.core.models.recipients.RecipientId;
+ import org.signal.core.util.eventbus.EventBus;
+ import org.signal.core.util.logging.Log;
++import org.thoughtcrime.securesms.BuildConfig;
+ import org.thoughtcrime.securesms.backup.proto.Attachment;
+ import org.thoughtcrime.securesms.backup.proto.Avatar;
+ import org.thoughtcrime.securesms.backup.proto.BackupFrame;
+@@ -25,8 +26,7 @@ import org.thoughtcrime.securesms.backup.proto.KeyValue;
+ import org.thoughtcrime.securesms.backup.proto.SharedPreference;
+ import org.thoughtcrime.securesms.backup.proto.SqlStatement;
+ import org.thoughtcrime.securesms.backup.proto.Sticker;
+-import org.signal.core.util.crypto.AttachmentSecret;
+-import org.signal.core.util.crypto.ModernEncryptingPartOutputStream;
++import org.thoughtcrime.securesms.crypto.EncryptedPreferences;
+ import org.thoughtcrime.securesms.database.AttachmentTable;
+ import org.thoughtcrime.securesms.database.CallTable;
+ import org.thoughtcrime.securesms.database.EmojiSearchTable;
+@@ -43,7 +43,11 @@ import org.thoughtcrime.securesms.keyvalue.KeyValueDataSet;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ import org.thoughtcrime.securesms.profiles.AvatarHelper;
+ import org.thoughtcrime.securesms.util.BackupUtil;
++import org.thoughtcrime.securesms.util.SecurePreferenceManager;
++import org.thoughtcrime.securesms.util.TextSecurePreferences;
+ import org.signal.core.util.Util;
++import org.signal.core.util.crypto.AttachmentSecret;
++import org.signal.core.util.crypto.ModernEncryptingPartOutputStream;
+ 
+ import java.io.ByteArrayOutputStream;
+ import java.io.File;
+@@ -54,6 +58,7 @@ import java.io.OutputStream;
+ import java.security.InvalidAlgorithmParameterException;
+ import java.security.InvalidKeyException;
+ import java.util.ArrayList;
++import java.util.Arrays;
+ import java.util.Collections;
+ import java.util.HashSet;
+ import java.util.LinkedHashMap;
+@@ -328,9 +333,16 @@ public class FullBackupImporter extends FullBackupBase {
+     KeyValueDatabase.getInstance(AppDependencies.getApplication()).writeDataSet(dataSet, Collections.emptyList());
+   }
+ 
++  private static final List<String> defaultSharedPreferencesFileNames = Arrays.asList(
++      BuildConfig.SIGNAL_PACKAGE_NAME + "_preferences",
++      BuildConfig.APPLICATION_ID + "_preferences",
++      SecurePreferenceManager.getSecurePreferencesName()
++  );
++
+   @SuppressLint("ApplySharedPref")
+-  private static void processPreference(@NonNull Context context, SharedPreference preference) {
+-    SharedPreferences preferences = context.getSharedPreferences(preference.file_, 0);
++  @VisibleForTesting
++  static void processPreference(@NonNull Context context, SharedPreference preference) {
++    SharedPreferences preferences;
+ 
+     // Identity keys were moved from shared prefs into SignalStore. Need to handle importing backups made before the migration.
+     if ("SecureSMS-Preferences".equals(preference.file_)) {
+@@ -343,12 +355,27 @@ public class FullBackupImporter extends FullBackupBase {
+       return;
+     }
+ 
++    if (defaultSharedPreferencesFileNames.contains(preference.file_)) {
++      preferences = SecurePreferenceManager.getSecurePreferences(context);
++    } else {
++      preferences = EncryptedPreferences.create(context, preference.file_);
++    }
++
+     if (preference.value_ != null) {
+       preferences.edit().putString(preference.key, preference.value_).commit();
+     } else if (preference.booleanValue != null) {
+       preferences.edit().putBoolean(preference.key, preference.booleanValue).commit();
+     } else if (preference.isStringSetValue == Boolean.TRUE) {
+       preferences.edit().putStringSet(preference.key, new HashSet<>(preference.stringSetValue)).commit();
++    } else if (preference.longValue != null) {
++      preferences.edit().putLong(preference.key, preference.longValue).commit();
++    } else if (preference.integerValue != null) {
++      if (TextSecurePreferences.PASSPHRASE_LOCK_TIMEOUT.equals(preference.key)) {
++        // Older Molly backups represented this long preference as a uint32.
++        preferences.edit().putLong(preference.key, Integer.toUnsignedLong(preference.integerValue)).commit();
++      } else {
++        preferences.edit().putInt(preference.key, preference.integerValue).commit();
++      }
+     }
+   }
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/BackupRepository.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/BackupRepository.kt
+index 9e6460d627c34baff2ed56900ad8166698065cfa..c3483573df68b76dbb81ebc7e3ae323e0e22759a 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/BackupRepository.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/BackupRepository.kt
+@@ -164,7 +164,6 @@ import java.io.File
+ import java.io.IOException
+ import java.io.InputStream
+ import java.io.OutputStream
+-import java.math.BigDecimal
+ import java.time.ZonedDateTime
+ import java.util.Currency
+ import java.util.Locale
+@@ -1772,7 +1771,8 @@ object BackupRepository {
+       Log.d(TAG, "Accessing price via billing api.")
+       AppDependencies.billingApi.queryProduct()?.price
+     } else {
+-      FiatMoney(BigDecimal.ZERO, SignalStore.inAppPayments.getRecurringDonationCurrency())
++      // MOLLY: Omit the PAID tier by returning null instead of a placeholder price
++      null
+     }
+ 
+     if (productPrice == null) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/exporters/ChatItemArchiveExporter.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/exporters/ChatItemArchiveExporter.kt
+index 3ca6682feda127f86a34ae3ea83a22da58e55f72..e8376e68085a38ed72ab3ad37d127bf77f402877 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/exporters/ChatItemArchiveExporter.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/exporters/ChatItemArchiveExporter.kt
+@@ -26,7 +26,6 @@ import org.signal.archive.proto.GroupV2MigrationUpdate
+ import org.signal.archive.proto.IndividualCall
+ import org.signal.archive.proto.LearnedProfileChatUpdate
+ import org.signal.archive.proto.MessageAttachment
+-import org.signal.archive.proto.PaymentNotification
+ import org.signal.archive.proto.PinMessageUpdate
+ import org.signal.archive.proto.Poll
+ import org.signal.archive.proto.PollTerminateUpdate
+@@ -87,7 +86,6 @@ import org.thoughtcrime.securesms.database.CallTable
+ import org.thoughtcrime.securesms.database.GroupReceiptTable
+ import org.thoughtcrime.securesms.database.MessageTable
+ import org.thoughtcrime.securesms.database.MessageTypes
+-import org.thoughtcrime.securesms.database.PaymentTable
+ import org.thoughtcrime.securesms.database.SignalDatabase
+ import org.thoughtcrime.securesms.database.documents.IdentityKeyMismatchSet
+ import org.thoughtcrime.securesms.database.documents.NetworkFailureSet
+@@ -107,8 +105,6 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.linkpreview.LinkPreview
+ import org.thoughtcrime.securesms.mms.PartAuthority
+ import org.thoughtcrime.securesms.mms.QuoteModel
+-import org.thoughtcrime.securesms.payments.FailureReason
+-import org.thoughtcrime.securesms.payments.State
+ import org.thoughtcrime.securesms.polls.PollRecord
+ import org.thoughtcrime.securesms.util.MediaUtil
+ import org.thoughtcrime.securesms.util.mb
+@@ -294,13 +290,11 @@ class ChatItemArchiveExporter(
+         }
+ 
+         MessageTypes.isPaymentsActivated(record.type) -> {
+-          builder.updateMessage = simpleUpdate(SimpleChatUpdate.Type.PAYMENTS_ACTIVATED)
+-          transformTimer.emit("simple-update")
++          continue  // MOLLY: No-op
+         }
+ 
+         MessageTypes.isPaymentsRequestToActivate(record.type) -> {
+-          builder.updateMessage = simpleUpdate(SimpleChatUpdate.Type.PAYMENT_ACTIVATION_REQUEST)
+-          transformTimer.emit("simple-update")
++          continue  // MOLLY: No-op
+         }
+ 
+         MessageTypes.isUnsupportedMessageType(record.type) -> {
+@@ -396,12 +390,7 @@ class ChatItemArchiveExporter(
+         }
+ 
+         MessageTypes.isPaymentsNotification(record.type) -> {
+-          if (record.threadId == noteToSelfThreadId) {
+-            Log.w(TAG, ExportSkips.paymentNotificationInNoteToSelf(record.dateSent))
+-            continue
+-          }
+-          builder.paymentNotification = record.toRemotePaymentNotificationUpdate(db)
+-          transformTimer.emit("payment")
++          continue  // MOLLY: No-op
+         }
+ 
+         MessageTypes.isGiftBadge(record.type) -> {
+@@ -919,26 +908,6 @@ private fun CallTable.Call.toRemoteCallUpdate(exportState: ExportState, messageR
+   }
+ }
+ 
+-private fun BackupMessageRecord.toRemotePaymentNotificationUpdate(db: SignalDatabase): PaymentNotification {
+-  val paymentUuid = UuidUtil.parseOrNull(this.body)
+-  val payment = if (paymentUuid != null) {
+-    db.paymentTable.getPayment(paymentUuid)
+-  } else {
+-    null
+-  }
+-
+-  return if (payment == null) {
+-    PaymentNotification()
+-  } else {
+-    PaymentNotification(
+-      amountMob = payment.amount.requireMobileCoin().amountDecimalString,
+-      feeMob = payment.fee.requireMobileCoin().amountDecimalString,
+-      note = payment.note.takeUnless { it.isEmpty() },
+-      transactionDetails = payment.toRemoteTransactionDetails()
+-    )
+-  }
+-}
+-
+ private fun BackupMessageRecord.toRemotePollTerminateUpdate(): PollTerminateUpdate? {
+   val pollTerminate = this.messageExtras?.pollTerminate ?: return null
+   return PollTerminateUpdate(
+@@ -1457,47 +1426,6 @@ private fun List<DatabaseAttachment>.toRemoteAttachments(backupMode: BackupMode)
+   }
+ }
+ 
+-private fun PaymentTable.PaymentTransaction.toRemoteTransactionDetails(): PaymentNotification.TransactionDetails {
+-  if (this.failureReason != null || this.state == State.FAILED) {
+-    return PaymentNotification.TransactionDetails(failedTransaction = PaymentNotification.TransactionDetails.FailedTransaction(reason = this.failureReason.toRemote()))
+-  }
+-
+-  return PaymentNotification.TransactionDetails(
+-    transaction = PaymentNotification.TransactionDetails.Transaction(
+-      status = this.state.toRemote(),
+-      timestamp = this.timestamp.clampToValidBackupRange(),
+-      blockIndex = this.blockIndex,
+-      blockTimestamp = this.blockTimestamp.clampToValidBackupRange(),
+-      mobileCoinIdentification = this.paymentMetaData.mobileCoinTxoIdentification?.let {
+-        PaymentNotification.TransactionDetails.MobileCoinTxoIdentification(
+-          publicKey = it.publicKey.takeIf { this.direction.isReceived } ?: emptyList(),
+-          keyImages = it.keyImages.takeIf { this.direction.isSent } ?: emptyList()
+-        )
+-      },
+-      transaction = this.transaction?.toByteString(),
+-      receipt = this.receipt?.toByteString()
+-    )
+-  )
+-}
+-
+-private fun State.toRemote(): PaymentNotification.TransactionDetails.Transaction.Status {
+-  return when (this) {
+-    State.INITIAL -> PaymentNotification.TransactionDetails.Transaction.Status.INITIAL
+-    State.SUBMITTED -> PaymentNotification.TransactionDetails.Transaction.Status.SUBMITTED
+-    State.SUCCESSFUL -> PaymentNotification.TransactionDetails.Transaction.Status.SUCCESSFUL
+-    State.FAILED -> throw IllegalArgumentException("state cannot be failed")
+-  }
+-}
+-
+-private fun FailureReason?.toRemote(): PaymentNotification.TransactionDetails.FailedTransaction.FailureReason {
+-  return when (this) {
+-    FailureReason.UNKNOWN -> PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.GENERIC
+-    FailureReason.INSUFFICIENT_FUNDS -> PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.INSUFFICIENT_FUNDS
+-    FailureReason.NETWORK -> PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.NETWORK
+-    else -> PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.GENERIC
+-  }
+-}
+-
+ private fun List<Mention>.toRemoteBodyRanges(exportState: ExportState): List<BackupBodyRange> {
+   return this.mapNotNull {
+     val aci = exportState.recipientIdToAci[it.recipientId.toLong()] ?: return@mapNotNull null
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/importer/ChatItemArchiveImporter.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/importer/ChatItemArchiveImporter.kt
+index 67838da5b5a8902c067ec8a20aa8965d6daf4591..4890e583b82a6dab6ba9fe7ad585f6696ba0e62b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/importer/ChatItemArchiveImporter.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/importer/ChatItemArchiveImporter.kt
+@@ -16,7 +16,6 @@ import org.signal.archive.proto.GroupCall
+ import org.signal.archive.proto.IndividualCall
+ import org.signal.archive.proto.LinkPreview
+ import org.signal.archive.proto.MessageAttachment
+-import org.signal.archive.proto.PaymentNotification
+ import org.signal.archive.proto.Quote
+ import org.signal.archive.proto.Reaction
+ import org.signal.archive.proto.SendStatus
+@@ -65,7 +64,6 @@ import org.thoughtcrime.securesms.database.model.databaseprotos.BodyRangeList
+ import org.thoughtcrime.securesms.database.model.databaseprotos.GV2UpdateDescription
+ import org.thoughtcrime.securesms.database.model.databaseprotos.GiftBadge
+ import org.thoughtcrime.securesms.database.model.databaseprotos.MessageExtras
+-import org.thoughtcrime.securesms.database.model.databaseprotos.PaymentTombstone
+ import org.thoughtcrime.securesms.database.model.databaseprotos.PinnedMessage
+ import org.thoughtcrime.securesms.database.model.databaseprotos.PollTerminate
+ import org.thoughtcrime.securesms.database.model.databaseprotos.ProfileChangeDetails
+@@ -73,18 +71,12 @@ import org.thoughtcrime.securesms.database.model.databaseprotos.SessionSwitchove
+ import org.thoughtcrime.securesms.database.model.databaseprotos.ThreadMergeEvent
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+ import org.thoughtcrime.securesms.mms.QuoteModel
+-import org.thoughtcrime.securesms.payments.CryptoValueUtil
+-import org.thoughtcrime.securesms.payments.Direction
+-import org.thoughtcrime.securesms.payments.FailureReason
+-import org.thoughtcrime.securesms.payments.State
+-import org.thoughtcrime.securesms.payments.proto.PaymentMetaData
+ import org.thoughtcrime.securesms.polls.Voter
+ import org.thoughtcrime.securesms.recipients.Recipient
+ import org.thoughtcrime.securesms.recipients.RecipientIds
+ import org.thoughtcrime.securesms.stickers.StickerLocator
+ import org.thoughtcrime.securesms.util.Environment
+ import org.thoughtcrime.securesms.util.MessageUtil
+-import org.whispersystems.signalservice.api.payments.Money
+ import org.whispersystems.signalservice.internal.push.DataMessage
+ import java.math.BigDecimal
+ import java.sql.SQLException
+@@ -406,18 +398,7 @@ class ChatItemArchiveImporter(
+     }
+ 
+     if (this.paymentNotification != null) {
+-      followUps += { messageRowId ->
+-        val uuid = tryRestorePayment(this, chatRecipientId)
+-        if (uuid != null) {
+-          db.update(MessageTable.TABLE_NAME)
+-            .values(
+-              MessageTable.BODY to uuid.toString(),
+-              MessageTable.TYPE to ((contentValues.getAsLong(MessageTable.TYPE) and MessageTypes.SPECIAL_TYPES_MASK.inv()) or MessageTypes.SPECIAL_TYPE_PAYMENTS_NOTIFICATION)
+-            )
+-            .where("${MessageTable.ID} = ?", messageRowId)
+-            .run()
+-        }
+-      }
++      // MOLLY: No-op
+     }
+ 
+     val contactMessage = this.contactMessage
+@@ -736,7 +717,6 @@ class ChatItemArchiveImporter(
+       itemStandardMessage != null -> contentValues.addStandardMessage(itemStandardMessage)
+       itemRemoteDeletedMessage != null -> contentValues.put(MessageTable.DELETED_BY, fromRecipientId.toLong())
+       itemUpdateMessage != null -> contentValues.addUpdateMessage(itemUpdateMessage, fromRecipientId, toRecipientId, chatRecipientId)
+-      itemPaymentNotification != null -> contentValues.addPaymentNotification(this, chatRecipientId)
+       itemGiftBadge != null -> contentValues.addGiftBadge(itemGiftBadge)
+       itemViewOnceMessage != null -> contentValues.addViewOnce(itemViewOnceMessage)
+       itemDirectStoryReplyMessage != null -> contentValues.addDirectStoryReply(itemDirectStoryReplyMessage, toRecipientId)
+@@ -746,38 +726,6 @@ class ChatItemArchiveImporter(
+     return contentValues
+   }
+ 
+-  private fun tryRestorePayment(chatItem: ChatItem, chatRecipientId: RecipientId): UUID? {
+-    val paymentNotification = chatItem.paymentNotification!!
+-
+-    val amount = paymentNotification.amountMob?.tryParseMoney() ?: return null
+-    val fee = paymentNotification.feeMob?.tryParseMoney() ?: return null
+-
+-    if (paymentNotification.transactionDetails?.failedTransaction != null) {
+-      return null
+-    }
+-
+-    val transaction = paymentNotification.transactionDetails?.transaction
+-
+-    val mobileCoinIdentification = transaction?.mobileCoinIdentification?.toLocal() ?: return null
+-
+-    return SignalDatabase.payments.restoreFromBackup(
+-      chatRecipientId,
+-      transaction.timestamp ?: 0,
+-      transaction.blockIndex ?: 0,
+-      transaction.blockTimestamp ?: 0,
+-      paymentNotification.note ?: "",
+-      if (chatItem.outgoing != null) Direction.SENT else Direction.RECEIVED,
+-      transaction.status.toLocalStatus(),
+-      amount,
+-      fee,
+-      transaction.transaction?.toByteArray(),
+-      transaction.receipt?.toByteArray(),
+-      mobileCoinIdentification,
+-      chatItem.incoming?.read ?: true,
+-      null
+-    )
+-  }
+-
+   private fun ChatItem.toReactionContentValues(messageId: Long): List<ContentValues> {
+     val reactions: List<Reaction> = this.standardMessage?.reactions
+       ?: this.contactMessage?.reactions
+@@ -1012,89 +960,6 @@ class ChatItemArchiveImporter(
+     this.put(MessageTable.TYPE, typeFlags)
+   }
+ 
+-  /**
+-   * Add the payment notification to the chat item.
+-   *
+-   * Note we add a tombstone first, then post insertion update it to a proper notification
+-   */
+-  private fun ContentValues.addPaymentNotification(chatItem: ChatItem, chatRecipientId: RecipientId) {
+-    val paymentNotification = chatItem.paymentNotification!!
+-    if (paymentNotification.amountMob.isNullOrEmpty()) {
+-      this.addPaymentTombstoneNoAmount()
+-      return
+-    }
+-    val amount = paymentNotification.amountMob?.tryParseMoney() ?: return this.addPaymentTombstoneNoAmount()
+-    val fee = paymentNotification.feeMob?.tryParseMoney() ?: return this.addPaymentTombstoneNoAmount()
+-
+-    if (paymentNotification.transactionDetails?.failedTransaction != null) {
+-      this.addFailedPaymentNotification(chatItem, amount, fee, chatRecipientId)
+-      return
+-    }
+-    this.addPaymentTombstoneNoMetadata(paymentNotification)
+-  }
+-
+-  private fun PaymentNotification.TransactionDetails.MobileCoinTxoIdentification.toLocal(): PaymentMetaData {
+-    return PaymentMetaData(
+-      mobileCoinTxoIdentification = PaymentMetaData.MobileCoinTxoIdentification(
+-        publicKey = this.publicKey,
+-        keyImages = this.keyImages
+-      )
+-    )
+-  }
+-
+-  private fun ContentValues.addFailedPaymentNotification(chatItem: ChatItem, amount: Money, fee: Money, chatRecipientId: RecipientId) {
+-    val uuid = SignalDatabase.payments.restoreFromBackup(
+-      chatRecipientId,
+-      0,
+-      0,
+-      0,
+-      chatItem.paymentNotification?.note ?: "",
+-      if (chatItem.outgoing != null) Direction.SENT else Direction.RECEIVED,
+-      State.FAILED,
+-      amount,
+-      fee,
+-      null,
+-      null,
+-      null,
+-      chatItem.incoming?.read ?: true,
+-      chatItem.paymentNotification?.transactionDetails?.failedTransaction?.reason?.toLocalPaymentFailureReason()
+-    )
+-    if (uuid != null) {
+-      put(MessageTable.BODY, uuid.toString())
+-      put(MessageTable.TYPE, getAsLong(MessageTable.TYPE) or MessageTypes.SPECIAL_TYPE_PAYMENTS_NOTIFICATION)
+-    } else {
+-      addPaymentTombstoneNoMetadata(chatItem.paymentNotification!!)
+-    }
+-  }
+-
+-  private fun PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.toLocalPaymentFailureReason(): FailureReason {
+-    return when (this) {
+-      PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.GENERIC -> FailureReason.UNKNOWN
+-      PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.NETWORK -> FailureReason.NETWORK
+-      PaymentNotification.TransactionDetails.FailedTransaction.FailureReason.INSUFFICIENT_FUNDS -> FailureReason.INSUFFICIENT_FUNDS
+-    }
+-  }
+-
+-  private fun ContentValues.addPaymentTombstoneNoAmount() {
+-    put(MessageTable.TYPE, getAsLong(MessageTable.TYPE) or MessageTypes.SPECIAL_TYPE_PAYMENTS_TOMBSTONE)
+-  }
+-
+-  private fun ContentValues.addPaymentTombstoneNoMetadata(paymentNotification: PaymentNotification) {
+-    put(MessageTable.TYPE, getAsLong(MessageTable.TYPE) or MessageTypes.SPECIAL_TYPE_PAYMENTS_TOMBSTONE)
+-    val amount = paymentNotification.amountMob?.tryParseMoney()?.let { CryptoValueUtil.moneyToCryptoValue(it) }
+-    val fee = paymentNotification.feeMob?.tryParseMoney()?.let { CryptoValueUtil.moneyToCryptoValue(it) }
+-    put(
+-      MessageTable.MESSAGE_EXTRAS,
+-      MessageExtras(
+-        paymentTombstone = PaymentTombstone(
+-          note = paymentNotification.note,
+-          amount = amount,
+-          fee = fee
+-        )
+-      ).encode()
+-    )
+-  }
+-
+   private fun ContentValues.addGiftBadge(giftBadge: BackupGiftBadge) {
+     val dbGiftBadge = GiftBadge(
+       redemptionToken = giftBadge.receiptCredentialPresentation,
+@@ -1131,20 +996,6 @@ class ChatItemArchiveImporter(
+     }
+   }
+ 
+-  private fun String?.tryParseMoney(): Money? {
+-    if (this.isNullOrEmpty()) {
+-      return null
+-    }
+-
+-    return try {
+-      Money.mobileCoin(BigDecimal(this))
+-    } catch (e: NumberFormatException) {
+-      null
+-    } catch (e: ArithmeticException) {
+-      null
+-    }
+-  }
+-
+   private fun ContentValues.addQuote(quote: Quote) {
+     this.put(MessageTable.QUOTE_ID, quote.targetSentTimestamp ?: MessageTable.QUOTE_TARGET_MISSING_ID)
+     this.put(MessageTable.QUOTE_AUTHOR, importState.requireLocalRecipientId(quote.authorId).serialize())
+@@ -1154,15 +1005,6 @@ class ChatItemArchiveImporter(
+     this.put(MessageTable.QUOTE_MISSING, (quote.targetSentTimestamp == null).toInt())
+   }
+ 
+-  private fun PaymentNotification.TransactionDetails.Transaction.Status?.toLocalStatus(): State {
+-    return when (this) {
+-      PaymentNotification.TransactionDetails.Transaction.Status.INITIAL -> State.INITIAL
+-      PaymentNotification.TransactionDetails.Transaction.Status.SUBMITTED -> State.SUBMITTED
+-      PaymentNotification.TransactionDetails.Transaction.Status.SUCCESSFUL -> State.SUCCESSFUL
+-      else -> State.INITIAL
+-    }
+-  }
+-
+   private fun Quote.Type.toLocalQuoteType(): Int {
+     return when (this) {
+       Quote.Type.UNKNOWN -> QuoteModel.Type.NORMAL.code
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/processor/AccountDataArchiveProcessor.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/processor/AccountDataArchiveProcessor.kt
+index e1164ad96cc38512ff3a21145fa72afdc41ccdfe..31e0026c7e5add595a6f053eab6dc9815e3355f7 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/processor/AccountDataArchiveProcessor.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/processor/AccountDataArchiveProcessor.kt
+@@ -49,8 +49,6 @@ import org.whispersystems.signalservice.api.storage.IAPSubscriptionId.AppleIAPOr
+ import org.whispersystems.signalservice.api.storage.IAPSubscriptionId.GooglePlayBillingPurchaseToken
+ import org.whispersystems.signalservice.api.subscriptions.SubscriberId
+ import java.util.Currency
+-import kotlin.time.Duration.Companion.minutes
+-import kotlin.time.Duration.Companion.seconds
+ 
+ /**
+  * Handles importing/exporting [AccountData] frames for an archive.
+@@ -71,12 +69,8 @@ object AccountDataArchiveProcessor {
+ 
+     val backupSubscriberRecord = db.inAppPaymentSubscriberTable.getBackupsSubscriber()
+ 
+-    val screenLockTimeoutSeconds = signalStore.settingsValues.screenLockTimeout
+-    val screenLockTimeoutMinutes = if (screenLockTimeoutSeconds > 0) {
+-      screenLockTimeoutSeconds.seconds.inWholeMinutes.toInt()
+-    } else {
+-      null
+-    }
++    // Molly passphrase locking is a device-local policy, distinct from Signal's screen-lock timer.
++    val screenLockTimeoutMinutes = null
+ 
+     val mobileAutoDownload = SignalStore.settings.mobileMediaDownloadAllowed
+     val wifiAutoDownload = SignalStore.settings.wifiMediaDownloadAllowed
+@@ -279,7 +273,7 @@ object AccountDataArchiveProcessor {
+     SignalStore.story.userHasSeenGroupStoryEducationSheet = settings.hasSeenGroupStoryEducationSheet
+     SignalStore.story.viewedReceiptsEnabled = settings.storyViewReceiptsEnabled ?: settings.readReceipts
+     SignalStore.backup.optimizeStorage = !importState.backupMode.isLinkAndSync && settings.optimizeOnDeviceStorage
+-    SignalStore.backup.backupTier = MessageBackupTier.fromBackupLevel(settings.backupTier)
++    SignalStore.backup.backupTier = if (SignalStore.account.isPrimaryDevice) MessageBackupTier.fromBackupLevel(settings.backupTier) else null
+     SignalStore.settings.sentMediaQuality = settings.defaultSentMediaQuality.toLocalSentMediaQuality()
+     SignalStore.settings.theme = settings.appTheme.toLocalTheme()
+     SignalStore.settings.callDataMode = settings.callsUseLessDataSetting.toLocalCallDataMode()
+@@ -302,11 +296,6 @@ object AccountDataArchiveProcessor {
+       SignalStore.settings.wifiMediaDownloadAllowed = wifiDownloadSet
+     }
+ 
+-    val screenLockTimeoutMinutes = settings.screenLockTimeoutMinutes
+-    if (screenLockTimeoutMinutes != null) {
+-      SignalStore.settings.screenLockTimeout = screenLockTimeoutMinutes.minutes.inWholeSeconds
+-    }
+-
+     val pinReminders = settings.pinReminders
+     if (pinReminders != null) {
+       SignalStore.pin.setPinRemindersEnabled(pinReminders)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt
+index 1c193f630b412c46c996eb6dd02e929230e1efc6..0dfe870045cd6a3a69aff811ad705b2ddd506d7f 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt
+@@ -303,11 +303,7 @@ class MessageBackupsFlowFragment : ComposeFragment(), InAppPaymentCheckoutDelega
+               getString(R.string.remote_backup_support_url)
+             )
+           },
+-          onMakeGooglePlayServicesAvailable = {
+-            GoogleApiAvailability.getInstance().makeGooglePlayServicesAvailable(requireActivity()).addOnSuccessListener {
+-              viewModel.setGooglePlayApiAvailability(GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(requireContext()))
+-            }
+-          },
++          onMakeGooglePlayServicesAvailable = {},
+           onOpenPlayStore = {
+             PlayStoreUtil.openPlayStoreHome(requireContext())
+           }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupState.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupState.kt
+index 1b938cf4595cef285a6b5be86b15255f84bd8b4f..f4c217e32912872cd3472dd9a2c7000d315636bf 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupState.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupState.kt
+@@ -18,7 +18,7 @@ sealed interface BackupState {
+   /**
+    * User has no active backup tier, no tier history
+    */
+-  data object None : BackupState
++  data class None(val featureSupported: Boolean) : BackupState
+ 
+   /**
+    * Temporary state object that just denotes what the local store thinks we are.
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupStateObserver.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupStateObserver.kt
+index 36ee97a2fa6e4ce8c865acaf47d0903f8095acc9..53f1344e669267a458bb49458d2818a29cbf8cc6 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupStateObserver.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupStateObserver.kt
+@@ -84,9 +84,11 @@ class BackupStateObserver(
+       return if (tier != null) {
+         BackupState.LocalStore(tier)
+       } else {
+-        BackupState.None
++        defaultOrUnsupportedState()
+       }
+     }
++
++    fun defaultOrUnsupportedState() = BackupState.None(featureSupported = SignalStore.account.isPrimaryDevice)
+   }
+ 
+   private val internalBackupState = MutableStateFlow(getNonIOBackupState())
+@@ -351,8 +353,9 @@ class BackupStateObserver(
+       }
+ 
+       null -> {
+-        Log.d(TAG, "[getNetworkBackupState] Updating UI state with NONE null tier.")
+-        return BackupState.None
++        val state = defaultOrUnsupportedState()
++        Log.d(TAG, "[getNetworkBackupState] Updating UI state with $state null tier.")
++        return state
+       }
+     }
+   }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt
+index fab41500522365d953403b8d34c23fa65a887e9c..7c4bf0e9c96f7a94837ab3f3d4ff2f24f0e84d11 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt
+@@ -108,8 +108,8 @@ class BackupsSettingsFragment : ComposeFragment() {
+         when (state.backupState) {
+           is BackupState.Error -> Unit
+ 
+-          BackupState.None -> {
+-            if (!state.isLinkedDevice) {
++          is BackupState.None -> {
++            if (!state.isLinkedDevice && state.backupState.featureSupported) {
+               checkoutLauncher.launch(null)
+             }
+           }
+@@ -209,16 +209,16 @@ private fun BackupsSettingsContent(
+             OtherWaysToBackUpHeading()
+           }
+ 
+-          BackupState.None -> {
+-            if (backupsSettingsState.isLinkedDevice) {
+-              BackupsOffLinkedDeviceRow(onLearnMoreClick = onLearnMoreClick)
+-            } else {
+-              NeverEnabledBackupsRow(
+-                onBackupsRowClick = onBackupsRowClick
+-              )
+-            }
++          is BackupState.None -> {
++            if (backupsSettingsState.isLinkedDevice || backupsSettingsState.backupState.featureSupported) {
++              if (backupsSettingsState.isLinkedDevice) {
++                BackupsOffLinkedDeviceRow(onLearnMoreClick = onLearnMoreClick)
++              } else {
++                NeverEnabledBackupsRow(onBackupsRowClick = onBackupsRowClick)
++              }
+ 
+-            OtherWaysToBackUpHeading()
++              OtherWaysToBackUpHeading()
++            }
+           }
+ 
+           is BackupState.Error -> {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/remote/RemoteBackupsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/remote/RemoteBackupsSettingsFragment.kt
+index 8daa35a59a1098c5b56ca1f4f7b80224b792d440..8754fec534564d8b3d06a124ccd805eadb7b00a3 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/remote/RemoteBackupsSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/remote/RemoteBackupsSettingsFragment.kt
+@@ -451,7 +451,7 @@ private fun RemoteBackupsSettingsContent(
+             )
+           }
+ 
+-          BackupState.None -> Unit
++          is BackupState.None -> Unit
+ 
+           is BackupState.WithTypeAndRenewalTime -> {
+             BackupCard(
+@@ -2180,7 +2180,7 @@ private fun BackupReadyToDownloadPreview() {
+   Previews.Preview {
+     BackupReadyToDownloadRow(
+       ready = BackupRestoreState.Ready("12GB"),
+-      backupState = BackupState.None
++      backupState = BackupState.None(featureSupported = true)
+     )
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJob.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJob.java
+index 3f27ccfb4775d6850eb647d95b3350f003843281..2e78db7ff910fd0353c159d0e79655f454ae17f0 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJob.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJob.java
+@@ -117,7 +117,7 @@ public final class LocalBackupJob extends BaseJob {
+     try (NotificationController notification = GenericForegroundService.startForegroundTask(context,
+                                                                      context.getString(R.string.LocalBackupJob_creating_signal_backup),
+                                                                      NotificationChannels.getInstance().BACKUPS,
+-                                                                     org.signal.core.ui.R.drawable.ic_signal_backup))
++                                                                     R.drawable.ic_notification_backup))
+     {
+       updater.setNotification(notification);
+       notification.setIndeterminateProgress();
+@@ -125,7 +125,7 @@ public final class LocalBackupJob extends BaseJob {
+       String backupPassword  = SignalStore.backup().getV1BackupPassphrase();
+       File   backupDirectory = StorageUtil.getOrCreateBackupDirectory();
+       String timestamp       = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(new Date());
+-      String fileName        = String.format("signal-%s.backup", timestamp);
++      String fileName        = String.format("%s-%s.backup", BackupUtil.getBackupFilenamePrefix(), timestamp);
+       File   backupFile      = new File(backupDirectory, fileName);
+ 
+       deleteOldTemporaryBackups(backupDirectory);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJobApi29.java b/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJobApi29.java
+index c2899ccc9ce43f6795a87eb959386bf213f1d6d7..5352eb368a2efa375987e233db4d9a166202d6b0 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJobApi29.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/LocalBackupJobApi29.java
+@@ -87,7 +87,7 @@ public final class LocalBackupJobApi29 extends BaseJob {
+       notification = GenericForegroundService.startForegroundTask(context,
+                                                                   context.getString(R.string.LocalBackupJob_creating_signal_backup),
+                                                                   NotificationChannels.getInstance().BACKUPS,
+-                                                                  org.signal.core.ui.R.drawable.ic_signal_backup);
++                                                                  R.drawable.ic_notification_backup);
+     } catch (UnableToStartException e) {
+       Log.w(TAG, "Unable to start foreground backup service, continuing without service");
+     }
+@@ -102,7 +102,7 @@ public final class LocalBackupJobApi29 extends BaseJob {
+       String       backupPassword  = SignalStore.backup().getV1BackupPassphrase();
+       DocumentFile backupDirectory = DocumentFile.fromTreeUri(context, backupDirectoryUri);
+       String       timestamp       = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss", Locale.US).format(new Date());
+-      String       fileName        = String.format("signal-%s.backup", timestamp);
++      String       fileName        = String.format("%s-%s.backup", BackupUtil.getBackupFilenamePrefix(), timestamp);
+ 
+       if (backupDirectory == null || !backupDirectory.canWrite()) {
+         BackupFileIOError.ACCESS_ERROR.postNotification(context);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java
+index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740e3ee41fe 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java
+@@ -11,6 +11,7 @@ import android.text.method.LinkMovementMethod;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
++import android.widget.NumberPicker;
+ import android.widget.ProgressBar;
+ import android.widget.TextView;
+ 
+@@ -24,6 +25,7 @@ import androidx.fragment.app.Fragment;
+ import androidx.lifecycle.ViewModelProvider;
+ import androidx.navigation.Navigation;
+ 
++import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+ import com.google.android.material.timepicker.MaterialTimePicker;
+ import com.google.android.material.timepicker.TimeFormat;
+ 
+@@ -50,6 +52,7 @@ import java.text.NumberFormat;
+ import java.time.LocalTime;
+ import java.util.Locale;
+ import java.util.Objects;
++import java.util.concurrent.TimeUnit;
+ 
+ import kotlin.Pair;
+ import kotlin.Unit;
+@@ -69,6 +72,10 @@ public class BackupsPreferenceFragment extends Fragment {
+   private TextView    info;
+   private TextView    summary;
+   private TextView    folderName;
++  private View        schedule;
++  private TextView    scheduleSummary;
++  private View        maxFiles;
++  private TextView    maxFilesSummary;
+   private ProgressBar progress;
+   private TextView    progressSummary;
+   private ComposeView upgradeCard;
+@@ -97,12 +104,18 @@ public class BackupsPreferenceFragment extends Fragment {
+     info            = view.findViewById(R.id.fragment_backup_info);
+     summary         = view.findViewById(R.id.fragment_backup_create_summary);
+     folderName      = view.findViewById(R.id.fragment_backup_folder_name);
++    schedule        = view.findViewById(R.id.fragment_backup_schedule);
++    scheduleSummary = view.findViewById(R.id.fragment_backup_schedule_summary);
++    maxFiles        = view.findViewById(R.id.fragment_backup_max_files);
++    maxFilesSummary = view.findViewById(R.id.fragment_backup_max_files_summary);
+     progress        = view.findViewById(R.id.fragment_backup_progress);
+     progressSummary = view.findViewById(R.id.fragment_backup_progress_summary);
+     upgradeCard     = view.findViewById(R.id.upgrade_to_improved_backups_card);
+ 
+     toggle.setOnClickListener(unused -> onToggleClicked());
+     create.setOnClickListener(unused -> onCreateClicked());
++    schedule.setOnClickListener(unused -> onScheduleClicked());
++    maxFiles.setOnClickListener(unused -> onMaxFilesClicked());
+     verify.setOnClickListener(unused -> BackupDialog.showVerifyBackupPassphraseDialog(requireContext()));
+     timer.setOnClickListener(unused -> pickTime());
+ 
+@@ -130,6 +143,8 @@ public class BackupsPreferenceFragment extends Fragment {
+     viewModel.refreshBackupStatus();
+     setBackupSummary();
+     setInfo();
++    setScheduleSummary();
++    setMaxFilesSummary();
+     setUpdateState();
+   }
+ 
+@@ -225,6 +240,23 @@ public class BackupsPreferenceFragment extends Fragment {
+     info.setMovementMethod(LinkMovementMethod.getInstance());
+   }
+ 
++  private void setScheduleSummary() {
++    final long interval = TextSecurePreferences.getBackupInternal(requireContext());
++
++    if (interval == TimeUnit.DAYS.toMillis(1)) {
++      scheduleSummary.setText(R.string.arrays__daily);
++    } else if (interval == TimeUnit.DAYS.toMillis(7)) {
++      scheduleSummary.setText(R.string.arrays__weekly);
++    } else {
++      Log.e(TAG, "Unknown schedule interval: " + interval);
++      scheduleSummary.setText("");
++    }
++  }
++
++  private void setMaxFilesSummary() {
++    maxFilesSummary.setText(String.valueOf(TextSecurePreferences.getBackupMaxFiles(requireContext())));
++  }
++
+   private void setUpdateState() {
+     if (SignalStore.settings().isBackupEnabled() && Environment.Backups.isNewFormatSupportedForLocalBackup()) {
+       UpgradeLocalBackupCard.bind(upgradeCard, () -> {
+@@ -283,6 +315,43 @@ public class BackupsPreferenceFragment extends Fragment {
+     }
+   }
+ 
++  private void onScheduleClicked() {
++    new MaterialAlertDialogBuilder(requireContext())
++        .setTitle(R.string.BackupsPreferenceFragment__change_schedule)
++        .setItems(R.array.backup_intervals, (dialog, which) -> {
++          if (which == 1) {
++            TextSecurePreferences.setBackupInternal(requireContext(), TimeUnit.DAYS.toMillis(7));
++          } else {
++            TextSecurePreferences.setBackupInternal(requireContext(), TimeUnit.DAYS.toMillis(1));
++          }
++
++          LocalBackupListener.setNextBackupTimeToIntervalFromNow(requireContext());
++          LocalBackupListener.schedule(requireContext());
++          setScheduleSummary();
++        })
++        .create()
++        .show();
++  }
++
++  private void onMaxFilesClicked() {
++    final View view = getLayoutInflater().inflate(R.layout.backup_max_files_selector_view, null);
++    final NumberPicker picker = view.findViewById(R.id.picker);
++    picker.setMinValue(1);
++    picker.setMaxValue(10);
++    picker.setValue(TextSecurePreferences.getBackupMaxFiles(requireContext()));
++    picker.setWrapSelectorWheel(false);
++    new MaterialAlertDialogBuilder(requireContext())
++        .setTitle(R.string.BackupsPreferenceFragment__number_of_backups_to_retain)
++        .setView(view)
++        .setNegativeButton(android.R.string.cancel, null)
++        .setPositiveButton(android.R.string.ok, (dialog, which) -> {
++          TextSecurePreferences.setBackupMaxFiles(requireContext(), picker.getValue());
++          setMaxFilesSummary();
++        })
++        .create()
++        .show();
++  }
++
+   @RequiresApi(29)
+   private void onCreateClickedApi29() {
+     Log.i(TAG, "Queueing backup...");
+@@ -328,16 +397,17 @@ public class BackupsPreferenceFragment extends Fragment {
+   }
+ 
+   private void updateToggle() {
+-    boolean userUnregistered          = SignalStore.account().isUnauthorizedReceived() || !SignalStore.account().isRegistered();
+     boolean clientDeprecated          = SignalStore.misc().isClientDeprecated();
+     boolean legacyLocalBackupsEnabled = SignalStore.settings().isBackupEnabled() && BackupUtil.canUserAccessBackupDirectory(AppDependencies.getApplication());
+ 
+-    toggle.setEnabled(legacyLocalBackupsEnabled || (!userUnregistered && !clientDeprecated));
++    toggle.setEnabled(legacyLocalBackupsEnabled || !clientDeprecated);
+   }
+ 
+   private void setBackupsEnabled() {
+     toggle.setText(R.string.BackupsPreferenceFragment__turn_off);
+     create.setVisibility(View.VISIBLE);
++    schedule.setVisibility(View.VISIBLE);
++    maxFiles.setVisibility(View.VISIBLE);
+     verify.setVisibility(View.VISIBLE);
+     timer.setVisibility(View.VISIBLE);
+     updateToggle();
+@@ -349,6 +419,8 @@ public class BackupsPreferenceFragment extends Fragment {
+     toggle.setText(R.string.BackupsPreferenceFragment__turn_on);
+     create.setVisibility(View.GONE);
+     folder.setVisibility(View.GONE);
++    schedule.setVisibility(View.GONE);
++    maxFiles.setVisibility(View.GONE);
+     verify.setVisibility(View.GONE);
+     timer.setVisibility(View.GONE);
+     updateToggle();
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/BackupMediaRestoreService.kt b/app/src/main/java/org/thoughtcrime/securesms/service/BackupMediaRestoreService.kt
+index 7e15f72b2874dcf9de528e4c7098e7b6645f845f..0c09c52db971c8d6044e5431a6a7ae4956233008 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/BackupMediaRestoreService.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/BackupMediaRestoreService.kt
+@@ -5,6 +5,7 @@ import android.app.PendingIntent
+ import android.content.Context
+ import android.content.Intent
+ import android.os.Build
++import androidx.annotation.CheckResult
+ import androidx.core.app.NotificationCompat
+ import org.signal.core.util.ByteSize
+ import org.signal.core.util.PendingIntentFlags
+@@ -20,7 +21,6 @@ import org.thoughtcrime.securesms.notifications.NotificationIds
+ import org.thoughtcrime.securesms.service.BackupMediaRestoreService.Companion.hasTimedOut
+ import java.util.concurrent.CopyOnWriteArraySet
+ import java.util.concurrent.locks.ReentrantLock
+-import javax.annotation.CheckReturnValue
+ import kotlin.concurrent.withLock
+ 
+ /**
+@@ -50,7 +50,7 @@ class BackupMediaRestoreService : SafeForegroundService() {
+     private val controllerLock = ReentrantLock()
+ 
+     @JvmStatic
+-    @CheckReturnValue
++    @CheckResult
+     fun start(context: Context, startingTitle: String): Controller? {
+       controllerLock.withLock {
+         val started = if (hasTimedOut) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/BackupProgressService.kt b/app/src/main/java/org/thoughtcrime/securesms/service/BackupProgressService.kt
+index 9732277ea64a962673cb69401a8532e6ba71ca7f..2081e7dca04482333958871d00d6922c6229d2af 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/BackupProgressService.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/BackupProgressService.kt
+@@ -13,6 +13,7 @@ import android.content.Context
+ import android.content.Intent
+ import android.content.pm.PackageManager
+ import android.os.PowerManager
++import androidx.annotation.CheckResult
+ import androidx.core.app.NotificationCompat
+ import androidx.core.app.NotificationManagerCompat
+ import androidx.core.content.ContextCompat
+@@ -20,13 +21,12 @@ import org.signal.core.util.PendingIntentFlags
+ import org.signal.core.util.SafeForegroundService
+ import org.signal.core.util.logging.Log
+ import org.thoughtcrime.securesms.MainActivity
++import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.notifications.NotificationChannels
+ import org.thoughtcrime.securesms.notifications.NotificationIds
+ import java.util.concurrent.locks.ReentrantLock
+-import javax.annotation.CheckReturnValue
+ import kotlin.concurrent.withLock
+ import kotlin.time.Duration.Companion.hours
+-import org.signal.core.ui.R as CoreUiR
+ 
+ /**
+  * Foreground service to provide "long" run support to backup jobs.
+@@ -50,7 +50,7 @@ class BackupProgressService : SafeForegroundService() {
+     private const val WAKE_LOCK_TAG = "signal:backupProgress"
+     private val WAKE_LOCK_TIMEOUT = 2.hours.inWholeMilliseconds
+ 
+-    @CheckReturnValue
++    @CheckResult
+     fun start(context: Context, startingTitle: String): Controller {
+       controllerLock.withLock {
+         if (controller != null) {
+@@ -78,7 +78,7 @@ class BackupProgressService : SafeForegroundService() {
+ 
+     private fun getForegroundNotification(context: Context): Notification {
+       return NotificationCompat.Builder(context, NotificationChannels.getInstance().OTHER)
+-        .setSmallIcon(CoreUiR.drawable.ic_signal_backup)
++        .setSmallIcon(R.drawable.ic_notification_backup)
+         .setContentTitle(title)
+         .setProgress(100, (progress * 100).toInt(), indeterminate)
+         .setContentIntent(PendingIntent.getActivity(context, 0, MainActivity.clearTop(context), PendingIntentFlags.mutable()))
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java b/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java
+index 149dbb9bd8c45501e4d5dad53caa0d1f1ac47a2a..d722628da15363dd5b6e69194f644766fccdcb79 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java
+@@ -9,8 +9,10 @@ import org.signal.core.util.JavaTimeExtensionsKt;
+ import org.thoughtcrime.securesms.jobs.LocalBackupJob;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ 
++import java.time.Instant;
+ import java.time.LocalDateTime;
+ import java.util.Random;
++import java.util.TimeZone;
+ import java.util.concurrent.TimeUnit;
+ 
+ public class LocalBackupListener extends PersistentAlarmManagerListener {
+@@ -47,10 +49,21 @@ public class LocalBackupListener extends PersistentAlarmManagerListener {
+   }
+ 
+   public static long setNextBackupTimeToIntervalFromNow(@NonNull Context context) {
+-    LocalDateTime now    = LocalDateTime.now();
++    long nowPlusInterval = System.currentTimeMillis() + TextSecurePreferences.getBackupInternal(context);
++
++    LocalDateTime nextInstant = LocalDateTime.ofInstant(Instant.ofEpochMilli(nowPlusInterval),
++                                                        TimeZone.getDefault().toZoneId());
+     int           hour   = SignalStore.settings().getBackupHour();
+     int           minute = SignalStore.settings().getBackupMinute();
+-    LocalDateTime next   = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, hour, minute, BACKUP_JITTER_WINDOW_SECONDS, new Random());
++    LocalDateTime next   = nextInstant.withHour(hour).withMinute(minute).withSecond(0);
++
++    int jitter = (new Random().nextInt(BACKUP_JITTER_WINDOW_SECONDS)) - (BACKUP_JITTER_WINDOW_SECONDS / 2);
++
++    next = next.plusSeconds(jitter);
++
++    if (nextInstant.isAfter(next)) {
++      next = next.plusDays(1);
++    }
+ 
+     long nextTime = JavaTimeExtensionsKt.toMillis(next);
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/MessageBackupListener.kt b/app/src/main/java/org/thoughtcrime/securesms/service/MessageBackupListener.kt
+index f03ec8538565a4e3f369125c72163220181fa048..c7d58c31900d4dfd7dfd5627830ef66801b5bd43 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/MessageBackupListener.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/MessageBackupListener.kt
+@@ -7,12 +7,9 @@ package org.thoughtcrime.securesms.service
+ 
+ import android.content.Context
+ import androidx.annotation.VisibleForTesting
+-import org.signal.core.util.toMillis
+-import org.signal.core.util.toOffset
+ import org.thoughtcrime.securesms.jobs.BackupMessagesJob
+ import org.thoughtcrime.securesms.keyvalue.SignalStore
+-import java.time.LocalDateTime
+-import java.time.ZoneId
++import java.time.ZonedDateTime
+ import java.util.Random
+ import kotlin.time.Duration.Companion.days
+ import kotlin.time.Duration.Companion.minutes
+@@ -51,7 +48,7 @@ class MessageBackupListener : PersistentAlarmManagerListener() {
+ 
+     @VisibleForTesting
+     @JvmStatic
+-    fun getNextDailyBackupTimeFromNowWithJitter(now: LocalDateTime, hour: Int, minute: Int, maxJitterSeconds: Int, randomSource: Random = Random()): LocalDateTime {
++    fun getNextDailyBackupTimeFromNowWithJitter(now: ZonedDateTime, hour: Int, minute: Int, maxJitterSeconds: Int, randomSource: Random = Random()): ZonedDateTime {
+       var next = now.withHour(hour).withMinute(minute).withSecond(0)
+ 
+       val endOfJitterWindowForNow = now.plusSeconds(maxJitterSeconds.toLong() / 2)
+@@ -64,11 +61,11 @@ class MessageBackupListener : PersistentAlarmManagerListener() {
+     }
+ 
+     @VisibleForTesting
+-    fun setNextBackupTimeToIntervalFromNow(zoneId: ZoneId = ZoneId.systemDefault(), now: LocalDateTime = LocalDateTime.now(zoneId), maxJitterSeconds: Int = BACKUP_JITTER_WINDOW_SECONDS, randomSource: Random = Random()): Long {
++    fun setNextBackupTimeToIntervalFromNow(now: ZonedDateTime = ZonedDateTime.now(), maxJitterSeconds: Int = BACKUP_JITTER_WINDOW_SECONDS, randomSource: Random = Random()): Long {
+       val hour = SignalStore.settings.signalBackupHour
+       val minute = SignalStore.settings.signalBackupMinute
+       val next = getNextDailyBackupTimeFromNowWithJitter(now, hour, minute, maxJitterSeconds, randomSource)
+-      val nextTime = next.toMillis(zoneId.toOffset())
++      val nextTime = next.toInstant().toEpochMilli()
+       SignalStore.backup.nextBackupTime = nextTime
+       return nextTime
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/BackupUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/BackupUtil.java
+index e7300655788838c137437e4f5db39684deb50c9d..471f8b5bf408e48f00092e9ca4c2ccb5d716bdd0 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/BackupUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/BackupUtil.java
+@@ -17,6 +17,7 @@ import androidx.documentfile.provider.DocumentFile;
+ import org.signal.core.util.Util;
+ import org.signal.core.util.logging.Log;
+ import org.signal.libsignal.protocol.util.ByteUtil;
++import org.thoughtcrime.securesms.BuildConfig;
+ import org.thoughtcrime.securesms.R;
+ import org.thoughtcrime.securesms.backup.v2.local.ArchiveFileSystem;
+ import org.signal.core.util.NoExternalStorageException;
+@@ -135,12 +136,14 @@ public class BackupUtil {
+   }
+ 
+   public static void deleteOldBackups() {
+-    Log.i(TAG, "Deleting older backups");
++    int maxFiles = TextSecurePreferences.getBackupMaxFiles(AppDependencies.getApplication());
++
++    Log.i(TAG, "Deleting older backups. Keep " + maxFiles + " max.");
+ 
+     try {
+       List<BackupInfo> backups = getAllBackupsNewestFirst();
+ 
+-      for (int i = 2; i < backups.size(); i++) {
++      for (int i = maxFiles; i < backups.size(); i++) {
+         backups.get(i).delete();
+       }
+     } catch (NoExternalStorageException e) {
+@@ -199,8 +202,9 @@ public class BackupUtil {
+     List<BackupInfo> backups = new ArrayList<>(files.length);
+ 
+     for (DocumentFile file : files) {
+-      if (file.isFile() && file.getName() != null && file.getName().endsWith(".backup")) {
+-        long backupTimestamp = getBackupTimestamp(file.getName());
++      String backupName = file.getName();
++      if (file.isFile() && hasBackupExtension(backupName)) {
++        long backupTimestamp = getBackupTimestamp(backupName);
+ 
+         if (backupTimestamp != -1) {
+           backups.add(new BackupInfo(backupTimestamp, file.length(), file.getUri()));
+@@ -213,6 +217,18 @@ public class BackupUtil {
+     return backups;
+   }
+ 
++  public static String getBackupBaseDirName() {
++    return BuildConfig.BACKUP_BASE_NAME;
++  }
++
++  public static String getBackupFilenamePrefix() {
++    return BuildConfig.BACKUP_BASE_NAME.toLowerCase(Locale.ROOT);
++  }
++
++  private static boolean hasBackupExtension(String fileName) {
++    return fileName != null && fileName.endsWith(".backup");
++  }
++
+   public static @Nullable BackupInfo getBackupInfoFromSingleUri(@NonNull Context context, @NonNull Uri singleUri) throws BackupFileException {
+     DocumentFile documentFile = Objects.requireNonNull(DocumentFile.fromSingleUri(context, singleUri));
+ 
+@@ -224,7 +240,7 @@ public class BackupUtil {
+     BackupFileState backupFileState = getBackupFileState(documentFile);
+ 
+     if (backupFileState.isSuccess()) {
+-      long backupTimestamp = getBackupTimestamp(Objects.requireNonNull(documentFile.getName()));
++      long backupTimestamp = getBackupTimestamp(documentFile.getName());
+       return new BackupInfo(backupTimestamp, documentFile.length(), documentFile.getUri());
+     } else {
+       Log.w(TAG, "Could not load backup info.");
+@@ -286,11 +302,14 @@ public class BackupUtil {
+     }
+   }
+ 
+-  private static long getBackupTimestamp(@NonNull String backupName) {
+-    String[] prefixSuffix = backupName.split("[.]");
+-
+-    if (prefixSuffix.length == 2) {
+-      String[] parts = prefixSuffix[0].split("\\-");
++  private static long getBackupTimestamp(@Nullable String backupName) {
++    final String prefix = getBackupFilenamePrefix();
++    if (backupName != null &&
++        backupName.startsWith(prefix) &&
++        backupName.endsWith(".backup")) {
++      String ts = backupName.substring(prefix.length(),
++                                       backupName.length() - ".backup".length());
++      String[] parts = ts.split("\\-");
+ 
+       if (parts.length == 7) {
+         try {
+@@ -318,7 +337,7 @@ public class BackupUtil {
+       return BackupFileState.NOT_FOUND;
+     } else if (!documentFile.canRead()) {
+       return BackupFileState.NOT_READABLE;
+-    } else if (Util.isEmpty(documentFile.getName()) || !documentFile.getName().endsWith(".backup")) {
++    } else if (!hasBackupExtension(documentFile.getName())) {
+       return BackupFileState.UNSUPPORTED_FILE_EXTENSION;
+     } else {
+       return BackupFileState.READABLE;
+diff --git a/app/src/main/protowire/Backups.proto b/app/src/main/protowire/Backups.proto
+index 83227de618e5a6bb539c5e3a8dc4646aeb8685ee..e179498c9499338e8280d83ae8315c45e07fda75 100644
+--- a/app/src/main/protowire/Backups.proto
++++ b/app/src/main/protowire/Backups.proto
+@@ -28,6 +28,8 @@ message SharedPreference {
+     optional string key              = 2;
+     optional string value            = 3;
+     optional bool   booleanValue     = 4;
++    optional uint32 integerValue     = 41;
++    optional int64  longValue        = 42;
+     repeated string stringSetValue   = 5;
+     optional bool   isStringSetValue = 6;
+ }
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/backup/FullBackupExporterTest.kt b/app/src/test/java/org/thoughtcrime/securesms/backup/FullBackupExporterTest.kt
+index b482bb9132692a758b59848e45bb9268f80503ac..971059b776b31daefe5bfc5b53b64318a4511fb7 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/backup/FullBackupExporterTest.kt
++++ b/app/src/test/java/org/thoughtcrime/securesms/backup/FullBackupExporterTest.kt
+@@ -1,11 +1,66 @@
+ package org.thoughtcrime.securesms.backup
+ 
++import android.database.Cursor
++import io.mockk.every
++import io.mockk.mockk
++import net.zetetic.database.sqlcipher.SQLiteDatabase
+ import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertTrue
++import org.thoughtcrime.securesms.database.MessageTable
+ import org.junit.Test
+ 
+ class FullBackupExporterTest {
+ 
+   @Test
++  fun `started disappearing messages are excluded even with substantial time remaining`() {
++    val row = messageCursor(id = 1, expiresIn = 86_400_000L, expireStarted = System.currentTimeMillis())
++
++    assertFalse(FullBackupExporter.isNonExpiringMessage(mockk(), row))
++  }
++
++  @Test
++  fun `an old revision is excluded when the latest revision has started expiring`() {
++    val old = messageCursor(id = 1, latestRevisionId = 2)
++    val latest = messageCursor(id = 2, expiresIn = 86_400_000L, expireStarted = System.currentTimeMillis())
++    val db = mockk<SQLiteDatabase>()
++    every { db.query(MessageTable.TABLE_NAME, any<Array<String>>(), any<String>(), any<Array<String>>(), null, null, null) } returns latest
++
++    assertFalse(FullBackupExporter.isNonExpiringMessage(db, old))
++  }
++
++  @Test
++  fun `a revision cycle terminates without exporting the corrupt message`() {
++    val first = messageCursor(id = 1, latestRevisionId = 2)
++    val second = messageCursor(id = 2, latestRevisionId = 1)
++    val db = mockk<SQLiteDatabase>()
++    every { db.query(MessageTable.TABLE_NAME, any<Array<String>>(), any<String>(), any<Array<String>>(), null, null, null) } returnsMany listOf(second, first)
++
++    assertFalse(FullBackupExporter.isNonExpiringMessage(db, first))
++  }
++
++  @Test
++  fun `messages whose disappearing timer has not started remain exportable`() {
++    assertTrue(FullBackupExporter.isNonExpiringMessage(mockk(), messageCursor(id = 1, expiresIn = 60_000L)))
++  }
++
++  private fun messageCursor(id: Long, expiresIn: Long = 0, expireStarted: Long = 0, latestRevisionId: Long = 0): Cursor {
++    val values = linkedMapOf(
++      MessageTable.ID to id,
++      MessageTable.EXPIRES_IN to expiresIn,
++      MessageTable.EXPIRE_STARTED to expireStarted,
++      MessageTable.LATEST_REVISION_ID to latestRevisionId
++    )
++    return mockk<Cursor>(relaxUnitFun = true) {
++      values.entries.forEachIndexed { index, entry ->
++        every { getColumnIndexOrThrow(entry.key) } returns index
++        every { getLong(index) } returns entry.value
++      }
++      every { moveToFirst() } returns true
++    }
++  }
++
++  @Test
+   fun `computeTableOrder - empty`() {
+     val order = FullBackupExporter.computeTableOrder(mapOf())
+ 
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/backup/MollyBackupPreferencesTest.kt b/app/src/test/java/org/thoughtcrime/securesms/backup/MollyBackupPreferencesTest.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..aba1a441a587da06fff2dc76547cd6c729115248
+--- /dev/null
++++ b/app/src/test/java/org/thoughtcrime/securesms/backup/MollyBackupPreferencesTest.kt
+@@ -0,0 +1,103 @@
++/*
++ * Copyright 2026 Molly Project
++ * SPDX-License-Identifier: AGPL-3.0-only
++ */
++
++package org.thoughtcrime.securesms.backup
++
++import android.app.Application
++import android.content.Context
++import android.content.SharedPreferences
++import androidx.test.core.app.ApplicationProvider
++import io.mockk.every
++import io.mockk.mockkStatic
++import io.mockk.unmockkStatic
++import org.junit.After
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertFalse
++import org.junit.Assert.assertNull
++import org.junit.Assert.assertTrue
++import org.junit.Before
++import org.junit.Test
++import org.junit.runner.RunWith
++import org.robolectric.RobolectricTestRunner
++import org.robolectric.annotation.Config
++import org.thoughtcrime.securesms.backup.proto.SharedPreference
++import org.thoughtcrime.securesms.util.SecurePreferenceManager
++import org.thoughtcrime.securesms.util.TextSecurePreferences
++
++@RunWith(RobolectricTestRunner::class)
++@Config(manifest = Config.NONE, application = Application::class)
++class MollyBackupPreferencesTest {
++
++  private lateinit var context: Application
++  private lateinit var preferences: SharedPreferences
++
++  @Before
++  fun setUp() {
++    context = ApplicationProvider.getApplicationContext()
++    preferences = context.getSharedPreferences("backup-preferences-test", Context.MODE_PRIVATE)
++    preferences.edit().clear().commit()
++    mockkStatic(SecurePreferenceManager::class)
++    every { SecurePreferenceManager.getSecurePreferences(context) } returns preferences
++  }
++
++  @After
++  fun tearDown() {
++    unmockkStatic(SecurePreferenceManager::class)
++  }
++
++  @Test
++  fun `Molly preferences round trip through the wire format without truncating long timeouts`() {
++    val timeout = Int.MAX_VALUE.toLong() + 120L
++    preferences.edit()
++      .putLong(TextSecurePreferences.PASSPHRASE_LOCK_TIMEOUT, timeout)
++      .putBoolean(TextSecurePreferences.DYNAMIC_COLORS_ENABLED, true)
++      .putStringSet(TextSecurePreferences.PASSPHRASE_LOCK_TRIGGER, setOf("screen_off", "background"))
++      .commit()
++
++    val records = TextSecurePreferences.getPreferencesToSaveToBackup(context)
++    assertEquals(records.size.toLong(), TextSecurePreferences.getPreferencesToSaveToBackupCount(context))
++    val timeoutRecord = records.single { it.key == TextSecurePreferences.PASSPHRASE_LOCK_TIMEOUT }
++    assertEquals(timeout, timeoutRecord.longValue!!)
++    assertNull(timeoutRecord.integerValue)
++
++    preferences.edit().clear().commit()
++    records.forEach { record ->
++      FullBackupImporter.processPreference(context, SharedPreference.ADAPTER.decode(record.encode()))
++    }
++
++    assertEquals(timeout, TextSecurePreferences.getPassphraseLockTimeout(context))
++    assertTrue(TextSecurePreferences.isDynamicColorsEnabled(context))
++    assertEquals(setOf("screen_off", "background"), preferences.getStringSet(TextSecurePreferences.PASSPHRASE_LOCK_TRIGGER, emptySet()))
++  }
++
++  @Test
++  fun `historical integer timeout records restore with the long type expected by Molly`() {
++    val record = SharedPreference.Builder()
++      .file_(SecurePreferenceManager.getSecurePreferencesName())
++      .key(TextSecurePreferences.PASSPHRASE_LOCK_TIMEOUT)
++      .integerValue(-1)
++      .build()
++
++    FullBackupImporter.processPreference(context, SharedPreference.ADAPTER.decode(record.encode()))
++
++    assertEquals(0xffff_ffffL, TextSecurePreferences.getPassphraseLockTimeout(context))
++  }
++
++  @Test
++  fun `stale shared preferences for migrated Signal settings are not exported`() {
++    preferences.edit()
++      .putBoolean("pref_read_receipts", false)
++      .putBoolean("pref_screen_security", false)
++      .putString("pref_theme", "light")
++      .putStringSet("pref_media_download_mobile", setOf("video"))
++      .putBoolean(TextSecurePreferences.LOG_ENABLED, false)
++      .commit()
++
++    val records = TextSecurePreferences.getPreferencesToSaveToBackup(context)
++
++    assertEquals(listOf(TextSecurePreferences.LOG_ENABLED), records.map { it.key })
++    assertFalse(records.single().booleanValue!!)
++  }
++}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/service/MessageBackupListenerTest.kt b/app/src/test/java/org/thoughtcrime/securesms/service/MessageBackupListenerTest.kt
+index ca3553ddaca35912cf262a17605a00c3231228b7..b69999c3f37e931acc8cf1a56ae338619f82c4ca 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/service/MessageBackupListenerTest.kt
++++ b/app/src/test/java/org/thoughtcrime/securesms/service/MessageBackupListenerTest.kt
+@@ -23,8 +23,8 @@ import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.testutil.MockRandom
+ import org.thoughtcrime.securesms.testutil.MockSignalStoreRule
+ import java.time.Duration
+-import java.time.LocalDateTime
+-import java.time.ZoneId
++import java.time.ZoneOffset
++import java.time.ZonedDateTime
+ import java.util.concurrent.TimeUnit
+ import kotlin.time.Duration.Companion.days
+ import kotlin.time.Duration.Companion.hours
+@@ -32,6 +32,8 @@ import kotlin.time.Duration.Companion.minutes
+ 
+ class MessageBackupListenerTest {
+ 
++  private val zone = ZoneOffset.UTC
++
+   @get:Rule
+   val rule = MockSignalStoreRule()
+ 
+@@ -66,7 +68,7 @@ class MessageBackupListenerTest {
+   @Test
+   fun testSetNextBackupTimeToIntervalFromNow() {
+     val mockRandom = MockRandom(listOf(1.minutes.inWholeSeconds.toInt()))
+-    val now = LocalDateTime.of(2025, 6, 27, 2, 0, 0)
++    val now = ZonedDateTime.of(2025, 6, 27, 2, 0, 0, 0, zone)
+     val jitterWindow = 10.minutes
+ 
+     every { SignalStore.settings.signalBackupHour } returns 2
+@@ -76,9 +78,8 @@ class MessageBackupListenerTest {
+     val nextDateTime = MessageBackupListener.setNextBackupTimeToIntervalFromNow(
+       now = now,
+       maxJitterSeconds = jitterWindow.inWholeSeconds.toInt(),
+-      randomSource = mockRandom,
+-      zoneId = ZoneId.of("UTC")
+-    ).toLocalDateTime(ZoneId.of("UTC"))
++      randomSource = mockRandom
++    ).toLocalDateTime(zoneId = zone)
+ 
+     assertThat(nextDateTime.dayOfMonth).isEqualTo(28)
+     assertThat(nextDateTime.hour).isEqualTo(1)
+@@ -88,7 +89,7 @@ class MessageBackupListenerTest {
+   @Test
+   fun testBackupJitterExactlyWithinJitterWindow() {
+     val jitterWindowSeconds = Math.toIntExact(TimeUnit.MINUTES.toSeconds(10))
+-    val now = LocalDateTime.of(2024, 6, 7, 2, 55)
++    val now = ZonedDateTime.of(2024, 6, 7, 2, 55, 0, 0, zone)
+     val next = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, 3, 0, jitterWindowSeconds)
+     assertEquals(8, next.dayOfMonth)
+   }
+@@ -96,7 +97,7 @@ class MessageBackupListenerTest {
+   @Test
+   fun testBackupJitterWithinJitterWindow() {
+     val jitterWindowSeconds = Math.toIntExact(TimeUnit.MINUTES.toSeconds(10))
+-    val now = LocalDateTime.of(2024, 6, 7, 2, 58)
++    val now = ZonedDateTime.of(2024, 6, 7, 2, 58, 0, 0, zone)
+     val next = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, 3, 0, jitterWindowSeconds)
+     assertEquals(8, next.dayOfMonth)
+   }
+@@ -104,7 +105,7 @@ class MessageBackupListenerTest {
+   @Test
+   fun testBackupJitterJustOutsideOfWindow() {
+     val jitterWindowSeconds = Math.toIntExact(TimeUnit.MINUTES.toSeconds(10))
+-    val now = LocalDateTime.of(2024, 6, 7, 2, 54, 59)
++    val now = ZonedDateTime.of(2024, 6, 7, 2, 54, 59, 0, zone)
+     val next = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, 3, 0, jitterWindowSeconds)
+     assertEquals(7, next.dayOfMonth)
+   }
+@@ -112,7 +113,7 @@ class MessageBackupListenerTest {
+   @Test
+   fun testBackupJitter() {
+     val jitterWindowSeconds = Math.toIntExact(TimeUnit.MINUTES.toSeconds(10))
+-    val now = LocalDateTime.of(2024, 6, 7, 3, 15, 0)
++    val now = ZonedDateTime.of(2024, 6, 7, 3, 15, 0, 0, zone)
+     val next = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, 3, 0, jitterWindowSeconds)
+     assertEquals(8, next.dayOfMonth)
+   }
+@@ -121,8 +122,8 @@ class MessageBackupListenerTest {
+   fun testBackupJitterWhenScheduledForMidnightButJitterMakesItRunJustBefore() {
+     val mockRandom = MockRandom(listOf(1.minutes.inWholeSeconds.toInt()))
+     val jitterWindowSeconds = 10.minutes.inWholeSeconds.toInt()
+-    val now: LocalDateTime = LocalDateTime.of(2024, 6, 27, 23, 57, 0)
+-    val next: LocalDateTime = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, 0, 0, jitterWindowSeconds, mockRandom)
++    val now: ZonedDateTime = ZonedDateTime.of(2024, 6, 27, 23, 57, 0, 0, zone)
++    val next: ZonedDateTime = MessageBackupListener.getNextDailyBackupTimeFromNowWithJitter(now, 0, 0, jitterWindowSeconds, mockRandom)
+ 
+     assertTrue(Duration.between(now, next).toSeconds() > (1.days.inWholeSeconds - jitterWindowSeconds))
+   }
+
+--------------false--
+
+

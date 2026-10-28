@@ -1,0 +1,3565 @@
+From d0ca765d299297abbf3f438ff6801c23127b647f Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Wed, 28 Oct 2026 23:04:40 +0000
+Subject: [PATCH] Reconstruct Molly integration carryover, part 2
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Shared application/core/library integration, mixed-purpose files and remaining exact target delta.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
+index fc550f9a251acf71e071262527ca68353a77d256..27128bcf353bee6b1f2e92d0da39d44bb1b9ddd4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
+@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.messageprocessingalarm;
+ import android.annotation.SuppressLint;
+ import android.app.AlarmManager;
+ import android.app.PendingIntent;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Handler;
+@@ -12,13 +11,14 @@ import android.os.SystemClock;
+ 
+ import androidx.annotation.NonNull;
+ 
++import org.signal.core.util.AppForegroundObserver;
+ import org.signal.core.util.PendingIntentFlags;
+ import org.signal.core.util.concurrent.SignalExecutors;
+ import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.jobmanager.JobTracker;
+ import org.thoughtcrime.securesms.jobs.MessageFetchJob;
+-import org.signal.core.util.AppForegroundObserver;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ import org.thoughtcrime.securesms.util.BatterySnapshotTracker;
+ import org.thoughtcrime.securesms.util.RemoteConfig;
+ 
+@@ -29,7 +29,7 @@ import java.util.Optional;
+  * A receiver that is scheduled via alarm to run at a remotely-configurable interval to fetch messages from the service.
+  * Basically an extra reliability thing that helps poke the system to fetch messages more often.
+  */
+-public final class RoutineMessageFetchReceiver extends BroadcastReceiver {
++public final class RoutineMessageFetchReceiver extends ExportedBroadcastReceiver {
+ 
+   private static final String TAG = Log.tag(RoutineMessageFetchReceiver.class);
+ 
+@@ -37,7 +37,7 @@ public final class RoutineMessageFetchReceiver extends BroadcastReceiver {
+ 
+   @Override
+   @SuppressLint("StaticFieldLeak")
+-  public void onReceive(@NonNull Context context, @NonNull Intent intent) {
++  public void onReceiveUnlock(@NonNull Context context, @NonNull Intent intent) {
+     Log.i(TAG, String.format("onReceive(%s)", intent.getAction()));
+ 
+     if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt b/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
+index 68e1def4f044015f80d660f3f50e531a464ae237..378d65a23268672d7e6c83ae4d7ea9ff79496802 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
+@@ -1,40 +1,41 @@
+ package org.thoughtcrime.securesms.messagerequests
+ 
+ import android.content.Context
++import androidx.annotation.AttrRes
+ import androidx.annotation.ColorInt
+-import androidx.core.content.ContextCompat
++import org.signal.core.ui.util.ThemeUtil
+ import org.thoughtcrime.securesms.R
+ 
+ enum class MessageRequestBarColorTheme(
+-  private val containerBackgroundColor: Int,
+-  private val buttonBackgroundColor: Int,
+-  private val buttonForegroundDenyColor: Int,
+-  private val buttonForegroundAcceptColor: Int
++  @AttrRes private val containerBackgroundColor: Int,
++  @AttrRes private val buttonBackgroundColor: Int,
++  @AttrRes private val buttonForegroundDenyColor: Int,
++  @AttrRes private val buttonForegroundAcceptColor: Int
+ ) {
+   WALLPAPER(
+-    R.color.message_request_bar_container_background_wallpaper,
+-    R.color.message_request_bar_background_wallpaper,
+-    R.color.message_request_bar_denyForeground_wallpaper,
+-    R.color.message_request_bar_acceptForeground_wallpaper
++    R.attr.message_request_bar_container_background_wallpaper,
++    R.attr.message_request_bar_background_wallpaper,
++    R.attr.message_request_bar_denyForeground_wallpaper,
++    R.attr.message_request_bar_acceptForeground_wallpaper
+   ),
+   NORMAL(
+-    R.color.message_request_bar_container_background_normal,
+-    R.color.message_request_bar_background_normal,
+-    R.color.message_request_bar_denyForeground_normal,
+-    R.color.message_request_bar_acceptForeground_normal
++    R.attr.message_request_bar_container_background_normal,
++    R.attr.message_request_bar_background_normal,
++    R.attr.message_request_bar_denyForeground_normal,
++    R.attr.message_request_bar_acceptForeground_normal
+   );
+ 
+   @ColorInt
+-  fun getContainerButtonBackgroundColor(context: Context): Int = ContextCompat.getColor(context, containerBackgroundColor)
++  fun getContainerButtonBackgroundColor(context: Context): Int = ThemeUtil.getThemedColor(context, containerBackgroundColor)
+ 
+   @ColorInt
+-  fun getButtonBackgroundColor(context: Context): Int = ContextCompat.getColor(context, buttonBackgroundColor)
++  fun getButtonBackgroundColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonBackgroundColor)
+ 
+   @ColorInt
+-  fun getButtonForegroundDenyColor(context: Context): Int = ContextCompat.getColor(context, buttonForegroundDenyColor)
++  fun getButtonForegroundDenyColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonForegroundDenyColor)
+ 
+   @ColorInt
+-  fun getButtonForegroundAcceptColor(context: Context): Int = ContextCompat.getColor(context, buttonForegroundAcceptColor)
++  fun getButtonForegroundAcceptColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonForegroundAcceptColor)
+ 
+   companion object {
+     @JvmStatic
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/migrations/AvatarMigrationJob.java b/app/src/main/java/org/thoughtcrime/securesms/migrations/AvatarMigrationJob.java
+deleted file mode 100644
+index 69a7a5ad63c200308852dca4943b55311e7e66b1..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/migrations/AvatarMigrationJob.java
++++ /dev/null
+@@ -1,97 +0,0 @@
+-package org.thoughtcrime.securesms.migrations;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-
+-import org.signal.core.util.StreamUtil;
+-import org.signal.core.util.logging.Log;
+-import org.thoughtcrime.securesms.groups.GroupId;
+-import org.thoughtcrime.securesms.jobmanager.Job;
+-import org.thoughtcrime.securesms.phonenumbers.NumberUtil;
+-import org.thoughtcrime.securesms.profiles.AvatarHelper;
+-import org.thoughtcrime.securesms.recipients.Recipient;
+-
+-import java.io.ByteArrayInputStream;
+-import java.io.File;
+-import java.io.FileInputStream;
+-import java.io.IOException;
+-import java.util.regex.Pattern;
+-
+-/**
+- * Previously, we used a recipient's address as the filename for their avatar. We want to use
+- * recipientId's instead in preparation for UUIDs.
+- */
+-public class AvatarMigrationJob extends MigrationJob {
+-
+-  public static final String KEY = "AvatarMigrationJob";
+-
+-  private static final String TAG = Log.tag(AvatarMigrationJob.class);
+-
+-  private static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9\\-+]+$");
+-
+-  AvatarMigrationJob() {
+-    this(new Parameters.Builder().build());
+-  }
+-
+-  private AvatarMigrationJob(@NonNull Parameters parameters) {
+-    super(parameters);
+-  }
+-
+-  @Override
+-  public boolean isUiBlocking() {
+-    return true;
+-  }
+-
+-  @Override
+-  public @NonNull String getFactoryKey() {
+-    return KEY;
+-  }
+-
+-  @Override
+-  public void performMigration() {
+-    File   oldDirectory = new File(context.getFilesDir(), "avatars");
+-    File[] files        = oldDirectory.listFiles();
+-
+-    if (files == null) {
+-      Log.w(TAG, "Unable to read directory, and therefore unable to migrate any avatars.");
+-      return;
+-    }
+-
+-    Log.i(TAG, "Preparing to move " + files.length + " avatars.");
+-
+-    for (File file : files) {
+-      try {
+-        if (isValidFileName(file.getName())) {
+-          Recipient recipient = Recipient.external(file.getName());
+-          byte[]    data      = StreamUtil.readFully(new FileInputStream(file));
+-
+-          if (recipient != null) {
+-            AvatarHelper.setAvatar(context, recipient.getId(), new ByteArrayInputStream(data));
+-          }
+-        } else {
+-          Log.w(TAG, "Invalid file name! Can't migrate this file. It'll just get deleted.");
+-        }
+-      } catch (IOException e) {
+-        Log.w(TAG, "Failed to copy avatar file. Skipping it.", e);
+-      } finally {
+-        file.delete();
+-      }
+-    }
+-  }
+-
+-  @Override
+-  boolean shouldRetry(@NonNull Exception e) {
+-    return false;
+-  }
+-
+-  private static boolean isValidFileName(@NonNull String name) {
+-    return NUMBER_PATTERN.matcher(name).matches() || GroupId.isEncodedGroup(name) || NumberUtil.isValidEmail(name);
+-  }
+-
+-  public static class Factory implements Job.Factory<AvatarMigrationJob> {
+-    @Override
+-    public @NonNull AvatarMigrationJob create(@NonNull Parameters parameters, @Nullable byte[] serializedData) {
+-      return new AvatarMigrationJob(parameters);
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/migrations/CachedAttachmentsMigrationJob.java b/app/src/main/java/org/thoughtcrime/securesms/migrations/CachedAttachmentsMigrationJob.java
+deleted file mode 100644
+index 988785c37cd8d1c47fc3a52e78a451c1e2acd3b3..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/migrations/CachedAttachmentsMigrationJob.java
++++ /dev/null
+@@ -1,62 +0,0 @@
+-package org.thoughtcrime.securesms.migrations;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-
+-import com.bumptech.glide.Glide;
+-
+-import org.signal.core.util.logging.Log;
+-import org.thoughtcrime.securesms.jobmanager.Job;
+-import org.thoughtcrime.securesms.util.FileUtils;
+-
+-import java.io.File;
+-
+-public class CachedAttachmentsMigrationJob extends MigrationJob {
+-
+-  private static final String TAG = Log.tag(CachedAttachmentsMigrationJob.class);
+-
+-  public static final String KEY = "CachedAttachmentsMigrationJob";
+-
+-  CachedAttachmentsMigrationJob() {
+-    this(new Parameters.Builder().build());
+-  }
+-
+-  private CachedAttachmentsMigrationJob(@NonNull Parameters parameters) {
+-    super(parameters);
+-  }
+-
+-  @Override
+-  boolean isUiBlocking() {
+-    return false;
+-  }
+-
+-  @Override
+-  void performMigration() {
+-    File externalCacheDir = context.getExternalCacheDir();
+-
+-    if (externalCacheDir == null || !externalCacheDir.exists() || !externalCacheDir.isDirectory()) {
+-      Log.w(TAG, "External Cache Directory either does not exist or isn't a directory. Skipping.");
+-      return;
+-    }
+-
+-    FileUtils.deleteDirectoryContents(context.getExternalCacheDir());
+-    Glide.get(context).clearDiskCache();
+-  }
+-
+-  @Override
+-  boolean shouldRetry(@NonNull Exception e) {
+-    return false;
+-  }
+-
+-  @Override
+-  public @NonNull String getFactoryKey() {
+-    return KEY;
+-  }
+-
+-  public static class Factory implements Job.Factory<CachedAttachmentsMigrationJob> {
+-    @Override
+-    public @NonNull CachedAttachmentsMigrationJob create(@NonNull Parameters parameters, @Nullable byte[] serializedData) {
+-      return new CachedAttachmentsMigrationJob(parameters);
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/migrations/PinReminderMigrationJob.java b/app/src/main/java/org/thoughtcrime/securesms/migrations/PinReminderMigrationJob.java
+index 8c3b7974cffbd573cff6291db5ec62e31f4d7bf8..81dc9d97ee2da841a52df05ba7798854bd97f9ee 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/migrations/PinReminderMigrationJob.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/migrations/PinReminderMigrationJob.java
+@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
+ 
+ import org.thoughtcrime.securesms.jobmanager.Job;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
++import org.thoughtcrime.securesms.util.SecurePreferenceManager;
+ 
+ import java.util.concurrent.TimeUnit;
+ 
+@@ -32,6 +33,8 @@ public class PinReminderMigrationJob extends MigrationJob {
+ 
+   @Override
+   void performMigration() {
++    boolean value = SecurePreferenceManager.getSecurePreferences(context).getBoolean("pref_signal_enable_pinv2_reminders", true);
++    SignalStore.pin().setPinRemindersEnabled(value);
+     SignalStore.pin().setNextReminderIntervalToAtMost(TimeUnit.DAYS.toMillis(3));
+   }
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/migrations/RecipientSearchMigrationJob.java b/app/src/main/java/org/thoughtcrime/securesms/migrations/RecipientSearchMigrationJob.java
+deleted file mode 100644
+index 84f973e56f6321f241552e2cebca1ece6151a639..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/migrations/RecipientSearchMigrationJob.java
++++ /dev/null
+@@ -1,54 +0,0 @@
+-package org.thoughtcrime.securesms.migrations;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-
+-import org.thoughtcrime.securesms.contacts.sync.ContactDiscovery;
+-import org.thoughtcrime.securesms.jobmanager.Job;
+-import org.thoughtcrime.securesms.jobmanager.impl.NetworkConstraint;
+-
+-import java.io.IOException;
+-
+-/**
+- * We added a column for keeping track of the phone number type ("mobile", "home", etc) to the
+- * recipient database, and therefore we need to do a directory sync to fill in that column.
+- */
+-public class RecipientSearchMigrationJob extends MigrationJob {
+-
+-  public static final String KEY = "RecipientSearchMigrationJob";
+-
+-  RecipientSearchMigrationJob() {
+-    this(new Job.Parameters.Builder().addConstraint(NetworkConstraint.KEY).build());
+-  }
+-
+-  private RecipientSearchMigrationJob(@NonNull Job.Parameters parameters) {
+-    super(parameters);
+-  }
+-
+-  @Override
+-  public @NonNull String getFactoryKey() {
+-    return KEY;
+-  }
+-
+-  @Override
+-  boolean isUiBlocking() {
+-    return false;
+-  }
+-
+-  @Override
+-  void performMigration() throws Exception {
+-    ContactDiscovery.refreshAll(context, false);
+-  }
+-
+-  @Override
+-  boolean shouldRetry(@NonNull Exception e) {
+-    return e instanceof IOException;
+-  }
+-
+-  public static class Factory implements Job.Factory<RecipientSearchMigrationJob> {
+-    @Override
+-    public @NonNull RecipientSearchMigrationJob create(@NonNull Parameters parameters, @Nullable byte[] serializedData) {
+-      return new RecipientSearchMigrationJob(parameters);
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/migrations/ResetArchiveTierMigrationJob.kt b/app/src/main/java/org/thoughtcrime/securesms/migrations/ResetArchiveTierMigrationJob.kt
+deleted file mode 100644
+index 9698826b45e76781e78b45f7c365487987431dc5..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/migrations/ResetArchiveTierMigrationJob.kt
++++ /dev/null
+@@ -1,47 +0,0 @@
+-package org.thoughtcrime.securesms.migrations
+-
+-import org.signal.core.util.logging.Log
+-import org.thoughtcrime.securesms.jobmanager.Job
+-import org.thoughtcrime.securesms.keyvalue.SignalStore
+-import org.thoughtcrime.securesms.util.RemoteConfig
+-
+-/**
+- * There was an old bug that resulted in some users having their backup tier set to FREE.
+- * This fixes that.
+- */
+-internal class ResetArchiveTierMigrationJob(
+-  parameters: Parameters = Parameters.Builder().build()
+-) : MigrationJob(parameters) {
+-
+-  companion object {
+-    val TAG = Log.tag(ResetArchiveTierMigrationJob::class.java)
+-    const val KEY = "ResetArchiveTierMigrationJob"
+-  }
+-
+-  override fun getFactoryKey(): String = KEY
+-
+-  override fun isUiBlocking(): Boolean = false
+-
+-  override fun performMigration() {
+-    if (SignalStore.backup.backupTier == null) {
+-      Log.i(TAG, "No backup tier set. Skipping.")
+-      return
+-    }
+-
+-    if (RemoteConfig.internalUser) {
+-      Log.i(TAG, "Internal user. Skipping.")
+-      return
+-    }
+-
+-    Log.w(TAG, "Non-internal user had backup tier set: ${SignalStore.backup.backupTier}. Resetting.")
+-    SignalStore.backup.backupTier = null
+-  }
+-
+-  override fun shouldRetry(e: Exception): Boolean = false
+-
+-  class Factory : Job.Factory<ResetArchiveTierMigrationJob> {
+-    override fun create(parameters: Parameters, serializedData: ByteArray?): ResetArchiveTierMigrationJob {
+-      return ResetArchiveTierMigrationJob(parameters)
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsFragment.kt
+index a07f2c701035212b8c42596d3170405cdbdf0039..33bcc686b098811feeae0b20ca59e525a27593d4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsFragment.kt
+@@ -37,8 +37,6 @@ import org.signal.core.ui.compose.showSnackbar
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.components.settings.app.backups.remote.BackupKeyDisplayFragment
+ import org.thoughtcrime.securesms.lock.v2.CreateSvrPinActivity
+-import org.thoughtcrime.securesms.payments.backup.PaymentsRecoveryStartFragmentArgs.Builder
+-import org.thoughtcrime.securesms.payments.preferences.PaymentsActivity
+ import org.thoughtcrime.securesms.pin.PinOptOutDialog
+ import org.thoughtcrime.securesms.util.navigation.safeNavigate
+ 
+@@ -66,13 +64,6 @@ class AdvancedPinSettingsFragment : ComposeFragment() {
+             AdvancedPinSettingsViewModel.Event.LAUNCH_PIN_CREATION_FLOW -> {
+               startActivityForResult(CreateSvrPinActivity.getIntentForPinCreate(requireContext()), CreateSvrPinActivity.REQUEST_NEW_PIN)
+             }
+-            AdvancedPinSettingsViewModel.Event.LAUNCH_RECOVERY_PHRASE_HANDLING -> {
+-              val intent = Intent(requireContext(), PaymentsActivity::class.java)
+-              intent.putExtra(PaymentsActivity.EXTRA_PAYMENTS_STARTING_ACTION, R.id.action_directly_to_paymentsBackup)
+-              intent.putExtra(PaymentsActivity.EXTRA_STARTING_ARGUMENTS, Builder().setFinishOnConfirm(true).build().toBundle())
+-
+-              startActivity(intent)
+-            }
+             AdvancedPinSettingsViewModel.Event.SHOW_PIN_DISABLED_SNACKBAR -> {
+               displayOptOutSnackbar()
+             }
+@@ -114,14 +105,6 @@ class AdvancedPinSettingsFragment : ComposeFragment() {
+           viewModel.dismissDialog()
+         }
+       )
+-      AdvancedPinSettingsViewModel.Dialog.RECORD_PAYMENTS_RECOVERY_PHRASE -> RecordPaymentsRecoveryPhraseDialog(
+-        onConfirm = {
+-          viewModel.launchRecoveryPhraseHandling()
+-        },
+-        onDismiss = {
+-          viewModel.dismissDialog()
+-        }
+-      )
+       AdvancedPinSettingsViewModel.Dialog.ROTATE_AEP -> RotateAepDialog(
+         onConfirm = {
+           viewModel.dismissDialog()
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsViewModel.kt
+index aa7006e58540148b87837e6e590a98689493255b..140ddd37b8ca23670b3190628212a4a7c50b56c9 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsViewModel.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/AdvancedPinSettingsViewModel.kt
+@@ -21,14 +21,12 @@ class AdvancedPinSettingsViewModel : ViewModel() {
+   enum class Dialog {
+     NONE,
+     REGISTRATION_LOCK,
+-    RECORD_PAYMENTS_RECOVERY_PHRASE,
+     ROTATE_AEP
+   }
+ 
+   enum class Event {
+     SHOW_BACKUPS_DISABLED_OPT_OUT_DIALOG,
+     LAUNCH_PIN_CREATION_FLOW,
+-    LAUNCH_RECOVERY_PHRASE_HANDLING,
+     SHOW_PIN_DISABLED_SNACKBAR
+   }
+ 
+@@ -52,9 +50,6 @@ class AdvancedPinSettingsViewModel : ViewModel() {
+       !enabled && hasRegistrationLock -> {
+         internalDialog.value = Dialog.REGISTRATION_LOCK
+       }
+-      !enabled && SignalStore.payments.mobileCoinPaymentsEnabled() && !SignalStore.payments.userConfirmedMnemonic -> {
+-        internalDialog.value = Dialog.RECORD_PAYMENTS_RECOVERY_PHRASE
+-      }
+       !enabled && SignalStore.backup.areBackupsEnabled -> {
+         internalDialog.value = Dialog.ROTATE_AEP
+       }
+@@ -69,10 +64,6 @@ class AdvancedPinSettingsViewModel : ViewModel() {
+     }
+   }
+ 
+-  fun launchRecoveryPhraseHandling() {
+-    emitEvent(Event.LAUNCH_RECOVERY_PHRASE_HANDLING)
+-  }
+-
+   fun onPinOptOutSuccess() {
+     internalHasOptedOutOfPin.value = SignalStore.svr.hasOptedOut()
+   }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/NetworkPreferenceFragment.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/NetworkPreferenceFragment.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..580391c36824981f62fc562992813103596cd9a8
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/NetworkPreferenceFragment.java
+@@ -0,0 +1,243 @@
++package org.thoughtcrime.securesms.preferences;
++
++import android.content.Context;
++import android.content.Intent;
++import android.os.Bundle;
++import android.text.InputFilter;
++import android.text.InputType;
++import android.text.Spannable;
++import android.text.SpannableString;
++import android.text.style.ForegroundColorSpan;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.FrameLayout;
++import android.widget.Toast;
++
++import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
++import androidx.appcompat.widget.Toolbar;
++import androidx.preference.EditTextPreference;
++import androidx.preference.ListPreference;
++import androidx.preference.Preference;
++
++import com.google.android.material.dialog.MaterialAlertDialogBuilder;
++
++import org.signal.core.util.concurrent.ListenableFuture;
++import org.signal.core.util.concurrent.SettableFuture;
++import org.signal.core.util.concurrent.SimpleTask;
++import org.thoughtcrime.securesms.R;
++import org.thoughtcrime.securesms.dependencies.AppDependencies;
++import org.thoughtcrime.securesms.net.NetworkManager;
++import org.thoughtcrime.securesms.net.ProxyType;
++import org.thoughtcrime.securesms.net.SocksProxy;
++import org.thoughtcrime.securesms.util.SignalProxyUtil;
++import org.thoughtcrime.securesms.util.TextSecurePreferences;
++
++import java.util.concurrent.ExecutionException;
++import java.util.concurrent.TimeUnit;
++
++import info.guardianproject.netcipher.proxy.OrbotHelper;
++
++public class NetworkPreferenceFragment extends ListSummaryPreferenceFragment {
++
++  private final NetworkManager networkManager;
++
++  private Preference networkState;
++
++  private SettableFuture<Boolean> connected;
++
++  public NetworkPreferenceFragment() {
++    networkManager = AppDependencies.getNetworkManager();
++  }
++
++  @Override
++  public @NonNull View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
++    View view = inflater.inflate(R.layout.network_preference_fragment, container, false);
++
++    FrameLayout content = view.findViewById(R.id.preferences_content);
++    View preferencesView = super.onCreateView(inflater, content, savedInstanceState);
++    content.addView(preferencesView);
++
++    return view;
++  }
++
++  @Override
++  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
++    super.onViewCreated(view, savedInstanceState);
++    Toolbar toolbar = view.findViewById(R.id.toolbar);
++    toolbar.setNavigationOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
++  }
++
++  @Override
++  public void onCreate(Bundle icicle) {
++    super.onCreate(icicle);
++
++    networkState = requirePreference("pref_network_connection_state");
++    clearTestResult(networkState);
++
++    ListPreference     proxyType  = requirePreference(TextSecurePreferences.PROXY_TYPE);
++    Preference         socksGroup = requirePreference("proxy_socks");
++    EditTextPreference socksHost  = requirePreference(TextSecurePreferences.PROXY_SOCKS_HOST);
++    EditTextPreference socksPort  = requirePreference(TextSecurePreferences.PROXY_SOCKS_PORT);
++
++    proxyType.setOnPreferenceChangeListener(new ListSummaryListener() {
++      @Override
++      public boolean onPreferenceChange(Preference preference, Object value) {
++        ProxyType type = ProxyType.fromCode((String) value);
++        if (type == ProxyType.ORBOT && !networkManager.isOrbotAvailable()) {
++          promptToInstallOrbot(preference.getContext());
++          return false;
++        }
++        networkManager.setProxyChoice(type);
++        socksGroup.setVisible(type == ProxyType.SOCKS5);
++        clearTestResult(networkState);
++        return super.onPreferenceChange(preference, value);
++      }
++    });
++    initializeListSummary(proxyType);
++
++    socksGroup.setVisible(TextSecurePreferences.getProxyType(requireContext()) == ProxyType.SOCKS5);
++
++    socksHost.setOnBindEditTextListener(editText -> {
++      editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
++      editText.selectAll();
++    });
++    socksHost.setOnPreferenceChangeListener(((preference, newValue) -> {
++      String host = (String) newValue;
++      if (!host.isEmpty()) {
++        if (!SocksProxy.isValidHost(host)) {
++          Toast.makeText(preference.getContext(), R.string.NetworkPreferenceFragment_the_host_you_typed_is_not_valid, Toast.LENGTH_SHORT).show();
++          return false;
++        }
++      } else {
++        host = networkManager.getDefaultProxySocksHost();
++      }
++      networkManager.setProxySocksHost(host);
++      socksHost.setText(host);
++      clearTestResult(networkState);
++      return false;
++    }));
++
++    socksPort.setOnBindEditTextListener(editText -> {
++      editText.setInputType(InputType.TYPE_CLASS_NUMBER);
++      editText.setFilters(new InputFilter[] {new InputFilter.LengthFilter(5)});
++      editText.selectAll();
++    });
++    socksPort.setOnPreferenceChangeListener(((preference, newValue) -> {
++      String newValueStr = (String) newValue;
++      int port;
++      if (!newValueStr.isEmpty()) {
++        port = Integer.parseInt(newValueStr);
++        if (!SocksProxy.isValidPort(port)) {
++          Toast.makeText(preference.getContext(), R.string.NetworkPreferenceFragment_a_valid_port_number_is_between_0_and_65535, Toast.LENGTH_SHORT).show();
++          return false;
++        }
++      } else {
++        port = networkManager.getDefaultProxySocksPort();
++      }
++      networkManager.setProxySocksPort(port);
++      socksPort.setText(String.valueOf(port));
++      clearTestResult(networkState);
++      return false;
++    }));
++  }
++
++  @Override
++  protected void onCreateEncryptedPreferences(Bundle savedInstanceState, String rootKey) {
++    addPreferencesFromResource(R.xml.preferences_network);
++  }
++
++  @Override
++  public void onPause() {
++    super.onPause();
++    TextSecurePreferences.setHasSeenNetworkConfig(requireContext(), true);
++    applyProxyChanges(false);
++  }
++
++  private void applyProxyChanges(boolean alwaysRestart) {
++    final boolean changed = networkManager.applyProxyConfig();
++    if (changed || alwaysRestart) {
++      networkManager.setNetworkEnabled(true);
++      AppDependencies.resetNetwork(true);
++    }
++  }
++
++  public boolean onTestConnectionClicked(Preference preference) {
++    preference.setOnPreferenceClickListener(null);
++
++    if (networkManager.isProxyEnabled()) {
++      preference.setSummary(R.string.preferences_connecting_to_proxy);
++    } else {
++      preference.setSummary(R.string.preferences_network__connecting);
++    }
++
++    applyProxyChanges(true);
++
++    connected = new SettableFuture<>();
++    connected.addListener(new ListenableFuture.Listener<Boolean>() {
++      @Override
++      public void onSuccess(Boolean result) {
++        preference.setSummary(getTestResultString(result));
++      }
++
++      @Override
++      public void onFailure(ExecutionException e) {
++        preference.setSummary(null);
++      }
++    });
++
++    SimpleTask.run(getViewLifecycleOwner().getLifecycle(),
++                   () -> SignalProxyUtil.testWebsocketConnection(TimeUnit.SECONDS.toMillis(10))
++        , result -> {
++      connected.set(result);
++      preference.setOnPreferenceClickListener(this::onTestConnectionClicked);
++    });
++
++    return true;
++  }
++
++  private void clearTestResult(Preference preference) {
++    if (connected != null) {
++      connected.cancel(false);
++    }
++
++    preference.setSummary(null);
++    preference.setOnPreferenceClickListener(this::onTestConnectionClicked);
++  }
++
++  private Spannable getTestResultString(boolean succeeded) {
++    int statusResId;
++    int colorResId;
++
++    if (succeeded) {
++      statusResId = R.string.preferences_network__online;
++      colorResId  = R.color.signal_accent_green;
++    } else {
++      statusResId = R.string.preferences_connection_failed;
++      colorResId  = R.color.signal_alert_primary;
++    }
++
++    Spannable spanned = new SpannableString(getString(statusResId));
++    spanned.setSpan(new ForegroundColorSpan(getResources().getColor(colorResId)), 0, spanned.length(), 0);
++
++    return spanned;
++  }
++
++  public static CharSequence getSummary(Context context) {
++    int proxyTypeResId = TextSecurePreferences.getProxyType(context).getStringResource();
++    return context.getString(R.string.ApplicationPreferencesActivity_network_summary, context.getString(proxyTypeResId));
++  }
++
++  private void promptToInstallOrbot(@NonNull Context context) {
++    final Intent installIntent = OrbotHelper.getOrbotInstallIntent(context);
++    new MaterialAlertDialogBuilder(context)
++        .setTitle(R.string.NetworkPreferenceFragment_missing_orbot_app)
++        .setMessage(R.string.NetworkPreferenceFragment_molly_wont_connect_without_orbot_which_is_not_installed_on_this_device)
++        .setPositiveButton(R.string.NetworkPreferenceFragment_get_orbot, (dialog, which) -> {
++          startActivity(installIntent);
++        })
++        .setNegativeButton(android.R.string.cancel, null)
++        .show();
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/widgets/SignalEditTextPreference.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/widgets/SignalEditTextPreference.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..8df8f0c8509623e6664c58e43b7cbb1c4475e124
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/widgets/SignalEditTextPreference.java
+@@ -0,0 +1,58 @@
++package org.thoughtcrime.securesms.preferences.widgets;
++
++import android.content.Context;
++import android.util.AttributeSet;
++import android.widget.TextView;
++
++import androidx.preference.EditTextPreference;
++import androidx.preference.PreferenceViewHolder;
++
++import org.thoughtcrime.securesms.R;
++
++public class SignalEditTextPreference extends EditTextPreference {
++
++  private TextView     rightTextView;
++  private CharSequence text;
++
++  public SignalEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
++    super(context, attrs, defStyleAttr, defStyleRes);
++    initialize();
++  }
++
++  public SignalEditTextPreference(Context context, AttributeSet attrs, int defStyleAttr) {
++    super(context, attrs, defStyleAttr);
++    initialize();
++  }
++
++  public SignalEditTextPreference(Context context, AttributeSet attrs) {
++    super(context, attrs);
++    initialize();
++  }
++
++  public SignalEditTextPreference(Context context) {
++    super(context);
++    initialize();
++  }
++
++  private void initialize() {
++    setWidgetLayoutResource(R.layout.preference_right_summary_widget);
++  }
++
++  @Override
++  public void onBindViewHolder(PreferenceViewHolder view) {
++    super.onBindViewHolder(view);
++
++    rightTextView = (TextView) view.findViewById(R.id.right_summary);
++    rightTextView.setText(text);
++  }
++
++  @Override
++  public void setText(String text) {
++    super.setText(text);
++
++    this.text = text;
++    if (rightTextView != null) {
++      rightTextView.setText(text);
++    }
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/widgets/SignalListPreference.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/widgets/SignalListPreference.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..cdf0c3b6190d0fac33b187064fcd49d09358705c
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/widgets/SignalListPreference.java
+@@ -0,0 +1,76 @@
++package org.thoughtcrime.securesms.preferences.widgets;
++
++
++import android.content.Context;
++import android.util.AttributeSet;
++import android.widget.TextView;
++
++import androidx.annotation.RequiresApi;
++import androidx.preference.ListPreference;
++import androidx.preference.PreferenceViewHolder;
++
++import org.thoughtcrime.securesms.R;
++
++public class SignalListPreference extends ListPreference {
++
++  private TextView                  rightSummary;
++  private CharSequence              summary;
++  private OnPreferenceClickListener clickListener;
++
++  @RequiresApi(api = 21)
++  public SignalListPreference(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
++    super(context, attrs, defStyleAttr, defStyleRes);
++    initialize();
++  }
++
++  @RequiresApi(api = 21)
++  public SignalListPreference(Context context, AttributeSet attrs, int defStyleAttr) {
++    super(context, attrs, defStyleAttr);
++    initialize();
++  }
++
++  public SignalListPreference(Context context, AttributeSet attrs) {
++    super(context, attrs);
++    initialize();
++  }
++
++  public SignalListPreference(Context context) {
++    super(context);
++    initialize();
++  }
++
++  private void initialize() {
++    setWidgetLayoutResource(R.layout.preference_right_summary_widget);
++  }
++
++  @Override
++  public void onBindViewHolder(PreferenceViewHolder view) {
++    super.onBindViewHolder(view);
++
++    this.rightSummary = (TextView)view.findViewById(R.id.right_summary);
++    setSummary(this.summary);
++  }
++
++  @Override
++  public void setSummary(CharSequence summary) {
++    super.setSummary(getSummary());
++
++    this.summary = summary;
++
++    if (this.rightSummary != null) {
++      this.rightSummary.setText(summary);
++    }
++  }
++
++  @Override
++  public void setOnPreferenceClickListener(OnPreferenceClickListener onPreferenceClickListener) {
++    this.clickListener = onPreferenceClickListener;
++  }
++
++  @Override
++  protected void onClick() {
++    if (clickListener == null || !clickListener.onPreferenceClick(this)) {
++      super.onClick();
++    }
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/profiles/edit/CreateProfileActivity.java b/app/src/main/java/org/thoughtcrime/securesms/profiles/edit/CreateProfileActivity.java
+index 046875b7b10820acdd8bf73dcdf3e32bc493fe82..1ddc653b4dbd1989f49de42e36fdf6df37a4d19f 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/profiles/edit/CreateProfileActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/profiles/edit/CreateProfileActivity.java
+@@ -1,6 +1,7 @@
+ package org.thoughtcrime.securesms.profiles.edit;
+ 
+ 
++import android.annotation.SuppressLint;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Bundle;
+@@ -19,6 +20,7 @@ import org.thoughtcrime.securesms.util.DynamicTheme;
+ /**
+  * Shows editing screen for your profile during registration. Also handles group name editing.
+  */
++@SuppressLint("BaseActivitySubclass")
+ public class CreateProfileActivity extends BaseActivity implements CreateProfileFragment.Controller {
+ 
+   public static final String NEXT_INTENT            = "next_intent";
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/EditProfileActivity.java b/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/EditProfileActivity.java
+index 59a3da55b1ce78c181202b5baf390a6a1bfac3dc..0113f19d3afa983525c31d1a4f0def8eb048b43b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/EditProfileActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/EditProfileActivity.java
+@@ -46,10 +46,13 @@ public class EditProfileActivity extends PassphraseRequiredActivity implements R
+     return intent;
+   }
+ 
+-  @Override
+-  public void onCreate(Bundle bundle, boolean ready) {
++  @Override protected void onPreCreate() {
++    super.onPreCreate();
+     dynamicTheme.onCreate(this);
++  }
+ 
++  @Override
++  public void onCreate(Bundle bundle, boolean ready) {
+     setContentView(R.layout.edit_profile_activity);
+ 
+     if (bundle == null) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/UsernameShareBottomSheet.kt b/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/UsernameShareBottomSheet.kt
+index 7dc74f187dbcfdea9f5af3149e8b684f8ec67fcf..0cde8ce70309a7c35510e4ab586e18c02bc4d647 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/UsernameShareBottomSheet.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/profiles/manage/UsernameShareBottomSheet.kt
+@@ -5,9 +5,9 @@ import android.content.Intent
+ import android.os.Bundle
+ import android.widget.Toast
+ import androidx.core.app.ShareCompat
+-import androidx.core.content.ContextCompat
+ import androidx.fragment.app.setFragmentResult
+ import androidx.navigation.fragment.findNavController
++import org.signal.core.ui.util.ThemeUtil
+ import org.signal.core.util.Base64
+ import org.signal.core.util.DimensionUnit
+ import org.signal.core.util.Util
+@@ -55,7 +55,7 @@ class UsernameShareBottomSheet : DSLSettingsBottomSheetFragment() {
+           DSLSettingsText.TextAppearanceModifier(CoreUiR.style.Signal_Text_BodyMedium),
+           DSLSettingsText.CenterModifier,
+           DSLSettingsText.ColorModifier(
+-            ContextCompat.getColor(requireContext(), CoreUiR.color.signal_colorOnSurfaceVariant)
++            ThemeUtil.getThemedColor(requireContext(), com.google.android.material.R.attr.colorOnSurfaceVariant)
+           )
+         )
+       )
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/providers/PartProvider.java b/app/src/main/java/org/thoughtcrime/securesms/providers/PartProvider.java
+index df3ed05ec329d6b08861456a3c031ff3dd1f0718..db9821fddcd973f35be8c2dac7a93aeb68ea7faf 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/providers/PartProvider.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/providers/PartProvider.java
+@@ -86,7 +86,7 @@ public final class PartProvider extends BaseContentProvider {
+   public ParcelFileDescriptor openFile(@NonNull Uri uri, @NonNull String mode) throws FileNotFoundException {
+     Log.i(TAG, "openFile() called!");
+ 
+-    if (KeyCachingService.isLocked(getContext())) {
++    if (KeyCachingService.isLocked()) {
+       Log.w(TAG, "masterSecret was null, abandoning.");
+       return null;
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java b/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java
+index de9370fed6eca4333d422c5fef2cd08fb7a4976b..e2ddd2825618a31693357d91e6064bc89b28c98d 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/push/AccountManagerFactory.java
+@@ -5,14 +5,12 @@ import android.content.Context;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.VisibleForTesting;
+ 
+-import com.google.android.gms.security.ProviderInstaller;
+-
+-import org.signal.core.util.concurrent.SignalExecutors;
+ import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.BuildConfig;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.util.RemoteConfig;
+ import org.whispersystems.signalservice.api.SignalServiceAccountManager;
++import org.whispersystems.signalservice.api.push.SignalServiceAddress;
+ 
+ public class AccountManagerFactory {
+ 
+@@ -44,16 +42,6 @@ public class AccountManagerFactory {
+                                                                     int deviceId,
+                                                                     @NonNull String password)
+   {
+-    if (new SignalServiceNetworkAccess(context).isCensored(e164)) {
+-      SignalExecutors.BOUNDED.execute(() -> {
+-        try {
+-          ProviderInstaller.installIfNeeded(context);
+-        } catch (Throwable t) {
+-          Log.w(TAG, t);
+-        }
+-      });
+-    }
+-
+     return SignalServiceAccountManager.createWithStaticCredentials(
+         AppDependencies.getSignalServiceNetworkAccess().getConfiguration(e164),
+         null,
+@@ -67,4 +55,23 @@ public class AccountManagerFactory {
+     );
+   }
+ 
++  /**
++   * Should only be used during registration when linking to an existing device.
++   */
++  public @NonNull SignalServiceAccountManager createForDeviceLink(@NonNull Context context,
++                                                                  @NonNull String password)
++  {
++    // Limitation - We cannot detect the need to use a censored configuration for the link process, because the number (and hence country code) is unknown.
++    // Perhaps offer a UI to select just the country, and obtain censorship configuration that way?
++    return SignalServiceAccountManager.createWithStaticCredentials(
++        AppDependencies.getSignalServiceNetworkAccess().getConfiguration(null),
++        null,
++        null,
++        null,
++        SignalServiceAddress.DEFAULT_DEVICE_ID,
++        password,
++        BuildConfig.SIGNAL_AGENT,
++        RemoteConfig.okHttpAutomaticRetry(),
++        RemoteConfig.groupLimits().getHardLimit());
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/revealable/ViewOnceMessageManager.java b/app/src/main/java/org/thoughtcrime/securesms/revealable/ViewOnceMessageManager.java
+index 9a3b6e1a3d62bd3032806110e80c53472767c6f7..4f8dd5f1f6d0c759cb2ff4f31f83cbfa0246604a 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/revealable/ViewOnceMessageManager.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/revealable/ViewOnceMessageManager.java
+@@ -1,7 +1,6 @@
+ package org.thoughtcrime.securesms.revealable;
+ 
+ import android.app.Application;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
+@@ -15,6 +14,7 @@ import org.thoughtcrime.securesms.database.AttachmentTable;
+ import org.thoughtcrime.securesms.database.MessageTable;
+ import org.thoughtcrime.securesms.database.SignalDatabase;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ import org.thoughtcrime.securesms.service.TimedEventManager;
+ 
+ /**
+@@ -72,12 +72,12 @@ public class ViewOnceMessageManager extends TimedEventManager<ViewOnceExpiration
+     setAlarm(application, delay, ViewOnceAlarm.class);
+   }
+ 
+-  public static class ViewOnceAlarm extends BroadcastReceiver {
++  public static class ViewOnceAlarm extends ExportedBroadcastReceiver {
+ 
+     private static final String TAG = Log.tag(ViewOnceAlarm.class);
+ 
+     @Override
+-    public void onReceive(Context context, Intent intent) {
++    public void onReceiveUnlock(Context context, Intent intent) {
+       Log.d(TAG, "onReceive()");
+       AppDependencies.getViewOnceMessageManager().scheduleIfNecessary();
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/BootReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/service/BootReceiver.java
+index 082bd9e356bd27d9e5d7e3cbf7864a61ce01ad09..4fafb540023fd84999c2d1a3b30474219a71abe9 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/BootReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/BootReceiver.java
+@@ -1,16 +1,19 @@
+ package org.thoughtcrime.securesms.service;
+ 
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
++import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.jobs.MessageFetchJob;
+ 
+-public class BootReceiver extends BroadcastReceiver {
++public class BootReceiver extends ExportedBroadcastReceiver {
++
++  private static final String TAG = Log.tag(BootReceiver.class);
+ 
+   @Override
+-  public void onReceive(Context context, Intent intent) {
++  public void onReceiveUnlock(Context context, Intent intent) {
++    Log.i(TAG, "Restarting after: " + intent.getAction());
+     AppDependencies.getJobManager().add(new MessageFetchJob());
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/ExpirationListener.java b/app/src/main/java/org/thoughtcrime/securesms/service/ExpirationListener.java
+index 3ab9c9bef22deeb321a94cfd1cf2b6a4cee29abf..8eedf9f64d4b71732c37158e0b52fdd6925ca8a0 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/ExpirationListener.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/ExpirationListener.java
+@@ -2,26 +2,34 @@ package org.thoughtcrime.securesms.service;
+ 
+ import android.app.AlarmManager;
+ import android.app.PendingIntent;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
+ import org.signal.core.util.PendingIntentFlags;
++import org.signal.core.util.ServiceUtil;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ 
+-public class ExpirationListener extends BroadcastReceiver {
++public class ExpirationListener extends ExportedBroadcastReceiver {
+ 
+   @Override
+-  public void onReceive(Context context, Intent intent) {
++  public void onReceiveUnlock(Context context, Intent intent) {
+     AppDependencies.getExpiringMessageManager().checkSchedule();
+   }
+ 
+   public static void setAlarm(Context context, long waitTimeMillis) {
+-    Intent        intent        = new Intent(context, ExpirationListener.class);
+-    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntentFlags.mutable());
+-    AlarmManager  alarmManager  = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
++    PendingIntent pendingIntent = buildExpirationPendingIntent(context);
++    AlarmManager  alarmManager  = ServiceUtil.getAlarmManager(context);
+ 
+     alarmManager.cancel(pendingIntent);
+     alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + waitTimeMillis, pendingIntent);
+   }
++
++  public static void cancelAlarm(Context context) {
++    ServiceUtil.getAlarmManager(context).cancel(buildExpirationPendingIntent(context));
++  }
++
++  private static PendingIntent buildExpirationPendingIntent(Context context) {
++    Intent intent = new Intent(context, ExpirationListener.class);
++    return PendingIntent.getBroadcast(context, 0, intent, PendingIntentFlags.mutable());
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringArchivedStoriesManager.kt b/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringArchivedStoriesManager.kt
+index 26e54592691e249a206631bf1f76192a19bf0e30..074730ac9a8da1d1182c50a0e124333365b66983 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringArchivedStoriesManager.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringArchivedStoriesManager.kt
+@@ -1,7 +1,6 @@
+ package org.thoughtcrime.securesms.service
+ 
+ import android.app.Application
+-import android.content.BroadcastReceiver
+ import android.content.Context
+ import android.content.Intent
+ import androidx.annotation.WorkerThread
+@@ -64,13 +63,13 @@ class ExpiringArchivedStoriesManager(
+ 
+   data class Event(val delay: Long)
+ 
+-  class ExpireArchivedStoriesAlarm : BroadcastReceiver() {
++  class ExpireArchivedStoriesAlarm : ExportedBroadcastReceiver() {
+ 
+     companion object {
+       private val TAG = Log.tag(ExpireArchivedStoriesAlarm::class.java)
+     }
+ 
+-    override fun onReceive(context: Context?, intent: Intent?) {
++    override fun onReceiveUnlock(context: Context?, intent: Intent?) {
+       Log.d(TAG, "onReceive()")
+       AppDependencies.expireArchivedStoriesManager.scheduleIfNecessary()
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringMessageManager.java b/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringMessageManager.java
+index 98ef32510b69244f2a7c0d4feb2183c36f6dfc63..b218311a16d385e6813bf271d22cee7d58f3e574 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringMessageManager.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringMessageManager.java
+@@ -12,30 +12,31 @@ import org.thoughtcrime.securesms.database.model.MessageRecord;
+ import java.util.Comparator;
+ import java.util.List;
+ import java.util.TreeSet;
+-import java.util.concurrent.Executor;
++import java.util.concurrent.ExecutorService;
+ import java.util.concurrent.Executors;
+-import java.util.stream.Collectors;
+ 
+ public class ExpiringMessageManager {
+ 
+   private static final String TAG = Log.tag(ExpiringMessageManager.class);
+ 
+   private final TreeSet<ExpiringMessageReference> expiringMessageReferences = new TreeSet<>(new ExpiringMessageComparator());
+-  private final Executor                          executor                  = Executors.newSingleThreadExecutor();
++  private final ExecutorService                   executor                  = Executors.newSingleThreadExecutor();
+ 
+-  private final MessageTable smsDatabase;
+-  private final MessageTable mmsDatabase;
++  private final MessageTable messageTable;
+   private final Context      context;
+ 
+   public ExpiringMessageManager(Context context) {
+-    this.context     = context.getApplicationContext();
+-    this.smsDatabase = SignalDatabase.messages();
+-    this.mmsDatabase = SignalDatabase.messages();
++    this.context      = context.getApplicationContext();
++    this.messageTable = SignalDatabase.messages();
+ 
+     executor.execute(new LoadTask());
+     executor.execute(new ProcessTask());
+   }
+ 
++  public void quit() {
++    executor.shutdownNow();
++  }
++
+   public void scheduleDeletion(long id, boolean mms, long expiresInMillis) {
+     scheduleDeletion(id, mms, System.currentTimeMillis(), expiresInMillis);
+   }
+@@ -44,15 +45,15 @@ public class ExpiringMessageManager {
+     long expiresAtMillis = startedAtTimestamp + expiresInMillis;
+ 
+     synchronized (expiringMessageReferences) {
+-      expiringMessageReferences.add(new ExpiringMessageReference(id, mms, expiresAtMillis));
++      expiringMessageReferences.add(new ExpiringMessageReference(id, expiresAtMillis));
+       expiringMessageReferences.notifyAll();
+     }
+   }
+ 
+   public void scheduleDeletion(@NonNull List<MessageTable.ExpirationInfo> expirationInfos) {
+     List<ExpiringMessageReference> references = expirationInfos.stream()
+-                                                               .map(info -> new ExpiringMessageReference(info.getId(), info.isMms(), info.getExpireStarted() + info.getExpiresIn()))
+-                                                               .collect(Collectors.toList());
++                                                               .map(info -> new ExpiringMessageReference(info.getId(), info.getExpireStarted() + info.getExpiresIn()))
++                                                               .toList();
+ 
+     synchronized (expiringMessageReferences) {
+       expiringMessageReferences.addAll(references);
+@@ -68,13 +69,12 @@ public class ExpiringMessageManager {
+ 
+   private class LoadTask implements Runnable {
+     public void run() {
+-      MessageTable.MmsReader mmsReader = MessageTable.mmsReaderFor(mmsDatabase.getExpirationStartedMessages());
++      MessageTable.MmsReader mmsReader = MessageTable.mmsReaderFor(messageTable.getExpirationStartedMessages());
+ 
+       MessageRecord messageRecord;
+ 
+       while ((messageRecord = mmsReader.getNext()) != null) {
+         expiringMessageReferences.add(new ExpiringMessageReference(messageRecord.getId(),
+-                                                                   messageRecord.isMms(),
+                                                                    messageRecord.getExpireStarted() + messageRecord.getExpiresIn()));
+       }
+ 
+@@ -82,7 +82,6 @@ public class ExpiringMessageManager {
+     }
+   }
+ 
+-  @SuppressWarnings("InfiniteLoopStatement")
+   private class ProcessTask implements Runnable {
+     public void run() {
+       while (true) {
+@@ -104,13 +103,14 @@ public class ExpiringMessageManager {
+             }
+ 
+           } catch (InterruptedException e) {
+-            Log.w(TAG, e);
++            Log.i(TAG, "Interrupted.");
++            ExpirationListener.cancelAlarm(context);
++            break;
+           }
+         }
+ 
+         if (expiredMessage != null) {
+-          if (expiredMessage.mms) mmsDatabase.deleteMessage(expiredMessage.id);
+-          else                    smsDatabase.deleteMessage(expiredMessage.id);
++          messageTable.deleteMessage(expiredMessage.id);
+         }
+       }
+     }
+@@ -118,27 +118,24 @@ public class ExpiringMessageManager {
+ 
+   private static class ExpiringMessageReference {
+     private final long    id;
+-    private final boolean mms;
+     private final long    expiresAtMillis;
+ 
+-    private ExpiringMessageReference(long id, boolean mms, long expiresAtMillis) {
++    private ExpiringMessageReference(long id, long expiresAtMillis) {
+       this.id = id;
+-      this.mms = mms;
+       this.expiresAtMillis = expiresAtMillis;
+     }
+ 
+     @Override
+     public boolean equals(Object other) {
+       if (other == null) return false;
+-      if (!(other instanceof ExpiringMessageReference)) return false;
++      if (!(other instanceof final ExpiringMessageReference that)) return false;
+ 
+-      ExpiringMessageReference that = (ExpiringMessageReference)other;
+-      return this.id == that.id && this.mms == that.mms && this.expiresAtMillis == that.expiresAtMillis;
++      return this.id == that.id && this.expiresAtMillis == that.expiresAtMillis;
+     }
+ 
+     @Override
+     public int hashCode() {
+-      return (int)this.id ^ (mms ? 1 : 0) ^ (int)expiresAtMillis;
++      return (int)this.id ^ (int)expiresAtMillis;
+     }
+   }
+ 
+@@ -147,11 +144,7 @@ public class ExpiringMessageManager {
+     public int compare(ExpiringMessageReference lhs, ExpiringMessageReference rhs) {
+       if      (lhs.expiresAtMillis < rhs.expiresAtMillis) return -1;
+       else if (lhs.expiresAtMillis > rhs.expiresAtMillis) return 1;
+-      else if (lhs.id < rhs.id)                           return -1;
+-      else if (lhs.id > rhs.id)                           return 1;
+-      else if (!lhs.mms && rhs.mms)                       return -1;
+-      else if (lhs.mms && !rhs.mms)                       return 1;
+-      else                                                return 0;
++      else return Long.compare(lhs.id, rhs.id);
+     }
+   }
+ 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringStoriesManager.kt b/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringStoriesManager.kt
+index 583614485ea6ff5f0a0475a69a2399dfa4e48037..13b5e2743bf87024875f569386a77041f01b18af 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringStoriesManager.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/ExpiringStoriesManager.kt
+@@ -1,7 +1,6 @@
+ package org.thoughtcrime.securesms.service
+ 
+ import android.app.Application
+-import android.content.BroadcastReceiver
+ import android.content.Context
+ import android.content.Intent
+ import androidx.annotation.WorkerThread
+@@ -69,13 +68,13 @@ class ExpiringStoriesManager(
+ 
+   data class Event(val delay: Long)
+ 
+-  class ExpireStoriesAlarm : BroadcastReceiver() {
++  class ExpireStoriesAlarm : ExportedBroadcastReceiver() {
+ 
+     companion object {
+       private val TAG = Log.tag(ExpireStoriesAlarm::class.java)
+     }
+ 
+-    override fun onReceive(context: Context?, intent: Intent?) {
++    override fun onReceiveUnlock(context: Context?, intent: Intent?) {
+       Log.d(TAG, "onReceive()")
+       AppDependencies.expireStoriesManager.scheduleIfNecessary()
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/ExportedBroadcastReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/service/ExportedBroadcastReceiver.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..e796c1ba1c062153ad21731b87d0d532a8bed2c9
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/ExportedBroadcastReceiver.java
+@@ -0,0 +1,18 @@
++package org.thoughtcrime.securesms.service;
++
++import android.content.BroadcastReceiver;
++import android.content.Context;
++import android.content.Intent;
++
++public abstract class ExportedBroadcastReceiver extends BroadcastReceiver {
++
++  @Override
++  final public void onReceive(Context context, Intent intent) {
++    if (KeyCachingService.isLocked()) {
++      return;
++    }
++    onReceiveUnlock(context, intent);
++  }
++
++  protected abstract void onReceiveUnlock(Context context, Intent intent);
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/PendingRetryReceiptManager.java b/app/src/main/java/org/thoughtcrime/securesms/service/PendingRetryReceiptManager.java
+index 87822fa4faa0b6ecc664a4d4d9c36b7f0a0291c6..ba901cc8180de9452033ab128d5f52570354b597 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/PendingRetryReceiptManager.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/PendingRetryReceiptManager.java
+@@ -1,7 +1,6 @@
+ package org.thoughtcrime.securesms.service;
+ 
+ import android.app.Application;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
+@@ -87,12 +86,12 @@ public final class PendingRetryReceiptManager extends TimedEventManager<PendingR
+     setAlarm(application, delay, PendingRetryReceiptAlarm.class);
+   }
+ 
+-  public static class PendingRetryReceiptAlarm extends BroadcastReceiver {
++  public static class PendingRetryReceiptAlarm extends ExportedBroadcastReceiver {
+ 
+     private static final String TAG = Log.tag(PendingRetryReceiptAlarm.class);
+ 
+     @Override
+-    public void onReceive(Context context, Intent intent) {
++    public void onReceiveUnlock(Context context, Intent intent) {
+       Log.d(TAG, "onReceive()");
+       AppDependencies.getPendingRetryReceiptManager().scheduleIfNecessary();
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/PersistentAlarmManagerListener.java b/app/src/main/java/org/thoughtcrime/securesms/service/PersistentAlarmManagerListener.java
+index f93c69c7e3307ce35a864ba1b109399f77e0e728..58067ecc1c99ccfeb09ae139b0584234fb18e56c 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/PersistentAlarmManagerListener.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/PersistentAlarmManagerListener.java
+@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.service;
+ 
+ import android.app.AlarmManager;
+ import android.app.PendingIntent;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Build;
+@@ -13,7 +12,7 @@ import androidx.annotation.NonNull;
+ import org.signal.core.util.PendingIntentFlags;
+ import org.signal.core.util.logging.Log;
+ 
+-public abstract class PersistentAlarmManagerListener extends BroadcastReceiver {
++public abstract class PersistentAlarmManagerListener extends ExportedBroadcastReceiver {
+ 
+   private static final String TAG             = Log.tag(PersistentAlarmManagerListener.class);
+   private static final String ACTION_SCHEDULE = "signal.ACTION_SCHEDULE";
+@@ -29,7 +28,7 @@ public abstract class PersistentAlarmManagerListener extends BroadcastReceiver {
+   protected abstract long onAlarm(Context context, long scheduledTime);
+ 
+   @Override
+-  public void onReceive(Context context, Intent intent) {
++  public void onReceiveUnlock(Context context, Intent intent) {
+     info(String.format("onReceive(%s)", intent.getAction()));
+ 
+     long          scheduledTime = getNextScheduledExecutionTime(context);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/PersistentConnectionBootListener.java b/app/src/main/java/org/thoughtcrime/securesms/service/PersistentConnectionBootListener.java
+deleted file mode 100644
+index cd855f64eb0863bbd93479a29fda12dfbd6b02e0..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/PersistentConnectionBootListener.java
++++ /dev/null
+@@ -1,20 +0,0 @@
+-package org.thoughtcrime.securesms.service;
+-
+-import android.content.BroadcastReceiver;
+-import android.content.Context;
+-import android.content.Intent;
+-
+-import org.signal.core.util.logging.Log;
+-
+-
+-public class PersistentConnectionBootListener extends BroadcastReceiver {
+-
+-  private static final String TAG = Log.tag(PersistentConnectionBootListener.class);
+-
+-  @Override
+-  public void onReceive(Context context, Intent intent) {
+-    if (intent != null && Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+-      Log.i(TAG, "Received boot event. Application should be started, allowing non-GCM devices to start a foreground service.");
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/TrimThreadsByDateManager.java b/app/src/main/java/org/thoughtcrime/securesms/service/TrimThreadsByDateManager.java
+index 1735c6224b67787420eef4e26643f12fa8ba7a1a..1ff82292ec909d0b611cb657164325d8f4b3b7d2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/TrimThreadsByDateManager.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/TrimThreadsByDateManager.java
+@@ -1,7 +1,6 @@
+ package org.thoughtcrime.securesms.service;
+ 
+ import android.app.Application;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ 
+@@ -79,12 +78,12 @@ public class TrimThreadsByDateManager extends TimedEventManager<TrimThreadsByDat
+     setAlarm(application, delay, TrimThreadsByDateAlarm.class);
+   }
+ 
+-  public static class TrimThreadsByDateAlarm extends BroadcastReceiver {
++  public static class TrimThreadsByDateAlarm extends ExportedBroadcastReceiver {
+ 
+     private static final String TAG = Log.tag(TrimThreadsByDateAlarm.class);
+ 
+     @Override
+-    public void onReceive(@NonNull Context context, @NonNull Intent intent) {
++    public void onReceiveUnlock(@NonNull Context context, @NonNull Intent intent) {
+       Log.d(TAG, "onReceive()");
+       AppDependencies.getTrimThreadsByDateManager().scheduleIfNecessary();
+     }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/webrtc/WebRtcUtil.java b/app/src/main/java/org/thoughtcrime/securesms/service/webrtc/WebRtcUtil.java
+index 342bbcabb366cd226e583b1e772da04a9d3696be..6b0dba6b267ea0aac5a503df384ebd9346665b46 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/service/webrtc/WebRtcUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/service/webrtc/WebRtcUtil.java
+@@ -12,14 +12,19 @@ import org.signal.ringrtc.GroupCall;
+ import org.signal.ringrtc.PeekInfo;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.events.WebRtcViewModel;
++import org.thoughtcrime.securesms.net.Networking;
+ import org.thoughtcrime.securesms.service.webrtc.state.WebRtcServiceState;
+ import org.thoughtcrime.securesms.webrtc.audio.AudioManagerCompat;
+ import org.thoughtcrime.securesms.webrtc.audio.SignalAudioManager;
+ import org.thoughtcrime.securesms.webrtc.locks.LockManager;
++import org.webrtc.PeerConnection;
+ import org.whispersystems.signalservice.api.messages.calls.HangupMessage;
+ import org.whispersystems.signalservice.api.messages.calls.OfferMessage;
+ import org.whispersystems.signalservice.api.messages.calls.OpaqueMessage;
+ 
++import java.net.InetSocketAddress;
++import java.net.Proxy;
++
+ /**
+  * Calling specific helpers.
+  */
+@@ -123,4 +128,18 @@ public final class WebRtcUtil {
+   public static boolean isCallFull(@Nullable PeekInfo peekInfo) {
+     return peekInfo != null && peekInfo.getMaxDevices() != null && peekInfo.getDeviceCount() >= peekInfo.getMaxDevices();
+   }
++
++  public static PeerConnection.ProxyInfo getProxyInfo() {
++    Proxy proxy = Networking.getProxy();
++    if (proxy == Proxy.NO_PROXY) {
++      return null;
++    } else if (proxy.type() == Proxy.Type.SOCKS) {
++      InetSocketAddress address = (InetSocketAddress) proxy.address();
++      return PeerConnection.ProxyInfo.builder(address.getHostString(), address.getPort())
++                                     .setProxyType(PeerConnection.ProxyType.PROXY_SOCKS5)
++                                     .createProxyInfo();
++    } else {
++      throw new AssertionError("Unsupported proxy type");
++    }
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/stories/landing/ExpandHeader.kt b/app/src/main/java/org/thoughtcrime/securesms/stories/landing/ExpandHeader.kt
+index 7965d75bc87084d9e9cfc7ac6aa48c7db2ac7409..a28b68ba0f413b766072c6004aa8c76e440edc89 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/stories/landing/ExpandHeader.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/stories/landing/ExpandHeader.kt
+@@ -3,7 +3,7 @@ package org.thoughtcrime.securesms.stories.landing
+ import android.view.View
+ import android.widget.ImageView
+ import android.widget.TextView
+-import androidx.core.content.ContextCompat
++import org.signal.core.ui.util.ThemeUtil
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.components.settings.DSLSettingsText
+ import org.thoughtcrime.securesms.components.settings.PreferenceModel
+@@ -41,7 +41,7 @@ object ExpandHeader {
+     override fun bind(model: Model) {
+       sectionHeader.text = model.title.resolve(context)
+       icon.setImageResource(if (model.isExpanded) R.drawable.ic_chevron_up_24 else R.drawable.ic_chevron_down_24)
+-      icon.setColorFilter(ContextCompat.getColor(context, R.color.signal_icon_tint_primary))
++      icon.setColorFilter(ThemeUtil.getThemedColor(context, R.attr.signal_icon_tint_primary))
+       itemView.setOnClickListener { model.onClick(!model.isExpanded) }
+     }
+   }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/stories/settings/group/GroupStorySettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/stories/settings/group/GroupStorySettingsFragment.kt
+index 8e60694ea63d2565f47e0cae79e7d194e0ba2dd0..e097a13b4498aedb7c622aa12c10ca7e2913b47b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/stories/settings/group/GroupStorySettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/stories/settings/group/GroupStorySettingsFragment.kt
+@@ -3,10 +3,11 @@ package org.thoughtcrime.securesms.stories.settings.group
+ import android.view.MenuItem
+ import android.view.ViewGroup
+ import androidx.appcompat.widget.Toolbar
+-import androidx.core.content.ContextCompat
+ import androidx.fragment.app.viewModels
+ import androidx.navigation.fragment.findNavController
++import com.google.android.material.R as MaterialR
+ import io.reactivex.rxjava3.kotlin.subscribeBy
++import org.signal.core.ui.util.ThemeUtil
+ import org.signal.core.util.concurrent.LifecycleDisposable
+ import org.signal.core.util.dp
+ import org.thoughtcrime.securesms.R
+@@ -87,7 +88,7 @@ class GroupStorySettingsFragment : DSLSettingsFragment(menuId = R.menu.story_gro
+         title = DSLSettingsText.from(
+           getString(R.string.GroupStorySettingsFragment__members_of_the_group_s, state.name),
+           DSLSettingsText.TextAppearanceModifier(CoreUiR.style.Signal_Text_BodyMedium),
+-          DSLSettingsText.ColorModifier(ContextCompat.getColor(requireContext(), CoreUiR.color.signal_colorOnSurfaceVariant))
++          DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(requireContext(), MaterialR.attr.colorOnSurfaceVariant))
+         )
+       )
+ 
+@@ -96,7 +97,7 @@ class GroupStorySettingsFragment : DSLSettingsFragment(menuId = R.menu.story_gro
+       clickPref(
+         title = DSLSettingsText.from(
+           R.string.GroupStorySettingsFragment__remove_group_story,
+-          DSLSettingsText.ColorModifier(ContextCompat.getColor(requireContext(), CoreUiR.color.signal_colorError))
++          DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(requireContext(), MaterialR.attr.colorError))
+         ),
+         onClick = {
+           StoryDialogs.removeGroupStory(
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/stories/settings/story/StoriesPrivacySettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/stories/settings/story/StoriesPrivacySettingsFragment.kt
+index f43793c0acb4888c37a63b17f48d7ccd477bd1ee..57d22b1f445c99d21660efddf6e3ef50c32c9fc5 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/stories/settings/story/StoriesPrivacySettingsFragment.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/stories/settings/story/StoriesPrivacySettingsFragment.kt
+@@ -1,11 +1,12 @@
+ package org.thoughtcrime.securesms.stories.settings.story
+ 
+-import androidx.core.content.ContextCompat
+ import androidx.fragment.app.viewModels
+ import androidx.navigation.fragment.findNavController
+ import androidx.recyclerview.widget.ConcatAdapter
++import com.google.android.material.R as MaterialR
+ import com.google.android.material.dialog.MaterialAlertDialogBuilder
+ import org.signal.core.ui.BottomSheetUtil
++import org.signal.core.ui.util.ThemeUtil
+ import org.signal.core.util.concurrent.LifecycleDisposable
+ import org.signal.core.util.dp
+ import org.thoughtcrime.securesms.R
+@@ -113,7 +114,7 @@ class StoriesPrivacySettingsFragment :
+           title = DSLSettingsText.from(
+             R.string.StoriesPrivacySettingsFragment__story_updates_automatically_disappear,
+             DSLSettingsText.TextAppearanceModifier(CoreUiR.style.Signal_Text_BodyMedium),
+-            DSLSettingsText.ColorModifier(ContextCompat.getColor(requireContext(), CoreUiR.color.signal_colorOnSurfaceVariant))
++            DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(requireContext(), MaterialR.attr.colorOnSurfaceVariant))
+           )
+         )
+ 
+@@ -211,7 +212,7 @@ class StoriesPrivacySettingsFragment :
+           summary = DSLSettingsText.from(
+             R.string.StoriesPrivacySettingsFragment__if_you_opt_out,
+             DSLSettingsText.TextAppearanceModifier(CoreUiR.style.Signal_Text_BodyMedium),
+-            DSLSettingsText.ColorModifier(ContextCompat.getColor(requireContext(), CoreUiR.color.signal_colorOnSurfaceVariant))
++            DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(requireContext(), MaterialR.attr.colorOnSurfaceVariant))
+           ),
+           onClick = {
+             StoryDialogs.disableStories(requireContext(), viewModel.userHasActiveStories) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/ConnectivityWarning.kt b/app/src/main/java/org/thoughtcrime/securesms/util/ConnectivityWarning.kt
+index dbcc8438c69f09b026dce602f9b846b1882fcd11..8562d7cbeaf36b93e30efada8609df78ee5046ab 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/ConnectivityWarning.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/ConnectivityWarning.kt
+@@ -36,26 +36,6 @@ object ConnectivityWarning {
+   /** If the user has not connected to the service in this amount of time (in ms), then you should show the connectivity warning. A time of <= 0 means never show it. */
+   val threshold = config?.thresholdHours?.hours?.inWholeMilliseconds ?: 0
+ 
+-  /** Whether or not you should prompt the user for a log when notifying them that they are unable to connect. */
+-  val isDebugPromptEnabled: Boolean
+-    get() {
+-      val nonNullConfig = config ?: return false
+-
+-      if (nonNullConfig.percentDebugPrompt == null) {
+-        return false
+-      }
+-
+-      if (nonNullConfig.percentDebugPrompt <= 0f || nonNullConfig.percentDebugPrompt > 100f) {
+-        return false
+-      }
+-
+-      val fraction = nonNullConfig.percentDebugPrompt / 100
+-      val partsPerMillion = (1_000_000 * fraction).toInt()
+-      val bucket = BucketingUtil.bucket(RemoteConfig.CRASH_PROMPT_CONFIG, SignalStore.account.aci!!.rawUuid, 1_000_000)
+-
+-      return partsPerMillion > bucket
+-    }
+-
+   private data class Config(
+     @JsonProperty val thresholdHours: Int?,
+     @JsonProperty val percentDebugPrompt: Float?
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/LongClickCopySpan.java b/app/src/main/java/org/thoughtcrime/securesms/util/LongClickCopySpan.java
+index 1318ba12eb3b75c89a049e3a6fc67b0f66001f9b..a68da5625b0ed51bc570481f33d6c98730cf4774 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/LongClickCopySpan.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/LongClickCopySpan.java
+@@ -1,7 +1,10 @@
+ package org.thoughtcrime.securesms.util;
+ 
++import android.content.ActivityNotFoundException;
+ import android.content.Context;
++import android.content.Intent;
+ import android.graphics.Color;
++import android.net.Uri;
+ import android.os.Build;
+ import android.text.TextPaint;
+ import android.text.style.URLSpan;
+@@ -12,9 +15,13 @@ import androidx.annotation.ColorInt;
+ import androidx.annotation.NonNull;
+ 
+ import org.signal.core.util.Util;
++import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.R;
+ 
+ public class LongClickCopySpan extends URLSpan {
++
++  private static final String TAG = Log.tag(LongClickCopySpan.class);
++
+   private static final String PREFIX_MAILTO = "mailto:";
+   private static final String PREFIX_TEL = "tel:";
+ 
+@@ -75,4 +82,20 @@ public class LongClickCopySpan extends URLSpan {
+     }
+     return url;
+   }
++
++  @Override public void onClick(View widget) {
++    Uri uri = Uri.parse(getURL());
++    if ("monero".equals(uri.getScheme())) {
++      Context context = widget.getContext();
++      Intent intent = new Intent(Intent.ACTION_VIEW, uri);
++      intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
++      try {
++        context.startActivity(intent);
++      } catch (ActivityNotFoundException e) {
++        Log.w(TAG, "Activity was not found for Monero URI");
++      }
++    } else {
++      super.onClick(widget);
++    }
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
+index 998cecd42f96daf307177c4b35c526f6fc76deba..596f533d0a592f60d3f6301bd8707003076fad63 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
+@@ -1,24 +1,19 @@
+ package org.thoughtcrime.securesms.util;
+ 
+-import android.content.ActivityNotFoundException;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.net.Uri;
+ 
+ import androidx.annotation.NonNull;
+ 
+-import org.thoughtcrime.securesms.BuildConfig;
++import org.thoughtcrime.securesms.R;
+ 
+ public final class PlayStoreUtil {
+ 
+   private PlayStoreUtil() {}
+ 
+   public static void openPlayStoreOrOurApkDownloadPage(@NonNull Context context) {
+-    if (BuildConfig.MANAGES_APP_UPDATES) {
+-      CommunicationActions.openBrowserLink(context, "https://signal.org/android/apk");
+-    } else {
+-      openPlayStore(context);
+-    }
++    CommunicationActions.openBrowserLink(context, context.getString(R.string.install_url));
+   }
+ 
+   public static void openPlayStoreHome(@NonNull Context context) {
+@@ -30,14 +25,4 @@ public final class PlayStoreUtil {
+       CommunicationActions.openBrowserLink(context, "https://play.google.com/store/apps/");
+     }
+   }
+-
+-  private static void openPlayStore(@NonNull Context context) {
+-    String packageName = context.getPackageName();
+-
+-    try {
+-      context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+-    } catch (ActivityNotFoundException e) {
+-      CommunicationActions.openBrowserLink(context, "https://play.google.com/store/apps/details?id=" + packageName);
+-    }
+-  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/RemoteDeprecation.java b/app/src/main/java/org/thoughtcrime/securesms/util/RemoteDeprecation.java
+index 99b09051efece33ebc15e7b590214c6e0c8f7f9f..7c8fc6e94b7e31b7716be80bcf6e5dcd539e77ac 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/RemoteDeprecation.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/RemoteDeprecation.java
+@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
+ 
+ import org.signal.core.util.Util;
+ import org.signal.core.util.logging.Log;
+-import org.thoughtcrime.securesms.BuildConfig;
+ 
+ import java.io.IOException;
+ import java.util.Comparator;
+@@ -17,6 +16,8 @@ import java.util.stream.Stream;
+ import org.signal.core.util.JsonUtils;
+ import org.signal.core.util.SemanticVersion;
+ 
++import im.molly.app.base.ApkInfo;
++
+ public final class RemoteDeprecation {
+ 
+   private static final String TAG = Log.tag(RemoteDeprecation.class);
+@@ -28,7 +29,7 @@ public final class RemoteDeprecation {
+    *         there's no pending expiration.
+    */
+   public static long getTimeUntilDeprecation(long currentTime) {
+-    return getTimeUntilDeprecation(RemoteConfig.clientExpiration(), currentTime, BuildConfig.VERSION_NAME);
++    return getTimeUntilDeprecation(RemoteConfig.clientExpiration(), currentTime, ApkInfo.signalCanonicalVersionName);
+   }
+ 
+   /**
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/dualsim/SubscriptionInfoCompat.java b/app/src/main/java/org/thoughtcrime/securesms/util/dualsim/SubscriptionInfoCompat.java
+deleted file mode 100644
+index 4a2837668fda6dc8f67db16e9e90f4c9bbaa8329..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/dualsim/SubscriptionInfoCompat.java
++++ /dev/null
+@@ -1,35 +0,0 @@
+-package org.thoughtcrime.securesms.util.dualsim;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-
+-public class SubscriptionInfoCompat {
+-
+-  private final int subscriptionId;
+-  private final int mcc;
+-  private final int mnc;
+-  private final @Nullable CharSequence displayName;
+-
+-  public SubscriptionInfoCompat(int subscriptionId, @Nullable  CharSequence displayName, int mcc, int mnc) {
+-    this.subscriptionId = subscriptionId;
+-    this.displayName    = displayName;
+-    this.mcc            = mcc;
+-    this.mnc            = mnc;
+-  }
+-
+-  public @NonNull CharSequence getDisplayName() {
+-    return displayName != null ? displayName : "";
+-  }
+-
+-  public int getSubscriptionId() {
+-    return subscriptionId;
+-  }
+-
+-  public int getMnc() {
+-    return mnc;
+-  }
+-
+-  public int getMcc() {
+-    return mcc;
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/dualsim/SubscriptionManagerCompat.java b/app/src/main/java/org/thoughtcrime/securesms/util/dualsim/SubscriptionManagerCompat.java
+deleted file mode 100644
+index 8587ef96e387dab1e2b1a37b59c25d9ed6dbd214..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/dualsim/SubscriptionManagerCompat.java
++++ /dev/null
+@@ -1,160 +0,0 @@
+-package org.thoughtcrime.securesms.util.dualsim;
+-
+-import android.Manifest;
+-import android.content.Context;
+-import android.content.pm.PackageManager;
+-import android.os.Build;
+-import android.telephony.SubscriptionInfo;
+-import android.telephony.SubscriptionManager;
+-import android.telephony.TelephonyManager;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.RequiresApi;
+-import androidx.core.content.ContextCompat;
+-
+-import org.signal.core.util.logging.Log;
+-import org.thoughtcrime.securesms.R;
+-import org.signal.core.util.ServiceUtil;
+-
+-import java.util.Collection;
+-import java.util.Collections;
+-import java.util.HashMap;
+-import java.util.HashSet;
+-import java.util.LinkedHashMap;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.Optional;
+-import java.util.Set;
+-import java.util.function.Function;
+-
+-public final class SubscriptionManagerCompat {
+-
+-  private static final String TAG = Log.tag(SubscriptionManagerCompat.class);
+-
+-  private final Context context;
+-
+-  public SubscriptionManagerCompat(Context context) {
+-    this.context = context.getApplicationContext();
+-  }
+-
+-  public Optional<Integer> getPreferredSubscriptionId() {
+-    if (Build.VERSION.SDK_INT < 24) {
+-      return Optional.empty();
+-    }
+-
+-    return Optional.of(SubscriptionManager.getDefaultSmsSubscriptionId());
+-  }
+-
+-  public Optional<SubscriptionInfoCompat> getActiveSubscriptionInfo(int subscriptionId) {
+-    if (Build.VERSION.SDK_INT < 22) {
+-      return Optional.empty();
+-    }
+-
+-    return Optional.ofNullable(getActiveSubscriptionInfoMap(false).get(subscriptionId));
+-  }
+-
+-  public @NonNull Collection<SubscriptionInfoCompat> getActiveAndReadySubscriptionInfos() {
+-    if (Build.VERSION.SDK_INT < 22) {
+-      return Collections.emptyList();
+-    }
+-
+-    return getActiveSubscriptionInfoMap(true).values();
+-  }
+-
+-  @RequiresApi(api = 22)
+-  private @NonNull Map<Integer, SubscriptionInfoCompat> getActiveSubscriptionInfoMap(boolean excludeUnreadySubscriptions) {
+-    List<SubscriptionInfo> subscriptionInfos = getActiveSubscriptionInfoList();
+-
+-    if (subscriptionInfos.isEmpty()) {
+-      return Collections.emptyMap();
+-    }
+-
+-    Map<SubscriptionInfo, CharSequence>  descriptions = getDescriptionsFor(subscriptionInfos);
+-    Map<Integer, SubscriptionInfoCompat> map          = new LinkedHashMap<>();
+-
+-    for (SubscriptionInfo subscriptionInfo : subscriptionInfos) {
+-      if (!excludeUnreadySubscriptions || isReady(subscriptionInfo)) {
+-        map.put(subscriptionInfo.getSubscriptionId(),
+-                new SubscriptionInfoCompat(subscriptionInfo.getSubscriptionId(),
+-                                           descriptions.get(subscriptionInfo),
+-                                           subscriptionInfo.getMcc(),
+-                                           subscriptionInfo.getMnc()));
+-      }
+-    }
+-
+-    return map;
+-  }
+-
+-  public boolean isMultiSim() {
+-    if (Build.VERSION.SDK_INT < 22) {
+-      return false;
+-    }
+-
+-    return getActiveSubscriptionInfoList().size() >= 2;
+-  }
+-
+-  @RequiresApi(api = 22)
+-  private @NonNull List<SubscriptionInfo> getActiveSubscriptionInfoList() {
+-    SubscriptionManager subscriptionManager = ServiceUtil.getSubscriptionManager(context);
+-
+-    if (subscriptionManager == null) {
+-      Log.w(TAG, "Missing SubscriptionManager.");
+-      return Collections.emptyList();
+-    }
+-
+-    if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+-      Log.w(TAG, "Missing READ_PHONE_STATE permission.");
+-      return Collections.emptyList();
+-    }
+-
+-    List<SubscriptionInfo> list = subscriptionManager.getActiveSubscriptionInfoList();
+-
+-    return list != null? list : Collections.emptyList();
+-  }
+-
+-  @RequiresApi(api = 22)
+-  private Map<SubscriptionInfo, CharSequence> getDescriptionsFor(@NonNull Collection<SubscriptionInfo> subscriptions) {
+-    Map<SubscriptionInfo, CharSequence> descriptions;
+-
+-    descriptions = createDescriptionMap(subscriptions, SubscriptionInfo::getDisplayName);
+-    if (hasNoDuplicates(descriptions.values())) return descriptions;
+-
+-    return createDescriptionMap(subscriptions, this::describeSimIndex);
+-  }
+-
+-  @RequiresApi(api = 22)
+-  private String describeSimIndex(SubscriptionInfo info) {
+-    return context.getString(R.string.conversation_activity__sim_n, info.getSimSlotIndex() + 1);
+-  }
+-
+-  private static Map<SubscriptionInfo, CharSequence> createDescriptionMap(@NonNull Collection<SubscriptionInfo> subscriptions,
+-                                                                          @NonNull Function<SubscriptionInfo, CharSequence> createDescription)
+-  {
+-    Map<SubscriptionInfo, CharSequence> descriptions = new HashMap<>();
+-    for (SubscriptionInfo subscriptionInfo: subscriptions) {
+-      descriptions.put(subscriptionInfo, createDescription.apply(subscriptionInfo));
+-    }
+-    return descriptions;
+-  }
+-
+-  private static <T> boolean hasNoDuplicates(Collection<T> collection) {
+-    final Set<T> set = new HashSet<>();
+-
+-    for (T t : collection) {
+-      if (!set.add(t)) {
+-        return false;
+-      }
+-    }
+-    return true;
+-  }
+-
+-  private boolean isReady(@NonNull SubscriptionInfo subscriptionInfo) {
+-    if (Build.VERSION.SDK_INT < 24) return true;
+-
+-    TelephonyManager telephonyManager = ServiceUtil.getTelephonyManager(context);
+-
+-    TelephonyManager specificTelephonyManager = telephonyManager.createForSubscriptionId(subscriptionInfo.getSubscriptionId());
+-
+-    return specificTelephonyManager.getSimState() == TelephonyManager.SIM_STATE_READY;
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/views/CircularProgressMaterialButton.kt b/app/src/main/java/org/thoughtcrime/securesms/util/views/CircularProgressMaterialButton.kt
+index e3ee567d05808998d4538971cd6a562a493000f5..006a729dada984944d51d81ccf99c26078fbbe8b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/views/CircularProgressMaterialButton.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/views/CircularProgressMaterialButton.kt
+@@ -38,6 +38,12 @@ class CircularProgressMaterialButton @JvmOverloads constructor(
+   private val materialButton: MaterialButton = findViewById(R.id.button)
+   private val progressIndicator: CircularProgressIndicator = findViewById(R.id.progress_indicator)
+ 
++  var progress: Int
++    get() = progressIndicator.progress
++    set(value) {
++      progressIndicator.progress = value
++    }
++
+   var text: CharSequence?
+     get() = materialButton.text
+     set(value) {
+@@ -57,15 +63,23 @@ class CircularProgressMaterialButton @JvmOverloads constructor(
+   }
+ 
+   override fun setEnabled(enabled: Boolean) {
++    setButtonEnabled(enabled)
++    progressIndicator.visible = enabled
++  }
++
++  fun setButtonEnabled(enabled: Boolean) {
+     super.setEnabled(enabled)
+     materialButton.isEnabled = enabled
+-    progressIndicator.visible = enabled
+   }
+ 
+   override fun setClickable(clickable: Boolean) {
++    setButtonClickable(clickable)
++    progressIndicator.visible = clickable
++  }
++
++  fun setButtonClickable(clickable: Boolean) {
+     super.setClickable(clickable)
+     materialButton.isClickable = clickable
+-    progressIndicator.visible = clickable
+   }
+ 
+   override fun onSaveInstanceState(): Parcelable {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/views/DarkOverflowToolbar.java b/app/src/main/java/org/thoughtcrime/securesms/util/views/DarkOverflowToolbar.java
+index 7282dc5e0c7eb9c84f5e67679cecf56f044e126e..45fce432732f1237f140b12d13e3bd8105956249 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/views/DarkOverflowToolbar.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/views/DarkOverflowToolbar.java
+@@ -6,8 +6,8 @@ import android.util.AttributeSet;
+ 
+ import androidx.annotation.Nullable;
+ import androidx.appcompat.widget.Toolbar;
+-import androidx.core.content.ContextCompat;
+ 
++import org.signal.core.ui.util.ThemeUtil;
+ import org.thoughtcrime.securesms.R;
+ 
+ /**
+@@ -33,7 +33,7 @@ public class DarkOverflowToolbar extends Toolbar {
+ 
+   private void init() {
+     if (getOverflowIcon() != null) {
+-      getOverflowIcon().setColorFilter(ContextCompat.getColor(getContext(), R.color.signal_icon_tint_primary), PorterDuff.Mode.SRC_ATOP);
++      getOverflowIcon().setColorFilter(ThemeUtil.getThemedColor(getContext(), R.attr.signal_icon_tint_primary), PorterDuff.Mode.SRC_ATOP);
+     }
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/video/ClassicEncryptedMediaDataSource.java b/app/src/main/java/org/thoughtcrime/securesms/video/ClassicEncryptedMediaDataSource.java
+deleted file mode 100644
+index 95d00caa63c2c60a8d4b79a2608a19ad3b1ec327..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/video/ClassicEncryptedMediaDataSource.java
++++ /dev/null
+@@ -1,52 +0,0 @@
+-package org.thoughtcrime.securesms.video;
+-
+-import android.media.MediaDataSource;
+-
+-import androidx.annotation.NonNull;
+-
+-import org.signal.core.util.crypto.AttachmentSecret;
+-import org.signal.core.util.crypto.ClassicDecryptingPartInputStream;
+-import org.signal.core.util.Util;
+-
+-import java.io.File;
+-import java.io.IOException;
+-import java.io.InputStream;
+-
+-final class ClassicEncryptedMediaDataSource extends MediaDataSource {
+-
+-  private final AttachmentSecret attachmentSecret;
+-  private final File             mediaFile;
+-  private final long             length;
+-
+-  ClassicEncryptedMediaDataSource(@NonNull AttachmentSecret attachmentSecret, @NonNull File mediaFile, long length) {
+-    this.attachmentSecret = attachmentSecret;
+-    this.mediaFile        = mediaFile;
+-    this.length           = length;
+-  }
+-
+-  @Override
+-  public int readAt(long position, byte[] bytes, int offset, int length) throws IOException {
+-    try (InputStream inputStream = ClassicDecryptingPartInputStream.createFor(attachmentSecret, mediaFile)) {
+-      byte[] buffer          = new byte[4096];
+-      long   headerRemaining = position;
+-
+-      while (headerRemaining > 0) {
+-        int read = inputStream.read(buffer, 0, Util.toIntExact(Math.min((long)buffer.length, headerRemaining)));
+-
+-        if (read == -1) return -1;
+-
+-        headerRemaining -= read;
+-      }
+-
+-      return inputStream.read(bytes, offset, length);
+-    }
+-  }
+-
+-  @Override
+-  public long getSize() {
+-    return length;
+-  }
+-
+-  @Override
+-  public void close() {}
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/video/EncryptedMediaDataSource.java b/app/src/main/java/org/thoughtcrime/securesms/video/EncryptedMediaDataSource.java
+index 9ca5cf66420ced943c2ec00c05a1d8798928981a..663a973cff3205632d1bc1fb48842ea922dc1d64 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/video/EncryptedMediaDataSource.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/video/EncryptedMediaDataSource.java
+@@ -12,11 +12,7 @@ import java.io.File;
+ public final class EncryptedMediaDataSource {
+ 
+   public static MediaDataSource createFor(@NonNull AttachmentSecret attachmentSecret, @NonNull File mediaFile, @Nullable byte[] random, long length) {
+-    if (random == null) {
+-      return new ClassicEncryptedMediaDataSource(attachmentSecret, mediaFile, length);
+-    } else {
+-      return new ModernEncryptedMediaDataSource(attachmentSecret, mediaFile, random, length);
+-    }
++    return new ModernEncryptedMediaDataSource(attachmentSecret, mediaFile, random, length);
+   }
+ 
+   public static MediaDataSource createForDiskBlob(@NonNull AttachmentSecret attachmentSecret, @NonNull File mediaFile) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/webrtc/VoiceCallShare.java b/app/src/main/java/org/thoughtcrime/securesms/webrtc/VoiceCallShare.java
+index 2b2adadc9e67497fe637aa83455f69290873d23c..6ba9cfc9d24e2a5dbfcd75cc2e9cd05cef03f0b6 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/webrtc/VoiceCallShare.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/webrtc/VoiceCallShare.java
+@@ -1,6 +1,5 @@
+ package org.thoughtcrime.securesms.webrtc;
+ 
+-import android.app.Activity;
+ import android.content.Intent;
+ import android.database.Cursor;
+ import android.os.Bundle;
+@@ -9,19 +8,20 @@ import android.text.TextUtils;
+ 
+ import org.signal.core.util.concurrent.SimpleTask;
+ import org.signal.core.util.logging.Log;
++import org.thoughtcrime.securesms.PassphraseRequiredActivity;
+ import org.thoughtcrime.securesms.components.webrtc.v2.CallIntent;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.recipients.Recipient;
+ 
+-public class VoiceCallShare extends Activity {
++public class VoiceCallShare extends PassphraseRequiredActivity {
+   
+   private static final String TAG = Log.tag(VoiceCallShare.class);
+ 
+   private static final String VIDEO_CALL_MIME_TYPE = "vnd.android.cursor.item/vnd.org.thoughtcrime.securesms.videocall";
+   
+   @Override
+-  public void onCreate(Bundle icicle) {
+-    super.onCreate(icicle);
++  protected void onCreate(Bundle savedInstanceState, boolean ready) {
++    super.onCreate(savedInstanceState, ready);
+ 
+     if (getIntent().getData() != null && "content".equals(getIntent().getData().getScheme()) && ContactsContract.AUTHORITY.equals(getIntent().getData().getAuthority())) {
+       Cursor cursor = null;
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/crash/CrashConfigTest.kt b/app/src/test/java/org/thoughtcrime/securesms/crash/CrashConfigTest.kt
+deleted file mode 100644
+index 97ce66a4abbc93ea8ac7e1bc575d2b743dd7a68c..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/crash/CrashConfigTest.kt
++++ /dev/null
+@@ -1,120 +0,0 @@
+-package org.thoughtcrime.securesms.crash
+-
+-import assertk.assertThat
+-import assertk.assertions.containsExactly
+-import assertk.assertions.isEmpty
+-import io.mockk.every
+-import io.mockk.mockkObject
+-import io.mockk.unmockkAll
+-import org.junit.After
+-import org.junit.Before
+-import org.junit.Test
+-import org.signal.core.models.ServiceId
+-import org.thoughtcrime.securesms.keyvalue.SignalStore
+-import org.thoughtcrime.securesms.util.RemoteConfig
+-import java.util.UUID
+-
+-class CrashConfigTest {
+-  @Before
+-  fun setup() {
+-    mockkObject(RemoteConfig)
+-
+-    mockkObject(SignalStore)
+-    every { SignalStore.account.aci } returns ServiceId.ACI.from(UUID.randomUUID())
+-  }
+-
+-  @After
+-  fun tearDown() {
+-    unmockkAll()
+-  }
+-
+-  @Test
+-  fun `simple name pattern`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "name": "test", "percent": 100 } ]"""
+-    assertThat(CrashConfig.computePatterns()).containsExactly(CrashConfig.CrashPattern(namePattern = "test"))
+-  }
+-
+-  @Test
+-  fun `simple message pattern`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "message": "test", "percent": 100 } ]"""
+-    assertThat(CrashConfig.computePatterns()).containsExactly(CrashConfig.CrashPattern(messagePattern = "test"))
+-  }
+-
+-  @Test
+-  fun `simple stackTrace pattern`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "stackTrace": "test", "percent": 100 } ]"""
+-    assertThat(CrashConfig.computePatterns()).containsExactly(CrashConfig.CrashPattern(stackTracePattern = "test"))
+-  }
+-
+-  @Test
+-  fun `all fields set`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "name": "test1", "message": "test2", "stackTrace": "test3", "percent": 100 } ]"""
+-    assertThat(CrashConfig.computePatterns())
+-      .containsExactly(CrashConfig.CrashPattern(namePattern = "test1", messagePattern = "test2", stackTracePattern = "test3"))
+-  }
+-
+-  @Test
+-  fun `multiple configs`() {
+-    every { RemoteConfig.crashPromptConfig } returns
+-      """
+-      [ 
+-        { "name": "test1", "percent": 100 },
+-        { "message": "test2", "percent": 100 },
+-        { "stackTrace": "test3", "percent": 100 }
+-      ]
+-      """
+-
+-    assertThat(CrashConfig.computePatterns()).containsExactly(
+-      CrashConfig.CrashPattern(namePattern = "test1"),
+-      CrashConfig.CrashPattern(messagePattern = "test2"),
+-      CrashConfig.CrashPattern(stackTracePattern = "test3")
+-    )
+-  }
+-
+-  @Test
+-  fun `empty fields are considered null`() {
+-    every { RemoteConfig.crashPromptConfig } returns
+-      """
+-      [ 
+-        { "name": "", "percent": 100 },
+-        { "name": "test1", "message": "", "percent": 100 },
+-        { "message": "test2", "stackTrace": "", "percent": 100 }
+-      ]
+-      """
+-
+-    assertThat(CrashConfig.computePatterns()).containsExactly(
+-      CrashConfig.CrashPattern(namePattern = "test1"),
+-      CrashConfig.CrashPattern(messagePattern = "test2")
+-    )
+-  }
+-
+-  @Test
+-  fun `ignore zero percent`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "name": "test", "percent": 0 } ]"""
+-    assertThat(CrashConfig.computePatterns()).isEmpty()
+-  }
+-
+-  @Test
+-  fun `not setting percent is the same as zero percent`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "name": "test" } ]"""
+-    assertThat(CrashConfig.computePatterns()).isEmpty()
+-  }
+-
+-  @Test
+-  fun `ignore configs without a pattern`() {
+-    every { RemoteConfig.crashPromptConfig } returns """[ { "percent": 100 } ]"""
+-    assertThat(CrashConfig.computePatterns()).isEmpty()
+-  }
+-
+-  @Test
+-  fun `ignore invalid json`() {
+-    every { RemoteConfig.crashPromptConfig } returns "asdf"
+-    assertThat(CrashConfig.computePatterns()).isEmpty()
+-  }
+-
+-  @Test
+-  fun `ignore empty json`() {
+-    every { RemoteConfig.crashPromptConfig } returns ""
+-    assertThat(CrashConfig.computePatterns()).isEmpty()
+-  }
+-}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/testutil/EmptyLogger.java b/app/src/test/java/org/thoughtcrime/securesms/testutil/EmptyLogger.java
+index a1b519257726e506037902e4f16664f5fdcb28c0..31d4ef7d6f412806cd2b92ee1118bc689d47ed28 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/testutil/EmptyLogger.java
++++ b/app/src/test/java/org/thoughtcrime/securesms/testutil/EmptyLogger.java
+@@ -20,4 +20,7 @@ public class EmptyLogger extends Log.Logger {
+ 
+   @Override
+   public void flush() { }
++
++  @Override
++  public void clear() { }
+ }
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/testutil/LogRecorder.java b/app/src/test/java/org/thoughtcrime/securesms/testutil/LogRecorder.java
+index b800384f930226544ecc34e15b7e5ecd3368f195..041a8ad3e9b6706e24518844a3290c3707ecd288 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/testutil/LogRecorder.java
++++ b/app/src/test/java/org/thoughtcrime/securesms/testutil/LogRecorder.java
+@@ -43,6 +43,10 @@ public final class LogRecorder extends Log.Logger {
+   public void flush() {
+   }
+ 
++  @Override
++  public void clear() {
++  }
++
+   public List<Entry> getVerbose() {
+     return verbose;
+   }
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/testutil/SystemOutLogger.java b/app/src/test/java/org/thoughtcrime/securesms/testutil/SystemOutLogger.java
+index b46c6e08ccb36357231d1e4c5c5de70079fb684d..0c6227b2be571e4e89ae01dc7b269e508347593c 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/testutil/SystemOutLogger.java
++++ b/app/src/test/java/org/thoughtcrime/securesms/testutil/SystemOutLogger.java
+@@ -31,6 +31,9 @@ public final class SystemOutLogger extends Log.Logger {
+   @Override
+   public void flush() { }
+ 
++  @Override
++  public void clear() { }
++
+   private void printlnFormatted(char level, String tag, String message, Throwable t) {
+     System.out.println(format(level, tag, message, t));
+   }
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/util/LinkUtilTest_isLegal.java b/app/src/test/java/org/thoughtcrime/securesms/util/LinkUtilTest_isLegal.java
+index e1b30d5b6a7a35268637d203d251416e1c84122a..2d540f24ab6a2a83dac27038ff6368947f86e451 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/util/LinkUtilTest_isLegal.java
++++ b/app/src/test/java/org/thoughtcrime/securesms/util/LinkUtilTest_isLegal.java
+@@ -27,6 +27,7 @@ public class LinkUtilTest_isLegal {
+         { "https://кц.рф/some/path",               true  },
+         { "https://abcdefg.onion",                 true  },
+         { "https://abcdefg.i2p",                   true  },
++        { "monero:46BeWrHpwXmHDpDEUmZBWZfoQpdc6HaERCNmx1pEYL2rAcuwufPN9rXHHtyUA4QVy66qeFQkn6sfK8aHYjA3jk3o1Bv16em?tx_amount=239.39014&tx_description=donation", true },
+         { "http://кц.com",                         false },
+         { "кц.com",                                false },
+         { "http://asĸ.com",                        false },
+diff --git a/app/src/website/AndroidManifest.xml b/app/src/website/AndroidManifest.xml
+index 9c36b9c97dda295792f47f653ce71bf0869ef6d9..217b16dc4db69eacd5c73a8d4a6442f32646b052 100644
+--- a/app/src/website/AndroidManifest.xml
++++ b/app/src/website/AndroidManifest.xml
+@@ -1,28 +1,24 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+-    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+-    <uses-permission android:name="android.permission.UPDATE_PACKAGES_WITHOUT_USER_ACTION"/>
++
++    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
++    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+ 
+     <application>
+-        <receiver android:name=".apkupdate.ApkUpdateRefreshListener" android:exported="false">
++        <receiver
++            android:name=".apkupdate.ApkUpdateRefreshListener"
++            android:exported="false">
+             <intent-filter>
+                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+             </intent-filter>
+         </receiver>
+ 
+-        <receiver android:name=".apkupdate.ApkUpdateDownloadManagerReceiver" android:exported="true">
++        <receiver
++            android:name=".apkupdate.ApkUpdateDownloadManagerReceiver"
++            android:exported="false">
+             <intent-filter>
+-                <action android:name="android.intent.action.DOWNLOAD_COMPLETE"/>
++                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+             </intent-filter>
+         </receiver>
+-
+-        <receiver
+-            android:name=".apkupdate.ApkUpdatePackageInstallerReceiver"
+-            android:exported="false" />
+-
+-        <receiver
+-            android:name=".apkupdate.ApkUpdateNotificationReceiver"
+-            android:exported="false" />
+     </application>
+ </manifest>
+\ No newline at end of file
+diff --git a/core/models/src/main/AndroidManifest.xml b/core/models/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 3752c114f7936d985e17124b596a2c364c86febd..0000000000000000000000000000000000000000
+--- a/core/models/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+diff --git a/core/network/src/main/java/org/signal/network/util/JsonUtil.java b/core/network/src/main/java/org/signal/network/util/JsonUtil.java
+index a251043fb978eea351c6624926f8d08f30209862..0ef132d818a7f48ee2f3b68a6fbaeaa8887ccf07 100644
+--- a/core/network/src/main/java/org/signal/network/util/JsonUtil.java
++++ b/core/network/src/main/java/org/signal/network/util/JsonUtil.java
+@@ -17,7 +17,6 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
+ import com.fasterxml.jackson.databind.JsonSerializer;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+ import com.fasterxml.jackson.databind.SerializerProvider;
+-import com.fasterxml.jackson.module.kotlin.KotlinModule;
+ 
+ import org.signal.core.util.Base64;
+ import org.signal.libsignal.protocol.IdentityKey;
+@@ -45,7 +44,7 @@ public class JsonUtil {
+ 
+   static {
+     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+-    objectMapper.registerModule(new KotlinModule());
++    com.fasterxml.jackson.module.kotlin.ExtensionsKt.registerKotlinModule(objectMapper);
+   }
+ 
+   public static String toJson(Object object) {
+diff --git a/core/util-jvm/src/main/java/org/signal/core/util/concurrent/FilteredExecutor.java b/core/util-jvm/src/main/java/org/signal/core/util/concurrent/FilteredExecutor.java
+index ae81fe02266a06b19a3c0112d7e7742a968f37b0..d0ddb51b311d00829f5f73c1fba4ed4813adfbdd 100644
+--- a/core/util-jvm/src/main/java/org/signal/core/util/concurrent/FilteredExecutor.java
++++ b/core/util-jvm/src/main/java/org/signal/core/util/concurrent/FilteredExecutor.java
+@@ -2,31 +2,106 @@ package org.signal.core.util.concurrent;
+ 
+ import org.jetbrains.annotations.NotNull;
+ 
+-import java.util.concurrent.Executor;
++import java.util.Collection;
++import java.util.List;
++import java.util.concurrent.Callable;
++import java.util.concurrent.ExecutionException;
++import java.util.concurrent.ExecutorService;
++import java.util.concurrent.Future;
++import java.util.concurrent.TimeUnit;
++import java.util.concurrent.TimeoutException;
+ 
+ /**
+  * Allows you to specify a filter upon which a job will be executed on the provided executor. If
+  * it doesn't match the filter, it will be run on the calling thread.
+  */
+-public final class FilteredExecutor implements Executor {
++public final class FilteredExecutor implements ExecutorService {
+ 
+-  private final Executor backgroundExecutor;
+-  private final Filter   filter;
++  private final ExecutorService executor;
++  private final Filter          filter;
+ 
+-  public FilteredExecutor(@NotNull Executor backgroundExecutor, @NotNull Filter filter) {
+-    this.backgroundExecutor = backgroundExecutor;
+-    this.filter             = filter;
++  public FilteredExecutor(@NotNull ExecutorService executor, @NotNull Filter filter) {
++    this.executor = executor;
++    this.filter   = filter;
+   }
+ 
+   @Override
+   public void execute(@NotNull Runnable runnable) {
+     if (filter.shouldRunOnExecutor()) {
+-      backgroundExecutor.execute(runnable);
++      executor.execute(runnable);
+     } else {
+       runnable.run();
+     }
+   }
+ 
++  @Override
++  public void shutdown() {
++    executor.shutdown();
++  }
++
++  @Override
++  @NotNull
++  public List<Runnable> shutdownNow() {
++    return executor.shutdownNow();
++  }
++
++  @Override
++  public boolean isShutdown() {
++    return executor.isShutdown();
++  }
++
++  @Override
++  public boolean isTerminated() {
++    return executor.isTerminated();
++  }
++
++  @Override
++  public boolean awaitTermination(long timeout, @NotNull TimeUnit unit) throws InterruptedException {
++    return executor.awaitTermination(timeout, unit);
++  }
++
++  @Override
++  @NotNull
++  public <T> Future<T> submit(@NotNull Callable<T> task) {
++    return executor.submit(task);
++  }
++
++  @Override
++  @NotNull
++  public <T> Future<T> submit(@NotNull Runnable task, T result) {
++    return executor.submit(task, result);
++  }
++
++  @Override
++  @NotNull
++  public Future<?> submit(@NotNull Runnable task) {
++    return executor.submit(task);
++  }
++
++  @Override
++  @NotNull
++  public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks) throws InterruptedException {
++    return executor.invokeAll(tasks);
++  }
++
++  @Override
++  @NotNull
++  public <T> List<Future<T>> invokeAll(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit) throws InterruptedException {
++    return executor.invokeAll(tasks, timeout, unit);
++  }
++
++  @Override
++  @NotNull
++  public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks) throws ExecutionException, InterruptedException {
++    return executor.invokeAny(tasks);
++  }
++
++  @Override
++  @NotNull
++  public <T> T invokeAny(@NotNull Collection<? extends Callable<T>> tasks, long timeout, @NotNull TimeUnit unit) throws ExecutionException, InterruptedException, TimeoutException {
++    return executor.invokeAny(tasks, timeout, unit);
++  }
++
+   public interface Filter {
+     boolean shouldRunOnExecutor();
+   }
+diff --git a/core/util/src/main/AndroidManifest.xml b/core/util/src/main/AndroidManifest.xml
+index 7277dc362ab3ecf567018237f72978ac2d92d2fb..3dc7eca9bf73dc5b256813f67ac50df19dfe5d8d 100644
+--- a/core/util/src/main/AndroidManifest.xml
++++ b/core/util/src/main/AndroidManifest.xml
+@@ -2,4 +2,6 @@
+ <manifest
+     xmlns:android="http://schemas.android.com/apk/res/android">
+ 
++    <application android:networkSecurityConfig="@xml/network_security_config" />
++
+ </manifest>
+\ No newline at end of file
+diff --git a/core/util/src/main/java/org/signal/core/util/MemoryTracker.kt b/core/util/src/main/java/org/signal/core/util/MemoryTracker.kt
+index 8e2c7b65bd8e7630fe00e7ba115d698b015eae9f..b585f68446da22857fb5ac3b161e6dc70f686d88 100644
+--- a/core/util/src/main/java/org/signal/core/util/MemoryTracker.kt
++++ b/core/util/src/main/java/org/signal/core/util/MemoryTracker.kt
+@@ -138,6 +138,10 @@ object MemoryTracker {
+   ) {
+     val usedBytes: Long
+       get() = totalBytes - freeBytes
++
++    /** The number of bytes available above the low-memory threshold. */
++    val systemAvailableBytes
++      get() = freeBytes - lowMemoryThreshold
+   }
+ 
+   data class DetailedMemoryStats(
+diff --git a/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java b/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java
+deleted file mode 100644
+index e3410140587933429c54d23b4b09acff9823e0f9..0000000000000000000000000000000000000000
+--- a/core/util/src/main/java/org/signal/core/util/PlayServicesUtil.java
++++ /dev/null
+@@ -1,62 +0,0 @@
+-package org.signal.core.util;
+-
+-
+-import android.content.Context;
+-import android.content.pm.ApplicationInfo;
+-import android.content.pm.PackageManager;
+-
+-import com.google.android.gms.common.ConnectionResult;
+-import com.google.android.gms.common.GoogleApiAvailability;
+-
+-import org.signal.core.util.logging.Log;
+-
+-public class PlayServicesUtil {
+-
+-  private static final String TAG = Log.tag(PlayServicesUtil.class);
+-
+-  public enum PlayServicesStatus {
+-    SUCCESS,
+-    MISSING,
+-    NEEDS_UPDATE,
+-    TRANSIENT_ERROR
+-  }
+-
+-  public static PlayServicesStatus getPlayServicesStatus(Context context) {
+-    int gcmStatus = 0;
+-
+-    try {
+-      gcmStatus = GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+-    } catch (Throwable t) {
+-      Log.w(TAG, t);
+-      return PlayServicesStatus.MISSING;
+-    }
+-
+-    Log.i(TAG, "Play Services: " + gcmStatus);
+-
+-    switch (gcmStatus) {
+-      case ConnectionResult.SUCCESS:
+-        return PlayServicesStatus.SUCCESS;
+-      case ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED:
+-        try {
+-          ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo("com.google.android.gms", 0);
+-
+-          if (applicationInfo != null && !applicationInfo.enabled) {
+-            return PlayServicesStatus.MISSING;
+-          }
+-        } catch (PackageManager.NameNotFoundException e) {
+-          Log.w(TAG, e);
+-        }
+-
+-        return PlayServicesStatus.NEEDS_UPDATE;
+-      case ConnectionResult.SERVICE_DISABLED:
+-      case ConnectionResult.SERVICE_MISSING:
+-      case ConnectionResult.SERVICE_INVALID:
+-      case ConnectionResult.API_UNAVAILABLE:
+-      case ConnectionResult.SERVICE_MISSING_PERMISSION:
+-        return PlayServicesStatus.MISSING;
+-      default:
+-        return PlayServicesStatus.TRANSIENT_ERROR;
+-    }
+-  }
+-
+-}
+diff --git a/core/util/src/main/java/org/signal/core/util/ServiceUtil.java b/core/util/src/main/java/org/signal/core/util/ServiceUtil.java
+index e75f0d7507b535c8259ba006a3ee6dfc325d663c..0489bc73e39c889821543e34df37b29d2b2c3365 100644
+--- a/core/util/src/main/java/org/signal/core/util/ServiceUtil.java
++++ b/core/util/src/main/java/org/signal/core/util/ServiceUtil.java
+@@ -3,6 +3,7 @@ package org.signal.core.util;
+ import android.app.Activity;
+ import android.app.ActivityManager;
+ import android.app.AlarmManager;
++import android.app.AppOpsManager;
+ import android.app.DownloadManager;
+ import android.app.KeyguardManager;
+ import android.app.NotificationManager;
+@@ -112,6 +113,10 @@ public class ServiceUtil {
+     return ContextCompat.getSystemService(context, BluetoothManager.class);
+   }
+ 
++  public static AppOpsManager getAppOpsManager(@NonNull Context context) {
++    return ContextCompat.getSystemService(context, AppOpsManager.class);
++  }
++
+   public static DownloadManager getDownloadManager(@NonNull Context context) {
+     return ContextCompat.getSystemService(context, DownloadManager.class);
+   }
+diff --git a/core/util/src/main/java/org/signal/core/util/StringUtil.kt b/core/util/src/main/java/org/signal/core/util/StringUtil.kt
+index 1d4157766f4a0dedffc390cffb646dc2819da9d0..3586f6ff63ba86382c53d940c5ec4325a969d484 100644
+--- a/core/util/src/main/java/org/signal/core/util/StringUtil.kt
++++ b/core/util/src/main/java/org/signal/core/util/StringUtil.kt
+@@ -98,6 +98,24 @@ object StringUtil {
+     }
+   }
+ 
++  @JvmStatic
++  fun trimEndPeriodInSingleSentence(text: CharSequence?): CharSequence? {
++    if (text == null || text.length < 2) {
++      return text
++    }
++    val len = text.length
++    for (i in 0..<len) {
++      if (text[i] == '.') {
++        if (i + 1 < len) {
++          // Multiple sentences
++          break
++        }
++        return text.subSequence(0, i)
++      }
++    }
++    return text
++  }
++
+   /**
+    * @return True if the string is empty, or if it contains nothing but whitespace characters.
+    * Accounts for various unicode whitespace characters.
+diff --git a/core/util/src/main/java/org/signal/core/util/concurrent/AnrDetector.kt b/core/util/src/main/java/org/signal/core/util/concurrent/AnrDetector.kt
+deleted file mode 100644
+index 6a7c5b7b04cf1cc515112b384d21e0c8da435606..0000000000000000000000000000000000000000
+--- a/core/util/src/main/java/org/signal/core/util/concurrent/AnrDetector.kt
++++ /dev/null
+@@ -1,131 +0,0 @@
+-/*
+- * Copyright 2023 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.signal.core.util.concurrent
+-
+-import android.os.Debug
+-import android.os.Looper
+-import androidx.annotation.MainThread
+-import org.signal.core.util.ThreadUtil
+-import org.signal.core.util.logging.Log
+-import java.lang.IllegalStateException
+-import java.lang.RuntimeException
+-import java.text.SimpleDateFormat
+-import java.util.Date
+-import java.util.Locale
+-import kotlin.time.Duration
+-import kotlin.time.Duration.Companion.milliseconds
+-import kotlin.time.Duration.Companion.seconds
+-
+-/**
+- * Attempts to detect ANR's by posting runnables to the main thread and detecting if they've been run within the [anrThreshold].
+- * If an ANR is detected, it is logged, and the [anrSaver] is called with the series of thread dumps that were taken of the main thread.
+- *
+- * The detection of an ANR will cause an internal user to crash.
+- */
+-object AnrDetector {
+-
+-  private val TAG = Log.tag(AnrDetector::class.java)
+-
+-  private var thread: AnrDetectorThread? = null
+-
+-  private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS zzz", Locale.US)
+-
+-  @JvmStatic
+-  @MainThread
+-  fun start(anrThreshold: Long = 5.seconds.inWholeMilliseconds, isInternal: () -> Boolean, anrSaver: (String) -> Unit) {
+-    thread?.end()
+-    thread = null
+-
+-    thread = AnrDetectorThread(anrThreshold.milliseconds, isInternal, anrSaver)
+-    thread!!.start()
+-  }
+-
+-  @JvmStatic
+-  @MainThread
+-  fun stop() {
+-    thread?.end()
+-    thread = null
+-  }
+-
+-  private class AnrDetectorThread(
+-    private val anrThreshold: Duration,
+-    private val isInternal: () -> Boolean,
+-    private val anrSaver: (String) -> Unit
+-  ) : Thread("signal-anr") {
+-
+-    @Volatile
+-    private var uiRan = false
+-    private val uiRunnable = Runnable {
+-      uiRan = true
+-    }
+-
+-    @Volatile
+-    private var stopped = false
+-
+-    override fun run() {
+-      while (!stopped) {
+-        uiRan = false
+-        ThreadUtil.postToMain(uiRunnable)
+-
+-        val intervalCount = 5
+-        val intervalDuration = anrThreshold.inWholeMilliseconds / intervalCount
+-        if (intervalDuration == 0L) {
+-          throw IllegalStateException("ANR threshold is too small!")
+-        }
+-
+-        val dumps = mutableListOf<String>()
+-
+-        for (i in 1..intervalCount) {
+-          if (stopped) {
+-            Log.i(TAG, "Thread shutting down during intervals.")
+-            return
+-          }
+-
+-          ThreadUtil.sleep(intervalDuration)
+-
+-          if (!uiRan) {
+-            dumps += getMainThreadDump()
+-          } else {
+-            dumps.clear()
+-          }
+-        }
+-
+-        if (!uiRan && !Debug.isDebuggerConnected() && !Debug.waitingForDebugger()) {
+-          Log.w(TAG, "Failed to post to main in ${anrThreshold.inWholeMilliseconds} ms! Likely ANR!")
+-
+-          val dumpString = dumps.joinToString(separator = "\n\n")
+-          Log.w(TAG, "Main thread dumps:\n$dumpString")
+-
+-          ThreadUtil.cancelRunnableOnMain(uiRunnable)
+-          anrSaver(dumpString)
+-
+-          if (isInternal()) {
+-            Log.e(TAG, "Internal user -- crashing!")
+-            throw SignalAnrException()
+-          }
+-        }
+-
+-        dumps.clear()
+-      }
+-
+-      Log.i(TAG, "Thread shutting down.")
+-    }
+-
+-    fun end() {
+-      stopped = true
+-    }
+-
+-    private fun getMainThreadDump(): String {
+-      val mainThread = Looper.getMainLooper().thread
+-      val date = dateFormat.format(Date())
+-      val dumpString = mainThread.stackTrace.takeIf { it.isNotEmpty() }?.joinToString(separator = "\n") ?: "Not available."
+-
+-      return "--- $date:\n$dumpString"
+-    }
+-  }
+-
+-  private class SignalAnrException : RuntimeException()
+-}
+diff --git a/core/util/src/main/java/org/signal/core/util/tracing/Tracer.java b/core/util/src/main/java/org/signal/core/util/tracing/Tracer.java
+deleted file mode 100644
+index 675d40d74a15f34b3f1d0fdfaa26ec358fd5c98d..0000000000000000000000000000000000000000
+--- a/core/util/src/main/java/org/signal/core/util/tracing/Tracer.java
++++ /dev/null
+@@ -1,279 +0,0 @@
+-package org.signal.core.util.tracing;
+-
+-import android.os.SystemClock;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-
+-import java.nio.ByteBuffer;
+-import java.util.ArrayList;
+-import java.util.Collections;
+-import java.util.LinkedList;
+-import java.util.List;
+-import java.util.Map;
+-import java.util.Queue;
+-import java.util.UUID;
+-import java.util.concurrent.ConcurrentHashMap;
+-import java.util.concurrent.ConcurrentLinkedQueue;
+-import java.util.concurrent.CopyOnWriteArrayList;
+-import java.util.concurrent.TimeUnit;
+-import java.util.concurrent.atomic.AtomicInteger;
+-
+-import okio.ByteString;
+-
+-/**
+- * A class to create Perfetto-compatible traces. Currently keeps the entire trace in memory to
+- * avoid weirdness with synchronizing to disk.
+- * <p>
+- * Some general info on how the Perfetto format works:
+- * - The file format is just a Trace proto (see Trace.proto)
+- * - The Trace proto is just a series of TracePackets
+- * - TracePackets can describe:
+- * - Threads
+- * - Start of a method
+- * - End of a method
+- * - (And a bunch of other stuff that's not relevant to use at this point)
+- * <p>
+- * We keep a circular buffer of TracePackets for method calls, and we keep a separate list of
+- * TracePackets for threads so we don't lose any of those.
+- * <p>
+- * Serializing is just a matter of throwing all the TracePackets we have into a proto.
+- * <p>
+- * Note: This class aims to be largely-thread-safe, but prioritizes speed and memory efficiency
+- * above all else. These methods are going to be called very quickly from every thread imaginable,
+- * and we want to create as little overhead as possible. The idea being that it's ok if we don't,
+- * for example, keep a perfect circular buffer size if it allows us to reduce overhead. The only
+- * cost of screwing up would be dropping a trace packet or something, which, while sad, won't affect
+- * how the app functions
+- */
+-public final class Tracer {
+-
+-  public static final class TrackId {
+-    public static final long DB_LOCK = -8675309;
+-
+-    public static final String DB_LOCK_NAME = "Database Lock";
+-  }
+-
+-  private static final Tracer INSTANCE = new Tracer();
+-
+-  private static final int    TRUSTED_SEQUENCE_ID      = 1;
+-  private static final byte[] SYNCHRONIZATION_MARKER   = toByteArray(UUID.fromString("82477a76-b28d-42ba-81dc-33326d57a079"));
+-  private static final long   SYNCHRONIZATION_INTERVAL = TimeUnit.SECONDS.toNanos(3);
+-
+-  private final Clock                  clock;
+-  private final Map<Long, TracePacket> threadPackets;
+-  private final Queue<TracePacket>     eventPackets;
+-  private final AtomicInteger          eventCount;
+-  private final List<EventListener>    eventListeners;
+-
+-  private long lastSyncTime;
+-  private long maxBufferSize;
+-
+-  private Tracer() {
+-    this.clock          = SystemClock::elapsedRealtimeNanos;
+-    this.threadPackets  = new ConcurrentHashMap<>();
+-    this.eventPackets   = new ConcurrentLinkedQueue<>();
+-    this.eventCount     = new AtomicInteger(0);
+-    this.eventListeners = new CopyOnWriteArrayList<>();
+-    this.maxBufferSize  = 3_500;
+-  }
+-
+-  public void addEventListener(@NonNull EventListener listener) {
+-    eventListeners.add(listener);
+-  }
+-
+-  public void removeEventListener(@NonNull EventListener listener) {
+-    eventListeners.remove(listener);
+-  }
+-
+-  public static @NonNull Tracer getInstance() {
+-    return INSTANCE;
+-  }
+-
+-  public void setMaxBufferSize(long maxBufferSize) {
+-    this.maxBufferSize = maxBufferSize;
+-  }
+-
+-  public void start(@NonNull String methodName) {
+-    start(methodName, Thread.currentThread().getId(), null);
+-  }
+-
+-  public void start(@NonNull String methodName, long trackId) {
+-    start(methodName, trackId, null);
+-  }
+-
+-  public void start(@NonNull String methodName, @NonNull String key, @Nullable String value) {
+-    start(methodName, Thread.currentThread().getId(), key, value);
+-  }
+-
+-  public void start(@NonNull String methodName, long trackId, @NonNull String key, @Nullable String value) {
+-    start(methodName, trackId, Collections.singletonMap(key, value));
+-  }
+-
+-  public void start(@NonNull String methodName, @Nullable Map<String, String> values) {
+-    start(methodName, Thread.currentThread().getId(), values);
+-  }
+-
+-  public void start(@NonNull String methodName, long trackId, @Nullable Map<String, String> values) {
+-    long time = clock.getTimeNanos();
+-
+-    if (time - lastSyncTime > SYNCHRONIZATION_INTERVAL) {
+-      addPacket(forSynchronization(time));
+-      lastSyncTime = time;
+-    }
+-
+-    if (!threadPackets.containsKey(trackId)) {
+-      threadPackets.put(trackId, forTrackId(trackId));
+-    }
+-
+-    addPacket(forMethodStart(methodName, time, trackId, values));
+-
+-    if (!eventListeners.isEmpty()) {
+-      String trackName = (trackId == TrackId.DB_LOCK) ? TrackId.DB_LOCK_NAME : Thread.currentThread().getName();
+-      for (EventListener listener : eventListeners) {
+-        listener.onStart(methodName, trackId, trackName, time, values);
+-      }
+-    }
+-  }
+-
+-  public void end(@NonNull String methodName) {
+-    long time     = clock.getTimeNanos();
+-    long threadId = Thread.currentThread().getId();
+-
+-    addPacket(forMethodEnd(methodName, time, threadId));
+-    notifyEnd(methodName, threadId, time);
+-  }
+-
+-  public void end(@NonNull String methodName, long trackId) {
+-    long time = clock.getTimeNanos();
+-    addPacket(forMethodEnd(methodName, time, trackId));
+-    notifyEnd(methodName, trackId, time);
+-  }
+-
+-  private void notifyEnd(@NonNull String methodName, long trackId, long time) {
+-    if (eventListeners.isEmpty()) {
+-      return;
+-    }
+-    for (EventListener listener : eventListeners) {
+-      listener.onEnd(methodName, trackId, time);
+-    }
+-  }
+-
+-  public @NonNull byte[] serialize() {
+-    List<TracePacket> packets = new ArrayList<>();
+-    packets.addAll(threadPackets.values());
+-    packets.addAll(eventPackets);
+-    packets.add(forSynchronization(clock.getTimeNanos()));
+-
+-    return new Trace.Builder().packet(packets).build().encode();
+-  }
+-
+-  /**
+-   * Attempts to add a packet to our list while keeping the size of our circular buffer in-check.
+-   * The tracking of the event count is not perfectly thread-safe, but doing it in a thread-safe
+-   * way would likely involve adding a lock, which we really don't want to do, since it'll add
+-   * unnecessary overhead.
+-   * <p>
+-   * Note that we keep track of the event count separately because
+-   * {@link ConcurrentLinkedQueue#size()} is NOT a constant-time operation.
+-   */
+-  private void addPacket(@NonNull TracePacket packet) {
+-    eventPackets.add(packet);
+-
+-    int size = eventCount.incrementAndGet();
+-
+-    for (int i = size; i > maxBufferSize; i--) {
+-      eventPackets.poll();
+-      eventCount.decrementAndGet();
+-    }
+-  }
+-
+-  private TracePacket forTrackId(long id) {
+-    if (id == TrackId.DB_LOCK) {
+-      return forTrack(id, TrackId.DB_LOCK_NAME);
+-    } else {
+-      Thread currentThread = Thread.currentThread();
+-      return forTrack(currentThread.getId(), currentThread.getName());
+-    }
+-  }
+-
+-  private static TracePacket forTrack(long id, String name) {
+-    return new TracePacket.Builder()
+-        .trusted_packet_sequence_id(TRUSTED_SEQUENCE_ID)
+-        .track_descriptor(new TrackDescriptor.Builder()
+-                              .uuid(id)
+-                              .name(name).build())
+-        .build();
+-
+-  }
+-
+-  private static TracePacket forMethodStart(@NonNull String name, long time, long threadId, @Nullable Map<String, String> values) {
+-    TrackEvent.Builder event = new TrackEvent.Builder()
+-        .track_uuid(threadId)
+-        .name(name)
+-        .type(TrackEvent.Type.TYPE_SLICE_BEGIN);
+-
+-    List<DebugAnnotation> debugAnnotations = new LinkedList<>();
+-    if (values != null) {
+-      for (Map.Entry<String, String> entry : values.entrySet()) {
+-        debugAnnotations.add(debugAnnotation(entry.getKey(), entry.getValue()));
+-      }
+-    }
+-    event.debug_annotations(debugAnnotations);
+-
+-    return new TracePacket.Builder()
+-        .trusted_packet_sequence_id(TRUSTED_SEQUENCE_ID)
+-        .timestamp(time)
+-        .track_event(event.build())
+-        .build();
+-  }
+-
+-  private static DebugAnnotation debugAnnotation(@NonNull String key, @Nullable String value) {
+-    return new DebugAnnotation.Builder()
+-        .name(key)
+-        .string_value(value != null ? value : "")
+-        .build();
+-  }
+-
+-  private static TracePacket forMethodEnd(@NonNull String name, long time, long threadId) {
+-    return new TracePacket.Builder()
+-        .trusted_packet_sequence_id(TRUSTED_SEQUENCE_ID)
+-        .timestamp(time)
+-        .track_event(new TrackEvent.Builder()
+-                         .track_uuid(threadId)
+-                         .name(name)
+-                         .type(TrackEvent.Type.TYPE_SLICE_END)
+-                         .build())
+-        .build();
+-  }
+-
+-  private static TracePacket forSynchronization(long time) {
+-    return new TracePacket.Builder()
+-                      .trusted_packet_sequence_id(TRUSTED_SEQUENCE_ID)
+-                      .timestamp(time)
+-                      .synchronization_marker(ByteString.of(SYNCHRONIZATION_MARKER))
+-                      .build();
+-  }
+-
+-  public static byte[] toByteArray(UUID uuid) {
+-    ByteBuffer buffer = ByteBuffer.wrap(new byte[16]);
+-    buffer.putLong(uuid.getMostSignificantBits());
+-    buffer.putLong(uuid.getLeastSignificantBits());
+-
+-    return buffer.array();
+-  }
+-
+-  private interface Clock {
+-    long getTimeNanos();
+-  }
+-
+-  /**
+-   * Optional listener that observes raw start/end events as they flow through the tracer. Listeners
+-   * are invoked synchronously on whatever thread fired the event, so implementations must be cheap
+-   * and non-blocking. Note that nothing else is guaranteed about ordering across threads.
+-   */
+-  public interface EventListener {
+-    void onStart(@NonNull String name, long trackId, @NonNull String trackName, long timestampNanos, @Nullable Map<String, String> values);
+-    void onEnd(@NonNull String name, long trackId, long timestampNanos);
+-  }
+-}
+diff --git a/core/util/src/main/protowire/Trace.proto b/core/util/src/main/protowire/Trace.proto
+deleted file mode 100644
+index 646001b716a1a1e16dfd1dd1b5bc50db41233082..0000000000000000000000000000000000000000
+--- a/core/util/src/main/protowire/Trace.proto
++++ /dev/null
+@@ -1,151 +0,0 @@
+-/*
+- * Copyright (C) 2018 The Android Open Source Project
+- *
+- * Licensed under the Apache License, Version 2.0 (the "License");
+- * you may not use this file except in compliance with the License.
+- * You may obtain a copy of the License at
+- *
+- *      http://www.apache.org/licenses/LICENSE-2.0
+- *
+- * Unless required by applicable law or agreed to in writing, software
+- * distributed under the License is distributed on an "AS IS" BASIS,
+- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- * See the License for the specific language governing permissions and
+- * limitations under the License.
+- */
+-
+-
+-syntax = "proto2";
+-
+-package signal;
+-
+-option java_package         = "org.signal.core.util.tracing";
+-option java_outer_classname = "TraceProtos";
+-
+-/*
+- * Minimal interface needed to work with Perfetto.
+- *
+- * https://cs.android.com/android/platform/superproject/+/master:external/perfetto/protos/perfetto/trace/trace.proto
+- */
+-message Trace {
+-  repeated TracePacket packet = 1;
+-}
+-
+-message TracePacket {
+-  optional uint64 timestamp          = 8;
+-  optional uint32 timestamp_clock_id = 58;
+-
+-  oneof data {
+-    TrackEvent      track_event            = 11;
+-    TrackDescriptor track_descriptor       = 60;
+-    bytes           synchronization_marker = 36;
+-  }
+-
+-  oneof optional_trusted_packet_sequence_id {
+-    uint32 trusted_packet_sequence_id = 10;
+-  }
+-}
+-
+-message TrackEvent {
+-  repeated uint64 category_iids = 3;
+-  repeated string categories    = 22;
+-
+-  repeated DebugAnnotation debug_annotations = 4;
+-
+-  oneof name_field {
+-    uint64 name_iid = 10;
+-  string name     = 23;
+-  }
+-
+-  enum Type {
+-    TYPE_UNSPECIFIED = 0;
+-    TYPE_SLICE_BEGIN = 1;
+-    TYPE_SLICE_END   = 2;
+-    TYPE_INSTANT     = 3;
+-    TYPE_COUNTER     = 4;
+-  }
+-
+-  optional Type   type          = 9;
+-  optional uint64 track_uuid    = 11;
+-  optional int64  counter_value = 30;
+-
+-  oneof timestamp {
+-    int64 timestamp_delta_us    = 1;
+-    int64 timestamp_absolute_us = 16;
+-  }
+-
+-  oneof thread_time {
+-    int64 thread_time_delta_us    = 2;
+-    int64 thread_time_absolute_us = 17;
+-  }
+-}
+-
+-message TrackDescriptor {
+-  optional uint64            uuid        = 1;
+-  optional uint64            parent_uuid = 5;
+-  optional string            name        = 2;
+-  optional ThreadDescriptor  thread      = 4;
+-  optional CounterDescriptor counter     = 8;
+-}
+-
+-
+-message ThreadDescriptor {
+-  optional int32 pid = 1;
+-  optional int32 tid = 2;
+-
+-  optional string thread_name = 5;
+-}
+-
+-message CounterDescriptor {
+-  enum BuiltinCounterType {
+-    COUNTER_UNSPECIFIED = 0;
+-    COUNTER_THREAD_TIME_NS = 1;
+-    COUNTER_THREAD_INSTRUCTION_COUNT = 2;
+-  }
+-
+-  enum Unit {
+-    UNIT_UNSPECIFIED = 0;
+-    UNIT_TIME_NS     = 1;
+-    UNIT_COUNT       = 2;
+-    UNIT_SIZE_BYTES  = 3;
+-  }
+-  optional BuiltinCounterType type            = 1;
+-  repeated string             categories      = 2;
+-  optional Unit               unit            = 3;
+-  optional int64              unit_multiplier = 4;
+-  optional bool               is_incremental  = 5;
+-}
+-
+-message DebugAnnotation {
+-  message NestedValue {
+-    enum NestedType {
+-      UNSPECIFIED = 0;
+-      DICT        = 1;
+-      ARRAY       = 2;
+-    }
+-
+-    optional NestedType  nested_type  = 1;
+-    repeated string      dict_keys    = 2;
+-    repeated NestedValue dict_values  = 3;
+-    repeated NestedValue array_values = 4;
+-    optional int64       int_value    = 5;
+-    optional double      double_value = 6;
+-    optional bool        bool_value   = 7;
+-    optional string      string_value = 8;
+-  }
+-
+-  oneof name_field {
+-    uint64 name_iid = 1;
+-    string name     = 10;
+-  }
+-
+-  oneof value {
+-    bool        bool_value    = 2;
+-    uint64      uint_value    = 3;
+-    int64       int_value     = 4;
+-    double      double_value  = 5;
+-    string      string_value  = 6;
+-    uint64      pointer_value = 7;
+-    NestedValue nested_value  = 8;
+-  }
+-}
+diff --git a/lib/blurhash/src/main/AndroidManifest.xml b/lib/blurhash/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 3752c114f7936d985e17124b596a2c364c86febd..0000000000000000000000000000000000000000
+--- a/lib/blurhash/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+diff --git a/lib/contacts/src/main/AndroidManifest.xml b/lib/contacts/src/main/AndroidManifest.xml
+index 039401e2ff7e74f9b4d431d54427a76468a5d23f..3e51e03e36c54e80d62efc989d54df14067bd769 100644
+--- a/lib/contacts/src/main/AndroidManifest.xml
++++ b/lib/contacts/src/main/AndroidManifest.xml
+@@ -2,7 +2,6 @@
+ <manifest
+     xmlns:android="http://schemas.android.com/apk/res/android">
+ 
+-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+     <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+     <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+     <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
+diff --git a/lib/debuglogs-viewer/src/main/AndroidManifest.xml b/lib/debuglogs-viewer/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 7277dc362ab3ecf567018237f72978ac2d92d2fb..0000000000000000000000000000000000000000
+--- a/lib/debuglogs-viewer/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+\ No newline at end of file
+diff --git a/lib/glide/src/main/AndroidManifest.xml b/lib/glide/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 8072ee00dbf16d9161b7464ef3d2194a7d659bcc..0000000000000000000000000000000000000000
+--- a/lib/glide/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,2 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest />
+diff --git a/lib/image-editor/src/main/AndroidManifest.xml b/lib/image-editor/src/main/AndroidManifest.xml
+deleted file mode 100644
+index a5918e68abcdde7f61ccae4f0ad4885b764573fd..0000000000000000000000000000000000000000
+--- a/lib/image-editor/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,4 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+\ No newline at end of file
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/push/exceptions/ExternalServiceFailureException.kt b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/push/exceptions/ExternalServiceFailureException.kt
+index ccf629212eb24e6c975891f3c3bbffd97c4f3561..ebe43904b5d9fcaf7f01fb37e3914ff527a1e313 100644
+--- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/push/exceptions/ExternalServiceFailureException.kt
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/push/exceptions/ExternalServiceFailureException.kt
+@@ -9,6 +9,9 @@ import org.signal.network.exceptions.NonSuccessfulResponseCodeException
+  * illegalArgument - some part of the request was not understood or accepted by the provider (e.g. the provider did not recognize the phone number as a valid number for the selected transport)
+  */
+ class ExternalServiceFailureException(val isPermanent: Boolean, val reason: String) : NonSuccessfulResponseCodeException(502) {
++  val rejected = reason == "providerRejected"
++  val unavailable = !rejected
++
+   override fun toString(): String {
+     return "ExternalServiceFailureException: External service failed to send SMS code ${if (isPermanent) "permanently" else "temporarily"} due to $reason"
+   }
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/util/StaticCredentialsProvider.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/util/StaticCredentialsProvider.java
+index 47b6314db16b67d0ed350b42ccab2fc51e3064e1..b2c214339b57eed600ac95e1aad8ae530e3e27bb 100644
+--- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/util/StaticCredentialsProvider.java
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/util/StaticCredentialsProvider.java
+@@ -12,11 +12,11 @@ import org.whispersystems.signalservice.api.util.CredentialsProvider;
+ 
+ public class StaticCredentialsProvider implements CredentialsProvider {
+ 
+-  private final ACI    aci;
+-  private final PNI    pni;
+-  private final String e164;
+-  private final int    deviceId;
+-  private final String password;
++  private ACI    aci;
++  private PNI    pni;
++  private String e164;
++  private int    deviceId;
++  private String password;
+ 
+   public StaticCredentialsProvider(ACI aci, PNI pni, String e164, int deviceId, String password) {
+     this.aci      = aci;
+@@ -50,4 +50,24 @@ public class StaticCredentialsProvider implements CredentialsProvider {
+   public String getPassword() {
+     return password;
+   }
++
++  public void setAci(ACI aci) {
++    this.aci = aci;
++  }
++
++  public void setPni(PNI pni) {
++    this.pni = pni;
++  }
++
++  public void setE164(String e164) {
++    this.e164 = e164;
++  }
++
++  public void setDeviceId(int deviceId) {
++    this.deviceId = deviceId;
++  }
++
++  public void setPassword(String password) {
++    this.password = password;
++  }
+ }
+diff --git a/lib/libsignal-service/src/main/protowire/CallQualitySurvey.proto b/lib/libsignal-service/src/main/protowire/CallQualitySurvey.proto
+deleted file mode 100644
+index 7158b1d3ee761c19156361cb715ae948ab104fe3..0000000000000000000000000000000000000000
+--- a/lib/libsignal-service/src/main/protowire/CallQualitySurvey.proto
++++ /dev/null
+@@ -1,100 +0,0 @@
+-// Copyright 2025 Signal Messenger, LLC
+-// SPDX-License-Identifier: AGPL-3.0-only
+-
+-syntax = "proto3";
+-
+-option java_multiple_files = true;
+-
+-package org.signal.storageservice.protos.calls.quality;
+-
+-message SubmitCallQualitySurveyRequest {
+-  // Indicates whether the caller was generally satisfied with the quality of
+-  // the call
+-  bool user_satisfied = 1;
+-
+-  // A list of call quality issues selected by the caller
+-  repeated string call_quality_issues = 2;
+-
+-  // A free-form description of any additional issues as written by the caller
+-  optional string additional_issues_description = 3;
+-
+-  // A URL for a set of debug logs associated with the call if the caller chose
+-  // to submit debug logs
+-  optional string debug_log_url = 4;
+-
+-  // The time at which the call started in microseconds since the epoch (see
+-  // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type)
+-  int64 start_timestamp = 5;
+-
+-  // The time at which the call ended in microseconds since the epoch (see
+-  // https://cloud.google.com/bigquery/docs/reference/standard-sql/data-types#timestamp_type)
+-  int64 end_timestamp = 6;
+-
+-  // The type of call; note that direct voice calls can become video calls and
+-  // vice versa, and this field indicates which mode was selected at call
+-  // initiation time. At the time of writing, expected call types are
+-  // "direct_voice", "direct_video", "group", and "call_link".
+-  string call_type = 7;
+-
+-  // Indicates whether the call completed without error or if it terminated
+-  // abnormally
+-  bool success = 8;
+-
+-  // A client-defined, but human-readable reason for call termination
+-  string call_end_reason = 9;
+-
+-  // The median round-trip time, measured in milliseconds, for STUN/ICE packets
+-  // (i.e. connection maintenance and establishment)
+-  optional float connection_rtt_median = 10;
+-
+-  // The median round-trip time, measured in milliseconds, for RTP/RTCP packets
+-  // for audio streams
+-  optional float audio_rtt_median = 11;
+-
+-  // The median round-trip time, measured in milliseconds, for RTP/RTCP packets
+-  // for video streams
+-  optional float video_rtt_median = 12;
+-
+-  // The median jitter for audio streams, measured in milliseconds, for the
+-  // duration of the call as measured by the client submitting the survey
+-  optional float audio_recv_jitter_median = 13;
+-
+-  // The median jitter for video streams, measured in milliseconds, for the
+-  // duration of the call as measured by the client submitting the survey
+-  optional float video_recv_jitter_median = 14;
+-
+-  // The median jitter for audio streams, measured in milliseconds, for the
+-  // duration of the call as measured by the remote endpoint in the call (either
+-  // the peer of the client submitting the survey in a direct call or the SFU in
+-  // a group call)
+-  optional float audio_send_jitter_median = 15;
+-
+-  // The median jitter for video streams, measured in milliseconds, for the
+-  // duration of the call as measured by the remote endpoint in the call (either
+-  // the peer of the client submitting the survey in a direct call or the SFU in
+-  // a group call)
+-  optional float video_send_jitter_median = 16;
+-
+-  // The fraction of audio packets lost over the duration of the call as
+-  // measured by the client submitting the survey
+-  optional float audio_recv_packet_loss_fraction = 17;
+-
+-  // The fraction of video packets lost over the duration of the call as
+-  // measured by the client submitting the survey
+-  optional float video_recv_packet_loss_fraction = 18;
+-
+-  // The fraction of audio packets lost over the duration of the call as
+-  // measured by the remote endpoint in the call (either the peer of the client
+-  // submitting the survey in a direct call or the SFU in a group call)
+-  optional float audio_send_packet_loss_fraction = 19;
+-
+-  // The fraction of video packets lost over the duration of the call as
+-  // measured by the remote endpoint in the call (either the peer of the client
+-  // submitting the survey in a direct call or the SFU in a group call)
+-  optional float video_send_packet_loss_fraction = 20;
+-
+-  // Machine-generated telemetry from the call; this is a serialized protobuf
+-  // entity generated (and, critically, explained to the user!) by the calling
+-  // library
+-  optional bytes call_telemetry = 21;
+-}
+diff --git a/lib/paging/src/main/AndroidManifest.xml b/lib/paging/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 7277dc362ab3ecf567018237f72978ac2d92d2fb..0000000000000000000000000000000000000000
+--- a/lib/paging/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+\ No newline at end of file
+diff --git a/lib/photoview/src/main/AndroidManifest.xml b/lib/photoview/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 7277dc362ab3ecf567018237f72978ac2d92d2fb..0000000000000000000000000000000000000000
+--- a/lib/photoview/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+\ No newline at end of file
+diff --git a/lib/qr/src/main/java/org/signal/qr/kitkat/ScanListener.java b/lib/qr/src/main/java/org/signal/qr/kitkat/ScanListener.java
+index e902827cfc317ae3b1e0d536d70b6d3bf1cf4b7a..d23fa596e7ca0e982cd0745a13beb8d6bcbd6173 100644
+--- a/lib/qr/src/main/java/org/signal/qr/kitkat/ScanListener.java
++++ b/lib/qr/src/main/java/org/signal/qr/kitkat/ScanListener.java
+@@ -4,4 +4,5 @@ import androidx.annotation.NonNull;
+ 
+ public interface ScanListener {
+   void onQrDataFound(@NonNull String data);
++  default void onNoScan() {}
+ }
+diff --git a/lib/sticky-header-grid/src/main/AndroidManifest.xml b/lib/sticky-header-grid/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 7277dc362ab3ecf567018237f72978ac2d92d2fb..0000000000000000000000000000000000000000
+--- a/lib/sticky-header-grid/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+\ No newline at end of file
+diff --git a/lib/video/src/main/AndroidManifest.xml b/lib/video/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 8072ee00dbf16d9161b7464ef3d2194a7d659bcc..0000000000000000000000000000000000000000
+--- a/lib/video/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,2 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest />
+
+--------------false--
+
+

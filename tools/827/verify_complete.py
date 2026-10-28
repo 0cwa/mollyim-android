@@ -4,11 +4,16 @@ import argparse
 import json
 import os
 from pathlib import Path
+import re
 import sys
 import tempfile
 
 import forest
 import replay
+
+
+PARTITION = re.compile(r'[0-9]{4}-(carryover|adapted)\.patch\Z')
+PORT_CATEGORIES = ('carryover', 'adapted')
 
 
 def pin(root, name):
@@ -36,6 +41,60 @@ def display_paths(paths):
     names = sorted(paths)
     shown = ', '.join(repr(os.fsdecode(path)) for path in names[:10])
     return shown + (f' (and {len(names) - 10} more)' if len(names) > 10 else '')
+
+
+def validate_origin(repo, base, target, origin_base, origin_target):
+    """Bind optional port origins to immutable commits in the recorded histories."""
+    if origin_base is None or origin_target is None:
+        raise forest.ForestError('origin-base and origin-target must be supplied together')
+    for name, value in (('origin-base', origin_base), ('origin-target', origin_target)):
+        if not isinstance(value, str) or not forest.SHA.fullmatch(value):
+            raise forest.ForestError(f'{name} must be a full lowercase commit SHA')
+        commit(repo, value, name)
+    for ancestor, descendant, label in (
+            (origin_base, origin_target, 'origin-base must be an ancestor of origin-target'),
+            (origin_base, base, 'origin-base must be an ancestor of base'),
+            (origin_target, target, 'origin-target must be an ancestor of target')):
+        if replay.git(repo, 'merge-base', '--is-ancestor', ancestor, descendant, check=False).returncode:
+            raise forest.ForestError(label)
+
+
+def tree_entries(repo, revision):
+    """Read raw path-to-(mode, type, object ID) entries without opening blobs."""
+    raw = replay.git(repo, 'ls-tree', '-r', '-z', '--full-tree', revision, binary=True).stdout
+    entries = {}
+    for record in raw.split(b'\0'):
+        if record:
+            metadata, path = record.split(b'\t', 1)
+            entries[path] = tuple(metadata.split())
+    return entries
+
+
+def origin_categories(repo, base, target, origin_base, origin_target):
+    """Classify whole-file deltas; unchanged/absorbed paths have no mailbox."""
+    original, molly, upstream, port = (
+        tree_entries(repo, revision) for revision in (origin_base, origin_target, base, target)
+    )
+    return {
+        path: ('carryover' if upstream.get(path) == original.get(path)
+               and port.get(path) == molly.get(path) else 'adapted')
+        for path in upstream.keys() | port.keys() if upstream.get(path) != port.get(path)
+    }
+
+
+def mailbox_partition(data, name, origin_base, origin_target):
+    """Check the filename and origin trailers without interpreting diff contents."""
+    match = PARTITION.fullmatch(Path(name).name)
+    if match is None:
+        raise forest.ForestError(f'{name}: port mailboxes must be numbered carryover or adapted batches')
+    category = match.group(1)
+    message = (data.root / name).read_bytes().split(b'\ndiff --git ', 1)[0]
+    for key, expected in ((b'Origin-Base', origin_base), (b'Origin-Target', origin_target),
+                          (b'Port-Category', category)):
+        values = re.findall(rb'^' + key + rb':[ \t]*(.*)$', message, re.M)
+        if values != [expected.encode('ascii')]:
+            raise forest.ForestError(f'{name}: {key.decode()} must match the pinned port provenance')
+    return category
 
 
 def clean_worktree(worktree):
@@ -68,24 +127,55 @@ def validate_identity(data, repo):
     for name, metadata in data.metadata.items():
         if metadata['source_commit_shas'] != [target]:
             raise forest.ForestError(f'{name}: Source-Commit must name exactly the pinned target snapshot')
-    return {'base': data.base, 'target': target, 'upstream_merge': upstream_merge,
-            'expected_tree': replay.git(repo, 'rev-parse', f'{target}^{{tree}}').stdout.strip()}
+    identity = {'base': data.base, 'target': target, 'upstream_merge': upstream_merge,
+                'expected_tree': replay.git(repo, 'rev-parse', f'{target}^{{tree}}').stdout.strip()}
+    has_origin_base = (data.root / 'origin-base').exists()
+    has_origin_target = (data.root / 'origin-target').exists()
+    if has_origin_base != has_origin_target:
+        raise forest.ForestError('origin-base and origin-target must be supplied together')
+    if has_origin_base:
+        origin_base = pin(data.root, 'origin-base')
+        origin_target = pin(data.root, 'origin-target')
+        validate_origin(repo, data.base, target, origin_base, origin_target)
+        for name in data.metadata:
+            mailbox_partition(data, name, origin_base, origin_target)
+        identity.update(origin_base=origin_base, origin_target=origin_target)
+    elif any(PARTITION.fullmatch(Path(name).name) for name in data.metadata):
+        raise forest.ForestError('carryover/adapted mailboxes require origin-base and origin-target pins')
+    return identity
 
 
-def ownership(data, repo, head, expected_paths):
+def ownership(data, repo, head, expected_paths, origin=None):
     """Require unique feature ownership and complete coverage of the target delta."""
     commits = replay.git(repo, 'rev-list', '--reverse', '--first-parent',
                          f'{data.base}..{head}').stdout.split()
     if len(commits) != len(data.metadata):
         raise forest.ForestError('replay must create exactly one commit per mailbox')
-    owners, features = {}, {}
+    owners, features, mailbox_owners = {}, {}, {}
     index = 0
     before = data.base
     for feature in data.order():
         paths = set()
-        for _ in feature.patches:
+        partitions = {category: {'patches': 0, 'changed_paths': 0} for category in PORT_CATEGORIES}
+        for name in feature.patches:
             after = commits[index]
-            paths.update(changed_paths(repo, before, after))
+            batch = changed_paths(repo, before, after)
+            if origin is not None:
+                category = PARTITION.fullmatch(Path(name).name).group(1)
+                if not batch:
+                    raise forest.ForestError(f'{name}: empty port batch')
+                for path in batch:
+                    if path in mailbox_owners:
+                        raise forest.ForestError(f'port path belongs to multiple mailboxes: '
+                                                f'{os.fsdecode(path)!r}')
+                    mailbox_owners[path] = name
+                wrong = {path for path in batch if origin.get(path) != category}
+                if wrong:
+                    raise forest.ForestError(f'{name}: {category} classification does not match '
+                                            f'origin/base/target tree entries: {display_paths(wrong)}')
+                partitions[category]['patches'] += 1
+                partitions[category]['changed_paths'] += len(batch)
+            paths.update(batch)
             before = after
             index += 1
         for path in paths:
@@ -95,6 +185,8 @@ def ownership(data, repo, head, expected_paths):
             owners[path] = feature.name
         features[feature.name] = {'patches': len(feature.patches), 'changed_paths': len(paths),
                                   'dependencies': list(feature.dependencies)}
+        if origin is not None:
+            features[feature.name]['partitions'] = partitions
     actual_paths = set(owners)
     if actual_paths != expected_paths:
         raise forest.ForestError('feature ownership differs from the complete base-to-target delta; '
@@ -108,6 +200,9 @@ def verify(patches, repo, worktree=None):
     repo = Path(repo).resolve()
     data = forest.Forest(patches)
     identity = validate_identity(data, repo)
+    origin = (origin_categories(repo, data.base, identity['target'],
+                                identity['origin_base'], identity['origin_target'])
+              if 'origin_base' in identity else None)
     requested = forest.destination(repo, worktree) if worktree is not None else None
     expected_paths = changed_paths(repo, data.base, identity['target'])
     result = {'status': 'PASS', **identity, 'changed_paths': len(expected_paths),
@@ -125,7 +220,7 @@ def verify(patches, repo, worktree=None):
                 clean_worktree(destination)
                 if not reverse:
                     head = replay.git(destination, 'rev-parse', 'HEAD').stdout.strip()
-                    result['features'] = ownership(data, repo, head, expected_paths)
+                    result['features'] = ownership(data, repo, head, expected_paths, origin=origin)
                 result['replays'].append({'order': order, 'tree': applied['tree_sha'],
                                           'working_tree_clean': True,
                                           'whitespace_report': applied['whitespace_report']})
