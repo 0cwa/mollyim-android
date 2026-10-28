@@ -23,13 +23,13 @@ build results and remaining acceptance work are maintained in
 | Original Signal 8.19.2 (`origin-base`) | `c47a74ba0961903eeaeda6d22347a990056c3e83` |
 | Official Molly 8.19.2-4 (`origin-target`) | `0e202dda90785771ff8c87526eaaf30c655f54f3` |
 | Derived Signal merge (`upstream-merge`) | `90a0bb917ecc49a62236d539f4e7faae01b1d9fe` |
-| Derived candidate (`target`) | `1dc39842dfad7c31be516556f8da95556d6c810f` |
-| Complete candidate tree | `48776ef81992b2b2c5418d8d55d9113094fe9124` |
+| Derived candidate (`target`) | `a8e3343240ae373624945086999d251e9d652180` |
+| Complete candidate tree | `0e68d3f53ad27e89e9570613cdc9e622779a3bd0` |
 
 The [source merge](https://github.com/0cwa/mollyim-android/commit/90a0bb917ecc49a62236d539f4e7faae01b1d9fe)
 has the original Molly target as its first parent and Signal v8.33.2 as its
-second parent. The [candidate](https://github.com/0cwa/mollyim-android/commit/1dc39842dfad7c31be516556f8da95556d6c810f)
-includes the subsequent reviewed integration fix. Source history is available
+second parent. The [candidate](https://github.com/0cwa/mollyim-android/commit/a8e3343240ae373624945086999d251e9d652180)
+records subsequent reviewed integration fixes. Source history is available
 on `port/molly-signal-8.33.2`; the immutable pin files determine what is replayed,
 even when that branch later advances.
 
@@ -38,8 +38,8 @@ even when that branch later advances.
 Each feature directory has one `series`. Its mailboxes separate unchanged
 carryovers from adaptations, with names such as `0001-carryover.patch` and
 `0002-adapted.patch`. Larger batches continue the numbering. There are
-**38 carryover mailboxes covering 1,881 paths** and **39 adapted mailboxes
-covering 1,715 paths**.
+**38 carryover mailboxes covering 1,880 paths** and **39 adapted mailboxes
+covering 1,716 paths**.
 
 | Feature/review group | Carryover paths | Adapted paths | Mailboxes |
 | --- | ---: | ---: | ---: |
@@ -58,7 +58,7 @@ covering 1,715 paths**.
 | `resources-and-branding` | 691 | 519 | 29 |
 | `security-and-locking` | 27 | 8 | 2 |
 | `integration` | 173 | 371 | 6 |
-| `build-and-release` | 82 | 35 | 2 |
+| `build-and-release` | 81 | 36 | 2 |
 
 A path is a **carryover** only when both of these are true:
 

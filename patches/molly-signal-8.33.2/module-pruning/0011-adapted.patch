@@ -1,6 +1,6 @@
-From db20d1415fd0957a01f026cb55db6e0d56999d17 Mon Sep 17 00:00:00 2001
+From 9fcd5ede72bf105f7c77c0589dfba8b8ee76e974 Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:04:40 +0000
+Date: Wed, 28 Oct 2026 23:22:08 +0000
 Subject: [PATCH] Reconstruct Molly module-pruning adapted, part 11
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Removed demos, benchmark/spinner/quickstart flavors and screenshot-test infrastructure.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to 1dc39842dfad7c31be516556f8da95556d6c810f.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,7 +30,7 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: 1dc39842dfad7c31be516556f8da95556d6c810f
+Source-Commit: a8e3343240ae373624945086999d251e9d652180
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
