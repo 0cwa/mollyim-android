@@ -39,7 +39,8 @@ object AndroidLogger : Log.Logger() {
   @get:WorkerThread
   val logcatDump: CharSequence?
     get() = runCatching {
-      val process = Runtime.getRuntime().exec("logcat -d")
+      // Some OEM builds log a View message for every draw pass.
+      val process = Runtime.getRuntime().exec(arrayOf("logcat", "-d", "View:S", "*:V"))
       val bufferedReader = BufferedReader(InputStreamReader(process.inputStream))
       val log = StringBuilder()
       val separator = System.lineSeparator()
