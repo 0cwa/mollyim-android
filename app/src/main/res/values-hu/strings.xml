@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Kimerítetted a létrehozható új kulcsok maximális számát. Hét nap múlva hozhatsz létre új helyreállítási kulcsot.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Kérlek várj…</string>
 </resources>

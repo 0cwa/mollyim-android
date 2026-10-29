@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Изразходвали сте броя нови ключове, които можете да създадете. Ще можете да създадете нов ключ за възстановяване след 7 дни.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Моля, изчакайте…</string>
 </resources>

@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Naubos mo na ang bilang ng bagong keys na maaari mong gawin. Maaari kang gumawa ng bagong recovery key pagkatapos ng 7 araw.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Please wait…</string>
 </resources>

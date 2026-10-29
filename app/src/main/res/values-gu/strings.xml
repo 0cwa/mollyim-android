@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">તમારી નવી કી બનાવી શકવાની મર્યાદા પૂરી થઈ ગઈ છે. તમે 7 દિવસમાં નવી રિકવરી કી બનાવી શકશો.</string>
 
     <!-- EOF -->
+    <string name="please_wait">કૃપા કરીને રાહ જુઓ…</string>
 </resources>

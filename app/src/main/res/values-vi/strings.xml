@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Bạn đã đạt giới hạn số mã khóa mới có thể tạo. Bạn sẽ không thể tạo mã khóa khôi phục mới trong 7 ngày.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Xin chờ…</string>
 </resources>

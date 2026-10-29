@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Ви створили максимальну дозволену кількість нових ключів. Створити ще один ключ відновлення можна лише через 7 днів.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Будь ласка, зачекайте…</string>
 </resources>

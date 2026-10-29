@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Olet luonut enimmäismäärän uusia avaimia. Voit luoda uuden palautusavaimen seitsemän päivän kuluttua.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Odota hetki…</string>
 </resources>

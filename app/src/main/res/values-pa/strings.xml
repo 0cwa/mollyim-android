@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">ਤੁਸੀਂ ਜਿੰਨੀਆਂ ਨਵੀਆਂ ਕੁੰਜੀਆਂ ਬਣਾ ਸਕਦੇ ਸੀ, ਉਹ ਬਣਾ ਚੁੱਕੇ ਹੋ। ਤੁਸੀਂ 7 ਦਿਨਾਂ ਬਾਅਦ ਇੱਕ ਨਵੀਂ ਰਿਕਵਰੀ ਕੁੰਜੀ ਬਣਾ ਸਕੋਗੇ।</string>
 
     <!-- EOF -->
+    <string name="please_wait">ਕਿਰਪਾ ਕਰਕੇ ਉਡੀਕ ਕਰੋ…</string>
 </resources>

@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Nie możesz utworzyć więcej nowych kodów. Aby utworzyć nowy kod odzyskiwania, musisz odczekać 7 dni.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Jeszcze chwila…</string>
 </resources>

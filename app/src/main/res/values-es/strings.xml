@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Has agotado la cantidad de claves nuevas que puedes crear. Podrás crear una nueva clave de recuperación en 7 días.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Espera un momento…</string>
 </resources>

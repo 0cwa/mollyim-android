@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">يېڭى ئاچقۇچلارنى قۇرۇشقا بېرىلگەن قېتىم سانىنى تۈگىتىپ بولدىڭىز. 7 كۈندىن كىيىن يېڭى بىر ئەسلىگە كەلتۈرۈش ئاچقۇچى قۇرالايسىز.</string>
 
     <!-- EOF -->
+    <string name="please_wait">سەل كۈتۈڭ…</string>
 </resources>

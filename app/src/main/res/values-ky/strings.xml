@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Жаңы ачкыч түзгөнгө өтө көп жолу аракет кылдыңыз. Эми аны 7 күндөн кийин гана түзө аласыз.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Сураныч, күтө туруңуз…</string>
 </resources>

@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Du har nået grænsen for, hvor mange nye nøgler du kan oprette. Du kan oprette en ny gendannelsesnøgle om syv dage.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Vent venligst …</string>
 </resources>

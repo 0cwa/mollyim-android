@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">新しいキーの作成上限回数に達しました。7日後に新しい回復キーを作成できるようになります。</string>
 
     <!-- EOF -->
+    <string name="please_wait">お待ち下さい…</string>
 </resources>

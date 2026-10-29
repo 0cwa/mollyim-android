@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">คุณสร้างกุญแจกู้คืนใหม่จนครบจำนวนที่กำหนดแล้ว โดยคุณจะสามารถสร้างกุญแจใหม่ได้ในอีก 7 วัน</string>
 
     <!-- EOF -->
+    <string name="please_wait">โปรดรอ…</string>
 </resources>

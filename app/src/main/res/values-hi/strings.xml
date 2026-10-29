@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">आपने नई \'की\' बनाने की तय संख्या पूरी कर ली है। अब आपको नई \'रिकवरी की\' बनाने के लिए 7 दिन इंतज़ार करना होगा।</string>
 
     <!-- EOF -->
+    <string name="please_wait">कृपया इंतज़ार करें…</string>
 </resources>

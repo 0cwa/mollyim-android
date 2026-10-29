@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">আপনি সর্বোচ্চ সংখ্যক নতুন \'কি\' তৈরি করে ফেলেছেন। আপনি 7 দিনের মধ্যে একটি নতুন পুনরুদ্ধার \'কি\' তৈরি করতে পারবেন।</string>
 
     <!-- EOF -->
+    <string name="please_wait">অনুগ্রহপূর্বক অপেক্ষা করুন…</string>
 </resources>

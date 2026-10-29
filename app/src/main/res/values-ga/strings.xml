@@ -9477,4 +9477,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Tá líon na n-eochracha nua is féidir leat a chruthú úsáidte agat. Beidh tú in ann eochair athshlánaithe nua a chruthú i gceann 7 lá.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Fan le do thoil…</string>
 </resources>

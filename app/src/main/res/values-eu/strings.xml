@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Sor ditzakezun gakoen gehieneko kopurura iritsi zara. 7 egunen buruan sortu ahalko duzu beste berreskuratze-gako bat.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Itxaron, mesedez…</string>
 </resources>

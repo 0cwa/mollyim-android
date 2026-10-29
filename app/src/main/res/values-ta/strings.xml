@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">நீங்கள் உருவாக்கக்கூடிய புதிய குறியீடுகளுக்கான அனுமதிக்கப்பட்ட எண்ணிக்கை முழுவதையும் உபயோகித்துவிட்டீர்கள். 7 நாட்களில் உங்களால் புதிய மீட்புக் குறியீட்டை உருவாக்க முடியும்.</string>
 
     <!-- EOF -->
+    <string name="please_wait">தயவுசெய்து காத்திருங்கள்…</string>
 </resources>

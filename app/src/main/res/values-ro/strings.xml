@@ -9087,4 +9087,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Ai epuizat numărul de coduri noi pe care le poți crea. Vei putea crea un nou cod de recuperare în 7 zile.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Te rugăm așteaptă…</string>
 </resources>

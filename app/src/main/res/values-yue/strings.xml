@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">你已經用晒可以建立新金鑰嘅配額。你可以喺 7 日之後建立新嘅恢復金鑰。</string>
 
     <!-- EOF -->
+    <string name="please_wait">請等等…</string>
 </resources>

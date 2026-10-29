@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Дозвољени број нових кључева је истрошен. Моћи ћете да креирате нови кључ за опоравак за 7 дана.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Сачекајте…</string>
 </resources>

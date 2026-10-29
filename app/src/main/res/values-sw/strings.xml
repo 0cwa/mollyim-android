@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Umetumia idadi zote za funguo mpya unazoweza kuunda. Utaweza kuunda ufunguo mpya wa kurejesha akaunti ndani ya siku 7.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Tafadhali subiri…</string>
 </resources>

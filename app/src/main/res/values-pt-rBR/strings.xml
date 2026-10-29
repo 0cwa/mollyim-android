@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Você atingiu o número máximo de novas chaves que pode criar. Será possível gerar uma nova chave de recuperação em 7 dias.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Aguarde…</string>
 </resources>

@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Вы исчерпали количество новых ключей, которые можете создать. Вы сможете создать новый ключ восстановления через 7 дней.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Пожалуйста, подождите…</string>
 </resources>

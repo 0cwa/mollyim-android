@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Iskoristili ste broj novih ključeva koje možete kreirati. Moći ćete kreirati novi ključ za oporavak za 7 dana.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Molimo pričekajte…</string>
 </resources>

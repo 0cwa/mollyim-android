@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Vyčerpali ste počet nových kľúčov, ktoré môžete vytvoriť. Nový kľúč na obnovenie si budete môcť vytvoriť o 7 dní.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Čakajte prosím…</string>
 </resources>

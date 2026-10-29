@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Жаңа кілт жасауға берілген мүмкіндіктеріңіздің барлығын қолданып қойдыңыз. Жаңа қалпына келтіру кілтін 7 күннен кейін жасай аласыз.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Күте тұрыңыз…</string>
 </resources>

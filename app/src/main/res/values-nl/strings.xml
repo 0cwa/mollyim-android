@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Je hebt het aantal nieuwe sleutels dat je kunt aanmaken opgebruikt. Je kunt over 7 dagen een nieuwe herstelsleutel aanmaken.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Even geduld…</string>
 </resources>

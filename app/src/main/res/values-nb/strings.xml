@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Du kan ikke lage flere koder for øyeblikket. En ny sikkerhetskode kan opprettes om syv dager.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Vennligst vent…</string>
 </resources>

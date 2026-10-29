@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">به سقف تعداد مجاز رمزهای جدیدی که می‌توانید ایجاد کنید رسیده‌اید. تا ۷ روز دیگر قادر به ایجاد رمز بازیابی جدید خواهید بود.</string>
 
     <!-- EOF -->
+    <string name="please_wait">لطفاً صبر کنید…</string>
 </resources>

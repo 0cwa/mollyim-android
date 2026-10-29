@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">ចំនួនសោថ្មីដែលអ្នកអាចបង្កើតបានគឺអ្នកបានប្រើអស់ហើយ។ អ្នកនឹងអាចបង្កើតសោស្តារថ្មីក្នុងរយៈពេល 7 ថ្ងៃ។</string>
 
     <!-- EOF -->
+    <string name="please_wait">សូមរង់ចាំ…</string>
 </resources>

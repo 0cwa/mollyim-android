@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">מיצית את מספר המפתחות החדשים שבאפשרותך ליצור. תהיה לך אפשרות ליצור מפתח שחזור חדש בעוד 7 ימים.</string>
 
     <!-- EOF -->
+    <string name="please_wait">אנא המתן…</string>
 </resources>

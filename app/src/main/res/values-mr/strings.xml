@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">तुम्ही नवीन की तयार करण्याची मर्यादा ओलांडली आहे. तुम्हाला 7 दिवसांनी नवी रीकव्हरी की तयार करता येईल.</string>
 
     <!-- EOF -->
+    <string name="please_wait">कृपया थांबा…</string>
 </resources>

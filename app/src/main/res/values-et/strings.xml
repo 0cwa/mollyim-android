@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Oled juba loonud maksimaalse arvu uusi võtmeid. Uue taastevõtme saad luua 7 päeva pärast.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Palun oota…</string>
 </resources>

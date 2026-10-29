@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">ನೀವು ರಚಿಸಬಹುದಾದ ಹೊಸ ಕೀಗಳ ಸಂಖ್ಯೆ ಮುಗಿದಿದೆ. ನೀವು 7 ದಿನಗಳಲ್ಲಿ ಹೊಸ ರಿಕವರಿ ಕೀಯನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತದೆ.</string>
 
     <!-- EOF -->
+    <string name="please_wait">ದಯವಿಟ್ಟು ನಿರೀಕ್ಷಿಸಿ…</string>
 </resources>

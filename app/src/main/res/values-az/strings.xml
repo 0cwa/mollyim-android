@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Yarada biləcəyiniz maksimum şifrə sayını keçdiniz. 7 gün ərzində yeni bərpa şifrəsini yarada bilərsiniz.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Zəhmət olmasa gözləyin…</string>
 </resources>

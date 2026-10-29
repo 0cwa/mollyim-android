@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">သင်ဖန်တီးနိုင်သော ကီးအသစ်အရေအတွက် ကုန်သွားပါပြီ။ သင်သည် 7 ရက်အတွင်း ပြန်လည်ရယူရေးကီးအသစ်ကို ဖန်တီးနိုင်မည်ဖြစ်သည်။</string>
 
     <!-- EOF -->
+    <string name="please_wait">ခဏစောင့်ပါ…</string>
 </resources>

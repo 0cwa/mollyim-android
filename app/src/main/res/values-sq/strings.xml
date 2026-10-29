@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Të kanë mbaruar mundësitë për të krijuar kod të ri. Kodin e ri të rikthimit mund ta krijosh pas 7 ditësh.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Të lutem, prit…</string>
 </resources>

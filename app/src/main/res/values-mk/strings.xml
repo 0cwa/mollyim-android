@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Го исцрпивте бројот на нови клучеви што можете да ги создадете. Ќе можете да создадете нов клуч за враќање резервни копии за 7 дена.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Ве молиме почекајте…</string>
 </resources>

@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">你已用盡可建立的新金鑰數量。你可以在 7 天後建立新的恢復金鑰。</string>
 
     <!-- EOF -->
+    <string name="please_wait">請稍候…</string>
 </resources>

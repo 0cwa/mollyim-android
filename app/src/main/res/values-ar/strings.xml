@@ -9672,4 +9672,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">استنفدت عدد المفاتيح التي يمكنك إنشاؤها. سيصبح بإمكانك إنشاء مفتاح استعادة جديد في 7 أيام.</string>
 
     <!-- EOF -->
+    <string name="please_wait">يُرجى الانتظار…</string>
 </resources>

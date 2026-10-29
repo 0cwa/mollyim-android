@@ -9087,4 +9087,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Jūs esat izsmēluši jaunu atslēgu izveides limitu. Jaunu atkopšanas atslēgu varēsiet izveidot pēc 7 dienām.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Lūdzu uzgaidiet…</string>
 </resources>

@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">നിങ്ങൾക്ക് സൃഷ്ടിക്കാൻ കഴിയുന്ന പുതിയ കീകളുടെ എണ്ണം തീർന്നു. 7 ദിവസത്തിനുള്ളിൽ നിങ്ങൾക്ക് ഒരു പുതിയ വീണ്ടെടുക്കൽ കീ സൃഷ്ടിക്കാൻ കഴിയും.</string>
 
     <!-- EOF -->
+    <string name="please_wait">കാത്തിരിക്കൂ…</string>
 </resources>

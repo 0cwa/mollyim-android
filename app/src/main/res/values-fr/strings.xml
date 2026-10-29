@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Vous avez créé un trop grand nombre de clés. Vous pourrez en créer une nouvelle dans 7 jours.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Veuillez patienter…</string>
 </resources>

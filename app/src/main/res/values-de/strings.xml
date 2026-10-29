@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Du hast die Anzahl der neuen Schlüssel, die erstellt werden dürfen, aufgebraucht. Du kannst in 7 Tagen einen neuen Wiederherstellungsschlüssel erstellen.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Bitte warten …</string>
 </resources>

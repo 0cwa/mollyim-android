@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Oluşturabileceğin yeni anahtar sayısını tükettin. 7 gün sonra yeni bir kurtarma anahtarı oluşturabileceksin.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Lütfen bekleyin…</string>
 </resources>

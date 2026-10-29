@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Jy het die maksimum getal nuwe sleutels bereik wat jy kan skep. Jy sal oor 7 dae \'n nuwe herwinsleutel kan skep.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Wag asseblief…</string>
 </resources>

@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Kesempatan Anda untuk membuat kunci baru telah habis. Anda bisa membuat kunci pemulihan baru setelah 7 hari.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Tunggu sebentar…</string>
 </resources>

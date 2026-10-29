@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Вы перавысілі колькасць новых кодаў, што можна стварыць. Вы зможаце стварыць новы код для аднаўлення праз 7 дзён.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Пачакайце, калі ласка…</string>
 </resources>

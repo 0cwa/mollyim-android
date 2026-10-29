@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Du har nått gränsen för hur många nya nycklar du kan skapa. Du kommer att kunna skapa en ny återställningsnyckel om sju dagar.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Vänta…</string>
 </resources>

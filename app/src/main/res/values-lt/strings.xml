@@ -9282,4 +9282,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Išnaudojote maksimalų naujų raktų, kuriuos galite sukurti, skaičių. Naują atkūrimo raktą galėsite sukurti po 7 dienų.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Palaukite…</string>
 </resources>

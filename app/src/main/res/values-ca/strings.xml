@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Has esgotat el nombre de claus noves que pots crear. Podràs crear una nova clau de recuperació en 7 dies.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Espereu, si us plau…</string>
 </resources>

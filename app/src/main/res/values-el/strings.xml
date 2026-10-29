@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">Έχεις εξαντλήσει τον αριθμό των νέων κλειδιών που μπορείς να δημιουργήσεις. Θα μπορείς να δημιουργήσεις ένα νέο κλειδί ανάκτησης σε 7 ημέρες.</string>
 
     <!-- EOF -->
+    <string name="please_wait">Περίμενε λίγο…</string>
 </resources>

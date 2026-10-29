@@ -8697,4 +8697,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">您已达到创建新密钥的次数上限。您可以在 7 天后创建新的恢复密钥。</string>
 
     <!-- EOF -->
+    <string name="please_wait">请稍候…</string>
 </resources>

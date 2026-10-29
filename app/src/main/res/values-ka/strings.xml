@@ -8892,4 +8892,5 @@
     <string name="BackupKeyRotationDialogs__limit_exceeded_body_no_backups">ახალი გასაღების შექმნის შესაძლებლობები ამოწურე. ახალი აღდგენის გასაღების შექმნას 7 დღეში შეძლებ.</string>
 
     <!-- EOF -->
+    <string name="please_wait">გთხოვთ დაელოდო…</string>
 </resources>
