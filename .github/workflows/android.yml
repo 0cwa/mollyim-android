@@ -12,35 +12,46 @@ permissions:
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest-8-cores
+    # Standard public-repository runner (4 vCPUs / 16 GiB RAM / 14 GiB SSD).
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      # Retain the project's deterministic R8 flags but fit the standard runner.
+      GRADLE_JVM_ARGS: >-
+        -Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g
+        -Dcom.android.tools.r8.threadCount=1
+        -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
 
     steps:
     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      # gh api repos/actions/checkout/commits/v6 --jq '.sha'
       with:
-          submodules: true
-          lfs: true
+        submodules: true
+        lfs: true
 
     - name: set up JDK 21
       uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5
-      # gh api repos/actions/setup-java/commits/v5 --jq '.sha'
       with:
         distribution: temurin
         java-version: 21
 
     - name: Validate Gradle Wrapper
       uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
-      # gh api repos/gradle/actions/commits/v6 --jq '.sha'
 
     - name: Set up Gradle
       uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
-      # gh api repos/gradle/actions/commits/v6 --jq '.sha'
       with:
         # Only 8.** branch builds write to the cache; everything else (PRs, etc.) reads only.
         cache-read-only: ${{ !startsWith(github.ref, 'refs/heads/8.') }}
         # Required to persist the Gradle configuration cache across runs.
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+    - name: Install the pinned Android SDK components
+      run: |
+        "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+          'platforms;android-36.1' \
+          'build-tools;36.0.0' \
+          'ndk;28.0.13004108'
+        df -h "$GITHUB_WORKSPACE"
 
     # Pull requests run the fast custom linter (ciRemote); pushes to main / 8.x branches run the
     # full Android lint (qaRemote). Both include screenshot validation, which is deliberately kept
@@ -51,12 +62,22 @@ jobs:
         SIGNAL_BUILD_CACHE_USER: ${{ secrets.SIGNAL_BUILD_CACHE_USER }}
         SIGNAL_BUILD_CACHE_PASSWORD: ${{ secrets.SIGNAL_BUILD_CACHE_PASSWORD }}
         SIGNAL_BUILD_CACHE_PUSH: ${{ startsWith(github.ref, 'refs/heads/8.') }}
-      run: ./gradlew ${{ github.event_name == 'pull_request' && 'ciRemote' || 'qaRemote' }}
+      run: |
+        set -euo pipefail
+        # The patch-forest branch has a test-worker cap; other branches need not carry it.
+        test_init=()
+        if [[ -f tools/827/test-worker-heap.init.gradle ]]; then
+          test_init=(--init-script tools/827/test-worker-heap.init.gradle)
+        fi
+        ./gradlew --no-daemon --no-parallel --no-configuration-cache --max-workers=1 \
+          "${test_init[@]}" \
+          -Pkotlin.compiler.execution.strategy=in-process \
+          -Dorg.gradle.jvmargs="$GRADLE_JVM_ARGS" \
+          "${{ github.event_name == 'pull_request' && 'ciRemote' || 'qaRemote' }}"
 
     - name: Archive reports for failed build
       if: ${{ failure() }}
       uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-      # gh api repos/actions/upload-artifact/commits/v7 --jq '.sha'
       with:
         name: reports
         path: |

@@ -4,91 +4,211 @@ on:
   pull_request:
 
 permissions:
-  contents: read # to fetch code (actions/checkout)
-  pull-requests: write # to comment on PR
+  contents: read
+  pull-requests: read
 
 env:
   NDK_VERSION: '28.0.13004108'
+  # Match the proven standard-runner Android gate; retain deterministic R8 behavior.
+  GRADLE_JVM_ARGS: >-
+    -Xmx8g -Xms256m -XX:MaxMetaspaceSize=1g
+    -Dcom.android.tools.r8.threadCount=1
+    -XX:+UnlockExperimentalVMOptions -XX:hashCode=3
 
 jobs:
-  assemble-base:
+  detect-android-changes:
     if: ${{ github.repository != 'signalapp/Signal-Android' }}
-    runs-on: ubuntu-latest-8-cores
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      needed: ${{ steps.check.outputs.needed }}
+    steps:
+    - name: Detect changes affecting the checked-out Android APK
+      id: check
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        # The patch forests are validated by dedicated workflows. A PR editing only
+        # patches/docs/tools does not change the app checked out by APK Diff.
+        gh api --paginate --jq '.[].filename' \
+          "repos/$GITHUB_REPOSITORY/pulls/$PR_NUMBER/files?per_page=100" \
+          > "$RUNNER_TEMP/changed-files.txt"
+        needed=false
+        while IFS= read -r path; do
+          case "$path" in
+            app/*|baseline-profile/*|benchmark/*|build-logic/*|core/*|demo/*|fast-lint/*|feature/*|lib/*|lintchecks/*|microbenchmark/*|reproducible-builds/*|wire-handler/*|gradle/*|build.gradle.kts|settings.gradle.kts|gradle.properties|gradlew|gradlew.bat|.gitattributes|.gitmodules|lint.xml|pkcs11.config)
+              needed=true
+              break
+              ;;
+          esac
+        done < "$RUNNER_TEMP/changed-files.txt"
+        echo "needed=$needed" >> "$GITHUB_OUTPUT"
+        echo "Android APK sources changed: $needed"
 
+  # Build the two revisions on separate standard runners to avoid holding two
+  # full sets of Gradle/Android outputs on a single 14 GiB disk.
+  assemble-base:
+    needs: detect-android-changes
+    if: ${{ needs.detect-android-changes.outputs.needed == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
     steps:
     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      # gh api repos/actions/checkout/commits/v6 --jq '.sha'
       with:
         submodules: true
+        lfs: true
         ref: ${{ github.event.pull_request.base.sha }}
 
-    - name: set up JDK 21
+    - name: Set up JDK 21
       uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5
-      # gh api repos/actions/setup-java/commits/v5 --jq '.sha'
       with:
         distribution: temurin
         java-version: 21
 
     - name: Set up Gradle
       uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
-      # gh api repos/gradle/actions/commits/v6 --jq '.sha'
       with:
-        # PR-only workflow: always read from the cache, never write.
         cache-read-only: true
-        # Required to read the Gradle configuration cache persisted by 8.** builds.
         cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
-
-    - name: Install NDK
-      run: echo "y" | ${ANDROID_SDK_ROOT}/cmdline-tools/latest/bin/sdkmanager --install "ndk;${{ env.NDK_VERSION }}"
 
     - name: Validate Gradle Wrapper
       uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
-      # gh api repos/gradle/actions/commits/v6 --jq '.sha'
 
-    - name: Cache base apk
+    - name: Cache base APK
       id: cache-base
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v5
-      # gh api repos/actions/cache/commits/v5 --jq '.sha'
       with:
         path: diffuse-base.apk
         key: diffuse-${{ github.event.pull_request.base.sha }}
 
-    - name: Build with Gradle
-      if: steps.cache-base.outputs.cache-hit != 'true'
-      run: ./gradlew assemblePlayProdRelease
+    - name: Install Android SDK components
+      if: ${{ steps.cache-base.outputs.cache-hit != 'true' }}
+      run: |
+        "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+          'platforms;android-36.1' 'build-tools;36.0.0' "ndk;$NDK_VERSION"
+        df -h "$GITHUB_WORKSPACE"
 
-    - name: Copy base apk
-      if: steps.cache-base.outputs.cache-hit != 'true'
-      run: mv app/build/outputs/apk/playProd/release/*arm64*.apk diffuse-base.apk
+    - name: Assemble base APK
+      if: ${{ steps.cache-base.outputs.cache-hit != 'true' }}
+      run: |
+        set -euo pipefail
+        ./gradlew --no-daemon --no-parallel --no-configuration-cache --max-workers=1 \
+          -Pkotlin.compiler.execution.strategy=in-process \
+          -Dorg.gradle.jvmargs="$GRADLE_JVM_ARGS" \
+          assemblePlayProdRelease
+        mv app/build/outputs/apk/playProd/release/*arm64*.apk diffuse-base.apk
 
+    - name: Upload base APK for comparison
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      with:
+        name: diffuse-base-apk
+        path: diffuse-base.apk
+        overwrite: true
+        if-no-files-found: error
+        retention-days: 1
+
+    - name: Archive reports on failure
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      with:
+        name: diffuse-base-reports-${{ github.run_attempt }}
+        path: '**/build/reports'
+        if-no-files-found: ignore
+        retention-days: 1
+
+  assemble-pr:
+    needs: detect-android-changes
+    if: ${{ needs.detect-android-changes.outputs.needed == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
     - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
-      # gh api repos/actions/checkout/commits/v6 --jq '.sha'
       with:
         submodules: true
-        clean: 'false'
+        lfs: true
 
-    - name: Build with Gradle
-      run: ./gradlew assemblePlayProdRelease
+    - name: Set up JDK 21
+      uses: actions/setup-java@1bcf9fb12cf4aa7d266a90ae39939e61372fe520 # v5
+      with:
+        distribution: temurin
+        java-version: 21
 
-    - name: Copy PR apk
-      run: mv app/build/outputs/apk/playProd/release/*arm64*.apk diffuse-new.apk
+    - name: Set up Gradle
+      uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
+      with:
+        cache-read-only: true
+        cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
+
+    - name: Validate Gradle Wrapper
+      uses: gradle/actions/wrapper-validation@3f131e8634966bd73d06cc69884922b02e6faf92 # v6
+
+    - name: Install Android SDK components
+      run: |
+        "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --install \
+          'platforms;android-36.1' 'build-tools;36.0.0' "ndk;$NDK_VERSION"
+        df -h "$GITHUB_WORKSPACE"
+
+    - name: Assemble PR APK
+      run: |
+        set -euo pipefail
+        ./gradlew --no-daemon --no-parallel --no-configuration-cache --max-workers=1 \
+          -Pkotlin.compiler.execution.strategy=in-process \
+          -Dorg.gradle.jvmargs="$GRADLE_JVM_ARGS" \
+          assemblePlayProdRelease
+        mv app/build/outputs/apk/playProd/release/*arm64*.apk diffuse-new.apk
+
+    - name: Upload PR APK for comparison
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      with:
+        name: diffuse-pr-apk
+        path: diffuse-new.apk
+        overwrite: true
+        if-no-files-found: error
+        retention-days: 1
+
+    - name: Archive reports on failure
+      if: ${{ failure() }}
+      uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+      with:
+        name: diffuse-pr-reports-${{ github.run_attempt }}
+        path: '**/build/reports'
+        if-no-files-found: ignore
+        retention-days: 1
+
+  diff:
+    needs: [detect-android-changes, assemble-base, assemble-pr]
+    if: ${{ needs.detect-android-changes.outputs.needed == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Download base APK
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+      with:
+        name: diffuse-base-apk
+
+    - name: Download PR APK
+      uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7
+      with:
+        name: diffuse-pr-apk
 
     - id: diffuse
       uses: usefulness/diffuse-action@41995fe8ff6be0a8847e63bdc5a4679c704b455c # v1
-      # gh api repos/usefulness/diffuse-action/commits/v1 --jq '.sha'
       with:
         old-file-path: diffuse-base.apk
         new-file-path: diffuse-new.apk
 
     - uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
-      # gh api repos/peter-evans/find-comment/commits/v4 --jq '.sha'
       id: find-comment
       with:
         issue-number: ${{ github.event.pull_request.number }}
         body-includes: Diffuse output
 
     - uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
-      # gh api repos/peter-evans/create-or-update-comment/commits/v5 --jq '.sha'
       with:
         body: |
           Diffuse output:
@@ -100,7 +220,8 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
-      # gh api repos/actions/upload-artifact/commits/v7 --jq '.sha'
       with:
         name: diffuse-output
         path: ${{ steps.diffuse.outputs.diff-file }}
+        overwrite: true
+        retention-days: 1
