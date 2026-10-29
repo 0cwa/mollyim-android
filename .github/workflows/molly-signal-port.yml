@@ -78,7 +78,7 @@ jobs:
             :app:assembleProdWebsiteDebug \
             2>&1 | tee "$RUNNER_TEMP/molly-signal-port-reports/assemble.log"
 
-      - name: Test proxy policy, registration, encrypted preferences, backups, and settings
+      - name: Test proxy policy, MollySocket, registration, encrypted preferences, backups, and settings
         working-directory: ${{ runner.temp }}/molly-signal-port
         run: |
           set -euo pipefail
@@ -90,6 +90,8 @@ jobs:
             :core:network:test \
             --tests org.signal.network.config.ProxyConfigTest \
             --tests org.signal.network.config.LibSignalProxyPolicyTest \
+            :lib:libsignal-service:test \
+            --tests org.whispersystems.signalservice.api.SignalServiceAccountManagerLinkedRegistrationTest \
             :feature:registration:testDebugUnitTest \
             --tests org.signal.registration.RegistrationRepositoryTest \
             --tests org.signal.registration.screens.phonenumber.PhoneNumberEntryViewModelTest \
@@ -108,6 +110,9 @@ jobs:
             --tests org.thoughtcrime.securesms.components.settings.app.data.DataAndStorageSettingsViewModelTest \
             --tests org.thoughtcrime.securesms.components.settings.app.updates.AppUpdatesSettingsViewModelTest \
             --tests org.thoughtcrime.securesms.jobs.FcmRefreshJobTest \
+            --tests org.thoughtcrime.securesms.jobs.UnifiedPushRefreshJobTest \
+            --tests org.thoughtcrime.securesms.delete.DeleteAccountViewModelTest \
+            --tests org.thoughtcrime.securesms.registration.v2.AppRegistrationStorageControllerTest \
             :feature:app-settings:testDebugUnitTest \
             --tests org.signal.appsettings.updates.AppUpdatesSettingsScreenTest \
             2>&1 | tee "$RUNNER_TEMP/molly-signal-port-reports/focused-tests.log"

@@ -1,6 +1,6 @@
-From 5c653fcd76e3c6b81c4baebdfeb0db0c20e2f14b Mon Sep 17 00:00:00 2001
+From 10eb4bd19a3bea8aedc5057d92c09cc42fdb3eba Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly app-updates adapted, part 2
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Molly APK updating and associated jobs/settings.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,7 +30,7 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
@@ -351,7 +351,7 @@ index 7c9f7cc4bead610b7ac649aea421eeb5faa5d18c..b279066257096801df301340909b3f21
    }
  }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt b/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt
-index c67ef936870c84514808d0e2ff52b1df9351fc2b..2db68428cce6b0eabbf9b439a8d787cf93a4326f 100644
+index c67ef936870c84514808d0e2ff52b1df9351fc2b..890852ee2bc19dba6337d42286cf24bdaf3de66c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/ApkUpdateJob.kt
 @@ -6,7 +6,9 @@ import android.content.Intent
@@ -360,7 +360,7 @@ index c67ef936870c84514808d0e2ff52b1df9351fc2b..2db68428cce6b0eabbf9b439a8d787cf
  import com.fasterxml.jackson.annotation.JsonProperty
 +import okhttp3.OkHttpClient
  import okhttp3.Request
-+import org.greenrobot.eventbus.EventBus
++import org.signal.core.util.eventbus.EventBus
  import org.signal.core.util.Hex
  import org.signal.core.util.JsonUtils
  import org.signal.core.util.forEach
@@ -466,7 +466,7 @@ index c67ef936870c84514808d0e2ff52b1df9351fc2b..2db68428cce6b0eabbf9b439a8d787cf
      }
  
      SignalStore.apkUpdate.lastSuccessfulCheck = System.currentTimeMillis()
-+    EventBus.getDefault().post(ApkUpdateEvent)
++    EventBus.default.post(ApkUpdateEvent)
    }
  
    public override fun onShouldRetry(e: Exception): Boolean {

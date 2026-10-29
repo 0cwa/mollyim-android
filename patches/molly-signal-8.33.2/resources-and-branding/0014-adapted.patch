@@ -1,6 +1,6 @@
-From b8f716ee6359f2876658e0a13b489b1a3429b40d Mon Sep 17 00:00:00 2001
+From 1bb3c142f4fd208873d650ff39b012b8a9490f2f Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly resources-and-branding adapted, part 14
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Shared localized resources, icons, artwork, layouts, XML policy and resource deletions.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,11 +30,21 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
 
+diff --git a/app/src/main/res/color/bottom_sheet_navigation_bar_surface.xml b/app/src/main/res/color/bottom_sheet_navigation_bar_surface.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..133c9359780327cd678aed852bf1e04c90f543a0
+--- /dev/null
++++ b/app/src/main/res/color/bottom_sheet_navigation_bar_surface.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<selector xmlns:android="http://schemas.android.com/apk/res/android">
++    <item android:color="?attr/colorSurface" />
++</selector>
 diff --git a/app/src/main/res/drawable-night/image_signal_backups_plans.xml b/app/src/main/res/drawable-night/image_signal_backups_plans.xml
 index 1008a3cce83d65b7e10b76506a0df7828becc7a8..d611368e1acb174d33fd2bff176deda21b680316 100644
 --- a/app/src/main/res/drawable-night/image_signal_backups_plans.xml
@@ -1013,9 +1023,18 @@ index 611988202f075a3fa4ed7780c3643331224860a9..34a91b19fa2b06baa3eb3bd68e3ef1a7
 \ No newline at end of file
 +</androidx.constraintlayout.widget.ConstraintLayout>
 diff --git a/app/src/main/res/layout/call_log_adapter_item.xml b/app/src/main/res/layout/call_log_adapter_item.xml
-index bf93b4bec91c521e724def90ee0f03e64a4fe183..ce967eba572b83032183c64f4dd6e06c550b24ed 100644
+index bf93b4bec91c521e724def90ee0f03e64a4fe183..41401a7324c2c4221bc3304a1b7f2ac3dda499ed 100644
 --- a/app/src/main/res/layout/call_log_adapter_item.xml
 +++ b/app/src/main/res/layout/call_log_adapter_item.xml
+@@ -78,7 +78,7 @@
+         app:layout_constraintEnd_toStartOf="@id/call_status_barrier"
+         app:layout_constraintStart_toEndOf="@id/call_recipient_name"
+         app:layout_constraintTop_toTopOf="@id/call_recipient_name"
+-        app:tint="@color/signal_colorOnSurfaceVariant" />
++        app:tint="?attr/colorOnSurfaceVariant" />
+ 
+     <org.thoughtcrime.securesms.components.emoji.EmojiTextView
+         android:id="@+id/call_info"
 @@ -92,7 +92,7 @@
          android:maxLines="2"
          android:textAlignment="viewStart"
@@ -2025,6 +2044,19 @@ index 65bf272bd46e28878956a233cc8d3ce8ac47a4b4..d468d02e412cbf1e61d17f44f9664169
  
          </LinearLayout>
  
+diff --git a/app/src/main/res/layout/conversation_list_item_action.xml b/app/src/main/res/layout/conversation_list_item_action.xml
+index f5c0cba4a9055ab3b59a6bdddf76857d7f5ceabc..c662e9832f6f999703b5263de0909378d34f36e2 100644
+--- a/app/src/main/res/layout/conversation_list_item_action.xml
++++ b/app/src/main/res/layout/conversation_list_item_action.xml
+@@ -4,7 +4,7 @@
+     tools:viewBindingIgnore="true"
+     android:layout_width="match_parent"
+     android:layout_height="70dp"
+-    android:background="@color/signal_background_primary">
++    android:background="?attr/signal_background_primary">
+ 
+     <TextView
+         android:id="@+id/description"
 diff --git a/app/src/main/res/layout/conversation_list_item_view.xml b/app/src/main/res/layout/conversation_list_item_view.xml
 index d58cee4f4a529c716ea5312352c41bda644ab6b8..dfbb379cc7cce3dedf557ed6be5edae7a863744d 100644
 --- a/app/src/main/res/layout/conversation_list_item_view.xml
@@ -2885,6 +2917,19 @@ index 489a598891308d79613865d3940bbd2546efb4f4..fb02f3aeccf66a3405ef5b6956e47e7c
 -</merge>
 \ No newline at end of file
 +</merge>
+diff --git a/app/src/main/res/layout/media_viewer_activity.xml b/app/src/main/res/layout/media_viewer_activity.xml
+index f87e28f0f58ff8d52ced5d6d7e682061ab39c99d..7161f659fea394dfa4108533eaf9adfad1576ea7 100644
+--- a/app/src/main/res/layout/media_viewer_activity.xml
++++ b/app/src/main/res/layout/media_viewer_activity.xml
+@@ -9,7 +9,7 @@
+         android:id="@+id/background_scrim"
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+-        android:background="@color/signal_colorBackground" />
++        android:background="?attr/colorSurface" />
+ 
+     <FrameLayout
+         android:id="@+id/transition_container"
 diff --git a/app/src/main/res/layout/message_details_fragment.xml b/app/src/main/res/layout/message_details_fragment.xml
 index 8a2175e816484321e0282ba456b05c18e2d5b372..f64007bc8e851355b5dde0759bb80b5a447cfe12 100644
 --- a/app/src/main/res/layout/message_details_fragment.xml
@@ -3390,159 +3435,6 @@ index 8d8f6d96817e85da98da4fbffdd2c3c080917455..87f144adef851b606d0b699f03ae9b4f
          app:layout_constraintTop_toTopOf="parent"
          app:layout_constraintStart_toStartOf="parent"
          app:layout_constraintEnd_toEndOf="parent"/>
-diff --git a/app/src/main/res/layout/stories_text_post_creation_fragment.xml b/app/src/main/res/layout/stories_text_post_creation_fragment.xml
-index f0a397b901445600a82078f49501278281570aad..9289719c78684cc5573b2776ba217699e401f1c4 100644
---- a/app/src/main/res/layout/stories_text_post_creation_fragment.xml
-+++ b/app/src/main/res/layout/stories_text_post_creation_fragment.xml
-@@ -1,63 +1,17 @@
- <?xml version="1.0" encoding="utf-8"?>
--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
--    xmlns:app="http://schemas.android.com/apk/res-auto"
--    xmlns:tools="http://schemas.android.com/tools"
--    android:id="@+id/scene"
--    android:layout_width="match_parent"
--    android:layout_height="match_parent">
-+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" android:id="@+id/scene" android:layout_width="match_parent" android:layout_height="match_parent">
- 
--    <com.google.android.material.card.MaterialCardView
--        android:id="@+id/story_text_post_card"
--        android:layout_width="0dp"
--        android:layout_height="0dp"
--        app:cardCornerRadius="18dp"
--        app:cardElevation="0dp"
--        app:layout_constraintBottom_toBottomOf="parent"
--        app:layout_constraintDimensionRatio="9:16"
--        app:layout_constraintEnd_toEndOf="parent"
--        app:layout_constraintStart_toStartOf="parent">
-+    <com.google.android.material.card.MaterialCardView android:id="@+id/story_text_post_card" android:layout_width="0dp" android:layout_height="0dp" app:cardCornerRadius="18dp" app:cardElevation="0dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintDimensionRatio="9:16" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent">
- 
--        <org.thoughtcrime.securesms.stories.StoryTextPostView
--            android:id="@+id/story_text_post"
--            android:layout_width="match_parent"
--            android:layout_height="match_parent" />
-+        <org.thoughtcrime.securesms.stories.StoryTextPostView android:id="@+id/story_text_post" android:layout_width="match_parent" android:layout_height="match_parent"/>
- 
-     </com.google.android.material.card.MaterialCardView>
- 
--    <com.google.android.material.imageview.ShapeableImageView
--        android:id="@+id/send"
--        android:layout_width="48dp"
--        android:layout_height="48dp"
--        android:layout_marginEnd="@dimen/gutter"
--        android:layout_marginBottom="16dp"
--        android:background="@color/signal_dark_colorOnSecondaryContainer"
--        android:padding="4dp"
--        android:scaleType="centerInside"
--        app:layout_constraintBottom_toBottomOf="parent"
--        app:layout_constraintEnd_toEndOf="parent"
--        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle"
--        app:srcCompat="@drawable/ic_arrow_end_24"
--        app:tint="@color/signal_dark_colorSecondaryContainer" />
-+    <com.google.android.material.imageview.ShapeableImageView android:id="@+id/send" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginEnd="@dimen/gutter" android:layout_marginBottom="16dp" android:background="?attr/colorOnSecondaryContainer" android:padding="4dp" android:scaleType="centerInside" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Signal.Circle" app:srcCompat="@drawable/ic_arrow_end_24" app:tint="?attr/colorSecondaryContainer"/>
- 
--    <com.google.android.material.card.MaterialCardView
--        android:id="@+id/send_in_progress_indicator"
--        android:layout_width="wrap_content"
--        android:layout_height="wrap_content"
--        android:visibility="gone"
--        app:cardBackgroundColor="@color/signal_dark_colorSurface"
--        app:cardCornerRadius="18dp"
--        app:layout_constraintBottom_toBottomOf="parent"
--        app:layout_constraintEnd_toEndOf="parent"
--        app:layout_constraintStart_toStartOf="parent"
--        app:layout_constraintTop_toTopOf="parent"
--        tools:visibility="visible">
-+    <com.google.android.material.card.MaterialCardView android:id="@+id/send_in_progress_indicator" android:layout_width="wrap_content" android:layout_height="wrap_content" android:visibility="gone" app:cardBackgroundColor="?attr/colorSurface" app:cardCornerRadius="18dp" app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent" app:layout_constraintTop_toTopOf="parent" tools:visibility="visible">
- 
--        <com.google.android.material.progressindicator.CircularProgressIndicator
--            android:layout_width="wrap_content"
--            android:layout_height="wrap_content"
--            android:layout_margin="24dp"
--            android:indeterminate="true"
--            app:indicatorColor="@color/signal_dark_colorPrimary" />
-+        <com.google.android.material.progressindicator.CircularProgressIndicator android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="24dp" android:indeterminate="true" app:indicatorColor="?attr/colorPrimary"/>
-     </com.google.android.material.card.MaterialCardView>
- 
--</androidx.constraintlayout.widget.ConstraintLayout>
-\ No newline at end of file
-+</androidx.constraintlayout.widget.ConstraintLayout>
-diff --git a/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml b/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml
-index d59476fb6376c08071287c93db8b93a3d6f60482..4ef4cea6cb510137caa25db39fa43ca3a3e3dfa1 100644
---- a/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml
-+++ b/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml
-@@ -50,7 +50,7 @@
-                 android:layout_marginEnd="@dimen/dsl_settings_gutter"
-                 android:gravity="center"
-                 android:textAppearance="@style/Signal.Text.BodyLarge"
--                android:textColor="@color/signal_colorOnSurfaceVariant"
-+                android:textColor="?attr/colorOnSurfaceVariant"
-                 app:layout_constraintEnd_toEndOf="parent"
-                 app:layout_constraintStart_toStartOf="parent"
-                 app:layout_constraintTop_toBottomOf="@id/thanks_bottom_sheet_heading"
-@@ -126,7 +126,7 @@
-                 android:layout_marginEnd="40dp"
-                 android:text="@string/ThanksForYourSupportBottomSheetFragment__when_you_have_more"
-                 android:textAppearance="@style/Signal.Text.BodyMedium"
--                android:textColor="@color/signal_colorOnSurfaceVariant"
-+                android:textColor="?attr/colorOnSurfaceVariant"
-                 android:visibility="gone"
-                 app:layout_constraintTop_toBottomOf="@id/thanks_bottom_sheet_control_outline"
-                 tools:visibility="visible" />
-diff --git a/app/src/main/res/layout/unverified_banner_view.xml b/app/src/main/res/layout/unverified_banner_view.xml
-index f86e407cd7121a880b51c6410cbeb4f2d8ccf06a..b954989780d7af48f00711313946dac13146ec44 100644
---- a/app/src/main/res/layout/unverified_banner_view.xml
-+++ b/app/src/main/res/layout/unverified_banner_view.xml
-@@ -1,46 +1,10 @@
- <?xml version="1.0" encoding="utf-8"?>
--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
--    tools:viewBindingIgnore="true"
--    xmlns:app="http://schemas.android.com/apk/res-auto"
--    xmlns:tools="http://schemas.android.com/tools"
--    android:id="@+id/container"
--    android:layout_width="match_parent"
--    android:layout_height="wrap_content"
--    android:background="@drawable/reminder_background_normal"
--    android:focusable="true"
--    android:nextFocusRight="@+id/cancel"
--    android:orientation="horizontal"
--    tools:visibility="visible">
-+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools" tools:viewBindingIgnore="true" android:id="@+id/container" android:layout_width="match_parent" android:layout_height="wrap_content" android:background="@drawable/reminder_background_normal" android:focusable="true" android:nextFocusRight="@+id/cancel" android:orientation="horizontal" tools:visibility="visible">
- 
--    <ImageView
--        android:layout_width="wrap_content"
--        android:layout_height="wrap_content"
--        android:layout_marginStart="16dp"
--        android:layout_gravity="center_vertical"
--        android:src="@drawable/ic_warning_40"
--        app:tint="@color/signal_icon_tint_primary" />
-+    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginStart="16dp" android:layout_gravity="center_vertical" android:src="@drawable/ic_warning_40" app:tint="?attr/signal_icon_tint_primary"/>
- 
--    <TextView
--        android:id="@+id/unverified_text"
--        android:layout_width="0dp"
--        android:layout_height="wrap_content"
--        android:textColor="@color/signal_text_primary"
--        android:textSize="16sp"
--        android:layout_weight="1"
--        android:layout_margin="16dp"
--        tools:text="Your safety number with Jules Bonnot has changed and is no longer verified" />
-+    <TextView android:id="@+id/unverified_text" android:layout_width="0dp" android:layout_height="wrap_content" android:textColor="?attr/signal_text_primary" android:textSize="16sp" android:layout_weight="1" android:layout_margin="16dp" tools:text="Your safety number with Jules Bonnot has changed and is no longer verified"/>
- 
--    <ImageButton
--        android:id="@+id/cancel"
--        android:layout_width="48dp"
--        android:layout_height="48dp"
--        android:layout_marginTop="2dp"
--        android:background="?selectableItemBackgroundBorderless"
--        android:contentDescription="@string/DefaultBanner__cancel"
--        android:focusable="true"
--        android:nextFocusLeft="@+id/container"
--        android:nextFocusRight="@+id/container"
--        android:src="@drawable/ic_x_24"
--        app:tint="@color/signal_icon_tint_primary" />
-+    <ImageButton android:id="@+id/cancel" android:layout_width="48dp" android:layout_height="48dp" android:layout_marginTop="2dp" android:background="?selectableItemBackgroundBorderless" android:contentDescription="@string/DefaultBanner__cancel" android:focusable="true" android:nextFocusLeft="@+id/container" android:nextFocusRight="@+id/container" android:src="@drawable/ic_x_24" app:tint="?attr/signal_icon_tint_primary"/>
- 
- </LinearLayout>
 
 --------------false--
 

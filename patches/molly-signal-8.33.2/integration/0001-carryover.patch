@@ -1,6 +1,6 @@
-From 158602b343453dc48ac299151948e49aacdd421b Mon Sep 17 00:00:00 2001
+From d360fba351d0f3fae87c4bed9dce562133d17a8a Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly integration carryover, part 1
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Shared application/core/library integration, mixed-purpose files and remaining exact target delta.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -29,7 +29,7 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: carryover
@@ -2870,110 +2870,6 @@ index 14049fb0bbe6547c9bc0341e47ae47854842b256..00000000000000000000000000000000
 -object V190_UniqueMessageMigration : SignalDatabaseMigration {
 -  override fun migrate(context: Application, db: SQLiteDatabase, oldVersion: Int, newVersion: Int) = Unit
 -}
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/database/helpers/migration/V238_FixAttachmentIdJsonSerialization.kt b/app/src/main/java/org/thoughtcrime/securesms/database/helpers/migration/V238_FixAttachmentIdJsonSerialization.kt
-new file mode 100644
-index 0000000000000000000000000000000000000000..c64b0bf996009812c4861dbf6ba6cbe4e18a37b7
---- /dev/null
-+++ b/app/src/main/java/org/thoughtcrime/securesms/database/helpers/migration/V238_FixAttachmentIdJsonSerialization.kt
-@@ -0,0 +1,98 @@
-+package org.thoughtcrime.securesms.database.helpers.migration
-+
-+import android.app.Application
-+import org.thoughtcrime.securesms.database.SQLiteDatabase
-+import org.json.JSONArray
-+import org.json.JSONObject
-+import org.signal.core.util.requireLong
-+import org.signal.core.util.requireString
-+import org.signal.core.util.update
-+
-+/**
-+ * Fix the JSON for AttachmentId in link_previews and shared_contacts message's columns.
-+ */
-+@Suppress("ClassName")
-+object V238_FixAttachmentIdJsonSerialization : SignalDatabaseMigration {
-+
-+  override fun migrate(context: Application, db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-+    db.rawQuery(
-+      """
-+          SELECT
-+            _id,
-+            link_previews
-+          FROM message
-+          WHERE link_previews NOT NULL
-+        """
-+    ).use { cursor ->
-+      while (cursor.moveToNext()) {
-+        var previewReplaced = false
-+
-+        val id = cursor.requireLong("_id")
-+        val serializedPreviews = cursor.requireString("link_previews")
-+
-+        val previews = JSONArray(serializedPreviews)
-+        for (i in 0 until previews.length()) {
-+          val preview = previews.optJSONObject(i)
-+          if (preview != null) {
-+            val attachmentId = preview.optJSONObject("attachmentId")
-+            if (attachmentId != null && attachmentId.has("id")) {
-+              val rowId = attachmentId.getLong("id")
-+              val newAttachmentId = JSONObject()
-+              newAttachmentId.put("rowId", rowId)
-+              preview.put("attachmentId", newAttachmentId)
-+              previewReplaced = true
-+            }
-+          }
-+        }
-+
-+        if (previewReplaced) {
-+          db.update("message")
-+            .values("link_previews" to previews.toString())
-+            .where("_id = ?", id)
-+            .run()
-+        }
-+      }
-+    }
-+    db.rawQuery(
-+      """
-+          SELECT
-+            _id,
-+            shared_contacts
-+          FROM message
-+          WHERE shared_contacts NOT NULL
-+        """
-+    ).use { cursor ->
-+      while (cursor.moveToNext()) {
-+        var avatarReplaced = false
-+
-+        val id = cursor.requireLong("_id")
-+        val serializedContacts = cursor.requireString("shared_contacts")
-+
-+        val contacts = JSONArray(serializedContacts)
-+        for (i in 0 until contacts.length()) {
-+          val contact = contacts.optJSONObject(i)
-+          if (contact != null) {
-+            val avatar = contact.optJSONObject("avatar")
-+            if (avatar != null) {
-+              val attachmentId = avatar.optJSONObject("attachmentId")
-+              if (attachmentId != null && attachmentId.has("id")) {
-+                val rowId = attachmentId.getLong("id")
-+                val newAttachmentId = JSONObject()
-+                newAttachmentId.put("rowId", rowId)
-+                avatar.put("attachmentId", newAttachmentId)
-+                avatarReplaced = true
-+              }
-+            }
-+          }
-+        }
-+
-+        if (avatarReplaced) {
-+          db.update("message")
-+            .values("shared_contacts" to contacts.toString())
-+            .where("_id = ?", id)
-+            .run()
-+        }
-+      }
-+    }
-+  }
-+}
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/database/model/RemoteMegaphoneRecord.kt b/app/src/main/java/org/thoughtcrime/securesms/database/model/RemoteMegaphoneRecord.kt
 index 8f0cadb6e824086be0bd8248dd7d368991c2ddf1..fe05fbb9217e8e10752422c763b3f6f7b25bf86c 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/database/model/RemoteMegaphoneRecord.kt
@@ -3371,37 +3267,6 @@ index 96bc034f37d9dc97c4e63c515c14a63a2e678313..edb1780021e94584ef9688073dcaa978
        ConversationUtil.clearAllShortcuts(context);
        return;
      }
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobs/DeprecatedNotificationJob.kt b/app/src/main/java/org/thoughtcrime/securesms/jobs/DeprecatedNotificationJob.kt
-index 1df34187dc868fedbd3c6e3f0d25917188f72750..233df78d38c5769d89ac6b890227a74ab1760aec 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/jobs/DeprecatedNotificationJob.kt
-+++ b/app/src/main/java/org/thoughtcrime/securesms/jobs/DeprecatedNotificationJob.kt
-@@ -11,7 +11,6 @@ import android.net.Uri
- import androidx.core.app.NotificationCompat
- import org.signal.core.util.ServiceUtil
- import org.signal.core.util.logging.Log
--import org.thoughtcrime.securesms.BuildConfig
- import org.thoughtcrime.securesms.R
- import org.thoughtcrime.securesms.dependencies.AppDependencies
- import org.thoughtcrime.securesms.jobmanager.Job
-@@ -47,16 +46,8 @@ class DeprecatedNotificationJob private constructor(parameters: Parameters) : Jo
- 
-   override fun run(): Result {
-     if (NotificationChannels.getInstance().areNotificationsEnabled()) {
--      val intent: Intent
--
--      if (BuildConfig.MANAGES_APP_UPDATES) {
--        Log.d(TAG, "Showing deprecated notification for website APK")
--        intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://signal.org/android/apk"))
--      } else {
--        Log.d(TAG, "Showing deprecated notification for PlayStore")
--        val packageName = context.packageName
--        intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
--      }
-+      Log.d(TAG, "Showing deprecated notification for website APK")
-+      val intent = Intent(Intent.ACTION_VIEW, Uri.parse(context.getString(R.string.install_url)))
- 
-       val pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-       val builder = NotificationCompat.Builder(context, NotificationChannels.getInstance().APP_ALERTS)
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/CallQualityValues.kt b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/CallQualityValues.kt
 deleted file mode 100644
 index 5ee36e818556bdfba4ba4512e843c91a9574f3c0..0000000000000000000000000000000000000000
@@ -3868,6 +3733,115 @@ index c51f4997c78a1f36b6f275191a0f8af5d10f8afb..0092e9ac1f733c0ddaaa3d2a78cd9939
        postValue(record);
        AppDependencies.getDatabaseObserver().registerVerboseConversationObserver(record.getThreadId(), observer);
      } catch (NoSuchMessageException ignored) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
+index fc550f9a251acf71e071262527ca68353a77d256..27128bcf353bee6b1f2e92d0da39d44bb1b9ddd4 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
+@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.messageprocessingalarm;
+ import android.annotation.SuppressLint;
+ import android.app.AlarmManager;
+ import android.app.PendingIntent;
+-import android.content.BroadcastReceiver;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Handler;
+@@ -12,13 +11,14 @@ import android.os.SystemClock;
+ 
+ import androidx.annotation.NonNull;
+ 
++import org.signal.core.util.AppForegroundObserver;
+ import org.signal.core.util.PendingIntentFlags;
+ import org.signal.core.util.concurrent.SignalExecutors;
+ import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.jobmanager.JobTracker;
+ import org.thoughtcrime.securesms.jobs.MessageFetchJob;
+-import org.signal.core.util.AppForegroundObserver;
++import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
+ import org.thoughtcrime.securesms.util.BatterySnapshotTracker;
+ import org.thoughtcrime.securesms.util.RemoteConfig;
+ 
+@@ -29,7 +29,7 @@ import java.util.Optional;
+  * A receiver that is scheduled via alarm to run at a remotely-configurable interval to fetch messages from the service.
+  * Basically an extra reliability thing that helps poke the system to fetch messages more often.
+  */
+-public final class RoutineMessageFetchReceiver extends BroadcastReceiver {
++public final class RoutineMessageFetchReceiver extends ExportedBroadcastReceiver {
+ 
+   private static final String TAG = Log.tag(RoutineMessageFetchReceiver.class);
+ 
+@@ -37,7 +37,7 @@ public final class RoutineMessageFetchReceiver extends BroadcastReceiver {
+ 
+   @Override
+   @SuppressLint("StaticFieldLeak")
+-  public void onReceive(@NonNull Context context, @NonNull Intent intent) {
++  public void onReceiveUnlock(@NonNull Context context, @NonNull Intent intent) {
+     Log.i(TAG, String.format("onReceive(%s)", intent.getAction()));
+ 
+     if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt b/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
+index 68e1def4f044015f80d660f3f50e531a464ae237..378d65a23268672d7e6c83ae4d7ea9ff79496802 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
+@@ -1,40 +1,41 @@
+ package org.thoughtcrime.securesms.messagerequests
+ 
+ import android.content.Context
++import androidx.annotation.AttrRes
+ import androidx.annotation.ColorInt
+-import androidx.core.content.ContextCompat
++import org.signal.core.ui.util.ThemeUtil
+ import org.thoughtcrime.securesms.R
+ 
+ enum class MessageRequestBarColorTheme(
+-  private val containerBackgroundColor: Int,
+-  private val buttonBackgroundColor: Int,
+-  private val buttonForegroundDenyColor: Int,
+-  private val buttonForegroundAcceptColor: Int
++  @AttrRes private val containerBackgroundColor: Int,
++  @AttrRes private val buttonBackgroundColor: Int,
++  @AttrRes private val buttonForegroundDenyColor: Int,
++  @AttrRes private val buttonForegroundAcceptColor: Int
+ ) {
+   WALLPAPER(
+-    R.color.message_request_bar_container_background_wallpaper,
+-    R.color.message_request_bar_background_wallpaper,
+-    R.color.message_request_bar_denyForeground_wallpaper,
+-    R.color.message_request_bar_acceptForeground_wallpaper
++    R.attr.message_request_bar_container_background_wallpaper,
++    R.attr.message_request_bar_background_wallpaper,
++    R.attr.message_request_bar_denyForeground_wallpaper,
++    R.attr.message_request_bar_acceptForeground_wallpaper
+   ),
+   NORMAL(
+-    R.color.message_request_bar_container_background_normal,
+-    R.color.message_request_bar_background_normal,
+-    R.color.message_request_bar_denyForeground_normal,
+-    R.color.message_request_bar_acceptForeground_normal
++    R.attr.message_request_bar_container_background_normal,
++    R.attr.message_request_bar_background_normal,
++    R.attr.message_request_bar_denyForeground_normal,
++    R.attr.message_request_bar_acceptForeground_normal
+   );
+ 
+   @ColorInt
+-  fun getContainerButtonBackgroundColor(context: Context): Int = ContextCompat.getColor(context, containerBackgroundColor)
++  fun getContainerButtonBackgroundColor(context: Context): Int = ThemeUtil.getThemedColor(context, containerBackgroundColor)
+ 
+   @ColorInt
+-  fun getButtonBackgroundColor(context: Context): Int = ContextCompat.getColor(context, buttonBackgroundColor)
++  fun getButtonBackgroundColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonBackgroundColor)
+ 
+   @ColorInt
+-  fun getButtonForegroundDenyColor(context: Context): Int = ContextCompat.getColor(context, buttonForegroundDenyColor)
++  fun getButtonForegroundDenyColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonForegroundDenyColor)
+ 
+   @ColorInt
+-  fun getButtonForegroundAcceptColor(context: Context): Int = ContextCompat.getColor(context, buttonForegroundAcceptColor)
++  fun getButtonForegroundAcceptColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonForegroundAcceptColor)
+ 
+   companion object {
+     @JvmStatic
 
 --------------false--
 

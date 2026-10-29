@@ -1,6 +1,6 @@
-From 29957e7dd54232d175bdd9ded90029c3a4a162c4 Mon Sep 17 00:00:00 2001
+From 7010da295bdb8e1b2108f722f5f24bfd3a626b8d Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly backup-and-restore adapted, part 2
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Local/remote backup policy, scheduling, retention, compatibility and restore integration.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,7 +30,7 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
@@ -681,6 +681,35 @@ index e1164ad96cc38512ff3a21145fa72afdc41ccdfe..31e0026c7e5add595a6f053eab6dc981
      val pinReminders = settings.pinReminders
      if (pinReminders != null) {
        SignalStore.pin.setPinRemindersEnabled(pinReminders)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/status/ArchiveRestoreStatusBannerView.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/status/ArchiveRestoreStatusBannerView.kt
+index b9281db941118e0a6f56ff2668dac62b27e2493b..83fcf73299ee6ad7eb7f7bae466c3c00e1af6f58 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/status/ArchiveRestoreStatusBannerView.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/status/ArchiveRestoreStatusBannerView.kt
+@@ -31,7 +31,6 @@ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.graphics.Color
+ import androidx.compose.ui.graphics.StrokeCap
+-import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.res.painterResource
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.unit.dp
+@@ -39,6 +38,7 @@ import org.signal.core.ui.compose.Buttons
+ import org.signal.core.ui.compose.DayNightPreviews
+ import org.signal.core.ui.compose.Previews
+ import org.signal.core.ui.compose.SignalIcons
++import org.signal.core.ui.compose.theme.SignalTheme
+ import org.signal.core.util.mebiBytes
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.backup.RestoreState
+@@ -71,7 +71,7 @@ fun ArchiveRestoreStatusBanner(
+     modifier = Modifier
+       .padding(contentPadding)
+       .background(
+-        color = colorResource(CoreUiR.color.signal_colorSurface2),
++        color = SignalTheme.colors.colorSurface2,
+         shape = RoundedCornerShape(24.dp)
+       )
+       .fillMaxWidth()
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt
 index 1c193f630b412c46c996eb6dd02e929230e1efc6..0dfe870045cd6a3a69aff811ad705b2ddd506d7f 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/ui/subscription/MessageBackupsFlowFragment.kt
@@ -741,17 +770,21 @@ index 36ee97a2fa6e4ce8c865acaf47d0903f8095acc9..53f1344e669267a458bb49458d2818a2
      }
    }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt
-index fab41500522365d953403b8d34c23fa65a887e9c..7c4bf0e9c96f7a94837ab3f3d4ff2f24f0e84d11 100644
+index fab41500522365d953403b8d34c23fa65a887e9c..2e3f066ceaaac2010af2d5561016fdf7adeb0653 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/backups/BackupsSettingsFragment.kt
-@@ -108,8 +108,8 @@ class BackupsSettingsFragment : ComposeFragment() {
-         when (state.backupState) {
+@@ -105,11 +105,11 @@ class BackupsSettingsFragment : ComposeFragment() {
+       backupsSettingsState = state,
+       onNavigationClick = { requireActivity().onNavigateUp() },
+       onBackupsRowClick = {
+-        when (state.backupState) {
++        when (val backupState = state.backupState) {
            is BackupState.Error -> Unit
  
 -          BackupState.None -> {
 -            if (!state.isLinkedDevice) {
 +          is BackupState.None -> {
-+            if (!state.isLinkedDevice && state.backupState.featureSupported) {
++            if (!state.isLinkedDevice && backupState.featureSupported) {
                checkoutLauncher.launch(null)
              }
            }
@@ -848,7 +881,7 @@ index c2899ccc9ce43f6795a87eb959386bf213f1d6d7..5352eb368a2efa375987e233db4d9a16
        if (backupDirectory == null || !backupDirectory.canWrite()) {
          BackupFileIOError.ACCESS_ERROR.postNotification(context);
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java
-index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740e3ee41fe 100644
+index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..eede46648fae3291b9dfad1cfa1070d2066d8117 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/preferences/BackupsPreferenceFragment.java
 @@ -11,6 +11,7 @@ import android.text.method.LinkMovementMethod;
@@ -867,7 +900,13 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
  import com.google.android.material.timepicker.MaterialTimePicker;
  import com.google.android.material.timepicker.TimeFormat;
  
-@@ -50,6 +52,7 @@ import java.text.NumberFormat;
+@@ -45,11 +47,13 @@ import org.thoughtcrime.securesms.service.LocalBackupListener;
+ import org.thoughtcrime.securesms.util.BackupUtil;
+ import org.thoughtcrime.securesms.util.Environment;
+ import org.thoughtcrime.securesms.util.LocalTimeExtensionsKt;
++import org.thoughtcrime.securesms.util.TextSecurePreferences;
+ 
+ import java.text.NumberFormat;
  import java.time.LocalTime;
  import java.util.Locale;
  import java.util.Objects;
@@ -875,7 +914,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
  
  import kotlin.Pair;
  import kotlin.Unit;
-@@ -69,6 +72,10 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -69,6 +73,10 @@ public class BackupsPreferenceFragment extends Fragment {
    private TextView    info;
    private TextView    summary;
    private TextView    folderName;
@@ -886,7 +925,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
    private ProgressBar progress;
    private TextView    progressSummary;
    private ComposeView upgradeCard;
-@@ -97,12 +104,18 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -97,12 +105,18 @@ public class BackupsPreferenceFragment extends Fragment {
      info            = view.findViewById(R.id.fragment_backup_info);
      summary         = view.findViewById(R.id.fragment_backup_create_summary);
      folderName      = view.findViewById(R.id.fragment_backup_folder_name);
@@ -905,7 +944,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
      verify.setOnClickListener(unused -> BackupDialog.showVerifyBackupPassphraseDialog(requireContext()));
      timer.setOnClickListener(unused -> pickTime());
  
-@@ -130,6 +143,8 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -130,6 +144,8 @@ public class BackupsPreferenceFragment extends Fragment {
      viewModel.refreshBackupStatus();
      setBackupSummary();
      setInfo();
@@ -914,7 +953,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
      setUpdateState();
    }
  
-@@ -225,6 +240,23 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -225,6 +241,23 @@ public class BackupsPreferenceFragment extends Fragment {
      info.setMovementMethod(LinkMovementMethod.getInstance());
    }
  
@@ -938,7 +977,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
    private void setUpdateState() {
      if (SignalStore.settings().isBackupEnabled() && Environment.Backups.isNewFormatSupportedForLocalBackup()) {
        UpgradeLocalBackupCard.bind(upgradeCard, () -> {
-@@ -283,6 +315,43 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -283,6 +316,43 @@ public class BackupsPreferenceFragment extends Fragment {
      }
    }
  
@@ -982,7 +1021,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
    @RequiresApi(29)
    private void onCreateClickedApi29() {
      Log.i(TAG, "Queueing backup...");
-@@ -328,16 +397,17 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -328,16 +398,17 @@ public class BackupsPreferenceFragment extends Fragment {
    }
  
    private void updateToggle() {
@@ -1002,7 +1041,7 @@ index 4cc1439e797c9764a2891d6ef3c2a3b596d742f8..98c5bb9bb9345e7bd3fd7e21998c5740
      verify.setVisibility(View.VISIBLE);
      timer.setVisibility(View.VISIBLE);
      updateToggle();
-@@ -349,6 +419,8 @@ public class BackupsPreferenceFragment extends Fragment {
+@@ -349,6 +420,8 @@ public class BackupsPreferenceFragment extends Fragment {
      toggle.setText(R.string.BackupsPreferenceFragment__turn_on);
      create.setVisibility(View.GONE);
      folder.setVisibility(View.GONE);
@@ -1086,12 +1125,14 @@ index 9732277ea64a962673cb69401a8532e6ba71ca7f..2081e7dca04482333958871d00d6922c
          .setProgress(100, (progress * 100).toInt(), indeterminate)
          .setContentIntent(PendingIntent.getActivity(context, 0, MainActivity.clearTop(context), PendingIntentFlags.mutable()))
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java b/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java
-index 149dbb9bd8c45501e4d5dad53caa0d1f1ac47a2a..d722628da15363dd5b6e69194f644766fccdcb79 100644
+index 149dbb9bd8c45501e4d5dad53caa0d1f1ac47a2a..519432351993d3a4df0b8ea7b5396d850f36d8c0 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/service/LocalBackupListener.java
-@@ -9,8 +9,10 @@ import org.signal.core.util.JavaTimeExtensionsKt;
+@@ -8,9 +8,12 @@ import androidx.annotation.NonNull;
+ import org.signal.core.util.JavaTimeExtensionsKt;
  import org.thoughtcrime.securesms.jobs.LocalBackupJob;
  import org.thoughtcrime.securesms.keyvalue.SignalStore;
++import org.thoughtcrime.securesms.util.TextSecurePreferences;
  
 +import java.time.Instant;
  import java.time.LocalDateTime;
@@ -1100,7 +1141,7 @@ index 149dbb9bd8c45501e4d5dad53caa0d1f1ac47a2a..d722628da15363dd5b6e69194f644766
  import java.util.concurrent.TimeUnit;
  
  public class LocalBackupListener extends PersistentAlarmManagerListener {
-@@ -47,10 +49,21 @@ public class LocalBackupListener extends PersistentAlarmManagerListener {
+@@ -47,10 +50,21 @@ public class LocalBackupListener extends PersistentAlarmManagerListener {
    }
  
    public static long setNextBackupTimeToIntervalFromNow(@NonNull Context context) {

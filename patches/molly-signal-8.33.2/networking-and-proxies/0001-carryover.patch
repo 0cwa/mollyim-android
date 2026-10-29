@@ -1,6 +1,6 @@
-From d5cdcb58c05591fe94363caebc9308d180fdf155 Mon Sep 17 00:00:00 2001
+From cecc57fae8998eb0565308c996d8a6476c4b240c Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly networking-and-proxies carryover, part 1
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 SOCKS/Tor/Orbot, DNS and connectivity monitoring, proxy transport support and removals of replaced Signal proxy code.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -29,7 +29,7 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: carryover
@@ -44,45 +44,6 @@ index 0000000000000000000000000000000000000000..45d3120f8ac50b05d1abb09d237fa02f
 +
 +public class NetworkAvailableEvent {
 +}
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java b/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java
-index 59ddcbf7cd8ae4860bb1c96f735c02d610660c7b..0736adfbf10f16abe75186ccd2f4ba72bcee5fc4 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java
-+++ b/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java
-@@ -9,7 +9,11 @@ import android.net.ConnectivityManager;
- 
- import androidx.annotation.NonNull;
- 
-+import org.greenrobot.eventbus.EventBus;
-+import org.greenrobot.eventbus.Subscribe;
-+import org.greenrobot.eventbus.ThreadMode;
- import org.signal.core.util.logging.Log;
-+import org.thoughtcrime.securesms.events.NetworkAvailableEvent;
- import org.thoughtcrime.securesms.jobmanager.ConstraintObserver;
- 
- public class NetworkConstraintObserver implements ConstraintObserver {
-@@ -27,12 +31,19 @@ public class NetworkConstraintObserver implements ConstraintObserver {
-     application.registerReceiver(new BroadcastReceiver() {
-       @Override
-       public void onReceive(Context context, Intent intent) {
--        NetworkConstraint constraint = new NetworkConstraint.Factory(application).create();
--
--        if (constraint.isMet()) {
-+        if (NetworkConstraint.isMet(application)) {
-           notifier.onConstraintMet(REASON);
-         }
-       }
-     }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-+
-+    EventBus.getDefault().register(new Object() {
-+      @Subscribe(threadMode = ThreadMode.MAIN)
-+      public void onNetworkReadyEvent(@NonNull NetworkAvailableEvent event) {
-+        if (NetworkConstraint.isMet(application)) {
-+          notifier.onConstraintMet(REASON);
-+        }
-+      }
-+    });
-   }
- }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java b/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java
 index 5b60d903dd5f05ded1c0fe554a3705ead0fd0bb7..2d2c29b8f449067135ed81e3ee1ba8b70837340f 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java
@@ -154,207 +115,6 @@ index 0000000000000000000000000000000000000000..9687d37e8a5605f83bd0d2709d083947
 +                           .proxySelector(proxySelector)
 +                           .cache(null)
 +                           .build();
-+  }
-+}
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/NetworkManager.java b/app/src/main/java/org/thoughtcrime/securesms/net/NetworkManager.java
-new file mode 100644
-index 0000000000000000000000000000000000000000..0a4ae49f6e1a80a8d2778fd61bdc12c4810caa7f
---- /dev/null
-+++ b/app/src/main/java/org/thoughtcrime/securesms/net/NetworkManager.java
-@@ -0,0 +1,195 @@
-+package org.thoughtcrime.securesms.net;
-+
-+import android.app.Application;
-+import android.content.Context;
-+import android.content.Intent;
-+import android.widget.Toast;
-+
-+import androidx.annotation.NonNull;
-+import androidx.webkit.ProxyConfig;
-+import androidx.webkit.ProxyController;
-+import androidx.webkit.WebViewFeature;
-+
-+import org.greenrobot.eventbus.EventBus;
-+import org.signal.core.util.AppForegroundObserver;
-+import org.signal.core.util.concurrent.SignalExecutors;
-+import org.signal.core.util.logging.Log;
-+import org.thoughtcrime.securesms.R;
-+import org.thoughtcrime.securesms.dependencies.AppDependencies;
-+import org.thoughtcrime.securesms.events.NetworkAvailableEvent;
-+
-+import java.util.Objects;
-+
-+import info.guardianproject.netcipher.proxy.OrbotHelper;
-+
-+public class NetworkManager {
-+
-+  private static final String TAG = Log.tag(NetworkManager.class);
-+
-+  private final Application application;
-+  private final OrbotHelper orbotHelper;
-+
-+  private OrbotStatusCallback orbotStatusCallback;
-+
-+  private ProxyType proxyType;
-+
-+  private String proxySocksHost;
-+  private int proxySocksPort;
-+  private int proxyOrbotPort;
-+
-+  private SocksProxy existingProxy;
-+
-+  private NetworkManager(@NonNull Application application,
-+                         @NonNull OrbotHelper orbotHelper) {
-+    this.application    = application;
-+    this.orbotHelper    = orbotHelper;
-+    this.proxyType      = ProxyType.NONE;
-+    this.proxySocksHost = SocksProxy.LOCAL_HOST;
-+    this.proxySocksPort = SocksProxy.INVALID_PORT;
-+    this.proxyOrbotPort = SocksProxy.INVALID_PORT;
-+  }
-+
-+  @NonNull
-+  public static NetworkManager create(@NonNull Context context) {
-+    return new NetworkManager(AppDependencies.getApplication(), OrbotHelper.get(context));
-+  }
-+
-+  public void setNetworkEnabled(boolean enabled) {
-+    Networking.setEnabled(enabled);
-+    if (enabled) {
-+      onNetworkEnabled();
-+    }
-+  }
-+
-+  public boolean isProxyEnabled() {
-+    return proxyType != ProxyType.NONE;
-+  }
-+
-+  public boolean isOrbotAvailable() {
-+    return orbotHelper.init();
-+  }
-+
-+  public synchronized void setProxyChoice(ProxyType type) {
-+    if (orbotStatusCallback != null) {
-+      orbotHelper.removeStatusCallback(orbotStatusCallback);
-+      orbotStatusCallback = null;
-+    }
-+
-+    proxyOrbotPort = SocksProxy.INVALID_PORT;
-+    proxyType = type;
-+
-+    if (type == ProxyType.ORBOT && isOrbotAvailable()) {
-+      orbotStatusCallback = new OrbotStatusCallback();
-+      orbotHelper.addStatusCallback(orbotStatusCallback);
-+      orbotHelper.requestStart(application);
-+    }
-+  }
-+
-+  public void setProxySocksPort(int port) {
-+    proxySocksPort = port;
-+  }
-+
-+  public void setProxySocksHost(String host) {
-+    proxySocksHost = host;
-+  }
-+
-+  public String getDefaultProxySocksHost() {
-+    return OrbotHelper.DEFAULT_PROXY_HOST;
-+  }
-+
-+  public int getDefaultProxySocksPort() {
-+    return OrbotHelper.DEFAULT_PROXY_SOCKS_PORT;
-+  }
-+
-+  public boolean applyProxyConfig() {
-+    SocksProxy newProxy;
-+
-+    if (proxyType == ProxyType.SOCKS5) {
-+      newProxy = new SocksProxy(proxySocksHost, proxySocksPort);
-+    } else if (proxyType == ProxyType.ORBOT) {
-+      newProxy = new SocksProxy(OrbotHelper.DEFAULT_PROXY_HOST, proxyOrbotPort);
-+    } else {
-+      newProxy = null;
-+    }
-+
-+    return configureProxy(newProxy);
-+  }
-+
-+  private synchronized boolean configureProxy(SocksProxy newProxy) {
-+    if (!hasProxyChanged(existingProxy, newProxy)) {
-+      return false;
-+    }
-+
-+    Networking.setSocksProxy(newProxy);
-+    existingProxy = newProxy;
-+
-+    if (WebViewFeature.isFeatureSupported(WebViewFeature.PROXY_OVERRIDE)) {
-+      SignalExecutors.UNBOUNDED.execute(() -> {
-+        if (newProxy != null) {
-+          String newProxyUrl = newProxy.getUrl();
-+          if (newProxyUrl == null) {
-+            newProxyUrl = "socks://proxy.invalid";
-+          }
-+          final ProxyConfig proxyConfig = new ProxyConfig.Builder()
-+                                                         .addProxyRule(newProxyUrl)
-+                                                         .build();
-+          ProxyController.getInstance().setProxyOverride(proxyConfig, Runnable::run, this::onProxyOverrideComplete);
-+        } else {
-+          ProxyController.getInstance().clearProxyOverride(Runnable::run, this::onProxyOverrideComplete);
-+        }
-+      });
-+    }
-+
-+    return true;
-+  }
-+
-+  private void onProxyOverrideComplete() {
-+    Log.d(TAG, "onProxyOverrideComplete");
-+  }
-+
-+  static private boolean hasProxyChanged(SocksProxy existingProxy, SocksProxy newProxy) {
-+    return !Objects.equals(existingProxy, newProxy);
-+  }
-+
-+  final class OrbotStatusCallback extends OrbotHelper.SimpleStatusCallback {
-+
-+    @Override
-+    public void onEnabled(Intent statusIntent) {
-+      Log.i(TAG, "[OrbotHelper] onEnabled");
-+      int socksPort = getSocksPort(statusIntent);
-+      synchronized (orbotHelper) {
-+        if (proxyOrbotPort != socksPort) {
-+          if (proxyType == ProxyType.ORBOT) {
-+            if (configureProxy(new SocksProxy(OrbotHelper.DEFAULT_PROXY_HOST, socksPort))) {
-+              AppDependencies.resetNetwork(true);
-+            }
-+          }
-+          proxyOrbotPort = socksPort;
-+          if (AppForegroundObserver.isForegrounded()) {
-+            Toast.makeText(application, R.string.ProxyManager_successfully_started_orbot, Toast.LENGTH_SHORT).show();
-+          }
-+        }
-+      }
-+      orbotHelper.removeStatusCallback(this);
-+    }
-+
-+    @Override
-+    public void onStatusTimeout() {
-+      Log.i(TAG, "[OrbotHelper] onStatusTimeout");
-+      if (isOrbotAvailable()) {
-+        orbotHelper.requestStart(application);
-+      } else {
-+        orbotHelper.removeStatusCallback(this);
-+      }
-+    }
-+
-+    private int getSocksPort(Intent status) {
-+      return status.getIntExtra(OrbotHelper.EXTRA_PROXY_PORT_SOCKS,
-+                                OrbotHelper.DEFAULT_PROXY_SOCKS_PORT);
-+    }
-+  }
-+
-+  static private void onNetworkEnabled() {
-+    EventBus.getDefault().post(new NetworkAvailableEvent());
 +  }
 +}
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/Networking.kt b/app/src/main/java/org/thoughtcrime/securesms/net/Networking.kt

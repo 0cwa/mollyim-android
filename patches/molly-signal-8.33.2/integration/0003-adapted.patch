@@ -1,6 +1,6 @@
-From b1efbc8181ab947064f7de556641e6743260e914 Mon Sep 17 00:00:00 2001
+From 3a754917bff6b5539c447a1c1eb8549609415029 Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly integration adapted, part 3
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Shared application/core/library integration, mixed-purpose files and remaining exact target delta.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,7 +30,7 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
@@ -1399,7 +1399,7 @@ index 5bdaba0e52af4e8c6f032c659e19d60099750f6f..186d23b7bb5b7049b93d5f149915d3ac
        Toast.makeText(requireContext(), "Can't touch this.", Toast.LENGTH_SHORT).show()
      }
 diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
-index deab74ed5446056be9951c27e0d1ea3f3cb4ae2b..5aa6a01b7f9e722219b086e1551e121c1df08e0a 100644
+index deab74ed5446056be9951c27e0d1ea3f3cb4ae2b..11209f3c3f91a1a4336a82a70fb14c1c2f7575c5 100644
 --- a/app/src/main/AndroidManifest.xml
 +++ b/app/src/main/AndroidManifest.xml
 @@ -1,6 +1,7 @@
@@ -1704,6 +1704,15 @@ index deab74ed5446056be9951c27e0d1ea3f3cb4ae2b..5aa6a01b7f9e722219b086e1551e121c
  
          <activity
              android:name=".stickers.search.StickerSearchActivity"
+@@ -650,7 +618,7 @@
+             android:exported="false"
+             android:label="@string/AndroidManifest__media_preview"
+             android:launchMode="singleTask"
+-            android:theme="@style/Signal.DayNight.NoActionBar"
++            android:theme="@style/Theme.Signal.DayNight.NoActionBar"
+             android:windowSoftInputMode="stateHidden" />
+ 
+         <activity
 @@ -696,15 +664,9 @@
              android:theme="@android:style/Theme.NoDisplay" />
  
@@ -2226,7 +2235,7 @@ index eb10a8824690277f88277e840049e800c26e7ef1..d1b0574ed222b513beba310293a2fde1
      EmojiSearchIndexDownloadJob.scheduleImmediately();
      DeleteAbandonedAttachmentsJob.enqueue();
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
-index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1a3d1235c 100644
+index 882084bdb66434c5aa62204c452b2b7edd203e72..5241fec920cca5a81cb327ad04c4dbbea80260fe 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
 +++ b/app/src/main/java/org/thoughtcrime/securesms/ApplicationContext.java
 @@ -17,16 +17,19 @@
@@ -2346,7 +2355,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
  import io.reactivex.rxjava3.exceptions.OnErrorNotImplementedException;
  import io.reactivex.rxjava3.exceptions.UndeliverableException;
  import io.reactivex.rxjava3.plugins.RxJavaPlugins;
-@@ -169,20 +178,38 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -169,20 +178,37 @@ public class ApplicationContext extends Application implements AppForegroundObse
      return (ApplicationContext) context.getApplicationContext();
    }
  
@@ -2366,7 +2375,6 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
 +    super.onCreate();
 +
 +    SqlCipherLibraryLoader.load();
-+    EventBus.builder().logNoSubscriberMessages(false).installDefaultEventBus();
 +    DynamicTheme.setDefaultDayNightMode(this);
 +    ScreenLockController.enableAutoLock(TextSecurePreferences.isBiometricScreenLockEnabled(this));
 +    AppDependencies.installDependencyProviders();
@@ -2389,7 +2397,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
                  SignalDatabase.init(this,
                                      DatabaseSecretProvider.getOrCreateDatabaseSecret(this),
                                      AttachmentSecretProvider.getInstance(this, AppAttachmentSecretStore.INSTANCE).getOrCreateAttachmentSecret());
-@@ -190,42 +217,33 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -190,42 +216,33 @@ public class ApplicationContext extends Application implements AppForegroundObse
                })
                .addBlocking("signal-store", () -> SignalStore.init(this))
                .addBlocking("logging", () -> {
@@ -2436,7 +2444,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
                .addNonBlocking(this::initializeCleanup)
                .addNonBlocking(this::initializeGlideCodecs)
                .addNonBlocking(SealedSenderConstraint::refreshAndRotateIfNeeded)
-@@ -237,7 +255,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -237,7 +254,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
                .addNonBlocking(this::ensureProfileUploaded)
                .addNonBlocking(() -> AppDependencies.getExpireStoriesManager().scheduleIfNecessary())
                .addNonBlocking(BackupRepository::maybeFixAnyDanglingUploadProgress)
@@ -2444,7 +2452,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
                .addPostRender(() -> AppDependencies.getDeletedCallEventManager().scheduleIfNecessary())
                .addPostRender(() -> RateLimitUtil.retryAllRateLimitedMessages(this))
                .addPostRender(this::initializeExpiringMessageManager)
-@@ -267,34 +284,35 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -267,34 +283,35 @@ public class ApplicationContext extends Application implements AppForegroundObse
                .addPostRender(() -> AppDependencies.getUnreadReminderManager().scheduleIfNecessary())
                .execute();
  
@@ -2488,7 +2496,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
        checkBuildExpiration();
        checkFreeDiskSpace();
        MemoryTracker.start();
-@@ -318,22 +336,65 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -318,22 +335,65 @@ public class ApplicationContext extends Application implements AppForegroundObse
        SignalStore.misc().setLastForegroundTime(currentTime);
      });
  
@@ -2558,7 +2566,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
    }
  
    public void checkBuildExpiration() {
-@@ -348,17 +409,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -348,17 +408,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
      SignalStore.backup().setSpaceAvailableOnDiskBytes(availableBytes);
    }
  
@@ -2576,7 +2584,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
    private void initializeSecurityProvider() {
      int aesPosition = Security.insertProviderAt(new AesGcmProvider(), 1);
      Log.i(TAG, "Installed AesGcmProvider: " + aesPosition);
-@@ -377,17 +427,23 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -377,17 +426,23 @@ public class ApplicationContext extends Application implements AppForegroundObse
    }
  
    @VisibleForTesting
@@ -2611,7 +2619,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
    }
  
    private void initializeCrashHandling() {
-@@ -425,15 +481,38 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -425,15 +480,38 @@ public class ApplicationContext extends Application implements AppForegroundObse
      ApplicationMigrations.onApplicationCreate(this, AppDependencies.getJobManager());
    }
  
@@ -2652,7 +2660,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
      }
      AppForegroundObserver.begin();
      ClockSkewDetector.beginObserving(this);
-@@ -456,7 +535,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -456,7 +534,7 @@ public class ApplicationContext extends Application implements AppForegroundObse
            return Unit.INSTANCE;
          },
          context -> {
@@ -2661,7 +2669,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
            return Unit.INSTANCE;
          },
          new AppContactSupportController()
-@@ -466,62 +545,121 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -466,62 +544,121 @@ public class ApplicationContext extends Application implements AppForegroundObse
  
    private void initializeFirstEverAppLaunch() {
      if (SignalStore.misc().getFirstInstallVersion() == -1) {
@@ -2816,7 +2824,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
    private void initializeRevealableMessageManager() {
      AppDependencies.getViewOnceMessageManager().scheduleIfNecessary();
    }
-@@ -541,12 +679,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -541,12 +678,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
      }
    }
  
@@ -2829,7 +2837,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
    private void initializePeriodicTasks() {
      RotateSignedPreKeyListener.schedule(this);
      DirectoryRefreshListener.schedule(this);
-@@ -557,8 +689,8 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -557,8 +688,8 @@ public class ApplicationContext extends Application implements AppForegroundObse
      AnalyzeDatabaseAlarmListener.schedule(this);
      ArchiveCredentialRefreshListener.schedule(this);
  
@@ -2840,7 +2848,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
      }
    }
  
-@@ -574,17 +706,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -574,17 +705,6 @@ public class ApplicationContext extends Application implements AppForegroundObse
      }
    }
  
@@ -2858,7 +2866,7 @@ index 882084bdb66434c5aa62204c452b2b7edd203e72..40624e83354b3a73fce6e27be5a43bd1
    private void ensureProfileUploaded() {
      if (SignalStore.account().isRegistered() && !SignalStore.registration().hasUploadedProfile() && !Recipient.self().getProfileName().isEmpty() && SignalStore.account().isPrimaryDevice()) {
        Log.w(TAG, "User has a profile, but has not uploaded one. Uploading now.");
-@@ -649,6 +770,24 @@ public class ApplicationContext extends Application implements AppForegroundObse
+@@ -649,6 +769,24 @@ public class ApplicationContext extends Application implements AppForegroundObse
      });
    }
  
@@ -3219,7 +3227,7 @@ index 49ff23283d4cacb73e63a489eb43af4b6d62658b..0498648e9799dc4ac83e2f4522059dd9
      void onShowUnverifiedProfileSheet(boolean forGroup);
      void onUpdateSignalClicked();
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
-index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987a32cd729 100644
+index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..67a515ff995d74b0c9c3e0638d56585bdb3bd92b 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/MainActivity.kt
 @@ -6,7 +6,6 @@
@@ -3342,7 +3350,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
      lifecycleScope.launch {
        launch {
          repeatOnLifecycle(Lifecycle.State.RESUMED) {
-@@ -357,21 +339,7 @@ class MainActivity :
+@@ -357,22 +339,6 @@ class MainActivity :
        }
      }
  
@@ -3361,11 +3369,16 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
 -        )
 -      }
 -    }
-+    shareDataTimestampViewModel.setTimestampFromActivityCreation(savedInstanceState, intent)
- 
+-
      setContent {
        val mainToolbarState by toolbarViewModel.state.collectAsStateWithLifecycle()
-@@ -421,7 +389,7 @@ class MainActivity :
+       val mainNavigationState by mainNavigationViewModel.mainNavigationBarState.collectAsStateWithLifecycle()
+@@ -416,12 +382,11 @@ class MainActivity :
+         val detailLocation by mainNavigationViewModel.detailLocation.collectAsStateWithLifecycle()
+         val isConversationFullscreen = !isSplitPane && detailLocation is MainDetailRoute.Conversation
+ 
+-        val context = LocalContext.current
+         val isDarkTheme = isSystemInDarkTheme()
          val navBarColor = when {
            isSplitPane -> SignalTheme.colors.colorSurface1.toArgb()
            isConversationFullscreen -> Color.Transparent.toArgb()
@@ -3374,7 +3387,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
          }
  
          LaunchedEffect(isDarkTheme, navBarColor) {
-@@ -611,7 +579,7 @@ class MainActivity :
+@@ -611,7 +576,7 @@ class MainActivity :
            Column(
              modifier = Modifier
                .clip(contentLayoutData.navigationBarShape)
@@ -3383,7 +3396,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
            ) {
              MainNavigationBar(
                state = mainNavigationState,
-@@ -727,15 +695,11 @@ class MainActivity :
+@@ -727,15 +692,11 @@ class MainActivity :
  
      vitalsViewModel.checkSlowNotificationHeuristics()
      mainNavigationViewModel.onEvent(MainNavigationEvents.RefreshNavigationBar)
@@ -3400,7 +3413,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
    }
  
    @Suppress("OVERRIDE_DEPRECATION")
-@@ -811,7 +775,7 @@ class MainActivity :
+@@ -811,7 +772,7 @@ class MainActivity :
    }
  
    override fun updateProxyStatus(state: WebSocketConnectionState) {
@@ -3409,7 +3422,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
        val proxyState: MainToolbarState.ProxyState = when (state) {
          WebSocketConnectionState.CONNECTING, WebSocketConnectionState.DISCONNECTING, WebSocketConnectionState.DISCONNECTED -> MainToolbarState.ProxyState.CONNECTING
          WebSocketConnectionState.CONNECTED -> MainToolbarState.ProxyState.CONNECTED
-@@ -836,10 +800,8 @@ class MainActivity :
+@@ -836,10 +797,8 @@ class MainActivity :
    private fun handleDeepLinkIntent(intent: Intent) {
      handleConversationIntent(intent)
      handleGroupLinkInIntent(intent)
@@ -3420,7 +3433,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
      handleQuickRestoreIntent(intent)
    }
  
-@@ -847,12 +809,9 @@ class MainActivity :
+@@ -847,12 +806,9 @@ class MainActivity :
    private fun presentVitalsState(state: VitalsViewModel.State) {
      when (state) {
        VitalsViewModel.State.NONE -> Unit
@@ -3434,7 +3447,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
      }
    }
  
-@@ -893,12 +852,6 @@ class MainActivity :
+@@ -893,12 +849,6 @@ class MainActivity :
      }
    }
  
@@ -3447,7 +3460,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
    private fun handleSignalMeIntent(intent: Intent) {
      intent.data?.let { data ->
        CommunicationActions.handlePotentialSignalMeUrl(this, data.toString())
-@@ -913,14 +866,6 @@ class MainActivity :
+@@ -913,14 +863,6 @@ class MainActivity :
      }
    }
  
@@ -3462,7 +3475,7 @@ index 0ca80b87caaec82c6533f8c0e9f1ab6fc6b8fa49..8896384ccf123523821b0a501be84987
    private fun handleQuickRestoreIntent(intent: Intent) {
      intent.data?.let { data ->
        CommunicationActions.handlePotentialQuickRestoreUrl(this, data.toString()) {
-@@ -1120,12 +1065,13 @@ class MainActivity :
+@@ -1120,12 +1062,13 @@ class MainActivity :
        mainNavigationViewModel.snackbarRegistry.emit(
          SnackbarState(
            message = string,
@@ -6845,6 +6858,86 @@ index a1928844b91cef9049291dc52e13f628ada64ef3..76b3d7b34b7e46967c462c2d8074c87e
          onOkListener()
        }
      ),
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/banner/banners/PendingGroupJoinRequestsBanner.kt b/app/src/main/java/org/thoughtcrime/securesms/banner/banners/PendingGroupJoinRequestsBanner.kt
+index a48bfd7fcd52dcc52d22d9b20c1f498d4e7e86cb..26274a4c0790c63bbecddb7845df47ea0ececf64 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/banner/banners/PendingGroupJoinRequestsBanner.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/banner/banners/PendingGroupJoinRequestsBanner.kt
+@@ -26,7 +26,6 @@ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.draw.clip
+ import androidx.compose.ui.graphics.vector.ImageVector
+-import androidx.compose.ui.res.colorResource
+ import androidx.compose.ui.res.pluralStringResource
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.res.vectorResource
+@@ -36,9 +35,9 @@ import kotlinx.coroutines.flow.flowOf
+ import org.signal.core.ui.compose.DayNightPreviews
+ import org.signal.core.ui.compose.Previews
+ import org.signal.core.ui.compose.SignalIcons
++import org.signal.core.ui.compose.theme.SignalTheme
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.banner.Banner
+-import org.signal.core.ui.R as CoreUiR
+ 
+ /**
+  * Shows the number of pending requests to join the group.
+@@ -74,7 +73,7 @@ private fun Banner(contentPadding: PaddingValues, suggestionsSize: Int, onViewCl
+     modifier = Modifier
+       .padding(horizontal = 12.dp, vertical = 8.dp)
+       .clip(RoundedCornerShape(24.dp))
+-      .background(color = colorResource(CoreUiR.color.signal_colorSurface2))
++      .background(color = SignalTheme.colors.colorSurface2)
+       .padding(horizontal = 16.dp)
+   ) {
+     Icon(
+@@ -100,7 +99,7 @@ private fun Banner(contentPadding: PaddingValues, suggestionsSize: Int, onViewCl
+     TextButton(
+       onClick = onViewClicked,
+       colors = ButtonDefaults.textButtonColors(
+-        containerColor = colorResource(CoreUiR.color.signal_colorSurface5),
++        containerColor = SignalTheme.colors.colorSurface5,
+         contentColor = MaterialTheme.colorScheme.onSurface
+       ),
+       modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/banner/ui/compose/DefaultBanner.kt b/app/src/main/java/org/thoughtcrime/securesms/banner/ui/compose/DefaultBanner.kt
+index b5a417788a47344dae76c1248b69b3bc45c7a6f4..768497b58f6820809fc3c65ffa95ec164d8a9f9e 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/banner/ui/compose/DefaultBanner.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/banner/ui/compose/DefaultBanner.kt
+@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
+ import org.signal.core.ui.compose.DayNightPreviews
+ import org.signal.core.ui.compose.Previews
+ import org.signal.core.ui.compose.SignalIcons
++import org.signal.core.ui.compose.theme.SignalTheme
+ import org.signal.core.util.isNotNullOrBlank
+ import org.thoughtcrime.securesms.R
+ import org.signal.core.ui.R as CoreUiR
+@@ -64,7 +65,7 @@ fun DefaultBanner(
+       .clip(RoundedCornerShape(24.dp))
+       .background(
+         color = when (importance) {
+-          Importance.NORMAL -> colorResource(CoreUiR.color.signal_colorSurface2)
++          Importance.NORMAL -> SignalTheme.colors.colorSurface2
+           Importance.ERROR -> colorResource(id = R.color.reminder_background)
+         }
+       )
+@@ -149,7 +150,7 @@ fun DefaultBanner(
+                   contentDescription = stringResource(id = R.string.DefaultBanner__cancel),
+                   tint = when (importance) {
+                     Importance.NORMAL -> MaterialTheme.colorScheme.onSurfaceVariant
+-                    Importance.ERROR -> colorResource(id = CoreUiR.color.signal_colorOnSurface)
++                    Importance.ERROR -> MaterialTheme.colorScheme.onSurface
+                   }
+                 )
+               }
+@@ -167,7 +168,7 @@ fun DefaultBanner(
+               onClick = action.onClick,
+               colors = when (importance) {
+                 Importance.NORMAL -> ButtonDefaults.textButtonColors(
+-                  containerColor = colorResource(CoreUiR.color.signal_colorSurface5),
++                  containerColor = SignalTheme.colors.colorSurface5,
+                   contentColor = MaterialTheme.colorScheme.onSurface
+                 )
+                 Importance.ERROR -> ButtonDefaults.textButtonColors(
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/calls/links/SignalCallRow.kt b/app/src/main/java/org/thoughtcrime/securesms/calls/links/SignalCallRow.kt
 index e29b2860dd3c720e15aa34558b5553830619aa33..3c0cf9eb46a49863da3f406fbecf807dc1454d43 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/calls/links/SignalCallRow.kt
@@ -8528,10 +8621,27 @@ index d5dde8a4d729f2e98d6fc5a73b51631f35f26dca..7a73e82063bfd64c745de8c3df48f78a
  
    public void postOnKeyboardClose(final Runnable runnable) {
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/NavGraphHostActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/components/NavGraphHostActivity.kt
-index c1d32a3f87a8550fb7d311c526c030228ffee8b9..f85a02fcbc5e9c6d8d16fc6661f46e86f5337c60 100644
+index c1d32a3f87a8550fb7d311c526c030228ffee8b9..afb75e8cff58e9346b17b5f56d652c428b81d727 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/components/NavGraphHostActivity.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/components/NavGraphHostActivity.kt
-@@ -26,6 +26,11 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
+@@ -6,15 +6,14 @@ import android.os.Bundle
+ import androidx.activity.OnBackPressedCallback
+ import androidx.activity.SystemBarStyle
+ import androidx.activity.enableEdgeToEdge
+-import androidx.core.content.ContextCompat
+ import androidx.navigation.NavController
+ import androidx.navigation.Navigation
+ import androidx.navigation.fragment.NavHostFragment
++import org.signal.core.ui.util.ThemeUtil
+ import org.thoughtcrime.securesms.PassphraseRequiredActivity
+ import org.thoughtcrime.securesms.R
+ import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
+ import org.thoughtcrime.securesms.util.DynamicTheme
+-import org.signal.core.ui.R as CoreUiR
+ 
+ /**
+  * Hosts a [NavHostFragment] for the nav graph and start bundle passed via [ARG_NAV_GRAPH] and [ARG_START_BUNDLE].
+@@ -26,6 +25,11 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
    protected lateinit var navController: NavController
      private set
  
@@ -8543,7 +8653,7 @@ index c1d32a3f87a8550fb7d311c526c030228ffee8b9..f85a02fcbc5e9c6d8d16fc6661f46e86
    override fun onCreate(savedInstanceState: Bundle?, ready: Boolean) {
      enableSettingsEdgeToEdge()
  
-@@ -49,8 +54,6 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
+@@ -49,8 +53,6 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
        navController = fragment.navController
      }
  
@@ -8552,7 +8662,7 @@ index c1d32a3f87a8550fb7d311c526c030228ffee8b9..f85a02fcbc5e9c6d8d16fc6661f46e86
      onBackPressedDispatcher.addCallback(this, OnBackPressed())
    }
  
-@@ -60,8 +63,8 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
+@@ -60,8 +62,8 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
    }
  
    override fun onNavigateUp(): Boolean {
@@ -8562,6 +8672,15 @@ index c1d32a3f87a8550fb7d311c526c030228ffee8b9..f85a02fcbc5e9c6d8d16fc6661f46e86
        finish()
        true
      } else {
+@@ -70,7 +72,7 @@ open class NavGraphHostActivity : PassphraseRequiredActivity() {
+   }
+ 
+   private fun enableSettingsEdgeToEdge() {
+-    val navBarColor = ContextCompat.getColor(this, CoreUiR.color.signal_colorSurface2)
++    val navBarColor = ThemeUtil.getThemedColor(this, com.google.android.material.R.attr.colorSurfaceContainer)
+     val isDark = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
+ 
+     if (Build.VERSION.SDK_INT >= 26) {
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/QuoteView.java b/app/src/main/java/org/thoughtcrime/securesms/components/QuoteView.java
 index ca74ee41c419db6eeb02e4d811b1637c15542df6..93d3188e44bf0a64d1f2454f1b6bb7bb0fe12f43 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/components/QuoteView.java
@@ -9368,7 +9487,7 @@ index ed70dc3ffabd1a333bf080094cdca3fe3d6a94ac..f484c1deef928aeff0c23f92fe9ffd96
    }
  }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsRepository.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsRepository.kt
-index 0be7e8265a5505aeb9b88012d8f1bb42f8d480a6..5ebd29ae597b07c5b47c8d6f18141e5a42477d5d 100644
+index 0be7e8265a5505aeb9b88012d8f1bb42f8d480a6..fb43c71a1a48fc160788bbfa9bab1a954d4917e1 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsRepository.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsRepository.kt
 @@ -13,7 +13,8 @@ import org.signal.appsettings.dataandstorage.AutoDownloadMediaType
@@ -9381,7 +9500,7 @@ index 0be7e8265a5505aeb9b88012d8f1bb42f8d480a6..5ebd29ae597b07c5b47c8d6f18141e5a
  import org.thoughtcrime.securesms.components.settings.app.storage.StorageUsageRepository
  import org.thoughtcrime.securesms.dependencies.AppDependencies
  import org.thoughtcrime.securesms.keyvalue.SettingsValues.ForceWebsocketMode
-@@ -81,7 +82,7 @@ object DataAndStorageSettingsRepository {
+@@ -81,10 +82,10 @@ object DataAndStorageSettingsRepository {
    }
  
    fun isPlayServicesAvailable(): Boolean {
@@ -9389,7 +9508,11 @@ index 0be7e8265a5505aeb9b88012d8f1bb42f8d480a6..5ebd29ae597b07c5b47c8d6f18141e5a
 +    return GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(AppDependencies.application) == ConnectionResult.SUCCESS
    }
  
-   fun isProxyEnabled(): Boolean = SignalStore.proxy.isProxyEnabled
+-  fun isProxyEnabled(): Boolean = SignalStore.proxy.isProxyEnabled
++  fun isProxyEnabled(): Boolean = AppDependencies.networkManager.isProxyEnabled
+ 
+   /** The discrete MIME type (the part before the "/") stored in [SignalStore.settings] for each media type. */
+   private val AutoDownloadMediaType.storageValue: String
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsViewModel.kt
 index 149231b41db34bdb785b39b12e4037970e98734a..5a530d7d50c9fbf482aa18313b1b64e8f41bc63e 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/data/DataAndStorageSettingsViewModel.kt
@@ -10082,109 +10205,6 @@ index 9a4e258703f730aa68be61a6af70fdbcb2605a45..2924d78213782c672a10b54a7b10d6d3
      binding.description.setLearnMoreVisible(true)
      binding.description.setOnLinkClickListener {
        findNavController().safeNavigate(CreditCardFragmentDirections.actionCreditCardFragmentToYourInformationIsPrivateBottomSheet())
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheet.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheet.kt
-index 878e300d34e1764469333d95646e53d07f44dc1b..d35627b23fe42b831596731d02b383b2d0869c5e 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheet.kt
-+++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheet.kt
-@@ -3,29 +3,27 @@ package org.thoughtcrime.securesms.components.settings.app.subscription.donate.g
- import android.content.Context
- import androidx.compose.runtime.Composable
- import androidx.compose.runtime.getValue
--import androidx.core.content.ContextCompat
- import androidx.core.os.bundleOf
- import androidx.fragment.app.setFragmentResult
- import androidx.lifecycle.compose.collectAsStateWithLifecycle
- import androidx.lifecycle.lifecycleScope
- import androidx.navigation.fragment.findNavController
- import androidx.navigation.fragment.navArgs
-+import com.google.android.material.R as MaterialR
- import kotlinx.coroutines.Dispatchers
- import kotlinx.coroutines.launch
- import org.signal.core.ui.compose.ComposeBottomSheetDialogFragment
- import org.signal.core.ui.viewModel
-+import org.signal.core.ui.util.ThemeUtil
- import org.signal.core.util.dp
- import org.signal.donations.InAppPaymentType
- import org.thoughtcrime.securesms.R
- import org.thoughtcrime.securesms.components.settings.DSLConfiguration
- import org.thoughtcrime.securesms.components.settings.DSLSettingsText
- import org.thoughtcrime.securesms.components.settings.app.subscription.DonationSerializationHelper.toFiatMoney
--import org.thoughtcrime.securesms.components.settings.app.subscription.GooglePayComponent
- import org.thoughtcrime.securesms.database.InAppPaymentTable
- import org.thoughtcrime.securesms.database.model.databaseprotos.InAppPaymentData
- import org.thoughtcrime.securesms.payments.FiatMoneyUtil
--import org.thoughtcrime.securesms.util.fragments.requireListener
--import org.signal.core.ui.R as CoreUiR
- 
- /**
-  * Entry point to capturing the necessary payment token to pay for a donation
-@@ -36,7 +34,7 @@ class GatewaySelectorBottomSheet : ComposeBottomSheetDialogFragment() {
-   override val peekHeightPercentage: Float = 1f
- 
-   private val viewModel: GatewaySelectorViewModel by viewModel {
--    GatewaySelectorViewModel(args, requireListener<GooglePayComponent>().googlePayRepository)
-+    GatewaySelectorViewModel(args)
-   }
- 
-   @Composable
-@@ -112,7 +110,7 @@ class GatewaySelectorBottomSheet : ComposeBottomSheetDialogFragment() {
-           context.getString(R.string.GatewaySelectorBottomSheet__get_a_s_badge, inAppPayment.data.badge!!.name),
-           DSLSettingsText.CenterModifier,
-           DSLSettingsText.BodyLargeModifier,
--          DSLSettingsText.ColorModifier(ContextCompat.getColor(context, CoreUiR.color.signal_colorOnSurfaceVariant))
-+          DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(context, MaterialR.attr.colorOnSurfaceVariant))
-         )
-       )
-     }
-@@ -131,7 +129,7 @@ class GatewaySelectorBottomSheet : ComposeBottomSheetDialogFragment() {
-           context.resources.getQuantityString(R.plurals.GatewaySelectorBottomSheet__get_a_s_badge_for_d_days, 30, inAppPayment.data.badge!!.name, 30),
-           DSLSettingsText.CenterModifier,
-           DSLSettingsText.BodyLargeModifier,
--          DSLSettingsText.ColorModifier(ContextCompat.getColor(context, CoreUiR.color.signal_colorOnSurfaceVariant))
-+          DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(context, MaterialR.attr.colorOnSurfaceVariant))
-         )
-       )
-     }
-@@ -150,7 +148,7 @@ class GatewaySelectorBottomSheet : ComposeBottomSheetDialogFragment() {
-           R.string.GatewaySelectorBottomSheet__donate_for_a_friend,
-           DSLSettingsText.CenterModifier,
-           DSLSettingsText.BodyLargeModifier,
--          DSLSettingsText.ColorModifier(ContextCompat.getColor(context, CoreUiR.color.signal_colorOnSurfaceVariant))
-+          DSLSettingsText.ColorModifier(ThemeUtil.getThemedColor(context, MaterialR.attr.colorOnSurfaceVariant))
-         )
-       )
-     }
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheetContent.kt b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheetContent.kt
-index b996c2dd27aa52529f7eb4d7f78400e08aa51774..8b794bdfcb64056cb2b6782293ee689b404cebd7 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheetContent.kt
-+++ b/app/src/main/java/org/thoughtcrime/securesms/components/settings/app/subscription/donate/gateway/GatewaySelectorBottomSheetContent.kt
-@@ -40,7 +40,6 @@ import org.signal.core.ui.compose.DayNightPreviews
- import org.signal.core.ui.compose.Previews
- import org.signal.core.ui.compose.horizontalGutters
- import org.signal.core.util.money.FiatMoney
--import org.signal.donations.DonateWithGooglePayButton
- import org.signal.donations.InAppPaymentType
- import org.thoughtcrime.securesms.R
- import org.thoughtcrime.securesms.badges.Badges
-@@ -120,17 +119,7 @@ private fun Ready(state: GatewaySelectorState.Ready, onEvent: (GatewaySelectorBo
-     when (it) {
-       InAppPaymentData.PaymentMethodType.UNKNOWN -> error("Unsupported payment method.")
-       InAppPaymentData.PaymentMethodType.GOOGLE_PAY -> {
--        if (state.isGooglePayAvailable) {
--          DonateWithGooglePayButton(
--            onClick = { onGatewaySelected(GatewaySelectorBottomSheetEvent.GOOGLE_PAY_SELECTED) },
--            enabled = !isGatewaySelected,
--            modifier = Modifier
--              .testTag(GatewaySelectorTestTags.GOOGLE_PAY_BUTTON)
--              .padding(top = 16.dp)
--              .fillMaxWidth()
--              .height(44.dp)
--          )
--        }
-+        // MOLLY: No-op
-       }
- 
-       InAppPaymentData.PaymentMethodType.CARD -> {
 
 --------------false--
 

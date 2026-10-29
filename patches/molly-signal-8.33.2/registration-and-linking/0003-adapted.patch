@@ -1,6 +1,6 @@
-From a02d5c1b49cdeac3794593039685cb5103d90b65 Mon Sep 17 00:00:00 2001
+From 70eff7ea7b2dac23cbf449792fb26a1d1b9e1979 Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly registration-and-linking adapted, part 3
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Registration policies, Android linked-device support, provisioning and removal of superseded registration flows.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,11 +30,24 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
 
+diff --git a/feature/registration/src/main/res/values-ro/strings.xml b/feature/registration/src/main/res/values-ro/strings.xml
+index 42bccfb0ba64f2277d94429e4e012f92468814ba..ef9c2afd443b5d4ca0e774ce42789c75775a6f6c 100644
+--- a/feature/registration/src/main/res/values-ro/strings.xml
++++ b/feature/registration/src/main/res/values-ro/strings.xml
+@@ -144,7 +144,7 @@
+     <!-- Row title for restore/transfer without using a previous device -->
+     <string name="WelcomeFragment_restore_action_i_dont_have_my_old_phone">Nu am telefonul meu vechi</string>
+     <!-- Row subtitle for restore/transfer without using a previous device -->
+-    <string name="WelcomeFragment_restore_action_reinstalling">Sau reinstalează Signal pe același dispozitiv</string>
++    <string name="WelcomeFragment_restore_action_reinstalling">Sau reinstalează Molly pe același dispozitiv</string>
+ 
+     <!-- ArchiveRestoreSelectionScreen -->
+     <!-- Title text for the archive restore selection screen -->
 diff --git a/feature/registration/src/main/res/values-ro/strings2.xml b/feature/registration/src/main/res/values-ro/strings2.xml
 new file mode 100644
 index 0000000000000000000000000000000000000000..4efe2dfd3e0bd9b52c490b8eb023febd966bb23d
@@ -468,6 +481,18 @@ index aeed7dc3a650649c2d7d70d36b57c534ec95c996..231f062c8c9365448c1bd8a0b0142bdf
  
    override suspend fun registerAsLinkedDevice(
      aci: ACI,
+diff --git a/feature/registration/src/test/java/org/signal/registration/fakes/SystemOutLogger.kt b/feature/registration/src/test/java/org/signal/registration/fakes/SystemOutLogger.kt
+index c00c3f0289c742cbfd36786ff5ad07a87ee5f8b7..9a9820fdcc00886c760a7c7af669103d532ffae2 100644
+--- a/feature/registration/src/test/java/org/signal/registration/fakes/SystemOutLogger.kt
++++ b/feature/registration/src/test/java/org/signal/registration/fakes/SystemOutLogger.kt
+@@ -17,6 +17,7 @@ class SystemOutLogger : Log.Logger() {
+   override fun w(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = print("W", tag, message, t)
+   override fun e(tag: String, message: String?, t: Throwable?, keepLonger: Boolean) = print("E", tag, message, t)
+   override fun flush() = Unit
++  override fun clear() = Unit
+ 
+   private fun print(level: String, tag: String, message: String?, t: Throwable?) {
+     println("[$level][$tag] $message")
 diff --git a/feature/registration/src/test/java/org/signal/registration/screens/phonenumber/PhoneNumberEntryViewModelTest.kt b/feature/registration/src/test/java/org/signal/registration/screens/phonenumber/PhoneNumberEntryViewModelTest.kt
 index af05ac27b8b5c2ad543d9350d6826c639af34e70..402635c50290e90ee9747702a95071202d419fed 100644
 --- a/feature/registration/src/test/java/org/signal/registration/screens/phonenumber/PhoneNumberEntryViewModelTest.kt

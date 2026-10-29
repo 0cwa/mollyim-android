@@ -1,6 +1,6 @@
-From 9941e063e506b1d68461294339b98ab688df61ba Mon Sep 17 00:00:00 2001
+From aa2496ed9242a049a938fdea24cd8c390bff2dcb Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly integration adapted, part 6
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Shared application/core/library integration, mixed-purpose files and remaining exact target delta.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,11 +30,493 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
 
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportDialog.kt b/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportDialog.kt
+deleted file mode 100644
+index 89c9fce292a1f8414a44add57083fafdfa7c1f2e..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportDialog.kt
++++ /dev/null
+@@ -1,168 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.shakereport
+-
+-import androidx.compose.foundation.layout.Arrangement
+-import androidx.compose.foundation.layout.Row
+-import androidx.compose.foundation.layout.size
+-import androidx.compose.foundation.text.selection.SelectionContainer
+-import androidx.compose.material3.CircularProgressIndicator
+-import androidx.compose.material3.Text
+-import androidx.compose.material3.TextButton
+-import androidx.compose.runtime.Composable
+-import androidx.compose.ui.Alignment
+-import androidx.compose.ui.Modifier
+-import androidx.compose.ui.res.stringResource
+-import androidx.compose.ui.unit.dp
+-import androidx.compose.ui.window.DialogProperties
+-import org.signal.core.ui.compose.DayNightPreviews
+-import org.signal.core.ui.compose.Dialogs
+-import org.signal.core.ui.compose.Previews
+-import org.thoughtcrime.securesms.R
+-import org.thoughtcrime.securesms.shakereport.ShakeToReportState.Step
+-
+-/**
+- * A single dialog that walks through prompting, submitting, and sharing a debug log. Each step
+- * renders in place so the dialog never disappears while the log is being built.
+- */
+-@Composable
+-fun ShakeToReportDialog(
+-  state: ShakeToReportState,
+-  onEvent: (ShakeToReportEvent) -> Unit,
+-  modifier: Modifier = Modifier
+-) {
+-  val dismissible = state.step != Step.Submitting
+-
+-  Dialogs.BaseAlertDialog(
+-    onDismissRequest = { onEvent(ShakeToReportEvent.DismissRequested) },
+-    properties = DialogProperties(dismissOnBackPress = dismissible, dismissOnClickOutside = dismissible),
+-    modifier = modifier,
+-    icon = if (state.step == Step.Submitting) {
+-      { CircularProgressIndicator(modifier = Modifier.size(32.dp)) }
+-    } else {
+-      null
+-    },
+-    title = { Text(text = stringResource(titleRes(state.step))) },
+-    text = { StepBody(step = state.step) },
+-    confirmButton = { ConfirmButtons(step = state.step, onEvent = onEvent) },
+-    dismissButton = { DismissButton(step = state.step, onEvent = onEvent) }
+-  )
+-}
+-
+-private fun titleRes(step: Step): Int {
+-  return when (step) {
+-    Step.Prompt -> R.string.ShakeToReport_shake_detected
+-    Step.Submitting -> R.string.ShakeToReport_submitting
+-    is Step.Submitted -> R.string.ShakeToReport_success
+-    Step.Failed -> R.string.ShakeToReport_failed_to_submit
+-  }
+-}
+-
+-@Composable
+-private fun StepBody(step: Step) {
+-  when (step) {
+-    Step.Prompt -> {
+-      Text(text = stringResource(R.string.ShakeToReport_submit_debug_log))
+-    }
+-    Step.Submitting -> {
+-      Text(text = stringResource(R.string.ShakeToReport_submitting_body))
+-    }
+-    is Step.Submitted -> {
+-      SelectionContainer {
+-        Text(text = step.url)
+-      }
+-    }
+-    Step.Failed -> Unit
+-  }
+-}
+-
+-@Composable
+-private fun ConfirmButtons(step: Step, onEvent: (ShakeToReportEvent) -> Unit) {
+-  when (step) {
+-    Step.Prompt -> {
+-      TextButton(
+-        onClick = { onEvent(ShakeToReportEvent.SubmitClicked) }
+-      ) {
+-        Text(text = stringResource(R.string.ShakeToReport_submit))
+-      }
+-    }
+-    Step.Submitting -> Unit
+-    is Step.Submitted -> {
+-      Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
+-        TextButton(
+-          onClick = { onEvent(ShakeToReportEvent.CopyClicked) }
+-        ) {
+-          Text(text = stringResource(R.string.ShakeToReport_copy))
+-        }
+-        TextButton(
+-          onClick = { onEvent(ShakeToReportEvent.ShareClicked) }
+-        ) {
+-          Text(text = stringResource(R.string.ShakeToReport_share))
+-        }
+-      }
+-    }
+-    Step.Failed -> {
+-      TextButton(
+-        onClick = { onEvent(ShakeToReportEvent.RetryClicked) }
+-      ) {
+-        Text(text = stringResource(R.string.ShakeToReport_retry))
+-      }
+-    }
+-  }
+-}
+-
+-@Composable
+-private fun DismissButton(step: Step, onEvent: (ShakeToReportEvent) -> Unit) {
+-  when (step) {
+-    Step.Prompt -> {
+-      TextButton(
+-        onClick = { onEvent(ShakeToReportEvent.DismissRequested) }
+-      ) {
+-        Text(text = stringResource(android.R.string.cancel))
+-      }
+-    }
+-    Step.Submitting -> Unit
+-    is Step.Submitted, Step.Failed -> {
+-      TextButton(
+-        onClick = { onEvent(ShakeToReportEvent.DismissRequested) }
+-      ) {
+-        Text(text = stringResource(R.string.ShakeToReport_close))
+-      }
+-    }
+-  }
+-}
+-
+-@DayNightPreviews
+-@Composable
+-private fun ShakeToReportDialogPromptPreview() {
+-  Previews.Preview {
+-    ShakeToReportDialog(state = ShakeToReportState(step = Step.Prompt), onEvent = {})
+-  }
+-}
+-
+-@DayNightPreviews
+-@Composable
+-private fun ShakeToReportDialogSubmittingPreview() {
+-  Previews.Preview {
+-    ShakeToReportDialog(state = ShakeToReportState(step = Step.Submitting), onEvent = {})
+-  }
+-}
+-
+-@DayNightPreviews
+-@Composable
+-private fun ShakeToReportDialogSubmittedPreview() {
+-  Previews.Preview {
+-    ShakeToReportDialog(state = ShakeToReportState(step = Step.Submitted("https://debuglogs.org/android/8.32.0/abc123.zip")), onEvent = {})
+-  }
+-}
+-
+-@DayNightPreviews
+-@Composable
+-private fun ShakeToReportDialogFailedPreview() {
+-  Previews.Preview {
+-    ShakeToReportDialog(state = ShakeToReportState(step = Step.Failed), onEvent = {})
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportDialogFragment.kt b/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportDialogFragment.kt
+deleted file mode 100644
+index 97db3f527c1b7c5d84695c1942a8669db1fb0945..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportDialogFragment.kt
++++ /dev/null
+@@ -1,92 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.shakereport
+-
+-import android.widget.Toast
+-import androidx.compose.runtime.Composable
+-import androidx.compose.runtime.getValue
+-import androidx.fragment.app.FragmentManager
+-import androidx.fragment.app.viewModels
+-import androidx.lifecycle.compose.collectAsStateWithLifecycle
+-import org.signal.core.ui.compose.CollectActions
+-import org.signal.core.ui.compose.ComposeDialogFragment
+-import org.signal.core.util.Util
+-import org.thoughtcrime.securesms.R
+-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragment
+-import org.thoughtcrime.securesms.conversation.mutiselect.forward.MultiselectForwardFragmentArgs
+-import org.thoughtcrime.securesms.dependencies.AppDependencies
+-import org.thoughtcrime.securesms.sharing.MultiShareArgs
+-
+-/**
+- * Hosts [ShakeToReportDialog]. The upload lives in the view model, so it survives configuration changes.
+- */
+-class ShakeToReportDialogFragment : ComposeDialogFragment() {
+-
+-  companion object {
+-    private const val FRAGMENT_TAG = "ShakeToReportDialogFragment"
+-
+-    /**
+-     * @return False if the dialog could not be shown, in which case the caller is responsible for re-enabling shake detection.
+-     */
+-    @JvmStatic
+-    fun show(fragmentManager: FragmentManager): Boolean {
+-      if (fragmentManager.findFragmentByTag(FRAGMENT_TAG) != null) {
+-        return true
+-      }
+-
+-      if (fragmentManager.isStateSaved) {
+-        return false
+-      }
+-
+-      ShakeToReportDialogFragment().show(fragmentManager, FRAGMENT_TAG)
+-      return true
+-    }
+-  }
+-
+-  private val viewModel: ShakeToReportViewModel by viewModels()
+-
+-  @Composable
+-  override fun DialogContent() {
+-    val state by viewModel.state.collectAsStateWithLifecycle()
+-
+-    CollectActions(viewModel.actions) { handleAction(it) }
+-
+-    ShakeToReportDialog(
+-      state = state,
+-      onEvent = viewModel::onEvent
+-    )
+-  }
+-
+-  override fun onDestroy() {
+-    super.onDestroy()
+-    if (activity?.isChangingConfigurations != true) {
+-      AppDependencies.shakeToReport.enableIfVisible()
+-    }
+-  }
+-
+-  private fun handleAction(action: ShakeToReportAction) {
+-    when (action) {
+-      ShakeToReportAction.Dismiss -> {
+-        dismissAllowingStateLoss()
+-      }
+-      is ShakeToReportAction.CopyUrl -> {
+-        Util.copyToClipboard(requireContext(), action.url)
+-        Toast.makeText(requireContext(), R.string.ShakeToReport_copied, Toast.LENGTH_SHORT).show()
+-        dismissAllowingStateLoss()
+-      }
+-      is ShakeToReportAction.ShareUrl -> {
+-        MultiselectForwardFragment.showFullScreen(
+-          parentFragmentManager,
+-          MultiselectForwardFragmentArgs(
+-            multiShareArgs = listOf(MultiShareArgs.Builder().withDraftText(action.url).build()),
+-            title = R.string.MultiselectForwardFragment__share_with
+-          )
+-        )
+-        dismissAllowingStateLoss()
+-      }
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportEvent.kt b/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportEvent.kt
+deleted file mode 100644
+index 71a7057f5f24c7ec7296b684459d99a11f21bc15..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportEvent.kt
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.shakereport
+-
+-/**
+- * Reminder that these events are logged, so don't include anything sensitive in the toString.
+- */
+-sealed interface ShakeToReportEvent {
+-
+-  /** The user tapped submit on the initial prompt. */
+-  data object SubmitClicked : ShakeToReportEvent
+-
+-  /** The user tapped retry after a failed submission. */
+-  data object RetryClicked : ShakeToReportEvent
+-
+-  /** The user tapped copy on the uploaded log's URL. */
+-  data object CopyClicked : ShakeToReportEvent
+-
+-  /** The user tapped share on the uploaded log's URL. */
+-  data object ShareClicked : ShakeToReportEvent
+-
+-  /** The user tapped cancel or close, pressed back, or tapped outside the dialog. */
+-  data object DismissRequested : ShakeToReportEvent
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportRepository.kt b/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportRepository.kt
+deleted file mode 100644
+index acc02eb908da73eb5a83965025a77b86f4111270..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportRepository.kt
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.shakereport
+-
+-import kotlinx.coroutines.withContext
+-import org.signal.core.util.concurrent.SignalDispatchers
+-import org.thoughtcrime.securesms.logsubmit.SubmitDebugLogRepository
+-
+-class ShakeToReportRepository(
+-  private val submitDebugLogRepository: SubmitDebugLogRepository = SubmitDebugLogRepository()
+-) {
+-
+-  suspend fun submitLog(): SubmitResult {
+-    return withContext(SignalDispatchers.IO) {
+-      submitDebugLogRepository
+-        .buildAndSubmitLogSync(System.currentTimeMillis())
+-        .map<SubmitResult> { SubmitResult.Success(it) }
+-        .orElse(SubmitResult.Failure)
+-    }
+-  }
+-
+-  sealed interface SubmitResult {
+-    data class Success(val url: String) : SubmitResult
+-    data object Failure : SubmitResult
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportState.kt b/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportState.kt
+deleted file mode 100644
+index 9f4aaf0c787953e5a17d3173e332e2af169ca82d..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportState.kt
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.shakereport
+-
+-/**
+- * Everything [ShakeToReportDialog] needs to render.
+- */
+-data class ShakeToReportState(
+-  val step: Step = Step.Prompt
+-) {
+-
+-  /** Where the user is in the submit flow. Each step is rendered by the same dialog. */
+-  sealed interface Step {
+-    /** Asking whether the user wants to submit a log. */
+-    data object Prompt : Step
+-
+-    /** The log is being built and uploaded. */
+-    data object Submitting : Step
+-
+-    /** The log was uploaded to [url]. */
+-    data class Submitted(val url: String) : Step
+-
+-    /** Building or uploading the log failed. */
+-    data object Failed : Step
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportViewModel.kt b/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportViewModel.kt
+deleted file mode 100644
+index 1e54338bd65903edd25b94ae07f158655e675d73..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/shakereport/ShakeToReportViewModel.kt
++++ /dev/null
+@@ -1,82 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.shakereport
+-
+-import kotlinx.coroutines.channels.Channel
+-import kotlinx.coroutines.flow.Flow
+-import kotlinx.coroutines.flow.MutableStateFlow
+-import kotlinx.coroutines.flow.StateFlow
+-import kotlinx.coroutines.flow.asStateFlow
+-import kotlinx.coroutines.flow.receiveAsFlow
+-import kotlinx.coroutines.flow.update
+-import org.signal.core.ui.compose.EventDrivenViewModel
+-import org.signal.core.util.logging.Log
+-import org.thoughtcrime.securesms.shakereport.ShakeToReportRepository.SubmitResult
+-import org.thoughtcrime.securesms.shakereport.ShakeToReportState.Step
+-
+-/**
+- * Drives [ShakeToReportDialog].
+- */
+-class ShakeToReportViewModel(
+-  private val repository: ShakeToReportRepository = ShakeToReportRepository()
+-) : EventDrivenViewModel<ShakeToReportEvent>(TAG) {
+-
+-  companion object {
+-    private val TAG = Log.tag(ShakeToReportViewModel::class)
+-  }
+-
+-  private val _state = MutableStateFlow(ShakeToReportState())
+-  private val _actions = Channel<ShakeToReportAction>(Channel.BUFFERED)
+-
+-  val state: StateFlow<ShakeToReportState> = _state.asStateFlow()
+-  val actions: Flow<ShakeToReportAction> = _actions.receiveAsFlow()
+-
+-  override suspend fun processEvent(event: ShakeToReportEvent) {
+-    when (event) {
+-      ShakeToReportEvent.SubmitClicked -> {
+-        if (_state.value.step == Step.Prompt) {
+-          submit()
+-        }
+-      }
+-      ShakeToReportEvent.RetryClicked -> {
+-        if (_state.value.step == Step.Failed) {
+-          submit()
+-        }
+-      }
+-      ShakeToReportEvent.CopyClicked -> {
+-        val step = _state.value.step as? Step.Submitted ?: return
+-        _actions.send(ShakeToReportAction.CopyUrl(step.url))
+-      }
+-      ShakeToReportEvent.ShareClicked -> {
+-        val step = _state.value.step as? Step.Submitted ?: return
+-        _actions.send(ShakeToReportAction.ShareUrl(step.url))
+-      }
+-      ShakeToReportEvent.DismissRequested -> {
+-        if (_state.value.step != Step.Submitting) {
+-          _actions.send(ShakeToReportAction.Dismiss)
+-        }
+-      }
+-    }
+-  }
+-
+-  private suspend fun submit() {
+-    Log.i(TAG, "Submitting log...")
+-    _state.update { it.copy(step = Step.Submitting) }
+-
+-    val step = when (val result = repository.submitLog()) {
+-      is SubmitResult.Success -> {
+-        Log.i(TAG, "Log uploaded.")
+-        Step.Submitted(result.url)
+-      }
+-      SubmitResult.Failure -> {
+-        Log.w(TAG, "Failed to upload log.")
+-        Step.Failed
+-      }
+-    }
+-
+-    _state.update { it.copy(step = step) }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/sharing/interstitial/ShareInterstitialActivity.java b/app/src/main/java/org/thoughtcrime/securesms/sharing/interstitial/ShareInterstitialActivity.java
+index 3a8f6550c4c5f5e50aa7ed06c49f04f1d9b179d8..c9c51f51e5c0203e11613ad9a47756adaedd4d0d 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/sharing/interstitial/ShareInterstitialActivity.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/sharing/interstitial/ShareInterstitialActivity.java
+@@ -60,8 +60,13 @@ public class ShareInterstitialActivity extends PassphraseRequiredActivity {
+   }
+ 
+   @Override
+-  protected void onCreate(Bundle savedInstanceState, boolean ready) {
++  protected void onPreCreate() {
++    super.onPreCreate();
+     dynamicTheme.onCreate(this);
++  }
++
++  @Override
++  protected void onCreate(Bundle savedInstanceState, boolean ready) {
+     setContentView(R.layout.share_interstitial_activity);
+ 
+     MultiShareArgs args = getIntent().getParcelableExtra(ARGS);
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/sharing/v2/ShareActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/sharing/v2/ShareActivity.kt
 index 6eb521711dda5e1c20e9ae993d2ea55813efa554..15febb0ec521f3eeebefca3eb2cc5451017eda4e 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/sharing/v2/ShareActivity.kt
@@ -64,7 +546,7 @@ index 6eb521711dda5e1c20e9ae993d2ea55813efa554..15febb0ec521f3eeebefca3eb2cc5451
    private fun getUnresolvedShareData(): Result<UnresolvedShareData, IntentError> {
      val isInternalShare = Build.VERSION.SDK_INT >= 34 && getLaunchedFromUid() == Process.myUid()
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/starred/StarredMessagesActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/starred/StarredMessagesActivity.kt
-index 788a7e4ad206c07c967ef052ea205366ff15ea5b..da753415506fc382094c9a11e0ee7065053f2701 100644
+index 788a7e4ad206c07c967ef052ea205366ff15ea5b..b031ed682482fca270443e221ee21263c16c30e2 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/starred/StarredMessagesActivity.kt
 +++ b/app/src/main/java/org/thoughtcrime/securesms/starred/StarredMessagesActivity.kt
 @@ -364,9 +364,6 @@ private class StarredMessageClickListener(
@@ -77,7 +559,7 @@ index 788a7e4ad206c07c967ef052ea205366ff15ea5b..da753415506fc382094c9a11e0ee7065
    override fun onEditedIndicatorClicked(conversationMessage: ConversationMessage) = Unit
    override fun onShowSafetyTips(forGroup: Boolean) = Unit
    override fun onReportSpamLearnMoreClicked() = Unit
-@@ -390,7 +387,6 @@ private class StarredMessageClickListener(
+@@ -390,12 +387,10 @@ private class StarredMessageClickListener(
    override fun onInviteToSignalClicked() = Unit
    override fun onScheduledIndicatorClicked(view: View, conversationMessage: ConversationMessage) = Unit
    override fun onUrlClicked(url: String): Boolean = false
@@ -85,6 +567,11 @@ index 788a7e4ad206c07c967ef052ea205366ff15ea5b..da753415506fc382094c9a11e0ee7065
    override fun goToMediaPreview(parent: ConversationItem, sharedElement: View, args: MediaIntentFactory.MediaPreviewArgs) = Unit
    override fun onShowGroupDescriptionClicked(groupName: String, description: String, shouldLinkifyWebLinks: Boolean) = Unit
    override fun onJoinCallLink(callLinkRootKey: CallLinkRootKey) = Unit
+   override fun onViewStickerPackLink(packId: String, packKey: String) = Unit
+-  override fun onPaymentTombstoneClicked() = Unit
+   override fun onDisplayMediaNoLongerAvailableSheet() = Unit
+   override fun onShowUnverifiedProfileSheet(forGroup: Boolean) = Unit
+   override fun onUpdateSignalClicked() = Unit
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/stories/landing/StoriesLandingItem.kt b/app/src/main/java/org/thoughtcrime/securesms/stories/landing/StoriesLandingItem.kt
 index ae978852c23a98b13ae89c19089df6c4a3434978..8fb748ca721057177e6ac4535ee8e5ae08b9362b 100644
 --- a/app/src/main/java/org/thoughtcrime/securesms/stories/landing/StoriesLandingItem.kt
@@ -604,6 +1091,52 @@ index d83c1c75ecc9812352b572c32a77c2e93cca84fb..37c25fe2d586308812e9ee61f6515fd4
 +      )
 +    }
 +  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
+index 998cecd42f96daf307177c4b35c526f6fc76deba..c54adcccfb8bca40b55664756dd4564e2d61b745 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
+@@ -1,24 +1,19 @@
+ package org.thoughtcrime.securesms.util;
+ 
+-import android.content.ActivityNotFoundException;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.net.Uri;
+ 
+ import androidx.annotation.NonNull;
+ 
+-import org.thoughtcrime.securesms.BuildConfig;
++import org.signal.core.util.R;
+ 
+ public final class PlayStoreUtil {
+ 
+   private PlayStoreUtil() {}
+ 
+   public static void openPlayStoreOrOurApkDownloadPage(@NonNull Context context) {
+-    if (BuildConfig.MANAGES_APP_UPDATES) {
+-      CommunicationActions.openBrowserLink(context, "https://signal.org/android/apk");
+-    } else {
+-      openPlayStore(context);
+-    }
++    CommunicationActions.openBrowserLink(context, context.getString(R.string.install_url));
+   }
+ 
+   public static void openPlayStoreHome(@NonNull Context context) {
+@@ -30,14 +25,4 @@ public final class PlayStoreUtil {
+       CommunicationActions.openBrowserLink(context, "https://play.google.com/store/apps/");
+     }
+   }
+-
+-  private static void openPlayStore(@NonNull Context context) {
+-    String packageName = context.getPackageName();
+-
+-    try {
+-      context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+-    } catch (ActivityNotFoundException e) {
+-      CommunicationActions.openBrowserLink(context, "https://play.google.com/store/apps/details?id=" + packageName);
+-    }
+-  }
  }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/ProfileUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/ProfileUtil.java
 index 093c5d8d4b2570fbde43071d273ea32df338ceeb..26b66b970cee35450cafbb1f4dd233c36e87248b 100644
@@ -2085,6 +2618,462 @@ index 1f237c110fb3410d593ba7ec09ce7d27b0bb97c1..53b966f2cb7043484ad135c86cbd882f
  message CheckKeyTransparencyJobData{
    bool showFailure = 1;
  }
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/badges/self/featured/SelectFeaturedBadgeViewModelTest.kt b/app/src/test/java/org/thoughtcrime/securesms/badges/self/featured/SelectFeaturedBadgeViewModelTest.kt
+deleted file mode 100644
+index 9868f2433e75b8c1628ac173596e0f9051313f80..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/badges/self/featured/SelectFeaturedBadgeViewModelTest.kt
++++ /dev/null
+@@ -1,199 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.badges.self.featured
+-
+-import android.app.Application
+-import android.net.Uri
+-import assertk.assertThat
+-import assertk.assertions.containsExactly
+-import assertk.assertions.isEmpty
+-import assertk.assertions.isEqualTo
+-import assertk.assertions.isNull
+-import io.mockk.coEvery
+-import io.mockk.coVerify
+-import io.mockk.every
+-import io.mockk.mockkObject
+-import io.mockk.unmockkAll
+-import io.reactivex.rxjava3.subjects.BehaviorSubject
+-import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.ExperimentalCoroutinesApi
+-import kotlinx.coroutines.flow.Flow
+-import kotlinx.coroutines.flow.toList
+-import kotlinx.coroutines.launch
+-import kotlinx.coroutines.test.TestScope
+-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+-import kotlinx.coroutines.test.resetMain
+-import kotlinx.coroutines.test.runTest
+-import kotlinx.coroutines.test.setMain
+-import org.junit.After
+-import org.junit.Before
+-import org.junit.Rule
+-import org.junit.Test
+-import org.junit.runner.RunWith
+-import org.robolectric.RobolectricTestRunner
+-import org.robolectric.annotation.Config
+-import org.signal.core.models.badges.Badge
+-import org.signal.core.models.recipients.RecipientId
+-import org.signal.network.NetworkResult
+-import org.thoughtcrime.securesms.badges.BadgeRepository
+-import org.thoughtcrime.securesms.recipients.Recipient
+-import org.thoughtcrime.securesms.testing.CoroutineDispatcherRule
+-import java.io.IOException
+-
+-@OptIn(ExperimentalCoroutinesApi::class)
+-@RunWith(RobolectricTestRunner::class)
+-@Config(application = Application::class)
+-class SelectFeaturedBadgeViewModelTest {
+-
+-  private val testDispatcher = UnconfinedTestDispatcher()
+-
+-  @get:Rule
+-  val dispatcherRule = CoroutineDispatcherRule(testDispatcher)
+-
+-  private val selfSubject = BehaviorSubject.create<Recipient>()
+-
+-  private val first = createBadge("first")
+-  private val second = createBadge("second")
+-  private val expired = createBadge("expired", expirationTimestamp = 1)
+-
+-  @Before
+-  fun setUp() {
+-    Dispatchers.setMain(testDispatcher)
+-
+-    mockkObject(BadgeRepository)
+-    mockkObject(Recipient.Companion)
+-    every { Recipient.self() } returns createSelf(emptyList())
+-    every { Recipient.observable(SELF_ID) } returns selfSubject
+-
+-    coEvery { BadgeRepository.setFeaturedBadge(any()) } returns NetworkResult.Success(Unit)
+-  }
+-
+-  @After
+-  fun tearDown() {
+-    Dispatchers.resetMain()
+-    unmockkAll()
+-  }
+-
+-  @Test
+-  fun `initial state selects the first unexpired badge`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = listOf(first, expired, second))
+-
+-    val state = viewModel.state.value
+-    assertThat(state.stage).isEqualTo(SelectFeaturedBadgeState.Stage.READY)
+-    assertThat(state.allUnlockedBadges).containsExactly(first, second)
+-    assertThat(state.selectedBadge).isEqualTo(first)
+-  }
+-
+-  @Test
+-  fun `an unresolved self recipient is ignored`() = runTest(testDispatcher) {
+-    val viewModel = SelectFeaturedBadgeViewModel()
+-
+-    selfSubject.onNext(createSelf(listOf(first), isResolving = true))
+-
+-    val state = viewModel.state.value
+-    assertThat(state.stage).isEqualTo(SelectFeaturedBadgeState.Stage.INIT)
+-    assertThat(state.allUnlockedBadges).isEmpty()
+-  }
+-
+-  @Test
+-  fun `BadgeSelected updates the selected badge`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = listOf(first, second))
+-
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.BadgeSelected(second))
+-
+-    assertThat(viewModel.state.value.selectedBadge).isEqualTo(second)
+-  }
+-
+-  @Test
+-  fun `Save features the selected badge and moves to SAVED`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = listOf(first, second))
+-
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.BadgeSelected(second))
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.Save)
+-
+-    coVerify(exactly = 1) { BadgeRepository.setFeaturedBadge(second) }
+-    assertThat(viewModel.state.value.stage).isEqualTo(SelectFeaturedBadgeState.Stage.SAVED)
+-  }
+-
+-  @Test
+-  fun `a failed Save returns to READY and tells the user`() = runTest(testDispatcher) {
+-    coEvery { BadgeRepository.setFeaturedBadge(any()) } returns NetworkResult.NetworkError(IOException())
+-
+-    val viewModel = createViewModel(badges = listOf(first))
+-    val actions = collectActions(viewModel.actions)
+-
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.Save)
+-
+-    assertThat(viewModel.state.value.stage).isEqualTo(SelectFeaturedBadgeState.Stage.READY)
+-    assertThat(actions).containsExactly(SelectFeaturedBadgeActions.ShowFailedToUpdateProfile)
+-  }
+-
+-  @Test
+-  fun `Save does nothing without a selected badge`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = emptyList())
+-
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.Save)
+-
+-    assertThat(viewModel.state.value.selectedBadge).isNull()
+-    assertThat(viewModel.state.value.stage).isEqualTo(SelectFeaturedBadgeState.Stage.READY)
+-    coVerify(exactly = 0) { BadgeRepository.setFeaturedBadge(any()) }
+-  }
+-
+-  @Test
+-  fun `Save does nothing before the screen is ready`() = runTest(testDispatcher) {
+-    val viewModel = SelectFeaturedBadgeViewModel()
+-
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.BadgeSelected(first))
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.Save)
+-
+-    assertThat(viewModel.state.value.stage).isEqualTo(SelectFeaturedBadgeState.Stage.INIT)
+-    coVerify(exactly = 0) { BadgeRepository.setFeaturedBadge(any()) }
+-  }
+-
+-  @Test
+-  fun `a second Save after success is ignored`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = listOf(first))
+-
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.Save)
+-    viewModel.onEvent(SelectFeaturedBadgeEvents.Save)
+-
+-    coVerify(exactly = 1) { BadgeRepository.setFeaturedBadge(first) }
+-  }
+-
+-  private fun createViewModel(badges: List<Badge>): SelectFeaturedBadgeViewModel {
+-    val viewModel = SelectFeaturedBadgeViewModel()
+-    selfSubject.onNext(createSelf(badges))
+-    return viewModel
+-  }
+-
+-  private fun TestScope.collectActions(actions: Flow<SelectFeaturedBadgeActions>): List<SelectFeaturedBadgeActions> {
+-    val collected = mutableListOf<SelectFeaturedBadgeActions>()
+-    backgroundScope.launch { actions.toList(collected) }
+-    return collected
+-  }
+-
+-  private fun createSelf(badges: List<Badge>, isResolving: Boolean = false): Recipient {
+-    return Recipient(id = SELF_ID, isResolving = isResolving, badges = badges)
+-  }
+-
+-  private fun createBadge(id: String, expirationTimestamp: Long = 0): Badge {
+-    return Badge(
+-      id = id,
+-      category = Badge.Category.Donor,
+-      name = id,
+-      description = "",
+-      imageUrl = Uri.EMPTY,
+-      imageDensity = "xxxhdpi",
+-      expirationTimestamp = expirationTimestamp,
+-      visible = true,
+-      duration = 0
+-    )
+-  }
+-
+-  companion object {
+-    private val SELF_ID = RecipientId.from(1)
+-  }
+-}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/badges/self/overview/BadgesOverviewViewModelTest.kt b/app/src/test/java/org/thoughtcrime/securesms/badges/self/overview/BadgesOverviewViewModelTest.kt
+deleted file mode 100644
+index 7be1465cf3a66bc0160ba92c9948b28288f4de2b..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/badges/self/overview/BadgesOverviewViewModelTest.kt
++++ /dev/null
+@@ -1,245 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.badges.self.overview
+-
+-import android.app.Application
+-import android.net.Uri
+-import assertk.assertThat
+-import assertk.assertions.containsExactly
+-import assertk.assertions.isEmpty
+-import assertk.assertions.isEqualTo
+-import assertk.assertions.isFalse
+-import assertk.assertions.isNull
+-import assertk.assertions.isTrue
+-import io.mockk.coEvery
+-import io.mockk.coVerify
+-import io.mockk.every
+-import io.mockk.mockkObject
+-import io.mockk.unmockkAll
+-import io.reactivex.rxjava3.core.Single
+-import io.reactivex.rxjava3.subjects.BehaviorSubject
+-import kotlinx.coroutines.CompletableDeferred
+-import kotlinx.coroutines.Dispatchers
+-import kotlinx.coroutines.ExperimentalCoroutinesApi
+-import kotlinx.coroutines.flow.Flow
+-import kotlinx.coroutines.flow.toList
+-import kotlinx.coroutines.launch
+-import kotlinx.coroutines.test.TestScope
+-import kotlinx.coroutines.test.UnconfinedTestDispatcher
+-import kotlinx.coroutines.test.resetMain
+-import kotlinx.coroutines.test.runTest
+-import kotlinx.coroutines.test.setMain
+-import org.junit.After
+-import org.junit.Before
+-import org.junit.Rule
+-import org.junit.Test
+-import org.junit.runner.RunWith
+-import org.robolectric.RobolectricTestRunner
+-import org.robolectric.annotation.Config
+-import org.signal.core.models.badges.Badge
+-import org.signal.core.models.recipients.RecipientId
+-import org.signal.network.NetworkResult
+-import org.thoughtcrime.securesms.badges.BadgeRepository
+-import org.thoughtcrime.securesms.components.settings.app.subscription.RecurringInAppPaymentRepository
+-import org.thoughtcrime.securesms.database.model.InAppPaymentSubscriberRecord
+-import org.thoughtcrime.securesms.recipients.Recipient
+-import org.thoughtcrime.securesms.subscription.Subscription
+-import org.thoughtcrime.securesms.testing.CoroutineDispatcherRule
+-import org.thoughtcrime.securesms.testutil.MockAppDependenciesRule
+-import org.thoughtcrime.securesms.testutil.MockSignalStoreRule
+-import org.thoughtcrime.securesms.util.InternetConnectionObserver
+-import org.whispersystems.signalservice.api.subscriptions.ActiveSubscription
+-import java.io.IOException
+-
+-@OptIn(ExperimentalCoroutinesApi::class)
+-@RunWith(RobolectricTestRunner::class)
+-@Config(application = Application::class)
+-class BadgesOverviewViewModelTest {
+-
+-  private val testDispatcher = UnconfinedTestDispatcher()
+-
+-  @get:Rule
+-  val dispatcherRule = CoroutineDispatcherRule(testDispatcher)
+-
+-  @get:Rule
+-  val appDependencies = MockAppDependenciesRule()
+-
+-  @get:Rule
+-  val signalStore = MockSignalStoreRule()
+-
+-  private val selfSubject = BehaviorSubject.create<Recipient>()
+-  private val connectivitySubject = BehaviorSubject.create<Boolean>()
+-
+-  private val first = createBadge("first")
+-  private val second = createBadge("second")
+-
+-  @Before
+-  fun setUp() {
+-    Dispatchers.setMain(testDispatcher)
+-
+-    mockkObject(Recipient.Companion)
+-    every { Recipient.self() } returns createSelf(emptyList())
+-    every { Recipient.observable(SELF_ID) } returns selfSubject
+-
+-    mockkObject(InternetConnectionObserver)
+-    every { InternetConnectionObserver.observe() } returns connectivitySubject
+-
+-    mockkObject(RecurringInAppPaymentRepository)
+-    every { RecurringInAppPaymentRepository.getActiveSubscription(InAppPaymentSubscriberRecord.Type.DONATION) } returns Single.just(ActiveSubscription.EMPTY)
+-    every { RecurringInAppPaymentRepository.getSubscriptions() } returns Single.just(emptyList())
+-
+-    mockkObject(BadgeRepository)
+-    coEvery { BadgeRepository.setVisibilityForAllBadges(any(), any()) } returns NetworkResult.Success(Unit)
+-
+-    every { signalStore.inAppPayments.getDisplayBadgesOnProfile() } returns true
+-  }
+-
+-  @After
+-  fun tearDown() {
+-    Dispatchers.resetMain()
+-    unmockkAll()
+-  }
+-
+-  @Test
+-  fun `initial state reflects the self recipient`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = listOf(first, second))
+-
+-    val state = viewModel.state.value
+-    assertThat(state.stage).isEqualTo(BadgesOverviewState.Stage.READY)
+-    assertThat(state.allUnlockedBadges).containsExactly(first, second)
+-    assertThat(state.featuredBadge).isEqualTo(first)
+-    assertThat(state.displayBadgesOnProfile).isTrue()
+-  }
+-
+-  @Test
+-  fun `an unresolved self recipient is ignored`() = runTest(testDispatcher) {
+-    val viewModel = BadgesOverviewViewModel()
+-
+-    selfSubject.onNext(createSelf(listOf(first), isResolving = true))
+-
+-    val state = viewModel.state.value
+-    assertThat(state.stage).isEqualTo(BadgesOverviewState.Stage.INIT)
+-    assertThat(state.allUnlockedBadges).isEmpty()
+-  }
+-
+-  @Test
+-  fun `hasInternet follows the connection observer`() = runTest(testDispatcher) {
+-    val viewModel = createViewModel(badges = listOf(first))
+-
+-    connectivitySubject.onNext(true)
+-    assertThat(viewModel.state.value.hasInternet).isTrue()
+-
+-    connectivitySubject.onNext(false)
+-    assertThat(viewModel.state.value.hasInternet).isFalse()
+-  }
+-
+-  @Test
+-  fun `a subscription cancelling at period end fades its badge`() = runTest(testDispatcher) {
+-    every { RecurringInAppPaymentRepository.getActiveSubscription(InAppPaymentSubscriberRecord.Type.DONATION) } returns Single.just(createActiveSubscription(isActive = false, willCancelAtPeriodEnd = true))
+-    every { RecurringInAppPaymentRepository.getSubscriptions() } returns Single.just(listOf(createSubscription(first)))
+-
+-    val viewModel = createViewModel(badges = listOf(first))
+-
+-    assertThat(viewModel.state.value.fadedBadgeId).isEqualTo(first.id)
+-  }
+-
+-  @Test
+-  fun `an active subscription does not fade its badge`() = runTest(testDispatcher) {
+-    every { RecurringInAppPaymentRepository.getActiveSubscription(InAppPaymentSubscriberRecord.Type.DONATION) } returns Single.just(createActiveSubscription(isActive = true, willCancelAtPeriodEnd = true))
+-    every { RecurringInAppPaymentRepository.getSubscriptions() } returns Single.just(listOf(createSubscription(first)))
+-
+-    val viewModel = createViewModel(badges = listOf(first))
+-
+-    assertThat(viewModel.state.value.fadedBadgeId).isNull()
+-  }
+-
+-  @Test
+-  fun `a failed subscription lookup leaves no badge faded`() = runTest(testDispatcher) {
+-    every { RecurringInAppPaymentRepository.getSubscriptions() } returns Single.error(IOException())
+-
+-    val viewModel = createViewModel(badges = listOf(first))
+-
+-    assertThat(viewModel.state.value.fadedBadgeId).isNull()
+-    assertThat(viewModel.state.value.stage).isEqualTo(BadgesOverviewState.Stage.READY)
+-  }
+-
+-  @Test
+-  fun `setDisplayBadgesOnProfile shows progress until the update finishes`() = runTest(testDispatcher) {
+-    val gate = CompletableDeferred<NetworkResult<Unit>>()
+-    coEvery { BadgeRepository.setVisibilityForAllBadges(false, any()) } coAnswers { gate.await() }
+-
+-    val viewModel = createViewModel(badges = listOf(first))
+-
+-    viewModel.setDisplayBadgesOnProfile(false)
+-    assertThat(viewModel.state.value.stage).isEqualTo(BadgesOverviewState.Stage.UPDATING_BADGE_DISPLAY_STATE)
+-
+-    gate.complete(NetworkResult.Success(Unit))
+-    assertThat(viewModel.state.value.stage).isEqualTo(BadgesOverviewState.Stage.READY)
+-    coVerify(exactly = 1) { BadgeRepository.setVisibilityForAllBadges(false, any()) }
+-  }
+-
+-  @Test
+-  fun `a failed setDisplayBadgesOnProfile returns to READY and tells the user`() = runTest(testDispatcher) {
+-    coEvery { BadgeRepository.setVisibilityForAllBadges(any(), any()) } returns NetworkResult.NetworkError(IOException())
+-
+-    val viewModel = createViewModel(badges = listOf(first))
+-    val events = collectEvents(viewModel.events)
+-
+-    viewModel.setDisplayBadgesOnProfile(false)
+-
+-    assertThat(viewModel.state.value.stage).isEqualTo(BadgesOverviewState.Stage.READY)
+-    assertThat(events).containsExactly(BadgesOverviewEvent.FAILED_TO_UPDATE_PROFILE)
+-  }
+-
+-  private fun createViewModel(badges: List<Badge>): BadgesOverviewViewModel {
+-    val viewModel = BadgesOverviewViewModel()
+-    selfSubject.onNext(createSelf(badges))
+-    return viewModel
+-  }
+-
+-  private fun TestScope.collectEvents(events: Flow<BadgesOverviewEvent>): List<BadgesOverviewEvent> {
+-    val collected = mutableListOf<BadgesOverviewEvent>()
+-    backgroundScope.launch { events.toList(collected) }
+-    return collected
+-  }
+-
+-  private fun createSelf(badges: List<Badge>, isResolving: Boolean = false): Recipient {
+-    return Recipient(id = SELF_ID, isResolving = isResolving, badges = badges)
+-  }
+-
+-  private fun createActiveSubscription(isActive: Boolean, willCancelAtPeriodEnd: Boolean): ActiveSubscription {
+-    return ActiveSubscription(
+-      activeSubscription = ActiveSubscription.Subscription(
+-        level = LEVEL,
+-        isActive = isActive,
+-        willCancelAtPeriodEnd = willCancelAtPeriodEnd
+-      )
+-    )
+-  }
+-
+-  private fun createSubscription(badge: Badge): Subscription {
+-    return Subscription(id = LEVEL.toString(), badge = badge, prices = emptySet(), level = LEVEL)
+-  }
+-
+-  private fun createBadge(id: String): Badge {
+-    return Badge(
+-      id = id,
+-      category = Badge.Category.Donor,
+-      name = id,
+-      description = "",
+-      imageUrl = Uri.EMPTY,
+-      imageDensity = "xxxhdpi",
+-      expirationTimestamp = 0,
+-      visible = true,
+-      duration = 0
+-    )
+-  }
+-
+-  companion object {
+-    private val SELF_ID = RecipientId.from(1)
+-    private const val LEVEL = 500
+-  }
+-}
 diff --git a/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/account/AccountSettingsViewModelTest.kt b/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/account/AccountSettingsViewModelTest.kt
 index e80cbf5a9aab12077c76f215c69a488c86de8888..01e5d574dd18846b9a735fb8f5efe737b3ba7b26 100644
 --- a/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/account/AccountSettingsViewModelTest.kt
@@ -2252,7 +3241,7 @@ index fddf2993330fb2496c7fb4779b7ee921bf9fb2fb..868bc6cba0a27bd3ecef791ee89ee4d6
      )
    }
 diff --git a/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/subscription/SubscriptionsConfigurationExtensionsKtTest.kt b/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/subscription/SubscriptionsConfigurationExtensionsKtTest.kt
-index 6c3f26c37dbfc8b0f93b99ebf8c6611a1f367744..cd532d069e15254d03684edf9d8ba159207c0802 100644
+index 6c3f26c37dbfc8b0f93b99ebf8c6611a1f367744..d54bb96a3635eed34bc6af018bc959fccee4ced3 100644
 --- a/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/subscription/SubscriptionsConfigurationExtensionsKtTest.kt
 +++ b/app/src/test/java/org/thoughtcrime/securesms/components/settings/app/subscription/SubscriptionsConfigurationExtensionsKtTest.kt
 @@ -9,6 +9,7 @@ import org.junit.Assert.assertEquals
@@ -2271,6 +3260,50 @@ index 6c3f26c37dbfc8b0f93b99ebf8c6611a1f367744..cd532d069e15254d03684edf9d8ba159
  @RunWith(RobolectricTestRunner::class)
  @Config(application = Application::class)
  class SubscriptionsConfigurationExtensionsKtTest {
+@@ -28,7 +30,7 @@ class SubscriptionsConfigurationExtensionsKtTest {
+ 
+   @Before
+   fun setUp() {
+-    CoreUtilDependencies.init(ApplicationProvider.getApplicationContext(), mockk(relaxed = true), CoreUtilDependencies.BuildInfo(0, 0))
++    CoreUtilDependencies.init(ApplicationProvider.getApplicationContext(), mockk(relaxed = true), CoreUtilDependencies.BuildInfo(buildTimestamp = 0))
+   }
+ 
+   @Test
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/delete/DeleteAccountViewModelTest.kt b/app/src/test/java/org/thoughtcrime/securesms/delete/DeleteAccountViewModelTest.kt
+index a27c2e21c59c2d747430d0199f2bca3824e9a245..5c12137bd1c662b4bebbd32e766d811c45c147ac 100644
+--- a/app/src/test/java/org/thoughtcrime/securesms/delete/DeleteAccountViewModelTest.kt
++++ b/app/src/test/java/org/thoughtcrime/securesms/delete/DeleteAccountViewModelTest.kt
+@@ -11,6 +11,7 @@ import assertk.assertions.containsExactly
+ import assertk.assertions.isEmpty
+ import assertk.assertions.isEqualTo
+ import assertk.assertions.isFalse
++import assertk.assertions.isNull
+ import io.mockk.coEvery
+ import io.mockk.coVerify
+ import io.mockk.every
+@@ -50,7 +51,6 @@ class DeleteAccountViewModelTest {
+ 
+     every { repository.isPhoneNumberless() } returns false
+     every { repository.getUsername() } returns null
+-    every { repository.getFormattedWalletBalance() } returns null
+     every { repository.getRegionDisplayName(any()) } returns ""
+     every { repository.getRegionDisplayName("US") } returns "United States"
+     every { repository.getRegionCountryCode("US") } returns 1
+@@ -64,12 +64,10 @@ class DeleteAccountViewModelTest {
+   }
+ 
+   @Test
+-  fun `a wallet balance is read out of the repository up front`() = runTest(testDispatcher) {
+-    every { repository.getFormattedWalletBalance() } returns "0.1000 MOB"
+-
++  fun `wallet balance is absent when payments are disabled`() = runTest(testDispatcher) {
+     val viewModel = createViewModel()
+ 
+-    assertThat(viewModel.state.value.walletBalance).isEqualTo("0.1000 MOB")
++    assertThat(viewModel.state.value.walletBalance).isNull()
+   }
+ 
+   @Test
 diff --git a/app/src/test/java/org/thoughtcrime/securesms/dependencies/MockApplicationDependencyProvider.kt b/app/src/test/java/org/thoughtcrime/securesms/dependencies/MockApplicationDependencyProvider.kt
 index ce8816d9b7d10ecaba7563ceb2548a60a9dca0e9..23bb0eb98db66d48055ae17aefd55cc618bbd0a0 100644
 --- a/app/src/test/java/org/thoughtcrime/securesms/dependencies/MockApplicationDependencyProvider.kt
@@ -2320,22 +3353,30 @@ index ce8816d9b7d10ecaba7563ceb2548a60a9dca0e9..23bb0eb98db66d48055ae17aefd55cc6
      return mockk(relaxed = true)
    }
 diff --git a/app/src/test/java/org/thoughtcrime/securesms/jobs/FcmRefreshJobTest.kt b/app/src/test/java/org/thoughtcrime/securesms/jobs/FcmRefreshJobTest.kt
-index 78e3f06affe0563b22c424685a0d0004debf68ca..c081b43a0f7db8962335e0c671fe122eee781ecf 100644
+index 78e3f06affe0563b22c424685a0d0004debf68ca..922fc601e7e02f1592f2c86c946e9a293cf857d4 100644
 --- a/app/src/test/java/org/thoughtcrime/securesms/jobs/FcmRefreshJobTest.kt
 +++ b/app/src/test/java/org/thoughtcrime/securesms/jobs/FcmRefreshJobTest.kt
-@@ -5,25 +5,15 @@
+@@ -5,72 +5,114 @@
  
  package org.thoughtcrime.securesms.jobs
  
 -import android.app.Application
++import android.content.Context
++import io.mockk.Runs
++import io.mockk.coEvery
++import io.mockk.coVerify
  import io.mockk.every
--import io.mockk.just
--import io.mockk.mockk
--import io.mockk.mockkStatic
+ import io.mockk.just
+ import io.mockk.mockk
+ import io.mockk.mockkStatic
 -import io.mockk.runs
--import io.mockk.unmockkStatic
+ import io.mockk.unmockkStatic
  import io.mockk.verify
--import org.junit.After
+ import org.junit.After
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertSame
++import org.junit.Assert.assertThrows
++import org.junit.Assert.assertTrue
  import org.junit.Before
  import org.junit.Rule
  import org.junit.Test
@@ -2343,14 +3384,25 @@ index 78e3f06affe0563b22c424685a0d0004debf68ca..c081b43a0f7db8962335e0c671fe122e
  import org.signal.core.util.logging.Log
 -import org.thoughtcrime.securesms.dependencies.AppDependencies
 -import org.thoughtcrime.securesms.keyvalue.SettingsValues.ForceWebsocketMode
++import org.signal.libsignal.net.RequestResult
++import org.thoughtcrime.securesms.gcm.FcmUtil
 +import org.thoughtcrime.securesms.keyvalue.SettingsValues.NotificationDeliveryMethod
++import org.thoughtcrime.securesms.net.SignalNetwork
  import org.thoughtcrime.securesms.testutil.MockSignalStoreRule
  import org.thoughtcrime.securesms.testutil.SystemOutLogger
 -import kotlin.time.Duration.Companion.days
++import org.whispersystems.signalservice.api.account.AccountApi
++import java.io.IOException
  
  class FcmRefreshJobTest {
  
-@@ -33,44 +23,15 @@ class FcmRefreshJobTest {
+   @get:Rule
+   val signalStore = MockSignalStoreRule()
+ 
++  private val context = mockk<Context>()
++  private val accountApi = mockk<AccountApi>()
++  private var tokenLastSetTime = 1234L
++
    @Before
    fun setUp() {
      Log.initialize(SystemOutLogger())
@@ -2363,40 +3415,89 @@ index 78e3f06affe0563b22c424685a0d0004debf68ca..c081b43a0f7db8962335e0c671fe122e
 -    every { AppDependencies.startNetwork() } just runs
 -
 -    every { signalStore.account.fcmTokenLastSetTime } returns System.currentTimeMillis() - 4.days.inWholeMilliseconds
--  }
--
--  @After
--  fun tearDown() {
++    val network = mockk<SignalNetwork>()
++    every { network.accountApi } returns accountApi
++    SignalNetwork.init(network)
++
++    mockkStatic(FcmUtil::class)
++    every { FcmUtil.deleteFirebaseInstallationId(context) } just Runs
++    every { signalStore.account.fcmEnabled } returns false
++    every { signalStore.account.fcmTokenLastSetTime } answers { tokenLastSetTime }
++    every { signalStore.account.fcmToken = null } answers { tokenLastSetTime = 0 }
++    every { accountApi.clearFcmTokenSync() } answers { callOriginal() }
+   }
+ 
+   @After
+   fun tearDown() {
 -    unmockkStatic(PlayServicesUtil::class)
 -    unmockkStatic(AppDependencies::class)
--  }
--
--  @Test
++    unmockkStatic(FcmUtil::class)
++    SignalNetwork.init(SignalNetwork())
+   }
+ 
+   @Test
 -  fun `given fcm has failed for days and the mode is disabled automatically, when the job fails, then forced websocket mode is enabled automatically`() {
 -    every { signalStore.settings.forceWebsocketMode } returns ForceWebsocketMode.DISABLED_AUTOMATICALLY
--
++  fun `exhausted FCM retries do not replace the selected delivery method or enable background mode`() {
++    every { signalStore.settings.preferredNotificationMethod } returns NotificationDeliveryMethod.UNIFIEDPUSH
++
++    FcmRefreshJob().onFailure()
+ 
 -    createJob().onFailure()
--
++    verify(exactly = 0) { signalStore.settings.preferredNotificationMethod = any() }
++    verify(exactly = 0) { signalStore.settings.forceWebsocketMode = any() }
++  }
+ 
 -    verify { signalStore.settings.forceWebsocketMode = ForceWebsocketMode.ENABLED_AUTOMATICALLY }
 -    verify { AppDependencies.startNetwork() }
++  @Test
++  fun `failed FCM removal keeps the pending timestamp and reports the original retryable error`() {
++    val networkError = IOException("offline")
++    coEvery { accountApi.clearFcmToken() } returns RequestResult.RetryableNetworkError(networkError)
++    val job = FcmRefreshJob().apply { setContext(context) }
++
++    val thrown = assertThrows(IOException::class.java) { job.onRun() }
++
++    assertSame(networkError, thrown)
++    assertTrue(job.onShouldRetry(thrown))
++    assertEquals(1234L, tokenLastSetTime)
++    coVerify(exactly = 1) { accountApi.clearFcmToken() }
++    verify(exactly = 1) { signalStore.account.invalidateFcmToken() }
++    verify(exactly = 1) { FcmUtil.deleteFirebaseInstallationId(context) }
++    verify(exactly = 0) { signalStore.account.fcmToken = any() }
++    verify(exactly = 0) { signalStore.account.fcmEnabled = any() }
    }
  
    @Test
 -  fun `given fcm has failed for days and the user disabled the mode, when the job fails, then forced websocket mode is left alone`() {
 -    every { signalStore.settings.forceWebsocketMode } returns ForceWebsocketMode.DISABLED_BY_USER
-+  fun `exhausted FCM retries do not replace the selected delivery method or enable background mode`() {
-+    every { signalStore.settings.preferredNotificationMethod } returns NotificationDeliveryMethod.UNIFIEDPUSH
++  fun `successful FCM removal clears the pending timestamp without enabling FCM`() {
++    coEvery { accountApi.clearFcmToken() } returns RequestResult.Success(Unit)
  
 -    createJob().onFailure()
-+    FcmRefreshJob().onFailure()
++    FcmRefreshJob().apply { setContext(context) }.onRun()
  
-+    verify(exactly = 0) { signalStore.settings.preferredNotificationMethod = any() }
-     verify(exactly = 0) { signalStore.settings.forceWebsocketMode = any() }
+-    verify(exactly = 0) { signalStore.settings.forceWebsocketMode = any() }
 -    verify(exactly = 0) { AppDependencies.startNetwork() }
--  }
--
++    assertEquals(0L, tokenLastSetTime)
++    coVerify(exactly = 1) { accountApi.clearFcmToken() }
++    verify(exactly = 1) { signalStore.account.invalidateFcmToken() }
++    verify(exactly = 1) { FcmUtil.deleteFirebaseInstallationId(context) }
++    verify(exactly = 1) { signalStore.account.fcmToken = null }
++    verify(exactly = 0) { signalStore.account.fcmEnabled = any() }
+   }
+ 
 -  private fun createJob(): FcmRefreshJob {
 -    return FcmRefreshJob().apply { setContext(mockk<Application>(relaxed = true)) }
++  @Test
++  fun `disabled FCM without a previously set token skips network and Firebase cleanup`() {
++    tokenLastSetTime = 0
++
++    FcmRefreshJob().apply { setContext(context) }.onRun()
++
++    coVerify(exactly = 0) { accountApi.clearFcmToken() }
++    verify(exactly = 0) { FcmUtil.deleteFirebaseInstallationId(context) }
++    verify(exactly = 0) { signalStore.account.fcmToken = any() }
    }
  }
 diff --git a/app/src/test/java/org/thoughtcrime/securesms/keyvalue/MollySettingsMigrationTest.kt b/app/src/test/java/org/thoughtcrime/securesms/keyvalue/MollySettingsMigrationTest.kt
@@ -3544,21 +4645,26 @@ index 60d6a0338134c3327646df7ba680b7797bf5c50b..aef9382c041ed77a7a5aa5098af46ce6
      }
  
 diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/SignalServiceAccountManager.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/SignalServiceAccountManager.java
-index 27cbd7261469f9f7fe46bbc9bb57617aea376733..22d6559ecc495a849df7d35614fc048c5662c0bc 100644
+index 27cbd7261469f9f7fe46bbc9bb57617aea376733..932e209b0781e43dd8c3088abce07e790df90503 100644
 --- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/SignalServiceAccountManager.java
 +++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/SignalServiceAccountManager.java
-@@ -7,7 +7,10 @@
+@@ -7,10 +7,15 @@
  package org.whispersystems.signalservice.api;
  
  import org.signal.libsignal.net.Network;
 +import org.signal.libsignal.protocol.InvalidKeyException;
  import org.whispersystems.signalservice.api.account.AccountApi;
 +import org.whispersystems.signalservice.api.account.AccountAttributes;
++import org.whispersystems.signalservice.api.account.DeviceAttributes;
 +import org.whispersystems.signalservice.api.account.PreKeyCollection;
  import org.whispersystems.signalservice.api.groupsv2.ClientZkOperations;
  import org.whispersystems.signalservice.api.groupsv2.GroupsV2Api;
  import org.whispersystems.signalservice.api.groupsv2.GroupsV2Operations;
-@@ -108,6 +111,22 @@ public class SignalServiceAccountManager {
++import org.whispersystems.signalservice.api.messages.multidevice.RegisterAsSecondaryDeviceResponse;
+ import org.signal.core.models.ServiceId.ACI;
+ import org.signal.core.models.ServiceId.PNI;
+ import org.whispersystems.signalservice.api.registration.RegistrationApi;
+@@ -108,6 +113,36 @@ public class SignalServiceAccountManager {
      pushServiceSocket.requestPushChallenge(sessionId, gcmRegistrationId);
    }
  
@@ -3574,8 +4680,22 @@ index 27cbd7261469f9f7fe46bbc9bb57617aea376733..22d6559ecc495a849df7d35614fc048c
 +                                         @Nullable String fcmToken)
 +      throws IOException, InvalidKeyException
 +  {
-+    int deviceId = pushServiceSocket.finishNewDeviceRegistration(provisioningCode, attributes, aciPreKeys, pniPreKeys, fcmToken);
-+    return deviceId;
++    DeviceAttributes deviceAttributes = new DeviceAttributes(attributes.getFetchesMessages(),
++                                                             attributes.getRegistrationId(),
++                                                             attributes.getPniRegistrationId(),
++                                                             attributes.getName(),
++                                                             attributes.getCapabilities());
++    RegisterAsSecondaryDeviceResponse response = NetworkResultUtil.successOrThrow(
++        getRegistrationApi().registerAsSecondaryDevice(provisioningCode,
++                                                      deviceAttributes,
++                                                      aciPreKeys,
++                                                      pniPreKeys,
++                                                      attributes.getFetchesMessages() ? null : fcmToken));
++    try {
++      return Integer.parseInt(response.getDeviceId());
++    } catch (NumberFormatException e) {
++      throw new IOException("Invalid linked device ID in registration response", e);
++    }
 +  }
 +
    public void checkNetworkConnection() throws IOException {
@@ -3639,8 +4759,24 @@ index 5137899797d272f52e91a5278036066a1ca936e8..53d38ec128d36a40e447d92f01138a0a
    return builder.build()
  }
  
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/account/AccountApi.kt b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/account/AccountApi.kt
+index 2dcd56af2abe0f1e957712a31ceb92ce22e2e304..b30ce26ceff67b5182fc2d3c2f344fa23fc2229e 100644
+--- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/account/AccountApi.kt
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/api/account/AccountApi.kt
+@@ -72,6 +72,11 @@ class AccountApi(private val authWebSocket: SignalWebSocket.AuthenticatedWebSock
+     }
+   }
+ 
++  /** Blocking variant of [clearFcmToken] for Java callers running on a worker thread. */
++  fun clearFcmTokenSync(): RequestResult<Unit, Nothing> {
++    return runBlocking { clearFcmToken() }
++  }
++
+   /**
+    * Set account attributes.
+    *
 diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/PushServiceSocket.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/PushServiceSocket.java
-index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c1bbbad72 100644
+index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..be4becdd684b0afa671949baf203f1b2482eb6cd 100644
 --- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/PushServiceSocket.java
 +++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/PushServiceSocket.java
 @@ -6,7 +6,6 @@
@@ -3664,7 +4800,15 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
  import org.signal.network.config.SignalServiceConfiguration;
  import org.signal.network.config.SignalUrl;
  import org.whispersystems.signalservice.internal.crypto.AttachmentDigest;
-@@ -102,6 +98,7 @@ import java.io.IOException;
+@@ -80,6 +76,7 @@ import org.whispersystems.signalservice.internal.push.exceptions.GroupNotFoundEx
+ import org.whispersystems.signalservice.internal.push.exceptions.GroupPatchNotAcceptedException;
+ import org.whispersystems.signalservice.internal.push.exceptions.GroupTerminatedException;
+ import org.whispersystems.signalservice.internal.push.exceptions.MismatchedDevicesException;
++import org.whispersystems.signalservice.internal.push.exceptions.MissingCapabilitiesException;
+ import org.whispersystems.signalservice.internal.push.exceptions.NotInGroupException;
+ import org.whispersystems.signalservice.internal.push.exceptions.StaleDevicesException;
+ import org.whispersystems.signalservice.internal.push.http.CancelationSignal;
+@@ -102,6 +99,7 @@ import java.io.IOException;
  import java.io.InputStream;
  import java.io.OutputStream;
  import java.io.UnsupportedEncodingException;
@@ -3672,7 +4816,7 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
  import java.net.URLEncoder;
  import java.nio.charset.StandardCharsets;
  import java.security.KeyManagementException;
-@@ -125,6 +122,7 @@ import java.util.function.Function;
+@@ -125,6 +123,7 @@ import java.util.function.Function;
  
  import javax.annotation.Nonnull;
  import javax.annotation.Nullable;
@@ -3680,7 +4824,7 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
  import javax.net.ssl.SSLContext;
  import javax.net.ssl.TrustManager;
  import javax.net.ssl.X509TrustManager;
-@@ -182,6 +180,8 @@ public class PushServiceSocket {
+@@ -182,6 +181,8 @@ public class PushServiceSocket {
  
    private static final String ARCHIVE_MEDIA_DOWNLOAD_PATH = "backups/%s/%s";
  
@@ -3689,7 +4833,7 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
    private static final Map<String, String> NO_HEADERS                         = Collections.emptyMap();
    private static final ResponseCodeHandler NO_HANDLER                         = new EmptyResponseCodeHandler();
    private static final ResponseCodeHandler UNOPINIONATED_HANDLER              = new UnopinionatedResponseCodeHandler();
-@@ -229,12 +229,12 @@ public class PushServiceSocket {
+@@ -229,12 +230,12 @@ public class PushServiceSocket {
      this.credentialsProvider       = credentialsProvider;
      this.signalAgent               = signalAgent;
      this.automaticNetworkRetry     = automaticNetworkRetry;
@@ -3708,7 +4852,20 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
      this.preferDirectRoute         = preferDirectRoute;
      this.random                    = new SecureRandom();
    }
-@@ -1043,14 +1043,15 @@ public class PushServiceSocket {
+@@ -371,7 +372,11 @@ public class PushServiceSocket {
+   }
+ 
+   public RegisterAsSecondaryDeviceResponse registerAsSecondaryDevice(RegisterAsSecondaryDeviceRequest request) throws IOException {
+-    String responseText = makeServiceRequest("/v1/devices/link", "PUT", JsonUtil.toJson(request));
++    String responseText = makeServiceRequest(DEVICE_LINK_PATH, "PUT", JsonUtil.toJson(request), NO_HEADERS,
++                                            (responseCode, body, getHeader) -> {
++                                              // This endpoint uses 409 for a missing account capability.
++                                              if (responseCode == 409) throw new MissingCapabilitiesException();
++                                            }, SealedSenderAccess.NONE);
+     return JsonUtil.fromJson(responseText, RegisterAsSecondaryDeviceResponse.class);
+   }
+ 
+@@ -1043,14 +1048,15 @@ public class PushServiceSocket {
  
    private ServiceConnectionHolder[] createServiceConnectionHolders(SignalUrl[] urls,
                                                                     List<Interceptor> interceptors,
@@ -3728,7 +4885,7 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
                                                                 url.getUrl(), url.getHostHeader()));
      }
  
-@@ -1059,13 +1060,14 @@ public class PushServiceSocket {
+@@ -1059,13 +1065,14 @@ public class PushServiceSocket {
  
    private static Map<Integer, ConnectionHolder[]> createCdnClientsMap(final Map<Integer, SignalCdnUrl[]> signalCdnUrlMap,
                                                                        final List<Interceptor> interceptors,
@@ -3746,7 +4903,7 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
      }
      return Collections.unmodifiableMap(result);
    }
-@@ -1076,17 +1078,17 @@ public class PushServiceSocket {
+@@ -1076,17 +1083,17 @@ public class PushServiceSocket {
      }
    }
  
@@ -3767,7 +4924,7 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
      try {
        TrustManager[] trustManagers = BlacklistingTrustManager.createFor(url.getTrustStore());
  
-@@ -1094,13 +1096,11 @@ public class PushServiceSocket {
+@@ -1094,13 +1101,11 @@ public class PushServiceSocket {
        context.init(null, trustManagers, null);
  
        OkHttpClient.Builder builder = new OkHttpClient.Builder()
@@ -3784,6 +4941,238 @@ index e2fbc534b68bd1f34c43a9d72e467b96ad3276fa..3265da31919ba0307b095d8954ba525c
  
        builder.sslSocketFactory(new Tls12SocketFactory(context.getSocketFactory()), (X509TrustManager)trustManagers[0])
               .connectionSpecs(url.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+diff --git a/lib/libsignal-service/src/test/java/org/whispersystems/signalservice/api/SignalServiceAccountManagerLinkedRegistrationTest.kt b/lib/libsignal-service/src/test/java/org/whispersystems/signalservice/api/SignalServiceAccountManagerLinkedRegistrationTest.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..2a0808ac56d7fa48d763800195e41a0aaa3e9d18
+--- /dev/null
++++ b/lib/libsignal-service/src/test/java/org/whispersystems/signalservice/api/SignalServiceAccountManagerLinkedRegistrationTest.kt
+@@ -0,0 +1,226 @@
++/*
++ * SPDX-License-Identifier: AGPL-3.0-only
++ */
++
++package org.whispersystems.signalservice.api
++
++import com.fasterxml.jackson.databind.JsonNode
++import com.fasterxml.jackson.databind.ObjectMapper
++import io.mockk.every
++import io.mockk.mockk
++import io.mockk.mockkStatic
++import io.mockk.unmockkStatic
++import okhttp3.Credentials
++import okhttp3.Dns
++import okhttp3.Interceptor
++import okhttp3.MediaType.Companion.toMediaType
++import okhttp3.Protocol
++import okhttp3.Request
++import okhttp3.Response
++import okhttp3.ResponseBody.Companion.toResponseBody
++import okio.Buffer
++import org.junit.Assert.assertEquals
++import org.junit.Assert.assertThrows
++import org.junit.Assert.assertTrue
++import org.junit.Test
++import org.signal.core.util.Base64
++import org.signal.libsignal.protocol.IdentityKey
++import org.signal.libsignal.protocol.ecc.ECKeyPair
++import org.signal.libsignal.protocol.kem.KEMKeyPair
++import org.signal.libsignal.protocol.kem.KEMKeyType
++import org.signal.libsignal.protocol.state.KyberPreKeyRecord
++import org.signal.libsignal.protocol.state.SignedPreKeyRecord
++import org.signal.network.config.SignalServiceConfiguration
++import org.signal.network.config.SignalServiceUrl
++import org.signal.network.config.TrustStore
++import org.whispersystems.signalservice.api.account.AccountAttributes
++import org.whispersystems.signalservice.api.account.PreKeyCollection
++import org.whispersystems.signalservice.api.groupsv2.GroupsV2Operations
++import org.whispersystems.signalservice.api.push.SignalServiceAddress
++import org.whispersystems.signalservice.internal.push.DeviceLimitExceededException
++import org.whispersystems.signalservice.internal.push.PushServiceSocket
++import org.whispersystems.signalservice.internal.push.exceptions.MissingCapabilitiesException
++import org.whispersystems.signalservice.internal.util.BlacklistingTrustManager
++import org.whispersystems.signalservice.internal.util.StaticCredentialsProvider
++import java.io.IOException
++import java.net.InetSocketAddress
++import java.net.ProxySelector
++import javax.net.SocketFactory
++import javax.net.ssl.TrustManager
++
++/** Exercises the HTTP contract used by MollySocket without contacting the Signal service. */
++class SignalServiceAccountManagerLinkedRegistrationTest {
++
++  private val mapper = ObjectMapper()
++  private val aciPreKeys = preKeys(11)
++  private val pniPreKeys = preKeys(21)
++
++  @Test
++  fun `fetching linked device preserves credentials attributes and both prekey collections`() {
++    val (deviceId, request) = register(fcmToken = "must-not-be-sent")
++    val body = body(request)
++
++    assertEquals(7, deviceId)
++    assertEquals("PUT", request.method)
++    assertEquals("https://linked-registration.invalid/v1/devices/link", request.url.toString())
++    // createForDeviceLink has no ACI or number yet; this is the new device's password.
++    assertEquals(Credentials.basic("null", DEVICE_PASSWORD), request.header("Authorization"))
++    assertEquals("MollySocket-test", request.header("X-Signal-Agent"))
++    assertEquals("provisioning-code", body["verificationCode"].asText())
++    assertEquals(
++      mapper.readTree(
++        """{
++          "fetchesMessages": true,
++          "registrationId": 123,
++          "pniRegistrationId": 456,
++          "name": "ZW5jcnlwdGVkLW5hbWU=",
++          "capabilities": {
++            "storage": false,
++            "versionedExpirationTimer": true,
++            "attachmentBackfill": true,
++            "spqr": true,
++            "usernameChangeSyncMessage": true,
++            "optionalPhoneNumber": false
++          }
++        }"""
++      ),
++      body["accountAttributes"]
++    )
++    assertPreKeys(body, "aci", aciPreKeys)
++    assertPreKeys(body, "pni", pniPreKeys)
++    assertTrue(body.path("gcmToken").isNull)
++  }
++
++  @Test
++  fun `push linked device retains its FCM token`() {
++    val (_, request) = register(fetchesMessages = false, fcmToken = "linked-device-fcm")
++    val body = body(request)
++
++    assertEquals(false, body["accountAttributes"]["fetchesMessages"].asBoolean())
++    assertEquals("linked-device-fcm", body["gcmToken"]["gcmRegistrationId"].asText())
++    assertEquals(true, body["gcmToken"]["webSocketChannel"].asBoolean())
++  }
++
++  @Test
++  fun `link capability conflict retains its endpoint-specific exception`() {
++    assertThrows(MissingCapabilitiesException::class.java) {
++      register(responseCode = 409, responseBody = """{"missingCapabilities":["spqr"]}""")
++    }
++  }
++
++  @Test
++  fun `device limit retains the counts used by UnifiedPush notification`() {
++    val error = assertThrows(DeviceLimitExceededException::class.java) {
++      register(responseCode = 411, responseBody = """{"current":6,"max":6}""")
++    }
++
++    assertEquals(6, error.current)
++    assertEquals(6, error.max)
++  }
++
++  @Test
++  fun `invalid response device ID fails as an IO error`() {
++    val error = assertThrows(IOException::class.java) {
++      register(responseBody = response("not-a-device-id"))
++    }
++
++    assertTrue(error.cause is NumberFormatException)
++  }
++
++  private fun register(
++    responseCode: Int = 200,
++    responseBody: String = response("7"),
++    fetchesMessages: Boolean = true,
++    fcmToken: String? = null
++  ): Pair<Int, Request> {
++    var captured: Request? = null
++    val interceptor = Interceptor { chain ->
++      val request = chain.request().also { captured = it }
++      Response.Builder()
++        .request(request)
++        .protocol(Protocol.HTTP_1_1)
++        .code(responseCode)
++        .message("Fixture response")
++        .body(responseBody.toResponseBody("application/json".toMediaType()))
++        .build()
++    }
++    val trustStore = mockk<TrustStore>()
++    val defaultTrustManager = BlacklistingTrustManager.createForDefaultTrustStore()
++    // Android's BKS store is irrelevant to this in-process HTTP exchange. Keep the real
++    // request, JSON, response handling, and configured client/interceptor path intact.
++    mockkStatic(BlacklistingTrustManager::class)
++    try {
++      every { BlacklistingTrustManager.createFor(trustStore) } returns arrayOf<TrustManager>(defaultTrustManager)
++      val configuration = SignalServiceConfiguration(
++        signalServiceUrls = arrayOf(SignalServiceUrl("https://linked-registration.invalid", trustStore)),
++        signalCdnUrlMap = mapOf(0 to emptyArray(), 2 to emptyArray()),
++        signalStorageUrls = emptyArray(),
++        signalCdsiUrls = emptyArray(),
++        signalSvr2Urls = emptyArray(),
++        networkInterceptors = listOf(interceptor),
++        socketFactory = SocketFactory.getDefault(),
++        proxySelector = ProxySelector.of(InetSocketAddress.createUnresolved("proxy.invalid", 1080)),
++        dns = Dns { throw AssertionError("Registration fixture must not resolve a network host") },
++        zkGroupServerPublicParams = byteArrayOf(),
++        genericServerPublicParams = byteArrayOf(),
++        backupServerPublicParams = byteArrayOf(),
++        censored = false
++      )
++      val credentials = StaticCredentialsProvider(null, null, null, SignalServiceAddress.DEFAULT_DEVICE_ID, DEVICE_PASSWORD)
++      val socket = PushServiceSocket(configuration, credentials, "MollySocket-test", false)
++      val manager = SignalServiceAccountManager(null, null, socket, mockk<GroupsV2Operations>())
++      val attributes = AccountAttributes(
++        signalingKey = null,
++        registrationId = 123,
++        fetchesMessages = fetchesMessages,
++        registrationLock = null,
++        unidentifiedAccessKey = null,
++        unrestrictedUnidentifiedAccess = true,
++        capabilities = AccountAttributes.Capabilities(false, true, true, true, true, false),
++        discoverableByPhoneNumber = false,
++        name = "ZW5jcnlwdGVkLW5hbWU=",
++        pniRegistrationId = 456,
++        recoveryPassword = null
++      )
++      val deviceId = manager.finishNewDeviceRegistration("provisioning-code", attributes, aciPreKeys, pniPreKeys, fcmToken)
++      return deviceId to checkNotNull(captured)
++    } finally {
++      unmockkStatic(BlacklistingTrustManager::class)
++    }
++  }
++
++  private fun body(request: Request): JsonNode {
++    val buffer = Buffer()
++    checkNotNull(request.body).writeTo(buffer)
++    return mapper.readTree(buffer.readUtf8())
++  }
++
++  private fun assertPreKeys(body: JsonNode, prefix: String, keys: PreKeyCollection) {
++    val signed = body["${prefix}SignedPreKey"]
++    assertEquals(keys.signedPreKey.id, signed["keyId"].asInt())
++    assertEquals(Base64.encodeWithoutPadding(keys.signedPreKey.keyPair.publicKey.serialize()), signed["publicKey"].asText())
++    assertEquals(Base64.encodeWithoutPadding(keys.signedPreKey.signature), signed["signature"].asText())
++    val pq = body["${prefix}PqLastResortPreKey"]
++    assertEquals(keys.lastResortKyberPreKey.id, pq["keyId"].asInt())
++    assertEquals(Base64.encodeWithoutPadding(keys.lastResortKyberPreKey.keyPair.publicKey.serialize()), pq["publicKey"].asText())
++    assertEquals(Base64.encodeWithoutPadding(keys.lastResortKyberPreKey.signature), pq["signature"].asText())
++  }
++
++  private fun preKeys(id: Int): PreKeyCollection {
++    val identity = ECKeyPair.generate()
++    val signed = ECKeyPair.generate()
++    val pq = KEMKeyPair.generate(KEMKeyType.KYBER_1024)
++    return PreKeyCollection(
++      IdentityKey(identity.publicKey),
++      SignedPreKeyRecord(id, 1L, signed, identity.privateKey.calculateSignature(signed.publicKey.serialize())),
++      KyberPreKeyRecord(id + 1, 1L, pq, identity.privateKey.calculateSignature(pq.publicKey.serialize()))
++    )
++  }
++
++  private fun response(deviceId: String): String =
++    """{"uuid":"00000000-0000-4000-8000-000000000001","pni":"00000000-0000-4000-8000-000000000002","deviceId":"$deviceId"}"""
++
++  companion object {
++    private const val DEVICE_PASSWORD = "new-linked-device-password"
++  }
++}
 diff --git a/lib/password-manager/src/main/java/org/signal/passwordmanager/SignalCredentialManager.kt b/lib/password-manager/src/main/java/org/signal/passwordmanager/SignalCredentialManager.kt
 index 0af8fe6044f1ec3013cc1611a815cf582a870e63..f0fd6e624d343631a1f1f796eafd04fc8ee6cab9 100644
 --- a/lib/password-manager/src/main/java/org/signal/passwordmanager/SignalCredentialManager.kt

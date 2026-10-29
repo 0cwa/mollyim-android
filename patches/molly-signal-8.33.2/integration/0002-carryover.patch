@@ -1,6 +1,6 @@
-From 47849ecdc08c71ba9635bedefdc89f8dce3ed7ad Mon Sep 17 00:00:00 2001
+From 10639821b4b032eaa0d928aea958a2d9f66a2621 Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly integration carryover, part 2
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Shared application/core/library integration, mixed-purpose files and remaining exact target delta.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -29,120 +29,11 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: carryover
 
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java b/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
-index fc550f9a251acf71e071262527ca68353a77d256..27128bcf353bee6b1f2e92d0da39d44bb1b9ddd4 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
-+++ b/app/src/main/java/org/thoughtcrime/securesms/messageprocessingalarm/RoutineMessageFetchReceiver.java
-@@ -3,7 +3,6 @@ package org.thoughtcrime.securesms.messageprocessingalarm;
- import android.annotation.SuppressLint;
- import android.app.AlarmManager;
- import android.app.PendingIntent;
--import android.content.BroadcastReceiver;
- import android.content.Context;
- import android.content.Intent;
- import android.os.Handler;
-@@ -12,13 +11,14 @@ import android.os.SystemClock;
- 
- import androidx.annotation.NonNull;
- 
-+import org.signal.core.util.AppForegroundObserver;
- import org.signal.core.util.PendingIntentFlags;
- import org.signal.core.util.concurrent.SignalExecutors;
- import org.signal.core.util.logging.Log;
- import org.thoughtcrime.securesms.dependencies.AppDependencies;
- import org.thoughtcrime.securesms.jobmanager.JobTracker;
- import org.thoughtcrime.securesms.jobs.MessageFetchJob;
--import org.signal.core.util.AppForegroundObserver;
-+import org.thoughtcrime.securesms.service.ExportedBroadcastReceiver;
- import org.thoughtcrime.securesms.util.BatterySnapshotTracker;
- import org.thoughtcrime.securesms.util.RemoteConfig;
- 
-@@ -29,7 +29,7 @@ import java.util.Optional;
-  * A receiver that is scheduled via alarm to run at a remotely-configurable interval to fetch messages from the service.
-  * Basically an extra reliability thing that helps poke the system to fetch messages more often.
-  */
--public final class RoutineMessageFetchReceiver extends BroadcastReceiver {
-+public final class RoutineMessageFetchReceiver extends ExportedBroadcastReceiver {
- 
-   private static final String TAG = Log.tag(RoutineMessageFetchReceiver.class);
- 
-@@ -37,7 +37,7 @@ public final class RoutineMessageFetchReceiver extends BroadcastReceiver {
- 
-   @Override
-   @SuppressLint("StaticFieldLeak")
--  public void onReceive(@NonNull Context context, @NonNull Intent intent) {
-+  public void onReceiveUnlock(@NonNull Context context, @NonNull Intent intent) {
-     Log.i(TAG, String.format("onReceive(%s)", intent.getAction()));
- 
-     if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt b/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
-index 68e1def4f044015f80d660f3f50e531a464ae237..378d65a23268672d7e6c83ae4d7ea9ff79496802 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
-+++ b/app/src/main/java/org/thoughtcrime/securesms/messagerequests/MessageRequestBarColorTheme.kt
-@@ -1,40 +1,41 @@
- package org.thoughtcrime.securesms.messagerequests
- 
- import android.content.Context
-+import androidx.annotation.AttrRes
- import androidx.annotation.ColorInt
--import androidx.core.content.ContextCompat
-+import org.signal.core.ui.util.ThemeUtil
- import org.thoughtcrime.securesms.R
- 
- enum class MessageRequestBarColorTheme(
--  private val containerBackgroundColor: Int,
--  private val buttonBackgroundColor: Int,
--  private val buttonForegroundDenyColor: Int,
--  private val buttonForegroundAcceptColor: Int
-+  @AttrRes private val containerBackgroundColor: Int,
-+  @AttrRes private val buttonBackgroundColor: Int,
-+  @AttrRes private val buttonForegroundDenyColor: Int,
-+  @AttrRes private val buttonForegroundAcceptColor: Int
- ) {
-   WALLPAPER(
--    R.color.message_request_bar_container_background_wallpaper,
--    R.color.message_request_bar_background_wallpaper,
--    R.color.message_request_bar_denyForeground_wallpaper,
--    R.color.message_request_bar_acceptForeground_wallpaper
-+    R.attr.message_request_bar_container_background_wallpaper,
-+    R.attr.message_request_bar_background_wallpaper,
-+    R.attr.message_request_bar_denyForeground_wallpaper,
-+    R.attr.message_request_bar_acceptForeground_wallpaper
-   ),
-   NORMAL(
--    R.color.message_request_bar_container_background_normal,
--    R.color.message_request_bar_background_normal,
--    R.color.message_request_bar_denyForeground_normal,
--    R.color.message_request_bar_acceptForeground_normal
-+    R.attr.message_request_bar_container_background_normal,
-+    R.attr.message_request_bar_background_normal,
-+    R.attr.message_request_bar_denyForeground_normal,
-+    R.attr.message_request_bar_acceptForeground_normal
-   );
- 
-   @ColorInt
--  fun getContainerButtonBackgroundColor(context: Context): Int = ContextCompat.getColor(context, containerBackgroundColor)
-+  fun getContainerButtonBackgroundColor(context: Context): Int = ThemeUtil.getThemedColor(context, containerBackgroundColor)
- 
-   @ColorInt
--  fun getButtonBackgroundColor(context: Context): Int = ContextCompat.getColor(context, buttonBackgroundColor)
-+  fun getButtonBackgroundColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonBackgroundColor)
- 
-   @ColorInt
--  fun getButtonForegroundDenyColor(context: Context): Int = ContextCompat.getColor(context, buttonForegroundDenyColor)
-+  fun getButtonForegroundDenyColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonForegroundDenyColor)
- 
-   @ColorInt
--  fun getButtonForegroundAcceptColor(context: Context): Int = ContextCompat.getColor(context, buttonForegroundAcceptColor)
-+  fun getButtonForegroundAcceptColor(context: Context): Int = ThemeUtil.getThemedColor(context, buttonForegroundAcceptColor)
- 
-   companion object {
-     @JvmStatic
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/migrations/AvatarMigrationJob.java b/app/src/main/java/org/thoughtcrime/securesms/migrations/AvatarMigrationJob.java
 deleted file mode 100644
 index 69a7a5ad63c200308852dca4943b55311e7e66b1..0000000000000000000000000000000000000000
@@ -1725,52 +1616,6 @@ index 1318ba12eb3b75c89a049e3a6fc67b0f66001f9b..a68da5625b0ed51bc570481f33d6c987
 +      super.onClick(widget);
 +    }
 +  }
- }
-diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
-index 998cecd42f96daf307177c4b35c526f6fc76deba..596f533d0a592f60d3f6301bd8707003076fad63 100644
---- a/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
-+++ b/app/src/main/java/org/thoughtcrime/securesms/util/PlayStoreUtil.java
-@@ -1,24 +1,19 @@
- package org.thoughtcrime.securesms.util;
- 
--import android.content.ActivityNotFoundException;
- import android.content.Context;
- import android.content.Intent;
- import android.net.Uri;
- 
- import androidx.annotation.NonNull;
- 
--import org.thoughtcrime.securesms.BuildConfig;
-+import org.thoughtcrime.securesms.R;
- 
- public final class PlayStoreUtil {
- 
-   private PlayStoreUtil() {}
- 
-   public static void openPlayStoreOrOurApkDownloadPage(@NonNull Context context) {
--    if (BuildConfig.MANAGES_APP_UPDATES) {
--      CommunicationActions.openBrowserLink(context, "https://signal.org/android/apk");
--    } else {
--      openPlayStore(context);
--    }
-+    CommunicationActions.openBrowserLink(context, context.getString(R.string.install_url));
-   }
- 
-   public static void openPlayStoreHome(@NonNull Context context) {
-@@ -30,14 +25,4 @@ public final class PlayStoreUtil {
-       CommunicationActions.openBrowserLink(context, "https://play.google.com/store/apps/");
-     }
-   }
--
--  private static void openPlayStore(@NonNull Context context) {
--    String packageName = context.getPackageName();
--
--    try {
--      context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
--    } catch (ActivityNotFoundException e) {
--      CommunicationActions.openBrowserLink(context, "https://play.google.com/store/apps/details?id=" + packageName);
--    }
--  }
  }
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/RemoteDeprecation.java b/app/src/main/java/org/thoughtcrime/securesms/util/RemoteDeprecation.java
 index 99b09051efece33ebc15e7b590214c6e0c8f7f9f..7c8fc6e94b7e31b7716be80bcf6e5dcd539e77ac 100644

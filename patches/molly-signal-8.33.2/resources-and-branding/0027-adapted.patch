@@ -1,6 +1,6 @@
-From 31a256d639b5769f9a01d1e1151f5241b09b7d58 Mon Sep 17 00:00:00 2001
+From c20db7550a94f0616c8eff41b4c71f40be906da5 Mon Sep 17 00:00:00 2001
 From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
-Date: Wed, 28 Oct 2026 23:22:08 +0000
+Date: Thu, 29 Oct 2026 14:55:07 +0000
 Subject: [PATCH] Reconstruct Molly resources-and-branding adapted, part 27
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="------------false"
@@ -14,7 +14,7 @@ Content-Transfer-Encoding: 8bit
 Shared localized resources, icons, artwork, layouts, XML policy and resource deletions.
 
 Export the complete file deltas for this review batch from
-6e9dddc01f1b26e608ac683807c51e139c141ed2 to a8e3343240ae373624945086999d251e9d652180.
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to b6e4f2a164f4861190939ab3fe29fb0d1fdf0748.
 This reconstructed snapshot retains the target tree, including merge
 resolutions and retained backports. The group is a review partition,
 not an independently optional runtime feature.
@@ -30,11 +30,102 @@ Entries compare file mode, object type and object ID, including absence.
 The category describes whole-file deltas, not conflict history or
 build/runtime compatibility.
 
-Source-Commit: a8e3343240ae373624945086999d251e9d652180
+Source-Commit: b6e4f2a164f4861190939ab3fe29fb0d1fdf0748
 Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
 Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
 Port-Category: adapted
 
+diff --git a/core/util/src/main/res/values-uk/strings.xml b/core/util/src/main/res/values-uk/strings.xml
+index ed62234c4118f7b43b2369447b5e5c87897ac6d8..7f2c0a542ba8588ca7ef7419673bbaaee9484659 100644
+--- a/core/util/src/main/res/values-uk/strings.xml
++++ b/core/util/src/main/res/values-uk/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">Запросити в Signal</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
+diff --git a/core/util/src/main/res/values-ur/strings.xml b/core/util/src/main/res/values-ur/strings.xml
+index 6edac73436255e572e50ae4729070c6a95485bf7..708ab670715cee99e5f30717e5d4a9cb02c76cde 100644
+--- a/core/util/src/main/res/values-ur/strings.xml
++++ b/core/util/src/main/res/values-ur/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">Signal میں مدعو کریں</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
+diff --git a/core/util/src/main/res/values-vi/strings.xml b/core/util/src/main/res/values-vi/strings.xml
+index bc098d4986dd507c0b06acadf54639f4d42c6f86..77f81627a7a91c28b641ccf66721bb1a2ba7cd84 100644
+--- a/core/util/src/main/res/values-vi/strings.xml
++++ b/core/util/src/main/res/values-vi/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">Mời dùng Signal</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
+diff --git a/core/util/src/main/res/values-yue/strings.xml b/core/util/src/main/res/values-yue/strings.xml
+index 1b28f0422165c4789fe0935b41c28906d045fe88..f32082c18c9d8c2741fb3ddf25cd9dec373275ba 100644
+--- a/core/util/src/main/res/values-yue/strings.xml
++++ b/core/util/src/main/res/values-yue/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">拉隊嚟 Signal</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
+diff --git a/core/util/src/main/res/values-zh-rCN/strings.xml b/core/util/src/main/res/values-zh-rCN/strings.xml
+index cadd59a65c44110cc785d9c63676ad3e602bc7a6..9a7ff6bc98f1bd4a52a51d34c44095daf6559b37 100644
+--- a/core/util/src/main/res/values-zh-rCN/strings.xml
++++ b/core/util/src/main/res/values-zh-rCN/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">邀请使用 Signal</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
+diff --git a/core/util/src/main/res/values-zh-rHK/strings.xml b/core/util/src/main/res/values-zh-rHK/strings.xml
+index 6f51c432cbe05bc77b901f482ce895e1b4b894c1..95f4ca44184a4ba31ffb599d303ea702df808fe2 100644
+--- a/core/util/src/main/res/values-zh-rHK/strings.xml
++++ b/core/util/src/main/res/values-zh-rHK/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">邀請加入 Signal</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
+diff --git a/core/util/src/main/res/values-zh-rTW/strings.xml b/core/util/src/main/res/values-zh-rTW/strings.xml
+index 5fb14c9a16a8c9a11b32543b75cde4825d160264..c342adae160f84f91a06edaa8622429a70d3b42f 100644
+--- a/core/util/src/main/res/values-zh-rTW/strings.xml
++++ b/core/util/src/main/res/values-zh-rTW/strings.xml
+@@ -7,7 +7,7 @@
+ <resources>
+     <!-- Link to the Signal install page used in invite flows. -->
+   <!-- Removed by excludeNonTranslatables <string name="install_url" translatable="false">https://signal.org/install</string> -->
+-    
++
+     <!-- Title of the system share sheet shown when sharing an invite -->
+     <string name="Invite__invite_to_signal">邀請至 Signal</string>
+     <!-- Default invite message shown in invite flows, to send in email or SMS. -->
 diff --git a/core/util/src/main/res/values/strings.xml b/core/util/src/main/res/values/strings.xml
 index ecc5a87a82f8370b5564ba39a56f619fed046f6c..6cac334cdce57dac88329d6440179d1aeb264334 100644
 --- a/core/util/src/main/res/values/strings.xml
@@ -4328,225 +4419,6 @@ index cd0d24e9c881ced6cb62479276ebac78e974fb34..03eff70745416d7194018b8823473c0b
      <!--Call to action to get more information about the limitations of the change app icon functionality. -->
      <string name="preferences__app_icon_learn_more">Ketahui lebih lanjut</string>
  
-diff --git a/feature/app-settings/src/main/res/values-ms/strings2.xml b/feature/app-settings/src/main/res/values-ms/strings2.xml
-new file mode 100644
-index 0000000000000000000000000000000000000000..1255874010fe96fd07a74103bba2cbe703cee013
---- /dev/null
-+++ b/feature/app-settings/src/main/res/values-ms/strings2.xml
-@@ -0,0 +1,4 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <string name="preferences__never">Tidak pernah</string>
-+</resources>
-diff --git a/feature/app-settings/src/main/res/values-my/strings.xml b/feature/app-settings/src/main/res/values-my/strings.xml
-index f21dc03517d90f2f339605b8c6e58cce971e28c9..1ead1bad6ca6be4de265beb8db3ba234b8f29392 100644
---- a/feature/app-settings/src/main/res/values-my/strings.xml
-+++ b/feature/app-settings/src/main/res/values-my/strings.xml
-@@ -516,9 +516,9 @@
-     <!-- Option text explaining that screen lock should start at a custom time set by the user -->
-     <string name="ScreenLockSettingsFragment__custom_time">စိတ်ကြိုက် အချိန်</string>
-     <!-- Title on biometrics prompt explaining that biometrics are needed to turn on screen lock -->
--    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Signal စခရင် လော့ခ်ကို သုံးပါ</string>
-+    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Molly စခရင် လော့ခ်ကို သုံးပါ</string>
-     <!-- Title on biometrics prompt explaining that biometrics are needed to turn off screen lock -->
--    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Signal စခရင် လော့ခ်ကို ပိတ်ပါ</string>
-+    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Molly စခရင် လော့ခ်ကို ပိတ်ပါ</string>
- 
-     <!-- HelpSettingsFragment -->
-     <string name="preferences__help">အကူအညီ</string>
-@@ -531,7 +531,7 @@
-     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
-     <string name="HelpSettingsFragment__licenses">လိုင်စင်များ</string>
-     <string name="HelpSettingsFragment__terms_amp_privacy_policy">လိုက်နာဆောင်ရွက်ရမည့် အချက်များ</string>
--    <string name="HelpFragment__copyright_signal_messenger">မူပိုင်ခွင့် Signal Messenger</string>
-+    <string name="HelpFragment__copyright_signal_messenger">မူပိုင်ခွင့် Molly Messenger</string>
-     <string name="HelpFragment__licenced_under_the_agplv3">GNU AGPLv3 အရ ခွင့်ပြုထားသည်</string>
-     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-     <string name="HelpSettingsFragment__signal_is_a_501c3">Signal သည် အကျိုးအမြတ်မယူပါ</string>
-@@ -540,7 +540,7 @@
-     <!-- Visible warning label for the limitations of changing the app icon. -->
-     <string name="preferences__app_icon_warning">အက်ပ်အိုင်ကွန်များနှင့် အမည်များကို ပင်မမျက်နှာပြင်နှင့် အက်ပ်စုစည်းမှုတွင် မြင်တွေ့နိုင်ပါသည်။</string>
-     <!-- Visible warning label explaining that changing the app icon and name does not affect notifications. -->
--    <string name="preferences__app_icon_notification_warning">အသိပေးချက်များတွင် ပုံသေ Signal အိုင်ကွန်နှင့် အမည်ကိုသာ အမြဲတမ်းပြသပါမည်။</string>
-+    <string name="preferences__app_icon_notification_warning">အသိပေးချက်များတွင် ပုံသေ Molly အိုင်ကွန်နှင့် အမည်ကိုသာ အမြဲတမ်းပြသပါမည်။</string>
-     <!--Text description of a graphic illustrating the limitations of the app icon change. -->
-     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">အစားထိုး အက်ပ်အိုင်ကွန်အား မြင်တွေ့နိုင်မည့် နေရာကို သရုပ်ဖော်ပြသသည့် ဂရပ်ဖစ်ပုံ။</string>
- 
-@@ -560,9 +560,9 @@
-     <!-- Title for the confirmation dialog of changing the app icon. -->
-     <string name="preferences__app_icon_dialog_title">အက်ပ်အိုင်ကွန်နှင့် အမည်ကို \"%1$s\" ဟု ပြောင်းရန်</string>
-     <!-- Description for the confirmation dialog of changing the app icon. -->
--    <string name="preferences__app_icon_dialog_description">အက်ပ်အိုင်ကွန်နှင့် အမည်ကို ပြောင်းရန်အတွက် Signal ကို ပိတ်ရန် လိုအပ်ပါသည်။ အသိပေးချက်များတွင် ပုံသေ Signal အိုင်ကွန်နှင့် အမည်ကိုသာ အမြဲတမ်းပြသပါမည်။</string>
-+    <string name="preferences__app_icon_dialog_description">အက်ပ်အိုင်ကွန်နှင့် အမည်ကို ပြောင်းရန်အတွက် Molly ကို ပိတ်ရန် လိုအပ်ပါသည်။ အသိပေးချက်များတွင် ပုံသေ Molly အိုင်ကွန်နှင့် အမည်ကိုသာ အမြဲတမ်းပြသပါမည်။</string>
-     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
--    <string name="preferences__app_icon_warning_learn_more">သင့်ဖုန်း၏ ပင်မမျက်နှာပြင်နှင့် အက်ပ်အံဆွဲတွင် မြင်တွေ့နိုင်မည့် အက်ပ်အိုင်ကွန်နှင့် အမည်တစ်ခုကို ရွေးချယ်ပါ။ အသိပေးချက်များတွင် ပုံသေ Signal အိုင်ကွန်နှင့် အမည်ကိုသာ အမြဲတမ်းပြသပါမည်။ ပိုမို လေ့လာရန်</string>
-+    <string name="preferences__app_icon_warning_learn_more">သင့်ဖုန်း၏ ပင်မမျက်နှာပြင်နှင့် အက်ပ်အံဆွဲတွင် မြင်တွေ့နိုင်မည့် အက်ပ်အိုင်ကွန်နှင့် အမည်တစ်ခုကို ရွေးချယ်ပါ။ အသိပေးချက်များတွင် ပုံသေ Molly အိုင်ကွန်နှင့် အမည်ကိုသာ အမြဲတမ်းပြသပါမည်။ ပိုမို လေ့လာရန်</string>
-     <!--Call to action to get more information about the limitations of the change app icon functionality. -->
-     <string name="preferences__app_icon_learn_more">ပိုမို လေ့လာရန်</string>
- 
-diff --git a/feature/app-settings/src/main/res/values-my/strings2.xml b/feature/app-settings/src/main/res/values-my/strings2.xml
-new file mode 100644
-index 0000000000000000000000000000000000000000..1c0472d7165f51408e9705dbae21b1d62ede1bbd
---- /dev/null
-+++ b/feature/app-settings/src/main/res/values-my/strings2.xml
-@@ -0,0 +1,5 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <string name="preferences__enable_debug_log">Debug Log ကို လုပ်ဆောင်ပါ</string>
-+<string name="preferences__never">ဘယ်တော့မှ</string>
-+</resources>
-diff --git a/feature/app-settings/src/main/res/values-nb/strings.xml b/feature/app-settings/src/main/res/values-nb/strings.xml
-index 44c708dd228535c9992dcf73fcf122fa5494a419..e15523ff557d8d0d1e42932eb84e23ee85322c64 100644
---- a/feature/app-settings/src/main/res/values-nb/strings.xml
-+++ b/feature/app-settings/src/main/res/values-nb/strings.xml
-@@ -505,7 +505,7 @@
-     <!-- Text shown with toggle that when switched on will enable screen lock -->
-     <string name="ScreenLockSettingsFragment__use_screen_lock">Bruk skjermlås</string>
-     <!-- Description of what screen locking will do and how notification content will not be shown when screen is locked -->
--    <string name="ScreenLockSettingsFragment__your_android_device">Du vil bli bedt om å låse opp Signal via skjermlåsen på enheten din hver gang du lukker appen. Innholdet i meldinger vises ikke i forhåndsvisningene av varsler når Signal er låst.</string>
-+    <string name="ScreenLockSettingsFragment__your_android_device">Du vil bli bedt om å låse opp Molly via skjermlåsen på enheten din hver gang du lukker appen. Innholdet i meldinger vises ikke i forhåndsvisningene av varsler når Molly er låst.</string>
-     <!-- Title text explaining when users should start the screen lock -->
-     <string name="ScreenLockSettingsFragment__start_screen_lock">Lås skjermen</string>
-     <!-- Option text explaining that screen lock should start after 1 minute of inactivity -->
-@@ -517,9 +517,9 @@
-     <!-- Option text explaining that screen lock should start at a custom time set by the user -->
-     <string name="ScreenLockSettingsFragment__custom_time">Selvvalgt tid</string>
-     <!-- Title on biometrics prompt explaining that biometrics are needed to turn on screen lock -->
--    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Bruk skjermlås på Signal</string>
-+    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Bruk skjermlås på Molly</string>
-     <!-- Title on biometrics prompt explaining that biometrics are needed to turn off screen lock -->
--    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Slå av skjermlåsen på Signal</string>
-+    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Slå av skjermlåsen på Molly</string>
- 
-     <!-- HelpSettingsFragment -->
-     <string name="preferences__help">Hjelp</string>
-@@ -532,7 +532,7 @@
-     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
-     <string name="HelpSettingsFragment__licenses">Lisenser</string>
-     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Vilkår og personvernerklæring</string>
--    <string name="HelpFragment__copyright_signal_messenger">Copyright Signal Messenger</string>
-+    <string name="HelpFragment__copyright_signal_messenger">Copyright Molly Messenger</string>
-     <string name="HelpFragment__licenced_under_the_agplv3">Lisensiert under GNU AGPLv3</string>
-     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-     <string name="HelpSettingsFragment__signal_is_a_501c3">Signal er en ideell organisasjon</string>
-@@ -541,7 +541,7 @@
-     <!-- Visible warning label for the limitations of changing the app icon. -->
-     <string name="preferences__app_icon_warning">Appikonene og -navnene vises på startskjermen og oversikten over apper.</string>
-     <!-- Visible warning label explaining that changing the app icon and name does not affect notifications. -->
--    <string name="preferences__app_icon_notification_warning">Varslene vil fremdeles vise standardikonet og navnet til Signal.</string>
-+    <string name="preferences__app_icon_notification_warning">Varslene vil fremdeles vise standardikonet og navnet til Molly.</string>
-     <!--Text description of a graphic illustrating the limitations of the app icon change. -->
-     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">Bilde som viser hvor det nye appikonet blir vist.</string>
- 
-@@ -561,9 +561,9 @@
-     <!-- Title for the confirmation dialog of changing the app icon. -->
-     <string name="preferences__app_icon_dialog_title">Bytt appikonet og -navnet til «%1$s»</string>
-     <!-- Description for the confirmation dialog of changing the app icon. -->
--    <string name="preferences__app_icon_dialog_description">Signal må starte på nytt for at endringene skal tre i kraft. Varslene vil fremdeles vise standardikonet og navnet til Signal.</string>
-+    <string name="preferences__app_icon_dialog_description">Molly må starte på nytt for at endringene skal tre i kraft. Varslene vil fremdeles vise standardikonet og navnet til Molly.</string>
-     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
--    <string name="preferences__app_icon_warning_learn_more">Velg et annet ikon og navn som skal vises på telefonens startskjerm og i oversikten over apper. Varslene vil fremdeles vise standardikonet og navnet til Signal. Les mer</string>
-+    <string name="preferences__app_icon_warning_learn_more">Velg et annet ikon og navn som skal vises på telefonens startskjerm og i oversikten over apper. Varslene vil fremdeles vise standardikonet og navnet til Molly. Les mer</string>
-     <!--Call to action to get more information about the limitations of the change app icon functionality. -->
-     <string name="preferences__app_icon_learn_more">Les mer</string>
- 
-diff --git a/feature/app-settings/src/main/res/values-nb/strings2.xml b/feature/app-settings/src/main/res/values-nb/strings2.xml
-new file mode 100644
-index 0000000000000000000000000000000000000000..e99938922726ea3637ddc8e90896c7c3a0902c83
---- /dev/null
-+++ b/feature/app-settings/src/main/res/values-nb/strings2.xml
-@@ -0,0 +1,11 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <string name="preferences__enable_debug_log">Skru på debug-logging</string>
-+    <string name="HelpSettingsFragment__molly_im_website">Molly-im-nettsiden</string>
-+<string name="preferences__never">Aldri</string>
-+    <string name="preferences__autoupdate_molly">Installer nye versjoner av Molly automatisk</string>
-+    <string name="preferences__periodically_check_for_new_releases_and_ask_to_install_them">Sjekk om det er nye utgivelser periodisk, og forespør installasjon</string>
-+    <string name="preferences__include_beta_updates">Inkluder beta-oppgraderinger</string>
-+    <string name="preferences__beta_versions_are_intended_for_testing_purposes_and_may_contain_bugs">Betaversjoner tilbys i testøyemed, og kan inneholde feil</string>
-+    <string name="EnableAppUpdatesMegaphone_check_for_updates">Se etter nye versjoner</string>
-+</resources>
-diff --git a/feature/app-settings/src/main/res/values-nl/strings.xml b/feature/app-settings/src/main/res/values-nl/strings.xml
-index 3680ae7c41cf49719e30ad535de189161f42397f..30651287e608eab6b3001e37baf945d71e0fec02 100644
---- a/feature/app-settings/src/main/res/values-nl/strings.xml
-+++ b/feature/app-settings/src/main/res/values-nl/strings.xml
-@@ -505,7 +505,7 @@
-     <!-- Text shown with toggle that when switched on will enable screen lock -->
-     <string name="ScreenLockSettingsFragment__use_screen_lock">Appvergrendeling gebruiken</string>
-     <!-- Description of what screen locking will do and how notification content will not be shown when screen is locked -->
--    <string name="ScreenLockSettingsFragment__your_android_device">De vergrendelingsinstellingen van je Android-apparaat zijn vereist om Signal te ontgrendelen wanneer je de app afsluit of van app wisselt. Als de app is vergrendeld, zie je geen inhoud van berichten in meldingen.</string>
-+    <string name="ScreenLockSettingsFragment__your_android_device">De vergrendelingsinstellingen van je Android-apparaat zijn vereist om Molly te ontgrendelen wanneer je de app afsluit of van app wisselt. Als de app is vergrendeld, zie je geen inhoud van berichten in meldingen.</string>
-     <!-- Title text explaining when users should start the screen lock -->
-     <string name="ScreenLockSettingsFragment__start_screen_lock">Appvergrendeling starten</string>
-     <!-- Option text explaining that screen lock should start after 1 minute of inactivity -->
-@@ -517,9 +517,9 @@
-     <!-- Option text explaining that screen lock should start at a custom time set by the user -->
-     <string name="ScreenLockSettingsFragment__custom_time">Zelfgekozen tijd</string>
-     <!-- Title on biometrics prompt explaining that biometrics are needed to turn on screen lock -->
--    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Signal-appvergrendeling gebruiken</string>
-+    <string name="ScreenLockSettingsFragment__use_signal_screen_lock">Molly-appvergrendeling gebruiken</string>
-     <!-- Title on biometrics prompt explaining that biometrics are needed to turn off screen lock -->
--    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Signal-appvergrendeling uitschakelen</string>
-+    <string name="ScreenLockSettingsFragment__turn_off_signal_lock">Molly-appvergrendeling uitschakelen</string>
- 
-     <!-- HelpSettingsFragment -->
-     <string name="preferences__help">Hulp</string>
-@@ -532,7 +532,7 @@
-     <!--    Header for the screen that displays the licenses of the open-source software dependencies of the Signal app-->
-     <string name="HelpSettingsFragment__licenses">Licenties</string>
-     <string name="HelpSettingsFragment__terms_amp_privacy_policy">Voorwaarden en privacybeleid</string>
--    <string name="HelpFragment__copyright_signal_messenger">Auteursrecht Signal Messenger</string>
-+    <string name="HelpFragment__copyright_signal_messenger">Auteursrecht Molly Messenger</string>
-     <string name="HelpFragment__licenced_under_the_agplv3">Uitgegeven onder een GNU AGPLv3-licentie</string>
-     <!-- Non-English translations should use "Signal is a nonprofit." instead, dropping the 501c3 reference. -->
-     <string name="HelpSettingsFragment__signal_is_a_501c3">Signal is een non-profitorganisatie</string>
-@@ -541,7 +541,7 @@
-     <!-- Visible warning label for the limitations of changing the app icon. -->
-     <string name="preferences__app_icon_warning">App-pictogrammen en -namen zijn zichtbaar op het startscherm en appoverzicht.</string>
-     <!-- Visible warning label explaining that changing the app icon and name does not affect notifications. -->
--    <string name="preferences__app_icon_notification_warning">Meldingen geven altijd het standaard Signal-pictogram en de standaard app-naam weer.</string>
-+    <string name="preferences__app_icon_notification_warning">Meldingen geven altijd het standaard Molly-pictogram en de standaard app-naam weer.</string>
-     <!--Text description of a graphic illustrating the limitations of the app icon change. -->
-     <string name="preferences__graphic_illustrating_where_the_replacement_app_icon_will_be_visible">Afbeelding die illustreert waar het vervangende app-pictogram zichtbaar zal zijn.</string>
- 
-@@ -561,9 +561,9 @@
-     <!-- Title for the confirmation dialog of changing the app icon. -->
-     <string name="preferences__app_icon_dialog_title">Wijzig het app-pictogram en de naam in ‘%1$s’</string>
-     <!-- Description for the confirmation dialog of changing the app icon. -->
--    <string name="preferences__app_icon_dialog_description">Signal moet worden gesloten om het app-pictogram en de naam te wijzigen. Meldingen geven altijd het standaard Signal-pictogram en de standaard app-naam weer.</string>
-+    <string name="preferences__app_icon_dialog_description">Molly moet worden gesloten om het app-pictogram en de naam te wijzigen. Meldingen geven altijd het standaard Molly-pictogram en de standaard app-naam weer.</string>
-     <!-- Visible warning label for the limitations of changing the app icon with learn more call to action. -->
--    <string name="preferences__app_icon_warning_learn_more">Selecteer een app-pictogram en naam die zichtbaar zijn op het startscherm en het appoverzicht van je telefoon. Meldingen geven altijd het standaard Signal-pictogram en de standaard app-naam weer. Meer informatie</string>
-+    <string name="preferences__app_icon_warning_learn_more">Selecteer een app-pictogram en naam die zichtbaar zijn op het startscherm en het appoverzicht van je telefoon. Meldingen geven altijd het standaard Molly-pictogram en de standaard app-naam weer. Meer informatie</string>
-     <!--Call to action to get more information about the limitations of the change app icon functionality. -->
-     <string name="preferences__app_icon_learn_more">Meer informatie</string>
- 
-diff --git a/feature/app-settings/src/main/res/values-nl/strings2.xml b/feature/app-settings/src/main/res/values-nl/strings2.xml
-new file mode 100644
-index 0000000000000000000000000000000000000000..df68c66f1812de55bb586480e7fa563af196c4a9
---- /dev/null
-+++ b/feature/app-settings/src/main/res/values-nl/strings2.xml
-@@ -0,0 +1,19 @@
-+<?xml version="1.0" encoding="utf-8"?>
-+<resources>
-+    <string name="preferences_appearance__navigation_bar">Navigatiebalk</string>
-+    <string name="app_icon_label_zen">Zen</string>
-+    <string name="app_icon_label_moon">Maan</string>
-+    <string name="app_icon_label_music">Muziek</string>
-+    <string name="preferences_appearance__use_system_colors_for_the_app_theme">Gebruik de systeemkleuren voor het thema in de app</string>
-+    <string name="preferences_appearance__dynamic_colors">Dynamische kleuren</string>
-+<string name="preferences__enable_debug_log">Foutopsporingslog inschakelen</string>
-+    <string name="HelpSettingsFragment__molly_im_website">Molly.im website</string>
-+<string name="preferences__never">Nooit</string>
-+    <string name="preferences__periodically_check_for_new_releases_and_ask_to_install_them">Check periodiek voor nieuwe versies en vraag of ze geinstalleerd moeten worden</string>
-+    <string name="preferences__autoupdate_molly">Molly automatisch updaten</string>
-+    <string name="preferences__beta_versions_are_intended_for_testing_purposes_and_may_contain_bugs">Beta versies zijn bedoeld om te testen en kunnen fouten bevatten</string>
-+    <string name="preferences__include_beta_updates">Inclusief beta updates</string>
-+    <string name="EnableAppUpdatesMegaphone_check_for_updates">Controleren op updates</string>
-+    <string name="HelpSettingsFragment_for_updates_please_check_your_app_store">Raadpleeg uw appstore voor updates, deze versie heeft geen ingebouwde updater.</string>
-+    <string name="AppUpdatesSettingsFragment__last_checked_s">Laatste keer gecontroleerd: %s</string>
-+</resources>
 
 --------------false--
 
