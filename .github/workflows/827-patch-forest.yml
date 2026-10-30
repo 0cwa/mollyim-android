@@ -18,7 +18,6 @@ on:
   push:
     branches:
       - dev/molly-827-reproducible-poc
-      - refactor/827-standard-patch-forest
     paths:
       - '.github/workflows/827-patch-forest.yml'
       - '.github/workflows/827-poc.yml'

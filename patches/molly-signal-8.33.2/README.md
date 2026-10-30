@@ -4,7 +4,7 @@ This forest reconstructs a **derived development port** of Molly 8.19.2-4 onto
 [Signal v8.33.2](https://github.com/signalapp/Signal-Android/releases/tag/v8.33.2).
 It contains the complete tracked delta from that Signal release to the pinned
 port candidate: **77 mailboxes, 16 feature/review groups, and
-3,619 changed paths**, including additions, deletions, resources,
+3,620 changed paths**, including additions, deletions, resources,
 binaries, executable modes, symlinks, build inputs, tests and user documentation.
 
 The official Molly snapshot in [`patches/molly`](../molly/README.md) and the
@@ -23,12 +23,12 @@ build results and remaining acceptance work are maintained in
 | Original Signal 8.19.2 (`origin-base`) | `c47a74ba0961903eeaeda6d22347a990056c3e83` |
 | Official Molly 8.19.2-4 (`origin-target`) | `0e202dda90785771ff8c87526eaaf30c655f54f3` |
 | Derived Signal merge (`upstream-merge`) | `90a0bb917ecc49a62236d539f4e7faae01b1d9fe` |
-| Derived candidate (`target`) | `b6e4f2a164f4861190939ab3fe29fb0d1fdf0748` |
-| Complete candidate tree | `558c3fef9b9133f9675716162a2a9aacef3b872c` |
+| Derived candidate (`target`) | `cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c` |
+| Complete candidate tree | `2533afec2fe2d7f9fc682f699fc21d7624521889` |
 
 The [source merge](https://github.com/0cwa/mollyim-android/commit/90a0bb917ecc49a62236d539f4e7faae01b1d9fe)
 has the original Molly target as its first parent and Signal v8.33.2 as its
-second parent. The [candidate](https://github.com/0cwa/mollyim-android/commit/b6e4f2a164f4861190939ab3fe29fb0d1fdf0748)
+second parent. The [candidate](https://github.com/0cwa/mollyim-android/commit/cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c)
 records subsequent reviewed integration fixes. Source history is available
 on `port/molly-signal-8.33.2`; the immutable pin files determine what is replayed,
 even when that branch later advances.
@@ -39,7 +39,7 @@ Each feature directory has one `series`. Its mailboxes separate unchanged
 carryovers from adaptations, with names such as `0001-carryover.patch` and
 `0002-adapted.patch`. Larger batches continue the numbering. There are
 **38 carryover mailboxes covering 1,870 paths** and **39 adapted mailboxes
-covering 1,749 paths**.
+covering 1,750 paths**.
 
 | Feature/review group | Carryover paths | Adapted paths | Mailboxes |
 | --- | ---: | ---: | ---: |
@@ -50,7 +50,7 @@ covering 1,749 paths**.
 | `google-services` | 81 | 0 | 1 |
 | `maps` | 14 | 1 | 2 |
 | `module-pruning` | 496 | 521 | 15 |
-| `networking-and-proxies` | 20 | 19 | 2 |
+| `networking-and-proxies` | 20 | 20 | 2 |
 | `notifications-and-unifiedpush` | 20 | 23 | 2 |
 | `payments-and-donations` | 220 | 41 | 4 |
 | `privacy-controls` | 7 | 8 | 2 |
@@ -140,9 +140,11 @@ native forks are pinned to libsignal **0.105.4-1** and RingRTC **2.73.0-1**, wit
 published artifact checksums in dependency-verification metadata.
 
 The [dedicated workflow](../../.github/workflows/molly-signal-port.yml) performs
-the same exact reconstruction and build, then runs 23 focused classes covering
-proxy policy, MollySocket, registration, onboarding, encrypted-preference migration,
-backups, notifications, connectivity, account deletion and settings. It preserves strict dependency verification, bounds worker memory and
+the same exact reconstruction and build, then runs the complete `:lib:network:test`
+suite, including CDN upload and REST-client tests, alongside 23 focused classes
+covering proxy policy, MollySocket, registration, onboarding, encrypted-preference
+migration, backups, notifications, connectivity, account deletion and settings.
+It preserves strict dependency verification, bounds worker memory and
 uploads the APK, source proof, test reports and failure logs as CI artifacts.
 Build status belongs in the linked PR and issues, rather than checked-in run logs.
 

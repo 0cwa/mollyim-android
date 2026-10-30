@@ -7,6 +7,8 @@ on:
       - 'patches/molly-signal-8.33.2/**'
       - 'tools/827/**'
   push:
+    branches:
+      - dev/molly-827-reproducible-poc
     paths:
       - '.github/workflows/molly-signal-port.yml'
       - 'patches/molly-signal-8.33.2/**'
@@ -78,7 +80,7 @@ jobs:
             :app:assembleProdWebsiteDebug \
             2>&1 | tee "$RUNNER_TEMP/molly-signal-port-reports/assemble.log"
 
-      - name: Test proxy policy, MollySocket, registration, encrypted preferences, backups, and settings
+      - name: Test network/CDN, proxy policy, MollySocket, registration, encrypted preferences, backups, and settings
         working-directory: ${{ runner.temp }}/molly-signal-port
         run: |
           set -euo pipefail
@@ -90,6 +92,7 @@ jobs:
             :core:network:test \
             --tests org.signal.network.config.ProxyConfigTest \
             --tests org.signal.network.config.LibSignalProxyPolicyTest \
+            :lib:network:test \
             :lib:libsignal-service:test \
             --tests org.whispersystems.signalservice.api.SignalServiceAccountManagerLinkedRegistrationTest \
             :feature:registration:testDebugUnitTest \
