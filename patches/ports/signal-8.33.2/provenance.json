@@ -139,6 +139,21 @@
       ],
       "mailbox_bytes": 22816,
       "after_tree": "9136333e998bff4ea5904e1b7141fa091c9c94fc"
+    },
+    {
+      "id": "initial/registration-and-linking",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Adapt Molly registration and Android linked-device policies to the new Signal registration architecture.",
+      "ai_generated": true,
+      "before_tree": "9136333e998bff4ea5904e1b7141fa091c9c94fc",
+      "paths": 136,
+      "conflict_paths": 18,
+      "patches": [
+        "initial/registration-and-linking/0001-resolve-registration-and-linking.patch",
+        "initial/registration-and-linking/0002-resolve-registration-and-linking.patch"
+      ],
+      "mailbox_bytes": 249467,
+      "after_tree": "1ca1e7226a4197aee01630afe7ba1e95a21fde22"
     }
   ],
   "mailbox_sha256": {
@@ -156,6 +171,8 @@
     "initial/networking-and-proxies/0001-resolve-networking-and-proxies.patch": "3cf3cf933d19a18334234e46868366d36bd5d769431dae844e82e889f96811a1",
     "initial/notifications-and-unifiedpush/0001-resolve-notifications-and-unifiedpush.patch": "8a29f1e92ee9ee883a48a64a3352231674d56f9176afbf7c9b77402b09d766f2",
     "initial/payments-and-donations/0001-resolve-payments-and-donations.patch": "1837d9342eada42d7e2b1dc764a45a67ba82061ee7dc00579d1c9b73ade51a42",
-    "initial/privacy-controls/0001-resolve-privacy-controls.patch": "0dd065b86ab9969905669074fa298ffa62e36768ee77e31b60085e9b7b85c213"
+    "initial/privacy-controls/0001-resolve-privacy-controls.patch": "0dd065b86ab9969905669074fa298ffa62e36768ee77e31b60085e9b7b85c213",
+    "initial/registration-and-linking/0001-resolve-registration-and-linking.patch": "cee0bc37c7d2fb467c515e3590140441fba7d2f00fcd3b6cd43a01458411e2e0",
+    "initial/registration-and-linking/0002-resolve-registration-and-linking.patch": "2a41ff62220e59693f2ea31247fda0ecb89c96a32ba0f1d141b21c4e46a6019f"
   }
 }
