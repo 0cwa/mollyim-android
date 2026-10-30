@@ -6,7 +6,7 @@
   "origin_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
   "initial_source": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
   "complete_source_checkpoint": true,
-  "target_tree": "9de2713f0b4dfd77539613cb27b6f80abee708fd",
+  "target_tree": "5aaf121bd0e62d9e1964ecb36b7f26b2684a4a5",
   "layers": [
     {
       "id": "initial/app-updates",
@@ -325,6 +325,22 @@
       "source_bundle": "followups/donation-completion/source-checkpoint.bundle",
       "source_bundle_prerequisite": "266d0185d021b2b6a98882205f6b6242152d146e",
       "source_bundle_sha256": "caa0f3fa2c35cef9a3f1edd38e9faa09177a8fb46345d9d562e3589cf4129c1d"
+    },
+    {
+      "id": "followups/backup-notification-id-upgrade",
+      "source_commit": "a3e91de532e3448e2732bd298fce56a01352ee97",
+      "description": "Clean up legacy Molly backup alerts by checking their untagged notification ID and backup channel, while keeping Signal IDs for new alerts.",
+      "ai_generated": true,
+      "before_tree": "9de2713f0b4dfd77539613cb27b6f80abee708fd",
+      "after_tree": "5aaf121bd0e62d9e1964ecb36b7f26b2684a4a5",
+      "paths": 5,
+      "patches": [
+        "followups/backup-notification-id-upgrade/0001-backup-notification-id-upgrade.patch"
+      ],
+      "mailbox_bytes": 8315,
+      "source_bundle": "followups/backup-notification-id-upgrade/source-checkpoint.bundle",
+      "source_bundle_prerequisite": "04b003190e7befd08606c6a82a5aa7d5ba62fb19",
+      "source_bundle_sha256": "a31baeeca674e6ce1fea7b99e7e914240bbad72279030e1423b2ad0b133bcad3"
     }
   ],
   "mailbox_sha256": {
@@ -370,6 +386,7 @@
     "followups/cdn-transport-test-fixture/0001-cdn-transport-test-fixture.patch": "52234ff291e7843f20dc040a83f61e306566e2858899a3ad88aade741ca16a90",
     "followups/reregistration-linked-devices-reminder/0001-reregistration-linked-devices-reminder.patch": "04f2c62a65efe3f6f2c293721f791106517321ffb0b210fb5f3e68c6e55ef1f1",
     "followups/legacy-backup-precedence/0001-legacy-backup-precedence.patch": "2db0f4c241474580b6ad0d99591eff73d72642d3bb4da09c4756d1f8918b2890",
-    "followups/donation-completion/0001-donation-completion.patch": "1191020cf89ebb0d9479b928f6c03e6aab4365f27ef242340bc04a45e68b7dd9"
+    "followups/donation-completion/0001-donation-completion.patch": "1191020cf89ebb0d9479b928f6c03e6aab4365f27ef242340bc04a45e68b7dd9",
+    "followups/backup-notification-id-upgrade/0001-backup-notification-id-upgrade.patch": "db987ed94979c6465824bd70462f15a844f1023e8d2e709657dcc3cfb5186c0b"
   }
 }

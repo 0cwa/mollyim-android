@@ -106,10 +106,11 @@ Subsequent commits add ordinary mailbox resolutions, grouped by application
 feature. Their parent source is Git's mechanical merge, so they show changes
 that remain after deterministic integration. The initial groups reproduce
 the existing PR #7 source merge
-`90a0bb917ecc49a62236d539f4e7faae01b1d9fe`; seven subsequent layers retain
+`90a0bb917ecc49a62236d539f4e7faae01b1d9fe`; eight subsequent layers retain
 the preference-import, NetCipher SDK DSL, broader integration/regression, CDN
-test-fixture, linked-device reminder, backup preference precedence, and
-donation completion corrections as individual review steps. Each mailbox
+test-fixture, linked-device reminder, backup preference precedence, donation
+completion, and legacy backup-notification cleanup corrections as individual
+review steps. Each mailbox
 records its source commit and AI-generation status.
 Previous mailboxes do not receive new provenance headers when a later fix is
 added.
@@ -123,9 +124,13 @@ AI compatibility decision. Every conflict must be covered by a resolution
 or an explicit unchanged-content decision.
 
 The final source must equal tree
-`9de2713f0b4dfd77539613cb27b6f80abee708fd`, the tree of synthetic source
-commit `04b003190e7befd08606c6a82a5aa7d5ba62fb19`. It extends backup
-checkpoint `266d0185d021b2b6a98882205f6b6242152d146e` (tree
+`5aaf121bd0e62d9e1964ecb36b7f26b2684a4a5`, the tree of synthetic source
+commit `a3e91de532e3448e2732bd298fce56a01352ee97`. It extends donation
+checkpoint `04b003190e7befd08606c6a82a5aa7d5ba62fb19` (tree
+`9de2713f0b4dfd77539613cb27b6f80abee708fd`) with channel-checked cleanup of
+Molly's old backup alerts at IDs `120500` and `120501`; new backup alerts keep
+Signal's current IDs. The donation checkpoint extends backup checkpoint
+`266d0185d021b2b6a98882205f6b6242152d146e` (tree
 `febafe3aa084d0ca6219e4f10a27ee66fbecfe4e`) with the restored donation badge
 acknowledgement, eligible monthly-sustainer link, and a completion-sheet
 loading-state fix plus Compose coverage. The backup checkpoint extends
@@ -140,8 +145,9 @@ unchanged. This remains a development port, not an official Molly release.
 
 Each synthetic source commit is stored in an incremental bundle. The reminder
 bundle requires `cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c`; the backup bundle
-requires `d3c917a5be7db6116c83b7e29e09f145e7f38825`; and the donation bundle
-requires `266d0185d021b2b6a98882205f6b6242152d146e`. Each prerequisite must
+requires `d3c917a5be7db6116c83b7e29e09f145e7f38825`; the donation bundle
+requires `266d0185d021b2b6a98882205f6b6242152d146e`; and the backup-notification
+bundle requires `04b003190e7befd08606c6a82a5aa7d5ba62fb19`. Each prerequisite must
 already be present in the object database. For a fresh local repository,
 materialize and verify the chain in order:
 
@@ -162,12 +168,18 @@ git bundle verify patches/ports/signal-8.33.2/followups/donation-completion/sour
 git fetch patches/ports/signal-8.33.2/followups/donation-completion/source-checkpoint.bundle \
   refs/heads/source-checkpoint/donation-completion:refs/port-source/donation-completion
 git rev-parse refs/port-source/donation-completion^{tree}
+
+git bundle verify patches/ports/signal-8.33.2/followups/backup-notification-id-upgrade/source-checkpoint.bundle
+git fetch patches/ports/signal-8.33.2/followups/backup-notification-id-upgrade/source-checkpoint.bundle \
+  refs/heads/source-checkpoint/backup-notification-id-upgrade:refs/port-source/backup-notification-id-upgrade
+git rev-parse refs/port-source/backup-notification-id-upgrade^{tree}
 ```
 
 The tree commands must print, in order, `2533afec2fe2d7f9fc682f699fc21d7624521889`,
 `0e5c581b7db3f4429256630011790f3ed4ad141f`,
-`febafe3aa084d0ca6219e4f10a27ee66fbecfe4e`, and
-`9de2713f0b4dfd77539613cb27b6f80abee708fd`. The bundles do not carry their
+`febafe3aa084d0ca6219e4f10a27ee66fbecfe4e`,
+`9de2713f0b4dfd77539613cb27b6f80abee708fd`, and
+`5aaf121bd0e62d9e1964ecb36b7f26b2684a4a5`. The bundles do not carry their
 prerequisites; a fresh clone cannot verify or fetch a later bundle until the
 earlier checkpoints are materialized.
 
