@@ -21,9 +21,24 @@
       ],
       "mailbox_bytes": 28233,
       "after_tree": "1951338ed748a50ab19e5067c83b1b351e91db2d"
+    },
+    {
+      "id": "initial/appearance",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Resolve dynamic colors, themes and moved UI APIs while retaining Molly appearance behavior.",
+      "ai_generated": true,
+      "before_tree": "1951338ed748a50ab19e5067c83b1b351e91db2d",
+      "paths": 6,
+      "conflict_paths": 6,
+      "patches": [
+        "initial/appearance/0001-resolve-appearance.patch"
+      ],
+      "mailbox_bytes": 13503,
+      "after_tree": "1fcff6ea474e0d0e559277c61922356202abf355"
     }
   ],
   "mailbox_sha256": {
-    "initial/app-updates/0001-resolve-app-updates.patch": "71fddbdb14debf342c20fc86e79bb61d61a77a5598f2e9847738335332fbb6b8"
+    "initial/app-updates/0001-resolve-app-updates.patch": "71fddbdb14debf342c20fc86e79bb61d61a77a5598f2e9847738335332fbb6b8",
+    "initial/appearance/0001-resolve-appearance.patch": "946fbcfee80da8736fe1a4b9777a448df348ac3e8db88f9c0427a089f5667321"
   }
 }
