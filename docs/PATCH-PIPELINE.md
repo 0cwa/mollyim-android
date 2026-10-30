@@ -106,11 +106,12 @@ Subsequent commits add ordinary mailbox resolutions, grouped by application
 feature. Their parent source is Git's mechanical merge, so they show changes
 that remain after deterministic integration. The initial groups reproduce
 the existing PR #7 source merge
-`90a0bb917ecc49a62236d539f4e7faae01b1d9fe`; four subsequent layers retain the
-preference-import, NetCipher SDK DSL, broader integration/regression, and CDN
-test-fixture corrections as individual review steps. Each mailbox records
-its source commit and AI-generation status. Previous mailboxes do not receive
-new provenance headers when a later fix is added.
+`90a0bb917ecc49a62236d539f4e7faae01b1d9fe`; five subsequent layers retain the
+preference-import, NetCipher SDK DSL, broader integration/regression, CDN
+test-fixture, and linked-device reminder corrections as individual review
+steps. Each mailbox records its source commit and AI-generation status.
+Previous mailboxes do not receive new provenance headers when a later fix is
+added.
 
 The port has 764 conflict paths. Initial resolution patches change 763 of
 them; the retained `CorrectedPreferenceFragment.java` modify/delete conflict
@@ -121,10 +122,40 @@ AI compatibility decision. Every conflict must be covered by a resolution
 or an explicit unchanged-content decision.
 
 The final source must equal tree
-`2533afec2fe2d7f9fc682f699fc21d7624521889`, the exact tree of existing port
-commit `cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c`. This reorganization introduces
-no new application implementation beyond that previously derived candidate.
-It remains a development port, not an official Molly release.
+`0e5c581b7db3f4429256630011790f3ed4ad141f`, the tree of synthetic source
+commit `d3c917a5be7db6116c83b7e29e09f145e7f38825`. That commit extends the
+previous port checkpoint `cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c` with the
+explicit re-registration marker, the linked-device reminder assignment after
+successful primary-device multi-device registration, and its marker test.
+The reminder is assigned `true` for re-registration and `false` for fresh
+registration, matching Molly's previous behavior. This remains a development
+port, not an official Molly release.
+
+The synthetic source commit is stored in the incremental bundle
+`patches/ports/signal-8.33.2/followups/reregistration-linked-devices-reminder/source-checkpoint.bundle`.
+The bundle requires the prior source commit `cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c`
+to be present in the local object database; it does not carry that checkpoint.
+Before verifying or fetching the bundle, confirm the prerequisite and its tree:
+
+```sh
+git cat-file -e cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c^{commit}
+git rev-parse cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c^{tree}
+git bundle verify patches/ports/signal-8.33.2/followups/reregistration-linked-devices-reminder/source-checkpoint.bundle
+```
+
+The tree command must print `2533afec2fe2d7f9fc682f699fc21d7624521889`.
+The bundle advertises `refs/heads/source-checkpoint/reregistration-linked-devices-reminder`;
+fetch that ref with:
+
+```sh
+git fetch patches/ports/signal-8.33.2/followups/reregistration-linked-devices-reminder/source-checkpoint.bundle \
+  refs/heads/source-checkpoint/reregistration-linked-devices-reminder:refs/port-source/reregistration-linked-devices-reminder
+git rev-parse refs/port-source/reregistration-linked-devices-reminder^{tree}
+```
+
+The fetched tree must match the final pin above. A fresh clone without the
+prerequisite cannot verify or fetch this incremental bundle until the prior
+checkpoint is materialized.
 
 When changing a resolution, update only the affected mailbox and its reviewed
 target-tree pin. Leave unrelated mailbox envelopes and the historical forest
