@@ -1,4 +1,4 @@
-From a3e91de532e3448e2732bd298fce56a01352ee97 Mon Sep 17 00:00:00 2001
+From a069fdf625d924e517eb6f2aeb0cbd607db3fcdb Mon Sep 17 00:00:00 2001
 From: Molly Port Compatibility Follow-up <port-compatibility@example.invalid>
 Date: Fri, 30 Oct 2026 07:36:09 +0100
 Subject: [PATCH] Clean up legacy backup notifications after upgrade
@@ -7,8 +7,8 @@ Keep the collision-free Signal IDs for new backup alerts, and remove old Molly a
 
 AI-Generated: true
 
-Based-On-Source-Commit: 04b003190e7befd08606c6a82a5aa7d5ba62fb19
-Source-Commit: a3e91de532e3448e2732bd298fce56a01352ee97
+Based-On-Source-Commit: 0e7a018870f034d547db10e8e4856c515bbe2b80
+Source-Commit: a069fdf625d924e517eb6f2aeb0cbd607db3fcdb
 
 diff --git a/app/src/main/java/org/thoughtcrime/securesms/backup/v2/BackupRepository.kt b/app/src/main/java/org/thoughtcrime/securesms/backup/v2/BackupRepository.kt
 index c3483573..0bb06105 100644

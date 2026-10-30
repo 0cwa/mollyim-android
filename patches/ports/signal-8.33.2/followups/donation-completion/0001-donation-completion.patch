@@ -1,4 +1,4 @@
-From 04b003190e7befd08606c6a82a5aa7d5ba62fb19 Mon Sep 17 00:00:00 2001
+From 0e7a018870f034d547db10e8e4856c515bbe2b80 Mon Sep 17 00:00:00 2001
 From: Molly Port Compatibility Follow-up <port-compatibility@example.invalid>
 Date: Fri, 30 Oct 2026 07:12:36 +0100
 Subject: [PATCH] Restore donation completion acknowledgement
@@ -10,7 +10,7 @@ For long-running donations, stop showing the loading indicator after the badge l
 AI-Generated: true
 
 Based-On-Source-Commit: 266d0185d021b2b6a98882205f6b6242152d146e
-Source-Commit: 04b003190e7befd08606c6a82a5aa7d5ba62fb19
+Source-Commit: 0e7a018870f034d547db10e8e4856c515bbe2b80
 ---
  .../completed/TerminalDonationBottomSheet.kt  | 10 ++-
  ...ForYourSupportBottomSheetDialogFragment.kt | 32 +++++++
@@ -122,7 +122,7 @@ index 46d0f17e..c7c65efa 100644
      done.setOnClickListener { dismissAllowingStateLoss() }
    }
 diff --git a/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml b/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml
-index eeb5a0d9..b77b2fbe 100644
+index eeb5a0d9..da57e3c0 100644
 --- a/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml
 +++ b/app/src/main/res/layout/thanks_for_your_support_bottom_sheet_dialog_fragment.xml
 @@ -27,6 +27,18 @@
@@ -160,7 +160,7 @@ index eeb5a0d9..b77b2fbe 100644
 +                android:layout_marginEnd="@dimen/dsl_settings_gutter"
 +                android:gravity="center"
 +                android:textAppearance="@style/Signal.Text.BodyLarge"
-+                android:textColor="@color/signal_colorOnSurfaceVariant"
++                android:textColor="?attr/colorOnSurfaceVariant"
 +                android:visibility="gone"
 +                app:layout_constraintEnd_toEndOf="parent"
 +                app:layout_constraintStart_toStartOf="parent"
