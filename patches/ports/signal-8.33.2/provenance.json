@@ -181,6 +181,20 @@
       ],
       "mailbox_bytes": 7272520,
       "after_tree": "51b1e9f4d40975ad2b4b8a2f043bb90f86e25551"
+    },
+    {
+      "id": "initial/security-and-locking",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Integrate encrypted preferences, secret handling and lock-aware application behavior with the updated Signal classes.",
+      "ai_generated": true,
+      "before_tree": "51b1e9f4d40975ad2b4b8a2f043bb90f86e25551",
+      "paths": 8,
+      "conflict_paths": 5,
+      "patches": [
+        "initial/security-and-locking/0001-resolve-security-and-locking.patch"
+      ],
+      "mailbox_bytes": 24596,
+      "after_tree": "1848d93a46f676fc2c204ffbf73214abcc631a3e"
     }
   ],
   "mailbox_sha256": {
@@ -214,6 +228,7 @@
     "initial/resources-and-branding/0011-resolve-resources-and-branding.patch": "c92f3af00e7c2fa1fe92a3f565c08fd7f94e3033a44d17012d0e8e95da1ccf77",
     "initial/resources-and-branding/0012-resolve-resources-and-branding.patch": "0701fffc7026d20eba8d82f38394de1d580a206625c45ac2a0dba08fc3c1f039",
     "initial/resources-and-branding/0013-resolve-resources-and-branding.patch": "d7df242a03f9d62a294b4d0e31884e14e0909f191ded940eac25bd64ec2affdc",
-    "initial/resources-and-branding/0014-resolve-resources-and-branding.patch": "3c9bd0d09d61c6e3071c0c535e08a27f46962beefa97fecc56c4b4d5b1e6e932"
+    "initial/resources-and-branding/0014-resolve-resources-and-branding.patch": "3c9bd0d09d61c6e3071c0c535e08a27f46962beefa97fecc56c4b4d5b1e6e932",
+    "initial/security-and-locking/0001-resolve-security-and-locking.patch": "7e8abe74a830ef900ae9d5c6fafe60026be9816d6055b1446342500d963c1c28"
   }
 }
