@@ -106,3 +106,10 @@ Follow the disk rules in `~/.codex/AGENTS.md`. In addition, `/var/home` is btrfs
 **metadata** with ~200 GB showing free (Oct 2026), which made every write fail. Run `agent-disk-check` before
 large checkouts or Gradle builds. Prefer `--filter=blob:none` clones. Remove preflight and scratch worktrees
 with `git worktree remove` when done.
+
+## This file
+
+Upstream Molly is not agent-driven, so never commit `AGENTS.md` to a work or PR branch. It is listed in
+`.git/info/exclude`, and its only tracked copy is the orphan branch `agent-config` on `mine`. To install it
+in a new clone or worktree, run `git fetch mine agent-config && git show FETCH_HEAD:AGENTS.md > AGENTS.md`
+and add `AGENTS.md` to that clone's `.git/info/exclude`. Commit changes to it only on `agent-config`.
