@@ -36,3 +36,4 @@ initial/integration/0003-resolve-integration.patch
 initial/build-and-release/0001-resolve-build-and-release.patch
 followups/restore-preference-import/0001-restore-preference-import.patch
 followups/netcipher-sdk-dsl/0001-netcipher-sdk-dsl.patch
+followups/integration-and-regression-tests/0001-integration-and-regression-tests.patch
