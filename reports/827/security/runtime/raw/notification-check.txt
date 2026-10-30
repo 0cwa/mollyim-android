@@ -1,3 +1,0 @@
-      AppSettings: org.thoughtcrime.securesms.benchmark (10130)
-      key='org.thoughtcrime.securesms.benchmark',
-    post_frequency{user_id=0,pkg=org.thoughtcrime.securesms.benchmark,day=0,count=15,muted=13/15,demoted=0}

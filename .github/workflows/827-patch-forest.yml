@@ -1,0 +1,78 @@
+name: "Molly #827 patch forest"
+
+on:
+  pull_request:
+    branches:
+      - dev/molly-827-reproducible-poc
+      - poc/molly-827-unifiedpush
+    paths:
+      - '.github/workflows/827-patch-forest.yml'
+      - '.github/workflows/827-poc.yml'
+      - 'tools/827/**'
+      - 'patches/827/**'
+      - 'patches/molly/**'
+      - 'patches/molly-signal-8.33.2/**'
+      - '.github/workflows/molly-signal-port.yml'
+      - 'docs/827/**'
+      - 'reports/827/inventory/**'
+  push:
+    branches:
+      - dev/molly-827-reproducible-poc
+    paths:
+      - '.github/workflows/827-patch-forest.yml'
+      - '.github/workflows/827-poc.yml'
+      - 'tools/827/**'
+      - 'patches/827/**'
+      - 'patches/molly/**'
+      - 'patches/molly-signal-8.33.2/**'
+      - '.github/workflows/molly-signal-port.yml'
+      - 'docs/827/**'
+      - 'reports/827/inventory/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: molly-827-forest-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  patch-tools:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - name: Check out full pinned history without LFS hydration
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - name: Test patch tools and safety boundaries
+        run: python3 -m unittest discover -s tools/827 -p 'test_*.py' -v
+      - name: Check each dependency closure and two legal full orders
+        run: |
+          mkdir -p reports/827/build
+          python3 tools/827/forest.py verify --repo . > reports/827/build/forest-verify.json
+      - name: Validate pinned provenance and complete inventory
+        run: |
+          python3 tools/827/validate.py --repo . --report reports/827/build/forest-validation.json
+          python3 tools/827/validate_inventory.py --repo . > reports/827/build/inventory-validation.json
+      - name: Replay audited release twice
+        run: |
+          python3 tools/827/replay_twice.py --repo . \
+            --worktree-prefix "$RUNNER_TEMP/molly-827-forest" \
+            --report reports/827/build/forest-replay-twice.json
+      - name: Verify the complete pinned Molly source tree
+        run: |
+          python3 tools/827/verify_complete.py --repo . --patches patches/molly \
+            > reports/827/build/molly-complete.json
+      - name: Upload patch evidence
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: molly-827-forest-${{ github.run_id }}
+          path: reports/827/build
+          if-no-files-found: warn

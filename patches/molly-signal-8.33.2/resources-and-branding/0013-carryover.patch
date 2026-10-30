@@ -1,0 +1,1288 @@
+From 70028d4ecd8fbaf269f7106c35def16f5c051dce Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Fri, 30 Oct 2026 00:31:56 +0000
+Subject: [PATCH] Reconstruct Molly resources-and-branding carryover, part 13
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Shared localized resources, icons, artwork, layouts, XML policy and resource deletions.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/res/values/conversation_colors.xml b/app/src/main/res/values/conversation_colors.xml
+index ded0288f7cfbabefd3304b71016fe89d1c1c6c0c..92b20feb71ac3dddabdf390d8a3ca931b8270550 100644
+--- a/app/src/main/res/values/conversation_colors.xml
++++ b/app/src/main/res/values/conversation_colors.xml
+@@ -28,9 +28,10 @@
+     <color name="conversation_blue_tint">#adc8e1</color>
+     <color name="conversation_blue_shade">#285480</color>
+ 
+-    <color name="conversation_indigo">#5951c8</color>
+-    <color name="conversation_indigo_tint">#c2c1e7</color>
+-    <color name="conversation_indigo_shade">#4840a0</color>
++    <!-- MOLLY: Moved Signal's original ultramarine colors here -->
++    <color name="conversation_indigo">@color/stock_core_ultramarine</color>
++    <color name="conversation_indigo_tint">@color/stock_core_ultramarine_medium</color>
++    <color name="conversation_indigo_shade">@color/stock_core_ultramarine_dark</color>
+ 
+     <color name="conversation_violet">#862caf</color>
+     <color name="conversation_violet_tint">#cdaddc</color>
+@@ -48,12 +49,12 @@
+     <color name="conversation_steel_tint">#bebec6</color>
+     <color name="conversation_steel_shade">#5a5a63</color>
+ 
+-    <color name="conversation_ultramarine">@color/core_ultramarine</color>
+-    <color name="conversation_ultramarine_tint">#b0c8f9</color>
+-    <color name="conversation_ultramarine_shade">#1851b4</color>
++    <color name="conversation_ultramarine">#7152FF</color>
++    <color name="conversation_ultramarine_tint">#C4B7FF</color>
++    <color name="conversation_ultramarine_shade">#4924F1</color>
+ 
+-    <color name="conversation_group">@color/core_ultramarine</color>
+-    <color name="conversation_group_tint">#b0c8f9</color>
+-    <color name="conversation_group_shade">#1851b4</color>
++    <color name="conversation_group">#7152FF</color>
++    <color name="conversation_group_tint">#C4B7FF</color>
++    <color name="conversation_group_shade">#4924F1</color>
+ 
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/firebase_messaging.xml b/app/src/main/res/values/firebase_messaging.xml
+index 6cd44588a460b049ed7df6444e99ed9f84cfdb00..456df598b7c30e60154be8124eb101fea9e25acc 100644
+--- a/app/src/main/res/values/firebase_messaging.xml
++++ b/app/src/main/res/values/firebase_messaging.xml
+@@ -1,10 +1,10 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <string name="google_app_id" translatable="false">1:312334754206:android:a9297b152879f266</string>
++    <string name="google_app_id" translatable="false">1:91233741263:android:0cf3d030865ac67d548aba</string>
+     <string name="gcm_defaultSenderId" translatable="false">312334754206</string>
+     <string name="default_web_client_id" translatable="false">312334754206-dg1p1mtekis8ivja3ica50vonmrlunh4.apps.googleusercontent.com</string>
+     <string name="firebase_database_url" translatable="false">https://api-project-312334754206.firebaseio.com</string>
+-    <string name="google_api_key" translatable="false">AIzaSyDrfzNAPBPzX6key51hqo3p5LZXF5Y-yxU</string>
+-    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDrfzNAPBPzX6key51hqo3p5LZXF5Y-yxU</string>
+-    <string name="project_id" translatable="false">api-project-312334754206</string>
++    <string name="google_api_key" translatable="false">AIzaSyAuRxbDoMcC_637-4_hQfXQssLq0xgPlbQ</string>
++    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyAuRxbDoMcC_637-4_hQfXQssLq0xgPlbQ</string>
++    <string name="project_id" translatable="false">mollyim-365011</string>
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values/light_themes.xml b/app/src/main/res/values/light_themes.xml
+index 6eec2eb742e067b2156a9027d97c06ea0effe02c..5c8e55b5dc1346419c43e183970205ac58c04d0e 100644
+--- a/app/src/main/res/values/light_themes.xml
++++ b/app/src/main/res/values/light_themes.xml
+@@ -1,18 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-
+     <style name="Signal.DayNight" parent="TextSecure.LightTheme" />
+ 
+-    <style name="Signal.DayNight.NoActionBar" parent="TextSecure.LightNoActionBar" />
+-
+-    <style name="Signal.DayNight.Invite" parent="Signal.Light.NoActionBar.Invite" />
+-
+-    <style name="Signal.DayNight.IntroTheme" parent="TextSecure.LightIntroTheme" />
+-
+-    <style name="Signal.DayNight.DarkActionBar" parent="TextSecure.LightTheme.Conversation" />
+-
+-    <style name="Signal.DayNight.DarkNoActionBar" parent="TextSecure.LightNoActionBar.DarkToolbar" />
+-
+     <style name="Signal.DayNight.Registration" parent="TextSecure.LightRegistrationTheme" />
+ 
+     <style name="Signal.DayNight.WallpaperCropper" parent="Theme.Signal.WallpaperCropper.Light" />
+@@ -20,4 +9,12 @@
+     <style name="Signal.DayNight.BottomSheet.Rounded" parent="Theme.Signal.RoundedBottomSheet.Light" />
+ 
+     <style name="Signal.DayNight.ConversationSettings" parent="TextSecure.LightNoActionBar.ConversationSettings" />
++
++    <style name="Theme.Signal.DayNight.NoActionBar" parent="TextSecure.LightNoActionBar" />
++
++    <style name="Theme.Molly.Dynamic" parent="Theme.Molly.Dynamic.Light" />
++    <style name="Theme.Molly.Dynamic.NoActionBar" parent="Theme.Molly.Dynamic.NoActionBar.Light" />
++    <style name="Theme.Molly.Dynamic.Registration" parent="Theme.Molly.Dynamic.Registration.Light" />
++    <style name="Theme.Molly.Dynamic.ConversationSettings" parent="Theme.Molly.Dynamic.ConversationSettings.Light" />
++    <style name="Theme.Molly.Starting" parent="Theme.Molly.Starting.Light" />
+ </resources>
+diff --git a/app/src/main/res/values/material_colors.xml b/app/src/main/res/values/material_colors.xml
+index e497f193a35eb5997760299c53a743e20d436cd5..7b790f2c4d3dbbda0011c5056cb5e497c524d94b 100644
+--- a/app/src/main/res/values/material_colors.xml
++++ b/app/src/main/res/values/material_colors.xml
+@@ -2,6 +2,7 @@
+ <resources>
+ 
+     <color name="red_100">#FFCDD2</color>
++    <color name="red_400">#EF5350</color>
+     <color name="red_500">#F44336</color>
+     <color name="red_600">#E53935</color>
+     <color name="red_700">#D32F2F</color>
+diff --git a/app/src/main/res/values/signal_styles.xml b/app/src/main/res/values/signal_styles.xml
+index 7779eedae99addf629623d2eac6c9f3996cfc848..47b16d13caa2b905eba8740d71d0244e7684f11d 100644
+--- a/app/src/main/res/values/signal_styles.xml
++++ b/app/src/main/res/values/signal_styles.xml
+@@ -2,7 +2,7 @@
+ <resources xmlns:tools="http://schemas.android.com/tools">
+ 
+     <style name="Signal.Widget.ImageView.ActionButton" parent="ThemeOverlay.Material3">
+-        <item name="tint">@color/signal_colorOnSecondaryContainer</item>
++        <item name="tint">?attr/extended_action_button_icon_color</item>
+         <item name="android:background">@drawable/selectable_icon_button</item>
+         <item name="android:layout_width">56dp</item>
+         <item name="android:layout_height">56dp</item>
+@@ -17,7 +17,7 @@
+         <item name="android:gravity">center_horizontal</item>
+         <item name="android:layout_marginTop">12dp</item>
+         <item name="android:textAppearance">@style/Signal.Text.BodyMedium</item>
+-        <item name="android:textColor">@color/signal_colorOnBackground</item>
++        <item name="android:textColor">?attr/colorOnBackground</item>
+         <item name="android:maxLines">2</item>
+     </style>
+ 
+@@ -59,9 +59,9 @@
+         <item name="strokeWidth">1.5dp</item>
+         <item name="cornerRadius">18dp</item>
+         <item name="android:textColor">@color/signal_button_secondary_text_selector</item>
+-        <item name="strokeColor">@color/signal_button_secondary_stroke</item>
++        <item name="strokeColor">?attr/signal_button_secondary_stroke</item>
+         <item name="backgroundTint">@color/transparent</item>
+-        <item name="rippleColor">@color/signal_button_secondary</item>
++        <item name="rippleColor">?attr/signal_button_secondary</item>
+     </style>
+ 
+     <style name="Signal.Widget.Button.Small.Secondary" parent="Widget.Material3.Button.UnelevatedButton">
+@@ -93,23 +93,23 @@
+     </style>
+ 
+     <style name="ThemeOverlay.Signal.Button.Primary" parent="ThemeOverlay.Material3.Button">
+-        <item name="colorOnContainer">@color/signal_colorOnPrimary</item>
+-        <item name="colorContainer">@color/signal_colorPrimary</item>
++        <item name="colorOnContainer">?attr/colorOnPrimary</item>
++        <item name="colorContainer">?attr/colorPrimary</item>
+     </style>
+ 
+     <style name="ThemeOverlay.Signal.Button.Tonal" parent="ThemeOverlay.Material3.Button">
+-        <item name="colorOnContainer">@color/signal_colorOnPrimaryContainer</item>
+-        <item name="colorContainer">@color/signal_colorPrimaryContainer</item>
++        <item name="colorOnContainer">?attr/extended_action_button_icon_color</item>
++        <item name="colorContainer">?attr/extended_action_button_container_color</item>
+     </style>
+ 
+     <style name="ThemeOverlay.Signal.Button.Small" parent="ThemeOverlay.Material3.Button">
+-        <item name="colorOnContainer">@color/signal_colorOnSurfaceVariant</item>
+-        <item name="colorContainer">@color/signal_colorSurface1</item>
++        <item name="colorOnContainer">?attr/extended_action_button_icon_color</item>
++        <item name="colorContainer">?attr/extended_action_button_container_color</item>
+     </style>
+     
+     <style name="ThemeOverlay.Signal.Button.Surface2" parent="ThemeOverlay.Material3.Button">
+-        <item name="colorOnContainer">@color/signal_colorOnSurface</item>
+-        <item name="colorContainer">@color/signal_colorSurface2</item>
++        <item name="colorOnContainer">?attr/colorOnSurface</item>
++        <item name="colorContainer">?attr/colorSurfaceContainer</item>
+     </style>
+ 
+     <style name="Signal.Widget.Button.Base.Secondary" parent="Widget.Material3.Button.TextButton">
+@@ -119,7 +119,7 @@
+         <item name="android:textColor">@color/signal_button_secondary_text_selector</item>
+         <item name="iconGravity">textEnd</item>
+         <item name="iconTint">@color/signal_button_secondary_text_selector</item>
+-        <item name="rippleColor">@color/signal_button_secondary_ripple</item>
++        <item name="rippleColor">?attr/signal_button_secondary_ripple</item>
+     </style>
+ 
+     <style name="Signal.Widget.Button.Large.Secondary" parent="@style/Signal.Widget.Button.Base.Secondary">
+@@ -160,7 +160,7 @@
+         <item name="android:layout_width">48dp</item>
+         <item name="android:layout_height">48dp</item>
+         <item name="elevation">0dp</item>
+-        <item name="tint">@color/signal_colorOnSecondaryContainer</item>
++        <item name="tint">?attr/colorOnSecondaryContainer</item>
+     </style>
+ 
+     <style name="Signal.Widget.CompoundButton.RadioButton" parent="Widget.Material3.CompoundButton.RadioButton">
+@@ -205,33 +205,45 @@
+         <item name="backgroundInsetEnd">0dp</item>
+     </style>
+ 
+-    <style name="Signal.DayNight.Popup" parent="@style/ThemeOverlay.AppCompat.Light" />
++    <style name="Signal.DayNight.Popup" parent="@style/ThemeOverlay.Material3.Light" />
+ 
+     <style name="Signal.DayNight.Toolbar.Overflow" parent="@style/Signal.Toolbar.Overflow.Light" />
+ 
+     <style name="Signal.DayNight.TitleTextStyle" parent="@style/TextSecure.TitleTextStyle" />
+ 
+-    <style name="Signal.DayNight.Dialog.FullScreen" parent="Signal.DayNight">
++    <style name="Signal.DayNight.Dialog.FullScreen" parent="@style/ThemeOverlay.Material3">
+         <item name="android:windowAnimationStyle">@style/TextSecure.Animation.FullScreenDialog</item>
+     </style>
+ 
+-    <style name="Signal.DayNight.Dialog.FullScreen.Poll" parent="Signal.DayNight">
++    <style name="Signal.DayNight.Dialog.FullScreen.Poll" parent="@style/ThemeOverlay.Material3">
+         <item name="android:windowAnimationStyle">@style/TextSecure.Animation.FullScreenDialogPoll</item>
+     </style>
+ 
+-    <style name="Signal.DayNight.Dialog.FullScreen.Donate">
++    <style name="Signal.DayNight.Dialog.Animated.Bottom" parent="@style/ThemeOverlay.Material3">
++        <item name="android:windowAnimationStyle">@style/FakeBottomSheet</item>
++    </style>
++
++    <style name="Signal.DayNight.BiometricDialog.FullScreen" parent="@style/ThemeOverlay.Material3">
++        <item name="android:windowAnimationStyle">@style/BiometricDialogAnimation</item>
++        <item name="android:windowBackground">?attr/signal_background_primary</item>
++        <item name="android:colorBackgroundCacheHint">?attr/signal_background_primary</item>
++        <item name="android:windowFrame">@null</item>
++        <item name="android:windowContentOverlay">@null</item>
++        <item name="android:windowIsFloating">false</item>
++        <item name="android:backgroundDimEnabled">false</item>
++        <item name="android:windowIsTranslucent">false</item>
+     </style>
+ 
+     <style name="ThemeOverlay.Signal.MaterialAlertDialog" parent="@style/ThemeOverlay.Material3.MaterialAlertDialog">
+         <item name="alertDialogStyle">@style/Signal.MaterialAlertDialog</item>
+-        <item name="android:background">@color/signal_colorSurface1</item>
++        <item name="android:background">?attr/colorSurfaceContainerLow</item>
+         <item name="android:dialogCornerRadius" tools:ignore="NewApi">28dp</item>
+         <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Signal.Title.Text</item>
+         <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Signal.Body.Text</item>
+         <item name="buttonBarPositiveButtonStyle">@style/Signal.Widget.Button.Dialog</item>
+         <item name="buttonBarNeutralButtonStyle">@style/Signal.Widget.Button.Dialog</item>
+         <item name="buttonBarNegativeButtonStyle">@style/Signal.Widget.Button.Dialog</item>
+-        <item name="textColorAlertDialogListItem">@color/signal_colorOnSurfaceVariant</item>
++        <item name="textColorAlertDialogListItem">?attr/colorOnSurfaceVariant</item>
+         <item name="android:checkedTextViewStyle">@style/Widget.Signal.CheckedTextView</item>
+     </style>
+     
+@@ -246,7 +258,7 @@
+ 
+     <style name="Widget.Signal.CheckedTextView" parent="Widget.Material3.CheckedTextView">
+         <item name="android:textAppearance">@style/Signal.Text.BodyLarge</item>
+-        <item name="android:textColor">@color/signal_colorOnSurfaceVariant</item>
++        <item name="android:textColor">?attr/colorOnSurface</item>
+         <item name="drawableTint">@color/signal_selection_control_button_tint</item>
+         <item name="android:drawableTint" tools:ignore="NewApi">@color/signal_selection_control_button_tint</item>
+     </style>
+@@ -260,7 +272,7 @@
+     </style>
+ 
+     <style name="Widget.Signal.Dialog.Body" parent="Signal.Text.BodyMedium">
+-        <item name="android:textColor">@color/signal_colorOnSurfaceVariant</item>
++        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+     </style>
+ 
+     <style name="Signal.Widget.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar">
+@@ -272,13 +284,9 @@
+     </style>
+ 
+     <style name="Signal.ThemeOverlay.Calendar" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
+-        <item name="colorSurface">@color/signal_background_dialog</item>
++        <item name="colorSurface">?attr/signal_background_dialog</item>
+         <item name="borderlessButtonStyle">@style/Signal.Widget.Button.Dialog</item>
+-        <item name="colorPrimary">@color/signal_colorPrimary</item>
+-        <item name="colorOnPrimary">@color/signal_colorOnPrimary</item>
+-        <item name="colorAccent">@color/signal_accent_primary</item>
+-        <item name="colorSurfaceContainer">@color/signal_colorSurface</item>
+-        <item name="colorSurfaceContainerHigh">@color/signal_colorSurface</item>
++        <item name="colorAccent">?attr/signal_accent_primary</item>
+         <item name="materialCalendarHeaderTitle">@style/MaterialCalendar.Signal.HeaderTitle</item>
+         <item name="materialCalendarHeaderSelection">@style/MaterialCalendar.Signal.HeaderSelection</item>
+         <item name="buttonBarPositiveButtonStyle">@style/Signal.Widget.Button.Dialog</item>
+@@ -298,15 +306,9 @@
+         <item name="shapeAppearance">@style/Signal.ShapeOverlay.Rounded</item>
+     </style>
+ 
+-    <style name="Signal.Widget.TimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
+-        <item name="iconTint">@color/signal_icon_tint_primary</item>
+-    </style>
+-
+     <style name="Signal.ThemeOverlay.TimePicker" parent="@style/ThemeOverlay.MaterialComponents.TimePicker">
+         <item name="textAppearanceOverline">@style/TextAppearance.Signal.Body2</item>
+-        <item name="colorSurface">@color/signal_background_dialog</item>
+         <item name="borderlessButtonStyle">@style/Signal.Widget.Button.Dialog</item>
+-        <item name="colorPrimary">@color/signal_accent_primary</item>
+     </style>
+ 
+     <style name="ThemeOverlay.Signal.CircularProgressIndicator.Primary" parent="ThemeOverlay.Material3">
+@@ -315,48 +317,39 @@
+     </style>
+ 
+     <style name="ThemeOverlay.Signal.CircularProgressIndicator.Tonal" parent="ThemeOverlay.Material3">
+-        <item name="colorPrimary">@color/signal_colorPrimary</item>
+-        <item name="colorSurfaceVariant">@color/signal_colorSurfaceVariant</item>
+         <item name="circularProgressMaterialButtonStyle">@style/Signal.Widget.Button.Large.Tonal</item>
+         <item name="circularProgressIndicatorStyle">@style/Widget.Signal.CircularProgressIndicator.Medium.Indeterminate</item>
+     </style>
+ 
++    <style name="ThemeOverlay.Signal.CircularProgressIndicator.Primary.Fixed" parent="ThemeOverlay.Signal.CircularProgressIndicator.Primary">
++        <item name="circularProgressIndicatorStyle">@style/Widget.Signal.CircularProgressIndicator.Medium.Fixed</item>
++    </style>
++
++    <style name="Widget.Signal.CircularProgressIndicator.Medium.Fixed" parent="Widget.Material3.CircularProgressIndicator.Medium">
++        <item name="android:indeterminate">false</item>
++    </style>
++
+     <style name="Widget.Signal.CircularProgressIndicator.Medium.Indeterminate" parent="Widget.Material3.CircularProgressIndicator.Medium">
+         <item name="android:indeterminate">true</item>
+     </style>
+ 
+     <style name="Widget.Signal.CircularProgressIndicator.Medium.Indeterminate.Tonal">
+-        <item name="indicatorColor">@color/signal_colorPrimaryContainer</item>
++        <item name="indicatorColor">?attr/colorPrimaryContainer</item>
+     </style>
+ 
+     <style name="Widget.Signal.CompoundButton.MaterialSwitch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+-        <item name="materialThemeOverlay">@style/ThemeOverlay.Signal.MaterialSwitch</item>
++        <item name="materialThemeOverlay">?attr/switchThemeOverlay</item>
+     </style>
+ 
+     <style name="Signal.ThemeOverlay.TextInputLayout" parent="ThemeOverlay.Material3">
+-        <item name="colorSurfaceVariant">@color/signal_colorSurfaceVariant</item>
+-        <item name="colorOnSurfaceVariant">@color/signal_colorOnSurfaceVariant</item>
+-        <item name="colorPrimary">@color/signal_colorPrimary</item>
+-        <item name="colorOnPrimary">@color/signal_colorOnPrimary</item>
+-        <item name="colorOnSurface">@color/signal_colorOnSurface</item>
+-        <item name="colorError">@color/signal_colorError</item>
+-    </style>
+-
+-    <style name="ThemeOverlay.Signal.MaterialSwitch" parent="ThemeOverlay.Material3">
+-        <item name="colorPrimary">@color/signal_colorPrimary</item>
+-        <item name="colorPrimaryContainer">@color/signal_colorPrimaryContainer</item>
+-        <item name="colorSecondary">@color/signal_colorSecondary</item>
+-        <item name="colorSecondaryContainer">@color/signal_colorSecondaryContainer</item>
+-        <item name="colorSurface">@color/signal_colorSurface</item>
+-        <item name="colorSurfaceVariant">@color/signal_colorSurfaceVariant</item>
+-        <item name="colorOnPrimary">@color/signal_colorOnPrimary</item>
+-        <item name="colorOnPrimaryContainer">@color/signal_colorOnPrimaryContainer</item>
+-        <item name="colorOnSecondary">@color/signal_colorOnSecondary</item>
+-        <item name="colorOnSecondaryContainer">@color/signal_colorOnSecondaryContainer</item>
+-        <item name="colorOnSurface">@color/signal_colorOnSurface</item>
+-        <item name="colorOnSurfaceVariant">@color/signal_colorOnSurfaceVariant</item>
+-        <item name="colorOnBackground">@color/signal_colorOnBackground</item>
+-        <item name="colorOutline">@color/signal_colorOutline</item>
+     </style>
+ 
++    <style name="ThemeOverlay.MaterialSwitch.DayNight" parent="ThemeOverlay.Material3">
++        <item name="colorSurface">?attr/colorSurfaceContainer</item>
++        <item name="colorOnSurfaceVariant">?attr/colorPrimary</item>
++        <item name="colorOutline">?attr/colorOutlineVariant</item>
++    </style>
++
++    <style name="ThemeOverlay.MaterialSwitch.Dynamic" parent="ThemeOverlay.Material3.DynamicColors.DayNight" />
++
+ </resources>
+diff --git a/app/src/main/res/values/values.xml b/app/src/main/res/values/values.xml
+index 87076bf02423b0bc084487c04118faac26ddccce..7e015d0603a4b783d6e9382a7007ea3394ab4adb 100644
+--- a/app/src/main/res/values/values.xml
++++ b/app/src/main/res/values/values.xml
+@@ -1,7 +1,5 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <bool name="enable_alarm_manager">true</bool>
+-    <bool name="enable_job_service">false</bool>
+     <integer name="image_scale_flip">1</integer>
+     <drawable name="paypal_themed">@drawable/paypal</drawable>
+ </resources>
+diff --git a/app/src/main/res/xml/authenticator.xml b/app/src/main/res/xml/authenticator.xml
+index 37f811fe6463218c54dd557bf090efbef644c0b2..116406359e08fa0243b82eebab43384de7a41f8b 100644
+--- a/app/src/main/res/xml/authenticator.xml
++++ b/app/src/main/res/xml/authenticator.xml
+@@ -1,5 +1,5 @@
+ <account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+-                       android:accountType="org.thoughtcrime.securesms"
++                       android:accountType="@string/package_name"
+                        android:icon="@mipmap/ic_launcher"
+                        android:smallIcon="@mipmap/ic_launcher"
+                        android:label="@string/app_name"/>
+diff --git a/app/src/main/res/xml/network_security_config.xml b/app/src/main/res/xml/network_security_config.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..2260207a1893b14c9bd887c7cf6626665ee65353
+--- /dev/null
++++ b/app/src/main/res/xml/network_security_config.xml
+@@ -0,0 +1,46 @@
++<?xml version="1.0" encoding="utf-8"?>
++<network-security-config>
++    <base-config cleartextTrafficPermitted="false" />
++    <!-- www.ssllabs.com/ssltest can be used to retrieve the SHA-256 pin for these domains. -->
++    <domain-config>
++        <domain includeSubdomains="true">molly.im</domain>
++        <pin-set>
++            <pin digest="SHA-256">C5+lpZ7tcVwmwQIMcRtPbsQtWLABXhQzejna0wHFr8M=</pin><!-- ISRG Root X1 -->
++            <pin digest="SHA-256">diGVwiVYbubAI3RW4hB9xU8e/CH2GnkuvVFZE8zmgzI=</pin><!-- ISRG Root X2 -->
++        </pin-set>
++    </domain-config>
++    <domain-config>
++        <domain includeSubdomains="false">a.tile.openstreetmap.org</domain>
++        <domain includeSubdomains="false">b.tile.openstreetmap.org</domain>
++        <domain includeSubdomains="false">c.tile.openstreetmap.org</domain>
++        <pin-set>
++            <pin digest="SHA-256">cGuxAXyFXFkWm61cF4HPWX8S0srS9j0aSqN0k4AP+4A=</pin>
++        </pin-set>
++    </domain-config>
++    <domain-config>
++        <domain includeSubdomains="false">maps.wikimedia.org</domain>
++        <pin-set>
++            <pin digest="SHA-256">NYbU7PBwV4y9J67c4guWTki8FJ+uudrXL0a4V4aRcrg=</pin>
++        </pin-set>
++    </domain-config>
++    <domain-config>
++        <domain includeSubdomains="false">tiles.openseamap.org</domain>
++        <pin-set>
++            <pin digest="SHA-256">HvHMVMntBDPrDCgr610nxBciVTXmE0TIkDg646DamR4=</pin>
++        </pin-set>
++    </domain-config>
++    <domain-config>
++        <domain includeSubdomains="false">basemap.nationalmap.gov</domain>
++        <pin-set>
++            <pin digest="SHA-256">glQ8v/7Y2nwI3pXU5QpQx/XIAlYZGglTa+B1E6xVjrQ=</pin>
++        </pin-set>
++    </domain-config>
++    <domain-config>
++        <domain includeSubdomains="false">a.tile.opentopomap.org</domain>
++        <domain includeSubdomains="false">b.tile.opentopomap.org</domain>
++        <domain includeSubdomains="false">c.tile.opentopomap.org</domain>
++        <pin-set>
++            <pin digest="SHA-256">K7rZOrXHknnsEhUH8nLL4MZkejquUuIvOIr6tCa0rbo=</pin>
++        </pin-set>
++    </domain-config>
++</network-security-config>
+\ No newline at end of file
+diff --git a/app/src/main/res/xml/preferences_network.xml b/app/src/main/res/xml/preferences_network.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..414eb9aea184ba40d13d08a7686d506424011a00
+--- /dev/null
++++ b/app/src/main/res/xml/preferences_network.xml
+@@ -0,0 +1,47 @@
++<?xml version="1.0" encoding="utf-8"?>
++
++<PreferenceScreen
++    xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <Preference
++        android:key="pref_network_connection_state"
++        android:title="@string/preferences_network__check_connection" />
++
++    <PreferenceCategory android:layout="@layout/preference_divider" />
++
++    <PreferenceCategory
++        android:title="@string/preferences_network__connection">
++
++        <org.thoughtcrime.securesms.preferences.widgets.SignalListPreference
++            android:key="pref_proxy_type"
++            android:title="@string/preferences_use_proxy"
++            android:summary="@string/preferences_network__tunnels_network_traffic"
++            android:entries="@array/pref_proxy_type_entries"
++            android:entryValues="@array/pref_proxy_type_values"
++            android:defaultValue="none" />
++
++    </PreferenceCategory>
++
++    <PreferenceCategory
++        android:key="proxy_socks"
++        android:layout="@layout/preference_divider" >
++
++        <PreferenceCategory
++            android:title="@string/arrays__socks5">
++
++            <org.thoughtcrime.securesms.preferences.widgets.SignalEditTextPreference
++                android:key="pref_proxy_socks_host"
++                android:title="@string/preferences_network__host"
++                android:summary="@string/preferences_network__hostname_or_ip_address"
++                android:defaultValue="localhost" />
++
++            <org.thoughtcrime.securesms.preferences.widgets.SignalEditTextPreference
++                android:key="pref_proxy_socks_port"
++                android:title="@string/preferences_network__port"
++                android:defaultValue="9050" />
++
++        </PreferenceCategory>
++
++    </PreferenceCategory>
++
++</PreferenceScreen>
+\ No newline at end of file
+diff --git a/app/src/main/res/xml/syncadapter.xml b/app/src/main/res/xml/syncadapter.xml
+index 7804e402178b8c5b26cdd30cb544548aab5d52c5..d86f3ed9294bc3a9db07645e966b2524f7a0e9e5 100644
+--- a/app/src/main/res/xml/syncadapter.xml
++++ b/app/src/main/res/xml/syncadapter.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+               android:contentAuthority="com.android.contacts"
+-              android:accountType="org.thoughtcrime.securesms"
++              android:accountType="@string/package_name"
+               android:userVisible="true"
+               android:supportsUploading="true"
+               android:allowParallelSyncs="false"
+diff --git a/app/src/staging/res/values/strings.xml b/app/src/staging/res/values/strings.xml
+index c8a66e861349ae33633adc1eb42381cac15bdfae..8850a563a5af664ee31e55044a71967495d125ca 100644
+--- a/app/src/staging/res/values/strings.xml
++++ b/app/src/staging/res/values/strings.xml
+@@ -1,4 +1,3 @@
+ <?xml version='1.0' encoding='UTF-8'?>
+ <resources>
+-  <string name="app_name">Signal (Staging)</string>
+-</resources>
+\ No newline at end of file
++</resources>
+diff --git a/app/src/staging/res/values/strings2.xml b/app/src/staging/res/values/strings2.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..55344e51920f3dcbb968d32ee2281e029d1571bf
+--- /dev/null
++++ b/app/src/staging/res/values/strings2.xml
+@@ -0,0 +1,3 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++</resources>
+\ No newline at end of file
+diff --git a/app/src/staging/res/xml/authenticator.xml b/app/src/staging/res/xml/authenticator.xml
+deleted file mode 100644
+index 58d5d8f6816dc5746c7880c141e96b4f09aacc1b..0000000000000000000000000000000000000000
+--- a/app/src/staging/res/xml/authenticator.xml
++++ /dev/null
+@@ -1,6 +0,0 @@
+-<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+-                       android:accountType="org.thoughtcrime.securesms.staging"
+-                       android:icon="@mipmap/ic_launcher"
+-                       android:smallIcon="@mipmap/ic_launcher"
+-                       android:label="@string/app_name"/>
+-
+diff --git a/app/src/staging/res/xml/syncadapter.xml b/app/src/staging/res/xml/syncadapter.xml
+deleted file mode 100644
+index 9e369a00aee5e5a7a2079f87a53ed7f3f5e98b3b..0000000000000000000000000000000000000000
+--- a/app/src/staging/res/xml/syncadapter.xml
++++ /dev/null
+@@ -1,8 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<sync-adapter xmlns:android="http://schemas.android.com/apk/res/android"
+-              android:contentAuthority="com.android.contacts"
+-              android:accountType="org.thoughtcrime.securesms.staging"
+-              android:userVisible="true"
+-              android:supportsUploading="true"
+-              android:allowParallelSyncs="false"
+-              android:isAlwaysSyncable="true"/>
+\ No newline at end of file
+diff --git a/core/ui/src/main/res/drawable/ic_radio_button_checked.xml b/core/ui/src/main/res/drawable/ic_radio_button_checked.xml
+index 7465d286caaf2be8343c87c72f15eeb6bfd6fd4b..1094d1c29bb8e3eaf85b1a409026a0380672ad7d 100644
+--- a/core/ui/src/main/res/drawable/ic_radio_button_checked.xml
++++ b/core/ui/src/main/res/drawable/ic_radio_button_checked.xml
+@@ -1,7 +1,7 @@
+ <vector xmlns:android="http://schemas.android.com/apk/res/android" android:height="24dp" android:viewportHeight="25" android:viewportWidth="24" android:width="23.04dp">
+       
+-    <path android:fillColor="#00000000" android:pathData="M12,12.801m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" android:strokeColor="#2C58C3" android:strokeWidth="2"/>
++    <path android:fillColor="#00000000" android:pathData="M12,12.801m-9,0a9,9 0,1 1,18 0a9,9 0,1 1,-18 0" android:strokeColor="#5335DD" android:strokeWidth="2"/>
+       
+-    <path android:fillColor="#2C58C3" android:pathData="M12,12.801m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" android:strokeColor="#2C58C3" android:strokeWidth="2"/>
++    <path android:fillColor="#5335DD" android:pathData="M12,12.801m-4,0a4,4 0,1 1,8 0a4,4 0,1 1,-8 0" android:strokeColor="#5335DD" android:strokeWidth="2"/>
+     
+ </vector>
+diff --git a/core/ui/src/main/res/drawable/symbol_arrow_start_24.xml b/core/ui/src/main/res/drawable/symbol_arrow_start_24.xml
+index 8b33a6933446707c45a78dcc935c1a3abd8c68e7..5d656349ac0f0d063f7f5e37edf08c96705ebc45 100644
+--- a/core/ui/src/main/res/drawable/symbol_arrow_start_24.xml
++++ b/core/ui/src/main/res/drawable/symbol_arrow_start_24.xml
+@@ -5,6 +5,6 @@
+     android:viewportWidth="24"
+     android:viewportHeight="24">
+     <path
+-        android:fillColor="@color/signal_colorOnSurface"
++        android:fillColor="?attr/colorOnSurface"
+         android:pathData="M3.88 12c0 0.23 0.09 0.45 0.25 0.62l6.5 6.5c0.34 0.34 0.9 0.34 1.24 0 0.34-0.34 0.34-0.9 0-1.24l-5.13-5.13 1.76 0.13h11.25c0.48 0 0.88-0.4 0.88-0.88s-0.4-0.88-0.88-0.88H8.5l-1.76 0.13 5.13-5.13c0.34-0.34 0.34-0.9 0-1.24-0.34-0.34-0.9-0.34-1.24 0l-6.5 6.5C3.97 11.55 3.88 11.77 3.88 12Z"/>
+ </vector>
+diff --git a/core/ui/src/main/res/layout/permissions_rationale_dialog.xml b/core/ui/src/main/res/layout/permissions_rationale_dialog.xml
+index 7fb7ecfd10659cde95a906fee48f6b209ec3232b..9f168821261b6fd77c06e9fa70d9b286b7cabbac 100644
+--- a/core/ui/src/main/res/layout/permissions_rationale_dialog.xml
++++ b/core/ui/src/main/res/layout/permissions_rationale_dialog.xml
+@@ -10,7 +10,7 @@
+         android:id="@+id/header_container"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+-        android:background="@color/signal_colorPrimary"
++        android:background="?attr/colorPrimary"
+         android:gravity="center"
+         android:orientation="horizontal"
+         android:padding="48dp">
+@@ -25,7 +25,7 @@
+         android:paddingTop="16dp"
+         android:scrollbars="vertical"
+         android:textAppearance="@style/Signal.Text.BodyMedium"
+-        android:textColor="@color/signal_colorOnSurfaceVariant"
++        android:textColor="?attr/colorOnSurfaceVariant"
+         tools:text="Signal needs access to your contacts and media in order to connect with friends, exchange messages, and make secure calls." />
+ 
+ </LinearLayout>
+diff --git a/core/ui/src/main/res/values-v31/colors_dynamic.xml b/core/ui/src/main/res/values-v31/colors_dynamic.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..1d0f29c78c82b89bc02a8745b90784aa88ef01a9
+--- /dev/null
++++ b/core/ui/src/main/res/values-v31/colors_dynamic.xml
+@@ -0,0 +1,74 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <!-- Light Theme -->
++    <color name="dynamic_primary_inverse_light">@android:color/system_accent1_200</color>
++    <color name="dynamic_primary_light">@android:color/system_accent1_600</color>
++    <color name="dynamic_on_primary_light">@android:color/system_accent1_0</color>
++    <color name="dynamic_primary_container_light">@android:color/system_accent1_100</color>
++    <color name="dynamic_on_primary_container_light">@android:color/system_accent1_900</color>
++    <color name="dynamic_secondary_light">@android:color/system_accent2_600</color>
++    <color name="dynamic_on_secondary_light">@android:color/system_accent2_0</color>
++    <color name="dynamic_secondary_container_light">@android:color/system_accent2_100</color>
++    <color name="dynamic_on_secondary_container_light">@android:color/system_accent2_900</color>
++    <color name="dynamic_surface_inverse_light">@android:color/system_neutral1_800</color>
++    <color name="dynamic_surface_variant_light">@android:color/system_neutral2_100</color>
++    <color name="dynamic_surface_light">#FAF8FF</color>
++    <color name="dynamic_background_light">#FAF8FF</color>
++    <color name="dynamic_surface_dim_light">#DAD9E0</color>
++    <color name="dynamic_surface_container_highest_light">@android:color/system_neutral2_100</color>
++    <color name="dynamic_surface_container_high_light">#E8E7EF</color>
++    <color name="dynamic_surface_container_light">#EEEDF4</color>
++    <color name="dynamic_surface_container_low_light">#F4F3FA</color>
++    <color name="dynamic_surface_bright_light">#FAF8FF</color>
++    <color name="dynamic_surface_container_lowest_light">@android:color/system_neutral2_0</color>
++    <color name="dynamic_on_surface_inverse_light">@android:color/system_neutral1_50</color>
++    <color name="dynamic_on_surface_light">@android:color/system_neutral1_900</color>
++    <color name="dynamic_on_background_light">@android:color/system_neutral1_900</color>
++    <color name="dynamic_on_surface_variant_light">@android:color/system_neutral2_700</color>
++    <color name="dynamic_outline_light">@android:color/system_neutral2_500</color>
++    <color name="dynamic_outline_variant_light">@android:color/system_neutral2_200</color>
++    <color name="dynamic_error_light">#B3261E</color>
++    <color name="dynamic_on_error_light">#FFFFFF</color>
++    <color name="dynamic_error_container_light">#F9DEDC</color>
++    <color name="dynamic_on_error_container_light">#410E0B</color>
++    <color name="dynamic_tertiary_light">@android:color/system_accent3_600</color>
++    <color name="dynamic_on_tertiary_light">@android:color/system_accent3_0</color>
++    <color name="dynamic_tertiary_container_light">@android:color/system_accent3_100</color>
++    <color name="dynamic_on_tertiary_container_light">@android:color/system_accent3_900</color>
++
++    <!-- Dark Theme -->
++    <color name="dynamic_primary_inverse_dark">@android:color/system_accent1_600</color>
++    <color name="dynamic_primary_dark">@android:color/system_accent1_200</color>
++    <color name="dynamic_on_primary_dark">@android:color/system_accent1_800</color>
++    <color name="dynamic_primary_container_dark">@android:color/system_accent1_700</color>
++    <color name="dynamic_on_primary_container_dark">@android:color/system_accent1_100</color>
++    <color name="dynamic_secondary_dark">@android:color/system_accent2_200</color>
++    <color name="dynamic_on_secondary_dark">@android:color/system_accent2_800</color>
++    <color name="dynamic_secondary_container_dark">@android:color/system_accent2_700</color>
++    <color name="dynamic_on_secondary_container_dark">@android:color/system_accent2_100</color>
++    <color name="dynamic_surface_inverse_dark">@android:color/system_neutral1_100</color>
++    <color name="dynamic_surface_variant_dark">@android:color/system_neutral2_700</color>
++    <color name="dynamic_surface_dark">#121318</color>
++    <color name="dynamic_background_dark">#121318</color>
++    <color name="dynamic_surface_bright_dark">#38393F</color>
++    <color name="dynamic_surface_container_highest_dark">#33343A</color>
++    <color name="dynamic_surface_container_high_dark">#282A2F</color>
++    <color name="dynamic_surface_container_dark">#1E1F25</color>
++    <color name="dynamic_surface_container_low_dark">@android:color/system_neutral2_900</color>
++    <color name="dynamic_surface_dim_dark">#121318</color>
++    <color name="dynamic_surface_container_lowest_dark">#0C0E13</color>
++    <color name="dynamic_on_surface_inverse_dark">@android:color/system_neutral1_800</color>
++    <color name="dynamic_on_surface_dark">@android:color/system_neutral1_100</color>
++    <color name="dynamic_on_background_dark">@android:color/system_neutral1_100</color>
++    <color name="dynamic_on_surface_variant_dark">@android:color/system_neutral2_200</color>
++    <color name="dynamic_outline_dark">@android:color/system_neutral2_400</color>
++    <color name="dynamic_outline_variant_dark">@android:color/system_neutral2_700</color>
++    <color name="dynamic_error_dark">#F2B8B5</color>
++    <color name="dynamic_on_error_dark">#601410</color>
++    <color name="dynamic_error_container_dark">#8C1D18</color>
++    <color name="dynamic_on_error_container_dark">#F9DEDC</color>
++    <color name="dynamic_tertiary_dark">@android:color/system_accent3_200</color>
++    <color name="dynamic_on_tertiary_dark">@android:color/system_accent3_800</color>
++    <color name="dynamic_tertiary_container_dark">@android:color/system_accent3_700</color>
++    <color name="dynamic_on_tertiary_container_dark">@android:color/system_accent3_100</color>
++</resources>
+diff --git a/core/ui/src/main/res/values-v34/colors_dynamic.xml b/core/ui/src/main/res/values-v34/colors_dynamic.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..5710323283f0fee3d547294863bb14fc2d87400a
+--- /dev/null
++++ b/core/ui/src/main/res/values-v34/colors_dynamic.xml
+@@ -0,0 +1,74 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <!-- Light Theme -->
++    <color name="dynamic_primary_inverse_light">@android:color/system_primary_dark</color>
++    <color name="dynamic_primary_light">@android:color/system_primary_light</color>
++    <color name="dynamic_on_primary_light">@android:color/system_on_primary_light</color>
++    <color name="dynamic_primary_container_light">@android:color/system_primary_container_light</color>
++    <color name="dynamic_on_primary_container_light">@android:color/system_on_primary_container_light</color>
++    <color name="dynamic_secondary_light">@android:color/system_secondary_light</color>
++    <color name="dynamic_on_secondary_light">@android:color/system_on_secondary_light</color>
++    <color name="dynamic_secondary_container_light">@android:color/system_secondary_container_light</color>
++    <color name="dynamic_on_secondary_container_light">@android:color/system_on_secondary_container_light</color>
++    <color name="dynamic_surface_inverse_light">@android:color/system_surface_dark</color>
++    <color name="dynamic_surface_variant_light">@android:color/system_surface_variant_light</color>
++    <color name="dynamic_surface_light">@android:color/system_surface_light</color>
++    <color name="dynamic_background_light">@android:color/system_background_light</color>
++    <color name="dynamic_surface_dim_light">@android:color/system_surface_dim_light</color>
++    <color name="dynamic_surface_container_highest_light">@android:color/system_surface_container_highest_light</color>
++    <color name="dynamic_surface_container_high_light">@android:color/system_surface_container_high_light</color>
++    <color name="dynamic_surface_container_light">@android:color/system_surface_container_light</color>
++    <color name="dynamic_surface_container_low_light">@android:color/system_surface_container_low_light</color>
++    <color name="dynamic_surface_bright_light">@android:color/system_surface_bright_light</color>
++    <color name="dynamic_surface_container_lowest_light">@android:color/system_surface_container_lowest_light</color>
++    <color name="dynamic_on_surface_inverse_light">@android:color/system_on_surface_dark</color>
++    <color name="dynamic_on_surface_light">@android:color/system_on_surface_light</color>
++    <color name="dynamic_on_background_light">@android:color/system_on_background_light</color>
++    <color name="dynamic_on_surface_variant_light">@android:color/system_on_surface_variant_light</color>
++    <color name="dynamic_outline_light">@android:color/system_outline_light</color>
++    <color name="dynamic_outline_variant_light">@android:color/system_outline_variant_light</color>
++    <color name="dynamic_error_light">@android:color/system_error_light</color>
++    <color name="dynamic_on_error_light">@android:color/system_on_error_light</color>
++    <color name="dynamic_error_container_light">@android:color/system_error_container_light</color>
++    <color name="dynamic_on_error_container_light">@android:color/system_on_error_container_light</color>
++    <color name="dynamic_tertiary_light">@android:color/system_tertiary_light</color>
++    <color name="dynamic_on_tertiary_light">@android:color/system_on_tertiary_light</color>
++    <color name="dynamic_tertiary_container_light">@android:color/system_tertiary_container_light</color>
++    <color name="dynamic_on_tertiary_container_light">@android:color/system_on_tertiary_container_light</color>
++
++    <!-- Dark Theme -->
++    <color name="dynamic_primary_inverse_dark">@android:color/system_primary_light</color>
++    <color name="dynamic_primary_dark">@android:color/system_primary_dark</color>
++    <color name="dynamic_on_primary_dark">@android:color/system_on_primary_dark</color>
++    <color name="dynamic_primary_container_dark">@android:color/system_primary_container_dark</color>
++    <color name="dynamic_on_primary_container_dark">@android:color/system_on_primary_container_dark</color>
++    <color name="dynamic_secondary_dark">@android:color/system_secondary_dark</color>
++    <color name="dynamic_on_secondary_dark">@android:color/system_on_secondary_dark</color>
++    <color name="dynamic_secondary_container_dark">@android:color/system_secondary_container_dark</color>
++    <color name="dynamic_on_secondary_container_dark">@android:color/system_on_secondary_container_dark</color>
++    <color name="dynamic_surface_inverse_dark">@android:color/system_surface_light</color>
++    <color name="dynamic_surface_variant_dark">@android:color/system_surface_variant_dark</color>
++    <color name="dynamic_surface_dark">@android:color/system_surface_dark</color>
++    <color name="dynamic_background_dark">@android:color/system_background_dark</color>
++    <color name="dynamic_surface_bright_dark">@android:color/system_surface_bright_dark</color>
++    <color name="dynamic_surface_container_highest_dark">@android:color/system_surface_container_highest_dark</color>
++    <color name="dynamic_surface_container_high_dark">@android:color/system_surface_container_high_dark</color>
++    <color name="dynamic_surface_container_dark">@android:color/system_surface_container_dark</color>
++    <color name="dynamic_surface_container_low_dark">@android:color/system_surface_container_low_dark</color>
++    <color name="dynamic_surface_dim_dark">@android:color/system_surface_dim_dark</color>
++    <color name="dynamic_surface_container_lowest_dark">@android:color/system_surface_container_lowest_dark</color>
++    <color name="dynamic_on_surface_inverse_dark">@android:color/system_on_surface_light</color>
++    <color name="dynamic_on_surface_dark">@android:color/system_on_surface_dark</color>
++    <color name="dynamic_on_background_dark">@android:color/system_on_background_dark</color>
++    <color name="dynamic_on_surface_variant_dark">@android:color/system_on_surface_variant_dark</color>
++    <color name="dynamic_outline_dark">@android:color/system_outline_dark</color>
++    <color name="dynamic_outline_variant_dark">@android:color/system_outline_variant_dark</color>
++    <color name="dynamic_error_dark">@android:color/system_error_dark</color>
++    <color name="dynamic_on_error_dark">@android:color/system_on_error_dark</color>
++    <color name="dynamic_error_container_dark">@android:color/system_error_container_dark</color>
++    <color name="dynamic_on_error_container_dark">@android:color/system_on_error_container_dark</color>
++    <color name="dynamic_tertiary_dark">@android:color/system_tertiary_dark</color>
++    <color name="dynamic_on_tertiary_dark">@android:color/system_on_tertiary_dark</color>
++    <color name="dynamic_tertiary_container_dark">@android:color/system_tertiary_container_dark</color>
++    <color name="dynamic_on_tertiary_container_dark">@android:color/system_on_tertiary_container_dark</color>
++</resources>
+diff --git a/core/ui/src/main/res/values/molly_colors.xml b/core/ui/src/main/res/values/molly_colors.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..7d2d3eabd6394c451dde55f318c733a5c7a35571
+--- /dev/null
++++ b/core/ui/src/main/res/values/molly_colors.xml
+@@ -0,0 +1,402 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++
++    <!-- material3_colors_light.xml -->
++
++    <color name="molly_primary_inverse_light">#AA98FF</color>
++    <color name="stock_primary_inverse_light">#B6C5FA</color>
++
++    <color name="molly_primary_light">#5335DD</color>
++    <color name="stock_primary_light">#2C58C3</color>
++
++    <color name="molly_on_primary_light">#FFFFFF</color>
++    <color name="stock_on_primary_light">#FFFFFF</color>
++
++    <color name="molly_primary_container_light">#C1B4FB</color>
++    <color name="stock_primary_container_light">#D2DFFB</color>
++
++    <color name="molly_on_primary_container_light">#180D49</color>
++    <color name="stock_on_primary_container_light">#051845</color>
++
++    <color name="molly_primary_fixed">#C1B4FB</color>
++    <color name="stock_primary_fixed">#D2DFFB</color>
++
++    <color name="molly_primary_fixed_dim">#AA98FF</color>
++    <color name="stock_primary_fixed_dim">#B6C5FA</color>
++
++    <color name="molly_on_primary_fixed">#180D49</color>
++    <color name="stock_on_primary_fixed">#051845</color>
++
++    <color name="molly_on_primary_fixed_variant">#483B6A</color>
++    <color name="stock_on_primary_fixed_variant">#464B5C</color>
++
++    <color name="molly_secondary_light">#C5C1DD</color>
++    <color name="stock_secondary_light">#586071</color>
++
++    <color name="molly_on_secondary_light">#FFFFFF</color>
++    <color name="stock_on_secondary_light">#FFFFFF</color>
++
++    <color name="molly_secondary_container_light">#E3DBF9</color>    <!-- Variant of #E3DCF9 -->
++    <color name="stock_secondary_container_light">#DCE5F9</color>    <!-- Variant of #DCE1F9 -->
++
++    <color name="molly_on_secondary_container_light">#1E1835</color>
++    <color name="stock_on_secondary_container_light">#151D2C</color>
++
++    <color name="molly_secondary_fixed">#E3DCF9</color>
++    <color name="stock_secondary_fixed">#DCE1F9</color>
++
++    <color name="molly_secondary_fixed_dim">#C5C1DD</color>
++    <!-- <color name="stock_secondary_fixed_dim">#C1C6DD</color> -->    <!-- Conflicts with stock_secondary_dark -->
++
++    <color name="molly_on_secondary_fixed">#1E1835</color>
++    <color name="stock_on_secondary_fixed">#151D2C</color>
++
++    <color name="molly_on_secondary_fixed_variant">#434159</color>
++    <color name="stock_on_secondary_fixed_variant">#414659</color>
++
++    <color name="molly_surface_inverse_light">#33276A</color>
++    <color name="stock_surface_inverse_light">#31343E</color>
++
++    <color name="molly_surface_variant_light">#E7E6F2</color>
++    <color name="stock_surface_variant_light">#E7EBF3</color>
++
++    <color name="molly_surface_light">#F6F6FF</color>
++    <color name="stock_surface_light">#FBFCFF</color>
++
++    <color name="molly_background_light">#F6F6FF</color>
++    <color name="stock_background_light">#FBFCFF</color>
++
++    <color name="molly_surface_dim_light">#DED6FF</color>
++    <color name="stock_surface_dim_light">#E3E7F1</color>    <!-- Previously signal_light_colorSurface5 -->
++
++    <color name="molly_surface_container_highest_light">#E5DFFF</color>
++    <color name="stock_surface_container_highest_light">#E6EAF3</color>     <!-- Previously signal_light_colorSurface4 -->
++
++    <color name="molly_surface_container_high_light">#EAE5FF</color>
++    <color name="stock_surface_container_high_light">#E8ECF4</color>        <!-- Previously signal_light_colorSurface3 -->
++
++    <color name="molly_surface_container_light">#EEEAFF</color>
++    <color name="stock_surface_container_light">#EDF0F6</color>             <!-- Previously signal_light_colorSurface2 -->
++
++    <color name="molly_surface_container_low_light">#F3F0FF</color>
++    <color name="stock_surface_container_low_light">#F2F5F9</color>         <!-- Previously signal_light_colorSurface1 -->
++
++    <color name="molly_surface_bright_light">#F6F6FF</color>
++    <color name="stock_surface_bright_light">#FBFCFF</color>
++
++    <color name="molly_surface_container_lowest_light">#F9F8FF</color>
++
++    <color name="molly_on_surface_inverse_light">#F1EDF6</color>
++    <!-- <color name="stock_on_surface_inverse_light">#EDF0F6</color> -->   <!-- Conflicts with stock_surface_container_light -->
++
++    <color name="molly_on_surface_light">#181719</color>     <!-- Variant of #171719 -->
++    <color name="stock_on_surface_light">#1B1B1D</color>     <!-- Different from stock_on_background_light #1B1D1D but it should be the same -->
++
++    <color name="molly_on_background_light">#171719</color>
++    <color name="stock_on_background_light">#1B1D1D</color>
++
++    <color name="molly_on_surface_variant_light">#585563</color>
++    <color name="stock_on_surface_variant_light">#545863</color>
++
++    <color name="molly_outline_light">#82808A</color>
++    <color name="stock_outline_light">#808389</color>
++
++    <color name="molly_outline_variant_light">#9384E2</color>
++    <color name="stock_outline_variant_light">#BBBFC8</color>    <!-- Previously signal_light_colorOnSurfaceVariant1 -->
++
++    <color name="molly_error_light">#E00052</color>
++    <color name="stock_error_light">#BA1B1B</color>
++
++    <color name="molly_on_error_light">#FFFFFF</color>
++
++    <color name="molly_error_container_light">#FDC7DB</color>
++    <color name="stock_error_container_light">#FFDAD4</color>
++
++    <color name="molly_on_error_container_light">#6D0028</color>
++
++    <color name="molly_tertiary_light">#5A5379</color>
++
++    <color name="molly_on_tertiary_light">#FFFFFF</color>
++
++    <color name="molly_tertiary_container_light">#D1C6FB</color>
++
++    <color name="molly_on_tertiary_container_light">#180D49</color>
++
++    <color name="molly_tertiary_fixed">#EAE5FF</color>
++
++    <color name="molly_tertiary_fixed_dim">#5A5379</color>
++
++    <color name="molly_on_tertiary_fixed">#180D49</color>
++
++    <color name="molly_on_tertiary_fixed_variant">#423290</color>
++
++    <!-- material3_colors_dark.xml -->
++
++    <color name="molly_primary_inverse_dark">#5335DD</color>
++    <color name="stock_primary_inverse_dark">#2C58C3</color>
++
++    <color name="molly_primary_dark">#AA98FF</color>
++    <color name="stock_primary_dark">#B6C5FA</color>
++
++    <color name="molly_on_primary_dark">#1E1B38</color>
++    <color name="stock_on_primary_dark">#1E2438</color>
++
++    <color name="molly_primary_container_dark">#483B6A</color>
++    <color name="stock_primary_container_dark">#464B5C</color>
++
++    <color name="molly_on_primary_container_dark">#DDDCFC</color>
++    <color name="stock_on_primary_container_dark">#DBE1FC</color>
++
++    <color name="molly_secondary_dark">#CBC4DE</color>
++    <color name="stock_secondary_dark">#C1C6DD</color>
++
++    <color name="molly_on_secondary_dark">#2E2A42</color>
++    <color name="stock_on_secondary_dark">#2A3042</color>
++
++    <color name="molly_secondary_container_dark">#434159</color>
++    <color name="stock_secondary_container_dark">#414659</color>
++
++    <color name="molly_on_secondary_container_dark">#E3DCF9</color>
++    <color name="stock_on_secondary_container_dark">#DCE1F9</color>
++
++    <color name="molly_surface_inverse_dark">#E5DFFF</color>
++    <color name="stock_surface_inverse_dark">#E6EAF3</color>
++
++    <color name="molly_surface_variant_dark">#302F33</color>
++    <color name="stock_surface_variant_dark">#303133</color>
++
++    <color name="molly_surface_dark">#100E1F</color>
++    <color name="stock_surface_dark">#1B1C1F</color>
++
++    <color name="molly_background_dark">#100E1F</color>
++    <color name="stock_background_dark">#1B1C1F</color>
++
++    <color name="molly_surface_bright_dark">#33276A</color>
++    <color name="stock_surface_bright_dark">#31343E</color>      <!-- Previously signal_dark_colorSurface5 -->
++
++    <color name="molly_surface_container_highest_dark">#281E57</color>
++    <color name="stock_surface_container_highest_dark">#2E3039</color>      <!-- Previously signal_dark_colorSurface4 -->
++
++    <color name="molly_surface_container_high_dark">#231A4E</color>
++    <color name="stock_surface_container_high_dark">#2C2F37</color>         <!-- Previously signal_dark_colorSurface3 -->
++
++    <color name="molly_surface_container_dark">#1E1645</color>
++    <color name="stock_surface_container_dark">#272A31</color>              <!-- Previously signal_dark_colorSurface2 -->
++
++    <color name="molly_surface_container_low_dark">#181137</color>
++    <color name="stock_surface_container_low_dark">#23242A</color>          <!-- Previously signal_dark_colorSurface1 -->
++
++    <color name="molly_surface_dim_dark">#100E1F</color>
++    <color name="stock_surface_dim_dark">#1B1C1F</color>
++
++    <color name="molly_surface_container_lowest_dark">#0C0919</color>
++
++    <color name="molly_on_surface_inverse_dark">#31303D</color>
++    <!-- <color name="stock_on_surface_inverse_dark">#31343E</color> -->    <!-- Conflicts with stock_surface_bright_dark -->
++
++    <color name="molly_on_surface_dark">#E3E1E6</color>
++    <color name="stock_on_surface_dark">#E2E1E5</color>
++
++    <color name="molly_on_background_dark">#E3E1E6</color>
++    <color name="stock_on_background_dark">#E2E1E5</color>
++
++    <color name="molly_on_surface_variant_dark">#BEBCC4</color>
++    <color name="stock_on_surface_variant_dark">#BEBFC5</color>
++
++    <color name="molly_outline_dark">#5D5D66</color>
++    <color name="stock_outline_dark">#5C5E65</color>
++
++    <color name="molly_outline_variant_dark">#6E5DB9</color>
++    <color name="stock_outline_variant_dark">#4D5059</color>    <!-- Previously signal_dark_colorOnSurfaceVariant1 -->
++
++    <color name="molly_error_dark">#FE006E</color>
++    <color name="stock_error_dark">#FFB4A9</color>
++
++    <color name="molly_on_error_dark">#63012C</color>
++
++    <color name="molly_error_container_dark">#A40449</color>
++    <color name="stock_error_container_dark">#930006</color>
++
++    <color name="molly_on_error_container_dark">#FFDAD6</color>
++
++    <color name="molly_tertiary_dark">#B3ABDA</color>
++
++    <color name="molly_on_tertiary_dark">#36304F</color>
++
++    <color name="molly_tertiary_container_dark">#423290</color>
++
++    <color name="molly_on_tertiary_container_dark">#EAE5FF</color>
++
++    <!-- material3_colors.xml -->
++
++    <color name="molly_surface_variant_16_no_alpha_light">#D0CFDB</color>
++    <color name="stock_surface_variant_16_no_alpha_light">#D5D8DE</color>
++
++    <color name="molly_surface_variant_32_no_alpha_light">#B9B8C4</color>
++    <color name="stock_surface_variant_32_no_alpha_light">#B8BCC5</color>
++
++    <!-- core_colors.xml -->
++
++    <color name="molly_core_ultramarine">#7152FF</color>
++    <color name="stock_core_ultramarine">#2C6BED</color>
++
++    <color name="molly_core_ultramarine_dark">#4924F1</color>
++    <color name="stock_core_ultramarine_dark">#1851B4</color>
++
++    <color name="molly_core_ultramarine_icon">#7051FF</color>   <!-- Variant of #7152FF -->
++    <color name="stock_core_ultramarine_icon">#3A76F0</color>
++
++    <color name="molly_core_ultramarine_light">#8F77FF</color>
++    <color name="stock_core_ultramarine_light">#6191F3</color>
++
++    <color name="molly_core_ultramarine_medium">#C4B7FF</color>
++    <color name="stock_core_ultramarine_medium">#B0C8F9</color>
++
++    <color name="molly_core_green">#4CAF50</color>
++    <color name="stock_core_green">#4CAF50</color>
++
++    <color name="molly_core_yellow">#FFD624</color>
++    <color name="stock_core_yellow">#FFD624</color>
++
++    <color name="molly_core_red_highlight">#EF5350</color>
++    <color name="stock_core_red_highlight">#EF5350</color>
++
++    <color name="molly_core_red">#F44336</color>
++    <color name="stock_core_red">#F44336</color>
++
++    <color name="molly_core_red_shade">#E51D0E</color>
++    <color name="stock_core_red_shade">#E51D0E</color>
++
++    <!-- ChatColorsPalette.kt -->
++
++    <color name="molly_chat_colors_ultramarine">#6448E5</color> <!-- Variant of #7152FF -->
++    <color name="stock_chat_colors_ultramarine">#6058CA</color>
++
++    <!-- UsernameQrCodeColorScheme.kt -->
++
++    <color name="molly_username_qr_code_blue_border">#506ECD</color>
++    <color name="stock_username_qr_code_blue_border">#506ECD</color>
++
++    <color name="molly_username_qr_code_blue_foreground">#2449C0</color>
++    <color name="stock_username_qr_code_blue_foreground">#2449C0</color>
++
++    <color name="molly_username_qr_code_blue_background">#EDF0FA</color>
++    <color name="stock_username_qr_code_blue_background">#EDF0FA</color>
++
++    <!-- drawables/* -->
++
++    <color name="molly_gradient_A_1">#DAD2FF</color>
++    <color name="stock_gradient_A_1">#D2D8FE</color>
++
++    <color name="molly_gradient_A_2">#BFB2FA</color>
++    <color name="stock_gradient_A_2">#B0BCFC</color>
++
++    <color name="molly_gradient_B_1">#EBE7FF</color>
++    <color name="stock_gradient_B_1">#EDF3FF</color>
++
++    <color name="molly_gradient_B_2">#DED7FF</color>
++    <color name="stock_gradient_B_2">#E2E8FF</color>
++
++    <color name="molly_gradient_C_1">#6341FF</color>
++    <color name="stock_gradient_C_1">#3B45FD</color>
++
++    <color name="molly_gradient_C_2">#613FFF</color>
++    <color name="stock_gradient_C_2">#1F2AFD</color>
++
++    <color name="molly_gradient_D_1">#DAD2FF</color>
++    <color name="stock_gradient_D_1">#D2D8FE</color>
++
++    <color name="molly_gradient_D_2">#CABEFF</color>
++    <color name="stock_gradient_D_2">#C1C7FE</color>
++
++    <color name="molly_other_1">#E7E1FF</color>
++    <color name="stock_other_1">#E0E5FF</color>
++
++    <color name="molly_other_2">#C1BBDF</color>
++    <color name="stock_other_2">#ABBDE1</color>
++
++    <color name="molly_other_3">#8881A8</color>
++    <color name="stock_other_3">#858FA8</color>
++
++    <color name="molly_other_4">#BAABFF</color>
++    <color name="stock_other_4">#A0A7FE</color>
++
++    <color name="molly_other_5">#DAD2FF</color>
++    <color name="stock_other_5">#D2D8FE</color>
++
++    <color name="molly_other_6">#5E3CFD</color>
++    <color name="stock_other_6">#3C46FE</color>
++
++    <color name="molly_other_7">#6341FF</color>
++    <color name="stock_other_7">#3B45FD</color>
++
++    <color name="molly_other_8">#E2DCFF</color>
++    <color name="stock_other_8">#E3E8FE</color>
++
++    <color name="molly_other_9">#8069E8</color>
++    <color name="stock_other_9">#666EE5</color>
++
++    <color name="molly_other_10">#290F9F</color>
++    <color name="stock_other_10">#020BAC</color>
++
++    <color name="molly_other_11">#B2A4F1</color>
++    <color name="stock_other_11">#9CA4EF</color>
++
++    <color name="molly_other_12">#7354FF</color>
++    <color name="stock_other_12">#505AF2</color>
++
++    <color name="molly_other_13">#F6F5FF</color>    <!-- Variant of #F6F6FF -->
++    <color name="stock_other_13">#FBFCFE</color>    <!-- Variant of #FBFCFF -->
++
++    <color name="molly_other_14">#5D509E</color>
++    <color name="stock_other_14">#50679F</color>
++
++    <color name="molly_other_15">#ADB4F1</color>
++    <color name="stock_other_15">#ADB4F1</color>
++
++    <color name="molly_other_16">#6A77DD</color>
++    <color name="stock_other_16">#6A77DD</color>
++
++    <color name="molly_other_17">#D5D9FD</color>
++    <color name="stock_other_17">#D5D9FD</color>
++
++    <color name="molly_other_18">#373D52</color>
++    <color name="stock_other_18">#373D52</color>
++
++    <color name="molly_other_19">#617092</color>
++    <color name="stock_other_19">#617092</color>
++
++    <color name="molly_other_20">#B4BCFF</color>
++    <color name="stock_other_20">#B4BCFF</color>
++
++    <color name="molly_other_21">#E4E7FF</color>
++    <color name="stock_other_21">#E4E7FF</color>
++
++    <color name="molly_other_22">#C1C5E1</color>
++    <color name="stock_other_22">#C1C5E1</color>
++
++    <color name="molly_other_23">#C2D5F0</color>
++    <color name="stock_other_23">#C2D5F0</color>
++
++    <color name="molly_other_24">#AEC8E8</color>
++    <color name="stock_other_24">#AEC8E8</color>
++
++    <color name="molly_other_25">#6C7B9D</color>
++    <color name="stock_other_25">#6C7B9D</color>
++
++    <color name="molly_other_26">#DDE7FF</color>
++    <color name="stock_other_26">#DDE7FF</color>
++
++    <color name="molly_other_27">#C0CBE2</color>
++    <color name="stock_other_27">#C0CBE2</color>
++
++    <color name="molly_other_28">#7253FB</color>    <!-- Variant of #7354FF -->
++    <color name="stock_other_28">#505AF5</color>    <!-- Variant of #505AF2 -->
++
++    <color name="molly_other_29">#7266FF</color>
++    <color name="stock_other_29">#5C66FD</color>
++
++    <color name="molly_neutral_variant_light">#76727F</color>
++    <color name="stock_neutral_variant_light">#70747D</color>
++
++</resources>
+diff --git a/core/ui/src/main/res/values/text_styles.xml b/core/ui/src/main/res/values/text_styles.xml
+index d1198513cabdad19522ef811468647a8fa888d6d..5bdfe9c50666388528930bb742aa35c75083ce3c 100644
+--- a/core/ui/src/main/res/values/text_styles.xml
++++ b/core/ui/src/main/res/values/text_styles.xml
+@@ -95,7 +95,7 @@
+     </style>
+ 
+     <style name="Signal.Text.Preview.Secondary">
+-        <item name="android:textColor">@color/signal_colorOnSurfaceVariant</item>
++        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+     </style>
+ 
+     <style name="Signal.Text.Caption" parent="Base.TextAppearance.AppCompat.Caption">
+@@ -106,20 +106,20 @@
+     </style>
+ 
+     <style name="Signal.Text.Caption.MessageSent">
+-        <item name="android:textColor">@color/signal_colorOnSurfaceVariant</item>
++        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+         <item name="android:shadowRadius">0</item>
+     </style>
+ 
+     <style name="Signal.Text.Giant" parent="@style/TextAppearance.AppCompat.Display1">
+         <item name="android:textSize">48sp</item>
+-        <item name="android:textColor">@color/signal_colorOnSurface</item>
++        <item name="android:textColor">?attr/colorOnSurface</item>
+         <item name="android:fontFamily">sans-serif-medium</item>
+     </style>
+ 
+     <style name="TextAppearance.Signal.Title1" parent="@style/TextAppearance.AppCompat.Title">
+         <item name="android:textStyle">bold</item>
+         <item name="android:textSize">28sp</item>
+-        <item name="android:color">@color/signal_colorOnSurface</item>
++        <item name="android:color">?attr/colorOnSurface</item>
+     </style>
+ 
+     <style name="TextAppearance.Signal.Title2" parent="@style/TextAppearance.AppCompat.Title" />
+@@ -177,17 +177,17 @@
+ 
+     <style name="Signal.Text.MessageRequest.Title" parent="Base.TextAppearance.AppCompat.Title">
+         <item name="android:textSize">20sp</item>
+-        <item name="android:textColor">@color/signal_colorOnSurface</item>
++        <item name="android:textColor">?attr/colorOnSurface</item>
+     </style>
+ 
+     <style name="Signal.Text.MessageRequest.Subtitle" parent="Base.TextAppearance.AppCompat.Caption">
+         <item name="android:textSize">14sp</item>
+-        <item name="android:textColor">@color/signal_colorOnSurfaceVariant</item>
++        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+     </style>
+ 
+     <style name="Signal.Text.MessageRequest.Description" parent="Base.TextAppearance.AppCompat.Subhead">
+         <item name="android:textSize">14sp</item>
+-        <item name="android:textColor">@color/signal_colorOnSurfaceVariant</item>
++        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+     </style>
+ 
+     <style name="Signal.Text.Title" parent="Base.TextAppearance.AppCompat.Title">
+diff --git a/core/util/src/main/res/xml/network_security_config.xml b/core/util/src/main/res/xml/network_security_config.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..59e48cc0a49dd616e9cad7dd9f4602f3f082381f
+--- /dev/null
++++ b/core/util/src/main/res/xml/network_security_config.xml
+@@ -0,0 +1,4 @@
++<?xml version="1.0" encoding="utf-8"?>
++<network-security-config>
++    <!-- Stub, will be replaced by app manifest -->
++</network-security-config>
+diff --git a/lib/video/src/main/res/layout/video_player.xml b/lib/video/src/main/res/layout/video_player.xml
+index 6878a520823fb152f6bbd74301ac022b3326afd9..739e2174a1d6f134fad767e8ec333e93cc11b469 100644
+--- a/lib/video/src/main/res/layout/video_player.xml
++++ b/lib/video/src/main/res/layout/video_player.xml
+@@ -28,7 +28,7 @@
+         android:layout_height="48dp"
+         android:layout_gravity="center"
+         style="?android:attr/progressBarStyleLarge"
+-        android:indeterminateTint="@color/signal_colorOnSurfaceVariant"
++        android:indeterminateTint="?attr/colorOnSurfaceVariant"
+         android:indeterminate="true" />
+ 
+ </FrameLayout>
+\ No newline at end of file
+
+--------------false--
+
+

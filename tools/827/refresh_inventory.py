@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Refresh live manifest ownership and hunk coordinates from the pinned Git trees."""
 import argparse
+import replay
 import csv
 import hashlib
 import json
@@ -18,7 +19,7 @@ def write_tsv(path, rows):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--repo',type=Path,default=Path('.'));args=parser.parse_args()
-    repo=args.repo.resolve();mp=repo/'patches/827/series.yaml';manifest=json.loads(mp.read_text());base=manifest['signal_base'];target=manifest['molly_expected'];head=vi.git(repo,'rev-parse','HEAD').strip()
+    repo=args.repo.resolve();mp=repo/'patches/827/base';manifest=replay.load_inputs(mp.parent, repo/'docs/827/parity-evidence.json');base=manifest['signal_base'];target=manifest['molly_expected'];head=vi.git(repo,'rev-parse','HEAD').strip()
     diff_paths={p for _,_,p in vi.target_diff_records(repo,base,target)}
     source_by_path={};mailbox_by_path={}
     for feature in manifest['features']:
@@ -39,7 +40,7 @@ def main():
     for x in manifest.get('added_paths',[]):entry.setdefault(x if isinstance(x,str) else x['path'],[]).append(('added-target-absent',''))
     for x in manifest.get('overlay_paths',[]):entry.setdefault(x if isinstance(x,str) else x['path'],[]).append(('build-validation-overlay',''))
     led=[]
-    msha=hashlib.sha256(mp.read_bytes()).hexdigest()
+    msha=replay.audit_digest(manifest)
     def find_meta(p):
         for f in manifest['features']:
             for x in f.get('adaptation_paths',[]):
@@ -57,7 +58,7 @@ def main():
         fid=next(f['id'] for f in manifest['features'] if p in f.get('parity_paths',[]) or any(x['path']==p for x in f.get('integration_paths',[])) or any(x['path']==p for x in f.get('adaptation_paths',[])) or any((x if isinstance(x,str) else x['path'])==p for x in f.get('added_paths',[])) or any((x if isinstance(x,str) else x['path'])==p for x in f.get('overlay_paths',[])))
         th,eh=find_meta(p)
         claim='full path' if 'full-file-parity' in role else 'fragment only' if 'anchored-fragment' in role else 'none; target absent' if 'added-target-absent' in role else 'no; adaptation/validation overlay'
-        led.append({'path':p,'feature_id':fid,'manifest_role':role,'fragment_ids':fragments,'present_in_pinned_target_diff':str(p in diff_paths).lower(),'target_parity_claim':claim,'target_sha256':th,'expected_replay_sha256':eh,'molly_source_commit_shas':';'.join(dict.fromkeys(x for x in source_by_path.get(p,[]) if x)),'reconstruction_mailbox_commit_shas':';'.join(dict.fromkeys(x for x in mailbox_by_path.get(p,[]) if x)),'manifest_sha256':msha})
+        led.append({'path':p,'feature_id':fid,'manifest_role':role,'fragment_ids':fragments,'present_in_pinned_target_diff':str(p in diff_paths).lower(),'target_parity_claim':claim,'target_sha256':th,'expected_replay_sha256':eh,'molly_source_commit_shas':';'.join(dict.fromkeys(x for x in source_by_path.get(p,[]) if x)),'reconstruction_mailbox_commit_shas':';'.join(dict.fromkeys(x for x in mailbox_by_path.get(p,[]) if x)),'inputs_sha256':msha})
     hunk_rows=[]
     def add_hunk(fid,p,ownership,tree,start,end,frag='',target_sha=''):
         hunk_rows.append({'feature_id':fid,'path':p,'ownership':ownership,'coordinate_tree':tree,'start_line':start,'end_line':end,'fragment_id':frag,'target_sha256':target_sha,'reconstruction_mailbox_sha':';'.join(dict.fromkeys(mailbox_by_path.get(p,[]))),'molly_origin_candidate':';'.join(dict.fromkeys(source_by_path.get(p,[])))})

@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.l10n.LanguageResourcesTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:51.461Z" hostname="4f1d1be5db40" time="0.067">
-  <properties/>
-  <testcase name="language_options_matches_available_resources" classname="org.thoughtcrime.securesms.l10n.LanguageResourcesTest" time="0.041"/>
-  <testcase name="language_entries_match_language_values_in_length" classname="org.thoughtcrime.securesms.l10n.LanguageResourcesTest" time="0.025"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

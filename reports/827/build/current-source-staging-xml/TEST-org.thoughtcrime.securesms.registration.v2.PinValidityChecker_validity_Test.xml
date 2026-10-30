@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.registration.v2.PinValidityChecker_validity_Test" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:08:52.033Z" hostname="4f1d1be5db40" time="0.001">
-  <properties/>
-  <testcase name="vectors_valid" classname="org.thoughtcrime.securesms.registration.v2.PinValidityChecker_validity_Test" time="0.001"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

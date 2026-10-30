@@ -1,0 +1,588 @@
+From 556ddaa52a2c8ff45852400bcb4a052dfbb84ee6 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Fri, 30 Oct 2026 00:31:56 +0000
+Subject: [PATCH] Reconstruct Molly registration-and-linking carryover, part 1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Registration policies, Android linked-device support, provisioning and removal of superseded registration flows.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt
+index 6f548e4c86cabd76097b5bdc14f88c33a44dfa92..5ca60c3a2669d78cb1e5b1f7dbb789906634e39b 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/Device.kt
+@@ -3,4 +3,4 @@ package org.thoughtcrime.securesms.linkdevice
+ /**
+  * Class that represents a linked device
+  */
+-data class Device(val id: Int, val name: String?, val createdMillis: Long?, val lastSeenMillis: Long, val registrationId: Int)
++data class Device(val id: Int, val name: String?, val createdMillis: Long?, val lastSeenMillis: Long, val registrationId: Int, val canRename: Boolean = true)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceIntroBottomSheet.kt b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceIntroBottomSheet.kt
+index 44c8298cfc632e520796a72c6228073a94ce746d..2c376e0ab71d211992910c33c11a74927efed5ea 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceIntroBottomSheet.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceIntroBottomSheet.kt
+@@ -10,11 +10,16 @@ import androidx.compose.material3.MaterialTheme
+ import androidx.compose.material3.Text
+ import androidx.compose.runtime.Composable
+ import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
+ import androidx.compose.ui.Alignment
+ import androidx.compose.ui.Modifier
+ import androidx.compose.ui.res.stringResource
+ import androidx.compose.ui.text.style.TextAlign
+ import androidx.compose.ui.unit.dp
++import androidx.fragment.app.activityViewModels
++import androidx.navigation.NavController
++import androidx.navigation.fragment.findNavController
+ import com.airbnb.lottie.compose.LottieAnimation
+ import com.airbnb.lottie.compose.LottieCompositionSpec
+ import com.airbnb.lottie.compose.LottieConstants
+@@ -25,22 +30,32 @@ import org.signal.core.ui.compose.ComposeBottomSheetDialogFragment
+ import org.signal.core.ui.compose.DayNightPreviews
+ import org.signal.core.ui.compose.Previews
+ import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.util.navigation.safeNavigate
+ 
+ /**
+  * Bottom sheet dialog displayed when users click 'Link a device'
+  */
+ class LinkDeviceIntroBottomSheet : ComposeBottomSheetDialogFragment() {
+ 
++  private val viewModel: LinkDeviceViewModel by activityViewModels()
++
+   override val peekHeightPercentage: Float = 0.8f
+ 
+   @Composable
+   override fun SheetContent() {
+-    EducationSheet(this::dismissAllowingStateLoss)
++    val navController: NavController by remember { mutableStateOf(findNavController()) }
++
++    EducationSheet(
++      onClick = { shouldScanQrCode ->
++        viewModel.requestLinkWithoutQrCode(!shouldScanQrCode)
++        navController.safeNavigate(R.id.action_linkDeviceIntroBottomSheet_to_addLinkDeviceFragment)
++      }
++    )
+   }
+ }
+ 
+ @Composable
+-fun EducationSheet(onClick: () -> Unit) {
++fun EducationSheet(onClick: (Boolean) -> Unit) {
+   val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.linking_device))
+ 
+   return Column(
+@@ -54,7 +69,7 @@ fun EducationSheet(onClick: () -> Unit) {
+       LottieAnimation(composition, iterations = LottieConstants.IterateForever, modifier = Modifier.matchParentSize())
+     }
+     Text(
+-      text = stringResource(R.string.AddLinkDeviceFragment__scan_qr_code),
++      text = stringResource(R.string.LinkDeviceFragment__link_a_new_device),
+       style = MaterialTheme.typography.titleLarge,
+       modifier = Modifier.padding(bottom = 12.dp)
+     )
+@@ -65,10 +80,16 @@ fun EducationSheet(onClick: () -> Unit) {
+       modifier = Modifier.padding(bottom = 12.dp)
+     )
+     Buttons.LargeTonal(
+-      onClick = onClick,
++      onClick = { onClick(true) },
++      modifier = Modifier.defaultMinSize(minWidth = 220.dp)
++    ) {
++      Text(stringResource(id = R.string.AddLinkDeviceFragment__scan_qr_code))
++    }
++    Buttons.Small(
++      onClick = { onClick(false) },
+       modifier = Modifier.defaultMinSize(minWidth = 220.dp)
+     ) {
+-      Text(stringResource(id = R.string.AddLinkDeviceFragment__okay))
++      Text(stringResource(id = R.string.DeviceAddFragment__link_without_scanning))
+     }
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceManualEntryScreen.kt b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceManualEntryScreen.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..6d6c9230bacd102dfa5811c49caeb396d3457e47
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/linkdevice/LinkDeviceManualEntryScreen.kt
+@@ -0,0 +1,155 @@
++package org.thoughtcrime.securesms.linkdevice
++
++import android.content.Context
++import android.net.Uri
++import android.widget.Toast
++import androidx.compose.foundation.layout.Column
++import androidx.compose.foundation.layout.Row
++import androidx.compose.foundation.layout.defaultMinSize
++import androidx.compose.foundation.layout.fillMaxHeight
++import androidx.compose.foundation.layout.fillMaxWidth
++import androidx.compose.foundation.layout.padding
++import androidx.compose.foundation.lazy.LazyColumn
++import androidx.compose.foundation.text.KeyboardOptions
++import androidx.compose.material3.MaterialTheme
++import androidx.compose.material3.Text
++import androidx.compose.material3.TextField
++import androidx.compose.runtime.Composable
++import androidx.compose.runtime.LaunchedEffect
++import androidx.compose.runtime.getValue
++import androidx.compose.runtime.mutableStateOf
++import androidx.compose.runtime.remember
++import androidx.compose.runtime.setValue
++import androidx.compose.ui.Alignment
++import androidx.compose.ui.Modifier
++import androidx.compose.ui.platform.LocalContext
++import androidx.compose.ui.res.stringResource
++import androidx.compose.ui.text.font.FontFamily
++import androidx.compose.ui.text.input.ImeAction
++import androidx.compose.ui.text.input.KeyboardType
++import androidx.compose.ui.unit.dp
++import androidx.compose.ui.unit.sp
++import org.signal.core.ui.compose.Buttons
++import org.signal.core.ui.compose.DayNightPreviews
++import org.signal.core.ui.compose.Previews
++import org.thoughtcrime.securesms.R
++import org.thoughtcrime.securesms.linkdevice.LinkDeviceRepository.LinkDeviceResult
++
++@Composable
++fun LinkDeviceManualEntryScreen(
++  onLinkNewDeviceWithUrl: (String) -> Unit,
++  linkDeviceResult: LinkDeviceResult,
++  onLinkDeviceSuccess: () -> Unit,
++  onLinkDeviceFailure: () -> Unit,
++  modifier: Modifier = Modifier
++) {
++  val context = LocalContext.current
++
++  LaunchedEffect(linkDeviceResult) {
++    when (linkDeviceResult) {
++      is LinkDeviceResult.Success -> onLinkDeviceSuccess()
++      is LinkDeviceResult.NoDevice -> makeToast(context, R.string.DeviceProvisioningActivity_content_progress_no_device, onLinkDeviceFailure)
++      is LinkDeviceResult.NetworkError -> makeToast(context, R.string.DeviceProvisioningActivity_content_progress_network_error, onLinkDeviceFailure)
++      is LinkDeviceResult.KeyError -> makeToast(context, R.string.DeviceProvisioningActivity_content_progress_key_error, onLinkDeviceFailure)
++      is LinkDeviceResult.LimitExceeded -> makeToast(context, R.string.DeviceProvisioningActivity_sorry_you_have_too_many_devices_linked_already, onLinkDeviceFailure)
++      is LinkDeviceResult.BadCode -> makeToast(context, R.string.DeviceActivity_sorry_this_is_not_a_valid_device_link_qr_code, onLinkDeviceFailure)
++      is LinkDeviceResult.None -> Unit
++    }
++  }
++
++  var qrLink by remember { mutableStateOf("") }
++  var isValid by remember { mutableStateOf(false) }
++
++  Column(
++    horizontalAlignment = Alignment.CenterHorizontally,
++    modifier = modifier
++      .fillMaxWidth()
++      .fillMaxHeight()
++  ) {
++    LazyColumn(
++      modifier = Modifier
++        .weight(1f)
++        .padding(horizontal = 24.dp)
++    ) {
++      item {
++        Text(
++          text = stringResource(id = R.string.enter_device_link_dialog__if_your_phone_cant_scan_the_qr_code_you_can_manually_enter_the_link_encoded_in_the_qr_code),
++          style = MaterialTheme.typography.bodyMedium.copy(
++            color = MaterialTheme.colorScheme.onSurfaceVariant
++          ),
++          modifier = Modifier.padding(vertical = 12.dp)
++        )
++      }
++
++      item {
++        val textFieldStyle = MaterialTheme.typography.bodyLarge.copy(
++          fontFamily = FontFamily.Monospace,
++          fontSize = 12.sp
++        )
++        TextField(
++          value = qrLink,
++          onValueChange = {
++            isValid = LinkDeviceRepository.isValidQr(Uri.parse(it))
++            qrLink = it
++          },
++          isError = !isValid,
++          placeholder = {
++            Text(
++              text = stringResource(id = R.string.enter_device_link_dialog__url),
++              style = textFieldStyle
++            )
++          },
++          keyboardOptions = KeyboardOptions.Default.copy(
++            keyboardType = KeyboardType.Uri,
++            imeAction = ImeAction.Done
++          ),
++          textStyle = textFieldStyle,
++          modifier = Modifier
++            .fillMaxWidth()
++            .padding(vertical = 12.dp)
++            .defaultMinSize(minHeight = 40.dp)
++        )
++      }
++
++      item {
++        Text(
++          text = stringResource(id = R.string.AddLinkDeviceFragment__this_device_will_see_your_groups_contacts),
++          style = MaterialTheme.typography.bodyMedium.copy(
++            color = MaterialTheme.colorScheme.onSurfaceVariant
++          ),
++          modifier = Modifier.padding(vertical = 12.dp)
++        )
++      }
++    }
++
++    Row {
++      Buttons.LargeTonal(
++        enabled = isValid,
++        onClick = { onLinkNewDeviceWithUrl(qrLink) },
++        modifier = Modifier
++          .defaultMinSize(minWidth = 220.dp)
++          .padding(vertical = 16.dp)
++      ) {
++        Text(text = stringResource(id = R.string.device_list_fragment__link_new_device))
++      }
++    }
++  }
++}
++
++private fun makeToast(context: Context, messageId: Int, onLinkDeviceFailure: () -> Unit) {
++  Toast.makeText(context, messageId, Toast.LENGTH_LONG).show()
++  onLinkDeviceFailure()
++}
++
++@DayNightPreviews
++@Composable
++private fun LinkDeviceManualEntryScreenPreview() {
++  Previews.Preview {
++    LinkDeviceManualEntryScreen(
++      onLinkNewDeviceWithUrl = {},
++      linkDeviceResult = LinkDeviceResult.None,
++      onLinkDeviceSuccess = {},
++      onLinkDeviceFailure = {},
++    )
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/data/QuickstartCredentialExporter.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/data/QuickstartCredentialExporter.kt
+deleted file mode 100644
+index 19d1e23588522c6afdde4e3b72340defe9e39a9d..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/data/QuickstartCredentialExporter.kt
++++ /dev/null
+@@ -1,72 +0,0 @@
+-/*
+- * Copyright 2025 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.registration.data
+-
+-import android.content.Context
+-import android.util.Base64
+-import kotlinx.serialization.encodeToString
+-import kotlinx.serialization.json.Json
+-import org.signal.core.util.logging.Log
+-import org.thoughtcrime.securesms.dependencies.AppDependencies
+-import org.thoughtcrime.securesms.keyvalue.SignalStore
+-import org.thoughtcrime.securesms.recipients.Recipient
+-import java.io.File
+-
+-/**
+- * Exports current account registration credentials to a JSON file
+- * that can be used with quickstart builds.
+- */
+-object QuickstartCredentialExporter {
+-
+-  private val TAG = Log.tag(QuickstartCredentialExporter::class.java)
+-
+-  private val json = Json { prettyPrint = true }
+-
+-  fun export(context: Context): File {
+-    val aci = SignalStore.account.requireAci()
+-    val pni = SignalStore.account.requirePni()
+-    val e164 = SignalStore.account.requireE164()
+-    val servicePassword = SignalStore.account.servicePassword ?: error("No service password")
+-
+-    val aciIdentityKeyPair = SignalStore.account.aciIdentityKey
+-    val pniIdentityKeyPair = SignalStore.account.pniIdentityKey
+-
+-    val aciSignedPreKey = AppDependencies.protocolStore.aci().loadSignedPreKey(SignalStore.account.aciPreKeys.activeSignedPreKeyId)
+-    val aciLastResortKyberPreKey = AppDependencies.protocolStore.aci().loadKyberPreKey(SignalStore.account.aciPreKeys.lastResortKyberPreKeyId)
+-    val pniSignedPreKey = AppDependencies.protocolStore.pni().loadSignedPreKey(SignalStore.account.pniPreKeys.activeSignedPreKeyId)
+-    val pniLastResortKyberPreKey = AppDependencies.protocolStore.pni().loadKyberPreKey(SignalStore.account.pniPreKeys.lastResortKyberPreKeyId)
+-
+-    val self = Recipient.self()
+-    val profileKey = self.profileKey ?: error("No profile key")
+-    val profileName = self.profileName
+-
+-    val credentials = QuickstartCredentials(
+-      aci = aci.toString(),
+-      pni = pni.toString(),
+-      e164 = e164,
+-      servicePassword = servicePassword,
+-      aciIdentityKeyPair = Base64.encodeToString(aciIdentityKeyPair.serialize(), Base64.NO_WRAP),
+-      pniIdentityKeyPair = Base64.encodeToString(pniIdentityKeyPair.serialize(), Base64.NO_WRAP),
+-      aciSignedPreKey = Base64.encodeToString(aciSignedPreKey.serialize(), Base64.NO_WRAP),
+-      aciLastResortKyberPreKey = Base64.encodeToString(aciLastResortKyberPreKey.serialize(), Base64.NO_WRAP),
+-      pniSignedPreKey = Base64.encodeToString(pniSignedPreKey.serialize(), Base64.NO_WRAP),
+-      pniLastResortKyberPreKey = Base64.encodeToString(pniLastResortKyberPreKey.serialize(), Base64.NO_WRAP),
+-      profileKey = Base64.encodeToString(profileKey, Base64.NO_WRAP),
+-      registrationId = SignalStore.account.registrationId,
+-      pniRegistrationId = SignalStore.account.pniRegistrationId,
+-      profileGivenName = profileName.givenName,
+-      profileFamilyName = profileName.familyName,
+-      accountEntropyPool = SignalStore.account.accountEntropyPool.value
+-    )
+-
+-    val outputDir = context.getExternalFilesDir(null) ?: error("No external files directory")
+-    val outputFile = File(outputDir, "quickstart-credentials.json")
+-    outputFile.writeText(json.encodeToString(credentials))
+-
+-    Log.i(TAG, "Exported quickstart credentials to ${outputFile.absolutePath}")
+-    return outputFile
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/data/QuickstartCredentials.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/data/QuickstartCredentials.kt
+deleted file mode 100644
+index bc7dfd358d2e13b1742964990636f5b4e042d589..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/data/QuickstartCredentials.kt
++++ /dev/null
+@@ -1,33 +0,0 @@
+-/*
+- * Copyright 2025 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.registration.data
+-
+-import kotlinx.serialization.Serializable
+-
+-/**
+- * JSON-serializable bundle of registration credentials for quickstart builds.
+- * All byte arrays are base64-encoded strings.
+- */
+-@Serializable
+-data class QuickstartCredentials(
+-  val version: Int = 1,
+-  val aci: String,
+-  val pni: String,
+-  val e164: String,
+-  val servicePassword: String,
+-  val aciIdentityKeyPair: String,
+-  val pniIdentityKeyPair: String,
+-  val aciSignedPreKey: String,
+-  val aciLastResortKyberPreKey: String,
+-  val pniSignedPreKey: String,
+-  val pniLastResortKyberPreKey: String,
+-  val profileKey: String,
+-  val registrationId: Int,
+-  val pniRegistrationId: Int,
+-  val profileGivenName: String,
+-  val profileFamilyName: String,
+-  val accountEntropyPool: String? = null
+-)
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/registration/ui/RegistrationState.kt b/app/src/main/java/org/thoughtcrime/securesms/registration/ui/RegistrationState.kt
+index c9d79cb20083d9782649d78e8e61fdcfd1bd3210..b51700875250cf94bb35192a9c68441843eacbb2 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/registration/ui/RegistrationState.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/registration/ui/RegistrationState.kt
+@@ -28,6 +28,8 @@ data class RegistrationState(
+   val enteredCode: String = "",
+   val phoneNumber: Phonenumber.PhoneNumber? = fetchExistingE164FromValues(),
+   val nationalNumber: String = "",
++  val linkDeviceName: String? = null,
++  val deviceLinkUrl: String? = null,
+   val inProgress: Boolean = false,
+   val isReRegister: Boolean = false,
+   val recoveryPassword: String? = null,
+diff --git a/feature/registration/src/main/java/org/signal/registration/util/SensitiveLog.kt b/feature/registration/src/main/java/org/signal/registration/util/SensitiveLog.kt
+index c537b368d0fa0334d48de566d2fdb7ce5bfb5f0b..b6224d59dca59a02eecab87279825ac6956bf677 100644
+--- a/feature/registration/src/main/java/org/signal/registration/util/SensitiveLog.kt
++++ b/feature/registration/src/main/java/org/signal/registration/util/SensitiveLog.kt
+@@ -42,4 +42,8 @@ object SensitiveLog : Log.Logger() {
+   override fun flush() {
+     this.logger.flush()
+   }
++
++  override fun clear() {
++    this.logger.clear()
++  }
+ }
+diff --git a/feature/registration/src/test/java/org/signal/registration/RegistrationPermissionsTest.kt b/feature/registration/src/test/java/org/signal/registration/RegistrationPermissionsTest.kt
+index 6fb6d2553afec28bbbf325d08e7fb7436e629953..35a00944e686e27680d24a8c069703c8224b9583 100644
+--- a/feature/registration/src/test/java/org/signal/registration/RegistrationPermissionsTest.kt
++++ b/feature/registration/src/test/java/org/signal/registration/RegistrationPermissionsTest.kt
+@@ -55,15 +55,6 @@ class RegistrationPermissionsTest {
+   }
+ 
+   @Test
+-  @Config(sdk = [25])
+-  fun `API 25 does not request read phone numbers`() {
+-    val permissions = RegistrationPermissions.getRequiredPermissions(isModernBackupDirectorySelectionRequired = true)
+-
+-    assertThat(permissions.contains(Manifest.permission.READ_PHONE_STATE)).isTrue()
+-    assertThat(permissions.contains(Manifest.permission.READ_PHONE_NUMBERS)).isFalse()
+-  }
+-
+-  @Test
+   @Config(sdk = [34])
+   fun `hasAllRequiredPermissions is false when nothing is granted`() {
+     val context = ApplicationProvider.getApplicationContext<Application>()
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/crypto/PrimaryProvisioningCipher.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/crypto/PrimaryProvisioningCipher.java
+index e0c9e7d760b6cff6de54edbf3529202ef52a4e49..cc865f445bdb6844c1ecd0ed64529d7f49847147 100644
+--- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/crypto/PrimaryProvisioningCipher.java
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/crypto/PrimaryProvisioningCipher.java
+@@ -6,6 +6,7 @@
+ 
+ package org.whispersystems.signalservice.internal.crypto;
+ 
++import org.signal.libsignal.protocol.IdentityKeyPair;
+ import org.signal.libsignal.protocol.InvalidKeyException;
+ import org.signal.libsignal.protocol.ecc.ECKeyPair;
+ import org.signal.libsignal.protocol.ecc.ECPrivateKey;
+@@ -17,6 +18,9 @@ import org.whispersystems.signalservice.internal.push.ProvisionEnvelope;
+ import org.whispersystems.signalservice.internal.push.ProvisionMessage;
+ import org.whispersystems.signalservice.internal.util.Util;
+ 
++import java.io.IOException;
++import java.security.GeneralSecurityException;
++import java.security.MessageDigest;
+ import java.security.NoSuchAlgorithmException;
+ 
+ import javax.crypto.BadPaddingException;
+@@ -24,6 +28,7 @@ import javax.crypto.Cipher;
+ import javax.crypto.IllegalBlockSizeException;
+ import javax.crypto.Mac;
+ import javax.crypto.NoSuchPaddingException;
++import javax.crypto.spec.IvParameterSpec;
+ import javax.crypto.spec.SecretKeySpec;
+ 
+ import okio.ByteString;
+@@ -95,4 +100,41 @@ public class PrimaryProvisioningCipher {
+       throw new AssertionError(e);
+     }
+   }
++
++  public ProvisionMessage decrypt(IdentityKeyPair tempIdentity, byte[] bytes) throws InvalidKeyException, IOException {
++    ProvisionEnvelope envelope      = ProvisionEnvelope.ADAPTER.decode(bytes);
++    ECPublicKey       publicKey     = new ECPublicKey(envelope.publicKey.toByteArray());
++    byte[]            sharedSecret  = tempIdentity.getPrivateKey().calculateAgreement(publicKey);
++    byte[]            derivedSecret = HKDF.deriveSecrets(sharedSecret, PROVISIONING_MESSAGE.getBytes(), 64);
++    byte[][]          parts         = Util.split(derivedSecret, 32, 32);
++    ByteString        joined        = envelope.body;
++    if (joined.getByte(0) != 0x01) {
++      throw new RuntimeException("Bad version number on provision message!");
++    }
++    byte[] iv              = joined.substring(1, 16 + 1).toByteArray();
++    byte[] ciphertext      = joined.substring(16 + 1, joined.size() - 32).toByteArray();
++    byte[] ivAndCiphertext = joined.substring(0, joined.size() - 32).toByteArray();
++    byte[] mac             = joined.substring(joined.size() - 32).toByteArray();
++
++    verifyMac(parts[1], ivAndCiphertext, mac);
++
++    return ProvisionMessage.ADAPTER.decode(decrypt(parts[0], iv, ciphertext));
++  }
++
++  private void verifyMac(byte[] key, byte[] message, byte[] theirMac) {
++    byte[] ourMac = getMac(key, message);
++    if (!MessageDigest.isEqual(ourMac, theirMac)) {
++      throw new RuntimeException("Invalid MAC on provision message!");
++    }
++  }
++
++  private byte[] decrypt(byte[] key, byte[] iv, byte[] ciphertext) {
++    try {
++      Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
++      cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(key, "AES"), new IvParameterSpec(iv));
++      return cipher.doFinal(ciphertext);
++    } catch (GeneralSecurityException e) {
++      throw new AssertionError(e);
++    }
++  }
+ }
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/DeviceId.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/DeviceId.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..8fc2562528cca748728744d836e6acfdb5b070d9
+--- /dev/null
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/DeviceId.java
+@@ -0,0 +1,14 @@
++package org.whispersystems.signalservice.internal.push;
++
++import com.fasterxml.jackson.annotation.JsonProperty;
++
++public class DeviceId {
++
++  @JsonProperty
++  private int deviceId;
++
++  public int getDeviceId() {
++    return deviceId;
++  }
++
++}
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/LinkDeviceRequest.kt b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/LinkDeviceRequest.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..cd55c82f8637de614670e3e6778a7814bc65f351
+--- /dev/null
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/LinkDeviceRequest.kt
+@@ -0,0 +1,17 @@
++package org.whispersystems.signalservice.internal.push
++
++import com.fasterxml.jackson.annotation.JsonInclude
++import com.fasterxml.jackson.annotation.JsonProperty
++import org.whispersystems.signalservice.api.account.AccountAttributes
++import org.whispersystems.signalservice.api.push.SignedPreKeyEntity
++
++@JsonInclude(JsonInclude.Include.NON_NULL)
++data class LinkDeviceRequest(
++  @JsonProperty("verificationCode") val verificationCode: String,
++  @JsonProperty("accountAttributes") val accountAttributes: AccountAttributes,
++  @JsonProperty("aciSignedPreKey") val aciSignedPreKey: SignedPreKeyEntity,
++  @JsonProperty("pniSignedPreKey") val pniSignedPreKey: SignedPreKeyEntity,
++  @JsonProperty("aciPqLastResortPreKey") val aciPqLastResortPreKey: KyberPreKeyEntity,
++  @JsonProperty("pniPqLastResortPreKey") val pniPqLastResortPreKey: KyberPreKeyEntity,
++  @JsonProperty("gcmToken") val gcmToken: GcmRegistrationId?
++)
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/exceptions/MissingCapabilitiesException.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/exceptions/MissingCapabilitiesException.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..7704633412cdccca8a401a6964697dec1b1be198
+--- /dev/null
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/push/exceptions/MissingCapabilitiesException.java
+@@ -0,0 +1,9 @@
++package org.whispersystems.signalservice.internal.push.exceptions;
++
++import org.signal.network.exceptions.NonSuccessfulResponseCodeException;
++
++public class MissingCapabilitiesException extends NonSuccessfulResponseCodeException {
++  public MissingCapabilitiesException() {
++    super(409);
++  }
++}
+
+--------------false--
+
+

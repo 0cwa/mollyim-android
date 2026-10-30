@@ -1,1 +1,0 @@
-PASS: candidate DeviceAttributes compiled model serializes five expected fields; {"fetchesMessages":true,"registrationId":1234,"pniRegistrationId":5678,"name":"FAKE-DEVICE-NAME","capabilities":{"storage":false,"versionedExpirationTimer":true,"attachmentBackfill":false,"spqr":false,"usernameChangeSyncMessage":true}}

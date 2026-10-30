@@ -1,45 +1,59 @@
-# Molly #827 proof of concept toolchain
+# #827 toolchain and inputs
 
-This record describes the audited source checkout and the Android build inputs used for the patch replay experiment. Update it when a pinned source or build input changes.
+The patch tools need Git and Python 3.10+. Android validation additionally needs
+Git LFS, JDK 21, and the SDK/NDK versions selected by this source tree. The
+[runbook](RUNBOOK.md) gives setup and validation commands.
 
-## Source pins
+## Source identities
 
 | Input | Value |
 | --- | --- |
 | Signal patch base | `c47a74ba0961903eeaeda6d22347a990056c3e83` |
 | Molly comparison target | `0e202dda90785771ff8c87526eaaf30c655f54f3` |
-| Audited proof of concept | `b8d5375b3fb6013f7939935ce73e250b53515381` |
-| Audited proof of concept tree | `24a27bf3ddf2f23593f5a11e3230b66b335bc2a3` |
+| Expected application commit | `d99876269eb6556e37bb2d584ba08e8334e8e5db` |
+| Expected application tree | `e783cf54487a5b5d78c3241ec977fd8c8cd23f1d` |
 
-## Build versions and dependency inputs
+`patches/827/base` selects the replay base. The separate parity evidence and
+validator constants bind the bounded comparison; see [PARITY.md](PARITY.md).
+The complete pinned history is needed for ancestry and provenance checks.
 
-| Input | Pinned value |
-| --- | --- |
-| Gradle wrapper | 9.4.1 (`gradle/wrapper/gradle-wrapper.properties`) |
-| Gradle distribution SHA-256 | `708d2c6ecc97ca9a11838ef64a6c2301151b8dd10387e22dc1a12c30557cab5b` |
-| Java toolchain | 21 (`gradle/libs.versions.toml`); CI uses Temurin 21 |
-| Android Gradle Plugin | 9.2.1 (`gradle/libs.versions.toml`) |
-| Kotlin | 2.2.20 (`gradle/libs.versions.toml`) |
-| Compile SDK | Android 36.1 (`gradle/libs.versions.toml`) |
-| Android build tools | 36.0.0 (`gradle/libs.versions.toml`) |
-| Android NDK | 28.0.13004108 (`gradle/libs.versions.toml`) |
-| KtLint | 1.5.0 (`app/build.gradle.kts`) |
-| Dependency verification | Strict mode; checksums and signatures in `gradle/verification-metadata.xml` |
+## Android build inputs
 
-Version catalogs under `gradle/` are the dependency version source. The Gradle wrapper verifies the distribution checksum from `gradle/wrapper/gradle-wrapper.properties`; dependency checksums and signatures are checked into `gradle/verification-metadata.xml`. No signing credentials or publishing credentials are part of this workflow.
+| Input | Pinned value | Source |
+| --- | --- | --- |
+| Gradle wrapper | 9.4.1 | `gradle/wrapper/gradle-wrapper.properties` |
+| Gradle distribution SHA-256 | `708d2c6ecc97ca9a11838ef64a6c2301151b8dd10387e22dc1a12c30557cab5b` | Wrapper properties |
+| Java | 21; CI uses Temurin | `gradle/libs.versions.toml`, `.github/workflows/827-poc.yml` |
+| Android Gradle Plugin | 9.2.1 | `gradle/libs.versions.toml` |
+| Kotlin | 2.2.20 | `gradle/libs.versions.toml` |
+| Compile SDK | Android 36.1 | `gradle/libs.versions.toml` |
+| Build Tools | 36.0.0 | `gradle/libs.versions.toml` |
+| NDK | 28.0.13004108 | `gradle/libs.versions.toml` |
+| KtLint | 1.5.0 | `app/build.gradle.kts` |
+| Dependency verification | Strict checksums and signatures | `gradle/verification-metadata.xml` |
 
-## Confirmed Gradle task names
+The version catalog and wrapper configuration are authoritative build inputs.
+The wrapper verifies the Gradle distribution checksum; Android invocations use
+`--dependency-verification=strict` for dependency checksums and signatures.
+Keep LFS objects hydrated and verified in the reconstructed source worktree
+before building.
 
-The Android application project is named `:Signal-Android` (`settings.gradle.kts` renames the included `:app` project). The selected production flavor task is `:Signal-Android:assemblePlayProdDebug`; this assembles a debug APK without invoking a release signing configuration. The task was confirmed from the generated project task list at `reports/827/build/task-list.txt`.
+## Execution settings
 
-The branch workflow runs the repository's `ciRemote` task, which includes the app unit tests, fast lint, Kotlin lint, build-logic checks, and screenshot validation, plus the selected Android APK assembly. Gradle dependency verification is explicitly set to strict mode for that invocation.
+The application module is named `:Signal-Android` in `settings.gradle.kts`.
+`:Signal-Android:assemblePlayProdDebug` creates a debug APK.
+`:Signal-Android:compileWebsiteProdReleaseSources` compiles release sources but
+does not assemble or sign a release APK. The retained Signal-derived dependencies
+mean that neither task establishes Google-free packaging.
 
-The validation workflow runs with `--max-workers=1`. `tools/827/test-worker-heap.init.gradle` applies a single 2 GiB test worker after project configuration; the repository default derives parallel test forks from host CPU count and uses a 512 MiB worker, which caused heap exhaustion in MockK/Kotlin metadata during the full staging suite on the local host.
+The validation workflow uses `--max-workers=1` and
+`tools/827/test-worker-heap.init.gradle`, which sets one 2 GiB JVM for each unit-test
+task. The full-build procedure also uses `test-timezone-utc.init.gradle` to set
+`user.timezone=UTC` as a Gradle test input. These settings control execution; they
+do not change application date logic or substitute for timezone-specific tests.
 
-## Baseline evidence and limits
-
-At the start of this run, the evidence in [`reports/827/build/history/attempt20-retry2/`](../../reports/827/build/history/attempt20-retry2/history-index.json) records an ordinary `./gradlew --continue build` attempt at the audited proof-of-concept commit. It started the requested 7,108-task graph, reached 15 of 23 variants and 14 test suites, and stopped with exit 130 after storage reached zero bytes. Thirty test failures were recorded: six each in five package-suffix test variants for `UriUtilTest_isValidExternalUri`. The unsuffixed `testPlayProdDebugUnitTest` suite recorded no failures in the same evidence. The full run is `INCOMPLETE_RESOURCE_EXHAUSTION_INTERRUPTED`, not a passing build.
-
-The historical captured stdout, stderr, exit code, and evidence summary are copied into the repository with original hashes and deterministic gzip copies. The F5-focused staging tests passed 25/25 (16 URI suffix cases and 9 UnifiedPush receiver cases). The final unfiltered staging run passed 2,800 tests with 0 failures, 0 errors, and 78 skipped across 251 suites using the checked-in 2 GiB single-worker setting. A fresh app `:Signal-Android:ktlintCheck` passed after formatting the receiver test imports. The final-source `:Signal-Android:compileWebsiteProdReleaseSources` task also passed with strict dependency verification, without assembling or signing an APK. Logs, XML results, and their hash manifests are under `reports/827/build/`.
-
-The full 23-variant `build` task remains unverified after the historical storage exhaustion. Final-source evidence covers the unfiltered Play Staging Debug unit suite, app Kotlin lint, WebsiteProdRelease source compilation, and hosted GitHub Actions run [40111431112](https://github.com/0cwa/mollyim-android/actions/runs/40111431112), which passed source validation, two replays, LFS hydration, `ciRemote`, Play Prod Debug assembly, and focused URI/UnifiedPush regressions. Earlier failure records are retained in `reports/827/ci/40105996791*` and `40108357095*`; the latter failed FastLint on three candidate findings addressed in patch 23. Current acceptance evidence and hashes are in `reports/827/acceptance.json` and `reports/827/ci/40111431112-summary.json`.
+The workflow's explicit Gradle JVM arguments include the R8 thread-count and
+HotSpot hash-code settings used by this proof. Their applicability to the separate
+Docker reproducible-build path is tracked in
+[issue #2](https://github.com/0cwa/mollyim-android/issues/2). Identical tool versions
+and matching source trees alone do not establish identical APKs.

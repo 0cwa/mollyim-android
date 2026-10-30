@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.database.IssueTableTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:03:50.872Z" hostname="4f1d1be5db40" time="0.037">
-  <properties/>
-  <testcase name="insert then getRecent returns issues newest first" classname="org.thoughtcrime.securesms.database.IssueTableTest" time="0.015"/>
-  <testcase name="insert trims issues older than the max lifespan" classname="org.thoughtcrime.securesms.database.IssueTableTest" time="0.01"/>
-  <testcase name="getSummary groups by name with max priority and latest version" classname="org.thoughtcrime.securesms.database.IssueTableTest" time="0.009"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

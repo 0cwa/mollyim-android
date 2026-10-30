@@ -1,2 +1,0 @@
-OK: killing emulator, bye bye
-OK

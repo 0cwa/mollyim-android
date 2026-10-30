@@ -1,5 +1,0 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="org.thoughtcrime.securesms.quickstartfixture">
-  <uses-sdk android:minSdkVersion="23" android:targetSdkVersion="30" />
-  <application android:label="Temporary Quickstart Fixture Exporter" android:hasCode="true" />
-  <instrumentation android:name="org.thoughtcrime.securesms.quickstartfixture.QuickstartExportInstrumentation" android:targetPackage="org.thoughtcrime.securesms.benchmark" android:label="Synthetic-only Quickstart credential export" />
-</manifest>

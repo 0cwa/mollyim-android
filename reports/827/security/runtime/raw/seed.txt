@@ -1,6 +1,0 @@
-INSTRUMENTATION_RESULT: probe_checks=PASS benchmark synthetic app unlocked; PASS delivery enum roundtrip; PASS preferred-method fallback; PASS UnifiedPush backup exclusion; PASS synthetic clipboard payloads; PASS local REGISTER/NEW_ENDPOINT (fake distributor; no network); PASS fake distributor REGISTER and NEW_ENDPOINT; PASS fake MESSAGE callback; PASS fake distributor MESSAGE and test notification
-INSTRUMENTATION_RESULT: probe_disclaimer=Synthetic local-only instrumentation; no real distributor, credentials, or server.
-INSTRUMENTATION_RESULT: probe_failures=
-INSTRUMENTATION_RESULT: probe_phase=seed
-INSTRUMENTATION_RESULT: probe_result=PASS
-INSTRUMENTATION_CODE: 0

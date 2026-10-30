@@ -1,0 +1,907 @@
+From d2eba16c0406c3eca34c07cefc076e36f07c1e0b Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Fri, 30 Oct 2026 00:31:56 +0000
+Subject: [PATCH] Reconstruct Molly resources-and-branding carryover, part 12
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Shared localized resources, icons, artwork, layouts, XML policy and resource deletions.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/res/navigation/payments_preferences.xml b/app/src/main/res/navigation/payments_preferences.xml
+deleted file mode 100644
+index bd941fdb6b8ef53f803f96df7f4d55b5e6ab9d72..0000000000000000000000000000000000000000
+--- a/app/src/main/res/navigation/payments_preferences.xml
++++ /dev/null
+@@ -1,301 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/payment_preferences"
+-    app:startDestination="@id/paymentsHome">
+-
+-    <fragment
+-        android:id="@+id/paymentsHome"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.PaymentsHomeFragment"
+-        tools:layout="@layout/payments_home_fragment">
+-
+-        <argument
+-            android:name="enable_payment_lock"
+-            android:defaultValue="false"
+-            app:argType="boolean"/>
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_paymentsAllActivity"
+-            app:destination="@id/paymentsAllActivity"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_paymentsAddMoney"
+-            app:destination="@id/paymentsAddMoney"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_paymentRecipientSelectionFragment"
+-            app:destination="@id/paymentRecipientSelectionFragment"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_paymentsTransfer"
+-            app:destination="@id/payments_transfer"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_setCurrency"
+-            app:destination="@id/setCurrency"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_deactivateWallet"
+-            app:destination="@id/deactivateWallet"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_paymentsBackup"
+-            app:destination="@id/payments_backup"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit">
+-
+-            <argument
+-                android:name="is_restore"
+-                android:defaultValue="false"
+-                app:argType="boolean" />
+-
+-            <argument
+-                android:name="recovery_phrase_state"
+-                android:defaultValue="NONE"
+-                app:argType="org.thoughtcrime.securesms.payments.backup.RecoveryPhraseStates" />
+-
+-            <argument
+-                android:name="first_time_non_zero_balance"
+-                android:defaultValue="false"
+-                app:argType="boolean" />
+-
+-            <argument
+-                android:name="info_card"
+-                android:defaultValue="false"
+-                app:argType="boolean" />
+-
+-            <argument
+-                android:name="payment_menu"
+-                android:defaultValue="false"
+-                app:argType="boolean" />
+-
+-        </action>
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_privacySettings"
+-            app:destination="@id/privacy_settings"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit">
+-
+-            <argument
+-                android:name="show_payment_lock"
+-                app:argType="boolean" />
+-
+-        </action>
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_securitySetup"
+-            app:destination="@id/paymentsSecuritySetup"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/paymentsAllActivity"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.PaymentsAllActivityFragment"
+-        tools:layout="@layout/payments_activity_fragment">
+-
+-        <argument
+-            android:name="paymentType"
+-            app:argType="org.thoughtcrime.securesms.payments.preferences.PaymentType" />
+-
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/paymentDetails"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.details.PaymentDetailsFragment"
+-        tools:layout="@layout/payment_details_fragment">
+-
+-        <argument
+-            android:name="paymentDetails"
+-            app:argType="org.thoughtcrime.securesms.payments.preferences.details.PaymentDetailsParcelable"
+-            app:nullable="false" />
+-
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/paymentRecipientSelectionFragment"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.PaymentRecipientSelectionFragment"
+-        tools:layout="@layout/payment_recipient_selection_fragment">
+-
+-        <action
+-            android:id="@+id/action_paymentRecipientSelection_to_createPayment"
+-            app:destination="@id/payments_create"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit">
+-
+-            <argument
+-                android:name="payee"
+-                app:argType="org.thoughtcrime.securesms.payments.preferences.model.PayeeParcelable"
+-                app:nullable="false" />
+-
+-            <argument
+-                android:name="note"
+-                android:defaultValue="@null"
+-                app:argType="string"
+-                app:nullable="true" />
+-
+-        </action>
+-
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/paymentsAddMoney"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.addmoney.PaymentsAddMoneyFragment"
+-        tools:layout="@layout/payments_add_money_fragment" />
+-
+-    <fragment
+-        android:id="@+id/setCurrency"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.SetCurrencyFragment"
+-        tools:layout="@layout/set_currency_fragment" />
+-
+-    <fragment
+-        android:id="@+id/deactivateWallet"
+-        android:name="org.thoughtcrime.securesms.payments.deactivate.DeactivateWalletFragment"
+-        tools:layout="@layout/deactivate_wallet_fragment">
+-
+-        <action
+-            android:id="@+id/action_deactivateWallet_to_paymentsTransfer"
+-            app:destination="@id/payments_transfer"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit"
+-            app:popUpTo="@id/paymentsHome"
+-            app:popUpToInclusive="false" />
+-
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/paymentsSecuritySetup"
+-        android:name="org.thoughtcrime.securesms.payments.securitysetup.PaymentsSecuritySetupFragment"
+-        tools:layout="@layout/payments_security_setup_fragment">
+-
+-        <action
+-            android:id="@+id/action_paymentsHome_to_privacySettings"
+-            app:destination="@id/privacy_settings"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit"
+-            app:popUpTo="@id/paymentsHome">
+-
+-            <argument
+-                android:name="show_payment_lock"
+-                app:argType="boolean" />
+-
+-        </action>
+-
+-    </fragment>
+-
+-    <action
+-        android:id="@+id/action_directly_to_createPayment"
+-        app:destination="@id/payments_create"
+-        app:enterAnim="@anim/fragment_open_enter"
+-        app:exitAnim="@anim/fragment_open_exit"
+-        app:popEnterAnim="@anim/fragment_close_enter"
+-        app:popExitAnim="@anim/fragment_close_exit"
+-        app:popUpTo="@id/paymentsHome"
+-        app:popUpToInclusive="true">
+-
+-        <argument
+-            android:name="payee"
+-            app:argType="org.thoughtcrime.securesms.payments.preferences.model.PayeeParcelable"
+-            app:nullable="false" />
+-
+-        <argument
+-            android:name="note"
+-            android:defaultValue="@null"
+-            app:argType="string"
+-            app:nullable="true" />
+-
+-        <argument
+-            android:name="finish_on_confirm"
+-            app:argType="boolean"
+-            android:defaultValue="false" />
+-
+-    </action>
+-
+-    <action
+-        android:id="@+id/action_directly_to_paymentsHome"
+-        app:destination="@id/paymentsHome"
+-        app:enterAnim="@anim/fragment_open_enter"
+-        app:exitAnim="@anim/fragment_open_exit"
+-        app:popEnterAnim="@anim/fragment_close_enter"
+-        app:popExitAnim="@anim/fragment_close_exit"
+-        app:popUpTo="@id/paymentsHome"
+-        app:popUpToInclusive="false">
+-
+-        <argument
+-            android:name="enable_payment_lock"
+-            app:argType="boolean"/>
+-
+-    </action>
+-
+-    <action
+-        android:id="@+id/action_directly_to_paymentDetails"
+-        app:destination="@id/paymentDetails"
+-        app:enterAnim="@anim/fragment_open_enter"
+-        app:exitAnim="@anim/fragment_open_exit"
+-        app:popEnterAnim="@anim/fragment_close_enter"
+-        app:popExitAnim="@anim/fragment_close_exit" />
+-
+-    <action
+-        android:id="@+id/action_directly_to_paymentsTransfer"
+-        app:destination="@id/payments_transfer"
+-        app:enterAnim="@anim/fragment_open_enter"
+-        app:exitAnim="@anim/fragment_open_exit"
+-        app:popEnterAnim="@anim/fragment_close_enter"
+-        app:popExitAnim="@anim/fragment_close_exit" />
+-
+-    <action
+-        android:id="@+id/action_directly_to_paymentsBackup"
+-        app:destination="@id/payments_backup"
+-        app:enterAnim="@anim/fragment_open_enter"
+-        app:exitAnim="@anim/fragment_open_exit"
+-        app:popEnterAnim="@anim/fragment_close_enter"
+-        app:popExitAnim="@anim/fragment_close_exit" />
+-
+-    <include app:graph="@navigation/payments_create" />
+-
+-    <include app:graph="@navigation/payments_transfer" />
+-
+-    <include app:graph="@navigation/payments_backup" />
+-
+-    <include app:graph="@navigation/privacy_settings" />
+-
+-</navigation>
+\ No newline at end of file
+diff --git a/app/src/main/res/navigation/payments_transfer.xml b/app/src/main/res/navigation/payments_transfer.xml
+deleted file mode 100644
+index 89d87e91098a0bccbbf45779f2363b2facae288c..0000000000000000000000000000000000000000
+--- a/app/src/main/res/navigation/payments_transfer.xml
++++ /dev/null
+@@ -1,64 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:app="http://schemas.android.com/apk/res-auto"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:id="@+id/payments_transfer"
+-    app:startDestination="@id/paymentsTransfer">
+-
+-    <fragment
+-        android:id="@+id/paymentsTransfer"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.transfer.PaymentsTransferFragment"
+-        tools:layout="@layout/payments_transfer_fragment">
+-
+-        <action
+-            android:id="@+id/action_paymentsTransfer_to_paymentsScanQr"
+-            app:destination="@id/paymentsScanQr"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit" />
+-
+-        <action
+-            android:id="@+id/action_paymentsTransfer_to_createPayment"
+-            app:destination="@id/payments_create"
+-            app:enterAnim="@anim/fragment_open_enter"
+-            app:exitAnim="@anim/fragment_open_exit"
+-            app:popEnterAnim="@anim/fragment_close_enter"
+-            app:popExitAnim="@anim/fragment_close_exit">
+-
+-            <argument
+-                android:name="payee"
+-                app:argType="org.thoughtcrime.securesms.payments.preferences.model.PayeeParcelable"
+-                app:nullable="false" />
+-
+-            <argument
+-                android:name="finish_on_confirm"
+-                android:defaultValue="false"
+-                app:argType="boolean"
+-                app:nullable="false" />
+-
+-        </action>
+-
+-        <argument
+-            android:name="finish_on_confirm"
+-            android:defaultValue="false"
+-            app:argType="boolean"
+-            app:nullable="false" />
+-
+-    </fragment>
+-
+-    <fragment
+-        android:id="@+id/paymentsScanQr"
+-        android:name="org.thoughtcrime.securesms.payments.preferences.transfer.PaymentsTransferQrScanFragment"
+-        tools:layout="@layout/payments_transfer_qr_scan_fragment">
+-
+-        <action
+-            android:id="@+id/action_paymentsScanQr_pop"
+-            app:popUpTo="@id/paymentsScanQr"
+-            app:popUpToInclusive="true" />
+-
+-    </fragment>
+-
+-    <include app:graph="@navigation/payments_create" />
+-
+-</navigation>
+\ No newline at end of file
+diff --git a/app/src/main/res/raw/censorship_digicert.store b/app/src/main/res/raw/censorship_digicert.store
+index e4fb8c6fe5c4fea7caa86dc7ec75d2f32c73a31a..8c8e149d6058d17531d261b78f58126962654a2c 100644
+GIT binary patch
+delta 329
+zcmV-P0k;0J!Uy@B2Ot0d00IC202KTz;^$U8tMOgQHz9*3%Fa_3wl4qx2QaZ9&jkS?
+zmod-*9kU7wK?IZW@*}en2HFF&#}YOKvr7(q1e4<C7qe>{SQ?iw&;cT|a5=I9v&%Ju
+z1G5@DZwiyc&@{7~NgxE5(1`&pv$jUD0<*hKq6L!@*cr1iT)zgh%vVeVv(9Hq1hepB
+z-UPFfae)Jq;^r5#FKlB4vkrL(1hW%$`vbEUec1!Ef`{rIm+%MyL$eO4rUSE#xDf@j
+zV6rR*v$U+N1+$&K8Vs}M&D{dCx5+OAv%}Cn5tqR|0V1=a<Uj(m0pfoGv*PA@0|6|T
+za18+=lhE-9vySd#1d|SVBeQ?%<pZ;#_00pb@$#_(vv2tjKDWU=0rLg7e>VX_2Dh|B
+b0co8S3UY`!;KCtB>n*Ut2QUR)cp_bi`)P{h
+
+delta 4670
+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
+
+diff --git a/app/src/main/res/raw/signal_mobilecoin_authority.der b/app/src/main/res/raw/signal_mobilecoin_authority.der
+deleted file mode 100644
+index 9d2132e7f1e352fabac7eafb231488b5da91ffb2..0000000000000000000000000000000000000000
+GIT binary patch
+literal 0
+HcmV?d00001
+
+literal 1391
+zcmXqLV$C*aVh&!w%*4pVB*@StaDKxjhsTjF$q#lXH+3@@@Un4gwRyCC=VfH%W@Rw&
+zH{>?pWMd9xVH0Kw4K~y?PzQ0igcUsVN>YpRQcDzqQ<F=JGD|8If>Mi96N{2F6x@sQ
+zOA8D|4TM2TnT2^ggM-`^g7WiA6e0`_<ivRmO%2QpObiVTOpGm}#CeU8xzx9?iAf3B
+zQ;e((%uP)E3<gb1Tue<&j0|gEs1$z@G5<V!o_4r~O#8k&+wWUU=*hEr7QUe3d+DJ?
+z|GsABePi&~xP339Eyrc@wvEYuMTD~V%U^nBI9svqqOr{`kFR$t?{D7mU+AOaEboI|
+zZH1X$X=yqAbv6b2*J>)UeSUJ_S;M+V-u>HW)=goaf7yL{%}fvF;1?F_{JHX*^)7mb
+z_cWAjyQP1@qPLp4KvBB%lYz~z{&jb6C9i%h=6|S9(7WzD_ly5q%k{o&s`h%|Bc#ex
+z(95j3;9;=J8{wPpB=-w!_Uf_kT$~tqZ%sS<lrPDJZ}cAJN6%<{*coF|nN#-OdO}j=
+zv)fB%>8l;RAn=gy-c5l%vESRjulRoaDHHpQelw1#&mWmj<25Ut_nWV1qwMTG%s)L@
+zZ#3Rz-J*5P@#PxEvZ-ABH|}5ED<p5KuOXguX~w}7oGImb?&iDBt%;1wm|I_Tt@9|G
+zqo!S?-Ceb>DklY(M=kbokat@+bL(=ez`Qo=d9_8$g;*;h-`WLMh;lRc_g>Iv-DFqo
+zCF5PpD)i^rs|NwXHO`YuHlHea-Y3t<alzn9bfMW6_FV@J3}QUCH(AeER-4eZXt8F~
+znO%FES)>;=GdnK4#`;nE(6$dNYTB&bR(NQ2+$oz?wqHJLsjX!HYm3h*_fBZ@a%uek
+ze*2NA(-ox)>ah<i|4BSA=veFb>}I#svAgPldH?sMd^L9VXJTe#U|j5E;9$T9Os}&1
+zjEw(TSb({M&43@o7Y6ZJ4VZzHfh<UXk420{q;gB-v+8Y6pD-3TaCDrIium?&b{=vn
+z17;myDq~~_m5*4tXVZ#+3p^WdNM$OhYjUhfERE^P`_c3?Q~&C>Fz=l^iUlGsD^9O_
+z?o;@C)1`#9mMgeli7SS+ehlD?e0}ag<jY+rMc=p0?Qd!L_T=Tn33tS2CrP`0NSk`8
+zCjZbY>-X~KPhVT7{&D4o6YKug*3J5*#Pa(8&H7gpwUsuC^Ywq~GKr43@rUtb$j%*V
+zXSzC!JAHIpY?|)Bn-<QxOK11@BioPrSvT!7JfT!vJn7=0h9#Dk0>;WsJ~s2)HigcR
+z-KW{sqcnToqipMNtEK|qJDkTmPjj*R=DdjQJNf?H>f^h&YWulf^SYpR=4sI>j;y6q
+zAB!&hzU1vmo%p4{|F6+t(%W~vdiUeP>Iq_(+2h=TYs}f5dM+QCHs|Whty&MJN;P<_
+z^RZ+<cgB55&{XYRJASXdWE@=kRMt25>cWl3o${YKsGG(t*4WP8`@Gk9!gJ;MzXRq}
+z=D1zmBD#56Ufpb-X;wRebnUN2Km5&csO6u^ip8C`)?_`D(Av1dIWhXO{2lAwvQN4%
+zdQ0z%8|T;t|E@mm82|syq6>)@52x)|6WeWmz4WT_ftiBq<~klMDs9=v<meQiuHrG}
+z;%xPO?Dji%_&1gWKCIgQcCPZHeGjf`un5~2GS9nPmD7KWUE)~%J@-C)jd?6==a+_<
+hl<$4hIs2u!^Zn@C@&Eed!WW%&m|K^mbnBjkIsk}=Sg-&9
+
+diff --git a/app/src/main/res/values-night-v31/themes.xml b/app/src/main/res/values-night-v31/themes.xml
+deleted file mode 100644
+index 0e669073027722e5d24e38de00728245419dc9ec..0000000000000000000000000000000000000000
+--- a/app/src/main/res/values-night-v31/themes.xml
++++ /dev/null
+@@ -1,7 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-    <style name="Theme.Signal.DayNight.NoActionBar" parent="TextSecure.LightNoActionBar">
+-        <item name="android:windowSplashScreenBackground">@color/signal_background_primary</item>
+-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
+-    </style>
+-</resources>
+diff --git a/app/src/main/res/values-night/dark_themes.xml b/app/src/main/res/values-night/dark_themes.xml
+index 09ca4376aa6e86b1e243cbfe9a72d5561cb78f35..de64172fb9e6a740c3808d461a1414184058adb0 100644
+--- a/app/src/main/res/values-night/dark_themes.xml
++++ b/app/src/main/res/values-night/dark_themes.xml
+@@ -1,19 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <style name="Theme.Signal.DayNight.NoActionBar" parent="TextSecure.DarkNoActionBar" />
+-
+     <style name="Signal.DayNight" parent="TextSecure.DarkTheme" />
+ 
+-    <style name="Signal.DayNight.NoActionBar" parent="TextSecure.DarkNoActionBar" />
+-
+-    <style name="Signal.DayNight.Invite" parent="Signal.NoActionBar.Invite" />
+-
+-    <style name="Signal.DayNight.IntroTheme" parent="TextSecure.DarkIntroTheme" />
+-
+-    <style name="Signal.DayNight.DarkActionBar" parent="TextSecure.DarkTheme.Conversation" />
+-
+-    <style name="Signal.DayNight.DarkNoActionBar" parent="TextSecure.DarkNoActionBar.DarkToolbar" />
+-
+     <style name="Signal.DayNight.Registration" parent="TextSecure.DarkRegistrationTheme" />
+ 
+     <style name="Signal.DayNight.WallpaperCropper" parent="Theme.Signal.WallpaperCropper" />
+@@ -21,4 +9,12 @@
+     <style name="Signal.DayNight.BottomSheet.Rounded" parent="Theme.Signal.RoundedBottomSheet" />
+ 
+     <style name="Signal.DayNight.ConversationSettings" parent="TextSecure.DarkNoActionBar.ConversationSettings" />
++
++    <style name="Theme.Signal.DayNight.NoActionBar" parent="TextSecure.DarkNoActionBar" />
++
++    <style name="Theme.Molly.Dynamic" parent="Theme.Molly.Dynamic.Dark" />
++    <style name="Theme.Molly.Dynamic.NoActionBar" parent="Theme.Molly.Dynamic.NoActionBar.Dark" />
++    <style name="Theme.Molly.Dynamic.Registration" parent="Theme.Molly.Dynamic.Registration.Dark" />
++    <style name="Theme.Molly.Dynamic.ConversationSettings" parent="Theme.Molly.Dynamic.ConversationSettings.Dark" />
++    <style name="Theme.Molly.Starting" parent="Theme.Molly.Starting.Dark" />
+ </resources>
+diff --git a/app/src/main/res/values-night/signal_styles.xml b/app/src/main/res/values-night/signal_styles.xml
+index aa9dab4eb4c8db38c37ff1ed830265abb4e3daaa..04e2468ef72e35b57d7984273cc9b81b2551de20 100644
+--- a/app/src/main/res/values-night/signal_styles.xml
++++ b/app/src/main/res/values-night/signal_styles.xml
+@@ -1,7 +1,7 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+ 
+-    <style name="Signal.DayNight.Popup" parent="@style/ThemeOverlay.AppCompat.Dark" />
++    <style name="Signal.DayNight.Popup" parent="@style/ThemeOverlay.Material3.Dark" />
+ 
+     <style name="Signal.DayNight.Toolbar.Overflow" parent="@style/Signal.Toolbar.Overflow" />
+ </resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values-small/dimens.xml b/app/src/main/res/values-small/dimens.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..9c568f0b823da112d22c964aa0401c09fe4b876b
+--- /dev/null
++++ b/app/src/main/res/values-small/dimens.xml
+@@ -0,0 +1,5 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++    <dimen name="onboarding_title_size">32sp</dimen>
++    <dimen name="onboarding_subtitle_size">18sp</dimen>
++</resources>
+\ No newline at end of file
+diff --git a/app/src/main/res/values-v26/values.xml b/app/src/main/res/values-v26/values.xml
+deleted file mode 100644
+index dc6b4b794139f6b8b549506f51e626494121b6d4..0000000000000000000000000000000000000000
+--- a/app/src/main/res/values-v26/values.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<resources>
+-    <bool name="enable_alarm_manager">false</bool>
+-    <bool name="enable_job_service">true</bool>
+-</resources>
+diff --git a/app/src/main/res/values-v31/themes.xml b/app/src/main/res/values-v31/themes.xml
+index 3eaf9760d74a803a5cf8b21f4dd61b1c3fbbf2a3..7ca38a17f14e58d24402a9f048d69266b1900009 100644
+--- a/app/src/main/res/values-v31/themes.xml
++++ b/app/src/main/res/values-v31/themes.xml
+@@ -1,19 +1,12 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <resources>
+-    <style name="Theme.Signal.DayNight.NoActionBar" parent="TextSecure.LightNoActionBar">
+-        <item name="android:windowSplashScreenBackground">@color/signal_colorBackground</item>
+-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash</item>
++    <style name="Theme.Molly.Starting.Light" parent="Theme.SplashScreen">
++        <item name="windowSplashScreenBackground">@color/core_ultramarine_icon</item>
++        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_animated</item>
+     </style>
+ 
+-    <!-- Exists for manual override of Splash theme when setting app theme-->
+-    <style name="Theme.Signal.DayNight.NoActionBar.LightSplash" parent="Theme.Signal.DayNight.NoActionBar">
+-        <item name="android:windowSplashScreenBackground">@color/signal_light_colorBackground</item>
+-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_light</item>
+-    </style>
+-
+-    <!-- Exists for manual override of Splash theme when setting app theme-->
+-    <style name="Theme.Signal.DayNight.NoActionBar.DarkSplash" parent="Theme.Signal.DayNight.NoActionBar">
+-        <item name="android:windowSplashScreenBackground">@color/signal_dark_colorBackground</item>
+-        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_splash_dark</item>
++    <style name="Theme.Molly.Starting.Dark" parent="Theme.SplashScreen">
++        <item name="windowSplashScreenBackground">@color/core_ultramarine_icon_dark</item>
++        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_animated_dark</item>
+     </style>
+ </resources>
+diff --git a/app/src/main/res/values-v31/themes_dynamic.xml b/app/src/main/res/values-v31/themes_dynamic.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..6970886e57c2a0ce9f4072f725a48a6313ac49c6
+--- /dev/null
++++ b/app/src/main/res/values-v31/themes_dynamic.xml
+@@ -0,0 +1,204 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources>
++
++    <style name="Theme.Molly.Dynamic.Light" parent="TextSecure.BaseLightTheme">
++        <!-- Material You colors (overrides Theme.Molly.Material3.Light) -->
++        <item name="colorPrimaryInverse">@color/dynamic_primary_inverse_light</item>
++        <item name="colorPrimary">@color/dynamic_primary_light</item>
++        <item name="colorPrimaryDark">@color/dynamic_primary_light</item>
++        <item name="colorOnPrimary">@color/dynamic_on_primary_light</item>
++        <item name="colorPrimaryContainer">@color/dynamic_primary_container_light</item>
++        <item name="colorOnPrimaryContainer">@color/dynamic_on_primary_container_light</item>
++        <item name="colorPrimaryFixed">@color/molly_primary_fixed</item>
++        <item name="colorPrimaryFixedDim">@color/molly_primary_fixed_dim</item>
++        <item name="colorOnPrimaryFixed">@color/molly_on_primary_fixed</item>
++        <item name="colorSecondary">@color/dynamic_secondary_light</item>
++        <item name="colorOnSecondary">@color/dynamic_on_secondary_light</item>
++        <item name="colorSecondaryContainer">@color/dynamic_secondary_container_light</item>
++        <item name="colorOnSecondaryContainer">@color/dynamic_on_secondary_container_light</item>
++        <item name="colorSecondaryFixed">@color/molly_secondary_fixed</item>
++        <item name="colorSecondaryFixedDim">@color/molly_secondary_fixed_dim</item>
++        <item name="colorOnSecondaryFixed">@color/molly_on_secondary_fixed</item>
++        <item name="colorSurfaceInverse">@color/dynamic_surface_inverse_light</item>
++        <item name="colorSurfaceVariant">@color/dynamic_surface_variant_light</item>
++        <item name="colorSurface">@color/dynamic_surface_light</item>
++        <item name="colorSurfaceDim">@color/dynamic_surface_dim_light</item>
++        <item name="colorSurfaceContainerHighest">@color/dynamic_surface_container_highest_light</item>
++        <item name="colorSurfaceContainerHigh">@color/dynamic_surface_container_high_light</item>
++        <item name="colorSurfaceContainer">@color/dynamic_surface_container_light</item>
++        <item name="colorSurfaceContainerLow">@color/dynamic_surface_container_low_light</item>
++        <item name="colorSurfaceBright">@color/dynamic_surface_bright_light</item>
++        <item name="colorSurfaceContainerLowest">@color/dynamic_surface_container_lowest_light</item>
++        <item name="colorOnSurfaceInverse">@color/dynamic_on_surface_inverse_light</item>
++        <item name="colorOnSurface">@color/dynamic_on_surface_light</item>
++        <item name="colorOnBackground">@color/dynamic_on_background_light</item>
++        <item name="colorOnSurfaceVariant">@color/dynamic_on_surface_variant_light</item>
++        <item name="colorOutline">@color/dynamic_outline_light</item>
++        <item name="colorOutlineVariant">@color/dynamic_outline_variant_light</item>
++        <item name="colorError">@color/dynamic_error_light</item>
++        <item name="colorOnError">@color/dynamic_on_error_light</item>
++        <item name="colorErrorContainer">@color/dynamic_error_container_light</item>
++        <item name="colorOnErrorContainer">@color/dynamic_on_error_container_light</item>
++        <item name="colorTertiary">@color/dynamic_tertiary_light</item>
++        <item name="colorOnTertiary">@color/dynamic_on_tertiary_light</item>
++        <item name="colorTertiaryContainer">@color/dynamic_tertiary_container_light</item>
++        <item name="colorOnTertiaryContainer">@color/dynamic_on_tertiary_container_light</item>
++        <item name="colorTertiaryFixed">@color/molly_tertiary_fixed</item>
++        <item name="colorTertiaryFixedDim">@color/molly_tertiary_fixed_dim</item>
++        <item name="colorOnTertiaryFixed">@color/molly_on_tertiary_fixed</item>
++        <item name="colorOnTertiaryFixedVariant">@color/molly_on_tertiary_fixed_variant</item>
++        <item name="colorAccent">@color/dynamic_primary_light</item>
++        <item name="colorControlActivated">@color/dynamic_primary_light</item>
++
++        <!-- Material You specs (overrides TextSecure.BaseLightTheme) -->
++        <item name="dynamic_colors">true</item>
++        <item name="signal_accent_primary">@color/dynamic_primary_light</item>
++        <item name="signal_button_primary">@color/dynamic_primary_light</item>
++        <item name="signal_button_secondary_text">@color/dynamic_primary_light</item>
++        <item name="reactions_overlay_any_emoji_background">@color/dynamic_outline_variant_light</item>
++        <item name="reactions_overlay_any_emoji_foreground">@color/dynamic_on_surface_light</item>
++        <item name="message_request_bar_background_normal">@color/dynamic_surface_container_light</item>
++        <item name="message_request_bar_acceptForeground_normal">@color/dynamic_on_secondary_container_light</item>
++        <item name="switchThemeOverlay">@style/ThemeOverlay.MaterialSwitch.Dynamic</item>
++        <item name="extended_action_button_container_color">@color/dynamic_secondary_container_light</item>
++        <item name="extended_action_button_icon_color">@color/dynamic_on_secondary_container_light</item>
++        <item name="filled_tonal_icon_button_container_color">@color/dynamic_surface_container_highest_light</item>
++        <item name="filled_tonal_icon_button_icon_color">@color/dynamic_on_surface_variant_light</item>
++        <item name="context_menu_container_color">@color/dynamic_surface_container_light</item>
++        <item name="navbar_active_indicator_color">@color/dynamic_secondary_container_light</item>
++        <item name="navbar_container_color">@color/dynamic_surface_container_high_light</item>
++
++        <!-- System Bars -->
++        <item name="android:navigationBarColor">@color/dynamic_surface_light</item>
++        <item name="android:statusBarColor">@color/dynamic_surface_light</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.Dark" parent="TextSecure.BaseDarkTheme">
++        <!-- Material You colors (overrides Theme.Molly.Material3.Dark) -->
++        <item name="colorPrimaryInverse">@color/dynamic_primary_inverse_dark</item>
++        <item name="colorPrimary">@color/dynamic_primary_dark</item>
++        <item name="colorPrimaryDark">@color/dynamic_primary_dark</item>
++        <item name="colorOnPrimary">@color/dynamic_on_primary_dark</item>
++        <item name="colorPrimaryContainer">@color/dynamic_primary_container_dark</item>
++        <item name="colorOnPrimaryContainer">@color/dynamic_on_primary_container_dark</item>
++        <item name="colorPrimaryFixed">@color/molly_primary_fixed</item>
++        <item name="colorPrimaryFixedDim">@color/molly_primary_fixed_dim</item>
++        <item name="colorOnPrimaryFixed">@color/molly_on_primary_fixed</item>
++        <item name="colorSecondary">@color/dynamic_secondary_dark</item>
++        <item name="colorOnSecondary">@color/dynamic_on_secondary_dark</item>
++        <item name="colorSecondaryContainer">@color/dynamic_secondary_container_dark</item>
++        <item name="colorOnSecondaryContainer">@color/dynamic_on_secondary_container_dark</item>
++        <item name="colorSecondaryFixed">@color/molly_secondary_fixed</item>
++        <item name="colorSecondaryFixedDim">@color/molly_secondary_fixed_dim</item>
++        <item name="colorOnSecondaryFixed">@color/molly_on_secondary_fixed</item>
++        <item name="colorSurfaceInverse">@color/dynamic_surface_inverse_dark</item>
++        <item name="colorSurfaceVariant">@color/dynamic_surface_variant_dark</item>
++        <item name="colorSurface">@color/dynamic_surface_dark</item>
++        <item name="colorSurfaceDim">@color/dynamic_surface_dim_dark</item>
++        <item name="colorSurfaceContainerHighest">@color/dynamic_surface_container_highest_dark</item>
++        <item name="colorSurfaceContainerHigh">@color/dynamic_surface_container_high_dark</item>
++        <item name="colorSurfaceContainer">@color/dynamic_surface_container_dark</item>
++        <item name="colorSurfaceContainerLow">@color/dynamic_surface_container_low_dark</item>
++        <item name="colorSurfaceBright">@color/dynamic_surface_bright_dark</item>
++        <item name="colorSurfaceContainerLowest">@color/dynamic_surface_container_lowest_dark</item>
++        <item name="colorOnSurfaceInverse">@color/dynamic_on_surface_inverse_dark</item>
++        <item name="colorOnSurface">@color/dynamic_on_surface_dark</item>
++        <item name="colorOnBackground">@color/dynamic_on_background_dark</item>
++        <item name="colorOnSurfaceVariant">@color/dynamic_on_surface_variant_dark</item>
++        <item name="colorOutline">@color/dynamic_outline_dark</item>
++        <item name="colorOutlineVariant">@color/dynamic_outline_variant_dark</item>
++        <item name="colorError">@color/dynamic_error_dark</item>
++        <item name="colorOnError">@color/dynamic_on_error_dark</item>
++        <item name="colorErrorContainer">@color/dynamic_error_container_dark</item>
++        <item name="colorOnErrorContainer">@color/dynamic_on_error_container_dark</item>
++        <item name="colorTertiary">@color/dynamic_tertiary_dark</item>
++        <item name="colorOnTertiary">@color/dynamic_on_tertiary_dark</item>
++        <item name="colorTertiaryContainer">@color/dynamic_tertiary_container_dark</item>
++        <item name="colorOnTertiaryContainer">@color/dynamic_on_tertiary_container_dark</item>
++        <item name="colorTertiaryFixed">@color/molly_tertiary_fixed</item>
++        <item name="colorTertiaryFixedDim">@color/molly_tertiary_fixed_dim</item>
++        <item name="colorOnTertiaryFixed">@color/molly_on_tertiary_fixed</item>
++        <item name="colorOnTertiaryFixedVariant">@color/molly_on_tertiary_fixed_variant</item>
++        <item name="colorAccent">@color/dynamic_primary_dark</item>
++        <item name="colorControlActivated">@color/dynamic_primary_dark</item>
++
++        <!-- Material You specs (overrides TextSecure.BaseDarkTheme) -->
++        <item name="dynamic_colors">true</item>
++        <item name="signal_accent_primary">@color/dynamic_primary_dark</item>
++        <item name="signal_button_primary">@color/dynamic_primary_dark</item>
++        <item name="signal_button_secondary_text">@color/dynamic_primary_dark</item>
++        <item name="reactions_overlay_any_emoji_background">@color/dynamic_outline_variant_dark</item>
++        <item name="reactions_overlay_any_emoji_foreground">@color/dynamic_on_surface_dark</item>
++        <item name="message_request_bar_background_normal">@color/dynamic_surface_container_dark</item>
++        <item name="message_request_bar_acceptForeground_normal">@color/dynamic_on_secondary_container_dark</item>
++        <item name="switchThemeOverlay">@style/ThemeOverlay.MaterialSwitch.Dynamic</item>
++        <item name="extended_action_button_container_color">@color/dynamic_secondary_container_dark</item>
++        <item name="extended_action_button_icon_color">@color/dynamic_on_secondary_container_dark</item>
++        <item name="filled_tonal_icon_button_container_color">@color/dynamic_surface_container_highest_dark</item>
++        <item name="filled_tonal_icon_button_icon_color">@color/dynamic_on_surface_variant_dark</item>
++        <item name="context_menu_container_color">@color/dynamic_surface_container_high_dark</item>
++        <item name="navbar_active_indicator_color">@color/dynamic_secondary_container_dark</item>
++        <item name="navbar_container_color">@color/dynamic_surface_container_high_dark</item>
++
++        <!-- System Bars -->
++        <item name="android:navigationBarColor">@color/dynamic_surface_dark</item>
++        <item name="android:statusBarColor">@color/dynamic_surface_dark</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.BaseNoActionBar.Light" parent="Theme.Molly.Dynamic.Light">
++        <item name="windowActionBar">false</item>
++        <item name="windowNoTitle">true</item>
++        <item name="windowActionModeOverlay">true</item>
++        <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Light</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.BaseNoActionBar.Dark" parent="Theme.Molly.Dynamic.Dark">
++        <item name="windowActionBar">false</item>
++        <item name="windowNoTitle">true</item>
++        <item name="windowActionModeOverlay">true</item>
++        <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Dark</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.NoActionBar.Light" parent="Theme.Molly.Dynamic.BaseNoActionBar.Light">
++        <item name="android:windowLightNavigationBar">true</item>
++        <item name="android:windowLightStatusBar">true</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.NoActionBar.Dark" parent="Theme.Molly.Dynamic.BaseNoActionBar.Dark">
++        <item name="android:windowLightNavigationBar">false</item>
++        <item name="android:windowLightStatusBar">false</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.Registration.Light" parent="Theme.Molly.Dynamic.BaseNoActionBar.Light">
++        <item name="android:windowLightNavigationBar">false</item>
++        <item name="android:windowLightStatusBar">true</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.Registration.Dark" parent="Theme.Molly.Dynamic.BaseNoActionBar.Dark">
++        <item name="android:windowLightNavigationBar">false</item>
++        <item name="android:windowLightStatusBar">false</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.ConversationSettings.Light" parent="Theme.Molly.Dynamic.BaseNoActionBar.Light">
++        <item name="android:windowIsTranslucent">true</item>
++        <item name="android:windowBackground">@color/transparent_black_20</item>
++        <item name="android:windowContentOverlay">@null</item>
++        <item name="android:windowNoTitle">true</item>
++        <item name="android:windowSharedElementEnterTransition">@transition/transparent_window_wipe_transition</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.ConversationSettings.Dark" parent="Theme.Molly.Dynamic.BaseNoActionBar.Dark">
++        <item name="android:windowIsTranslucent">true</item>
++        <item name="android:windowBackground">@color/transparent_black_20</item>
++        <item name="android:windowContentOverlay">@null</item>
++        <item name="android:windowNoTitle">true</item>
++        <item name="android:windowSharedElementEnterTransition">@transition/transparent_window_wipe_transition</item>
++    </style>
++
++    <style name="Theme.Molly.Dynamic.MediaPreview" parent="Theme.Molly.Dynamic.BaseNoActionBar.Dark">
++        <item name="android:windowBackground">@color/signal_dark_colorNeutral</item>
++        <item name="android:statusBarColor">@color/signal_dark_colorNeutral</item>
++        <item name="android:navigationBarColor">@color/signal_dark_colorNeutral</item>
++    </style>
++
++</resources>
+diff --git a/app/src/main/res/values/arrays2.xml b/app/src/main/res/values/arrays2.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..c7407aab5e7a0e3f359ac14fca71c41085ec765b
+--- /dev/null
++++ b/app/src/main/res/values/arrays2.xml
+@@ -0,0 +1,32 @@
++<?xml version="1.0" encoding="utf-8"?>
++<resources xmlns:tools="http://schemas.android.com/tools">
++
++  <string-array name="pref_map_type_entries">
++    <item>@string/preferences__map_normal</item>
++    <item>@string/preferences__map_hybrid</item>
++    <item>@string/preferences__map_satellite</item>
++    <item>@string/preferences__map_terrain</item>
++    <item>@string/preferences__map_none</item>
++  </string-array>
++
++  <string-array name="pref_map_type_values" translatable="false">
++    <item>normal</item>
++    <item>hybrid</item>
++    <item>satellite</item>
++    <item>terrain</item>
++    <item>none</item>
++  </string-array>
++
++  <string-array name="pref_proxy_type_entries">
++    <item>@string/arrays__none</item>
++    <item>@string/arrays__tor_via_orbot</item>
++    <item>@string/arrays__socks5</item>
++  </string-array>
++
++  <string-array name="pref_proxy_type_values">
++    <item>none</item>
++    <item>orbot</item>
++    <item>socks5</item>
++  </string-array>
++
++</resources>
+
+--------------false--
+
+

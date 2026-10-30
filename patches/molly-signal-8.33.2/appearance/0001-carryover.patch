@@ -1,0 +1,479 @@
+From def5c119b2cdd99eeab8c1cfa34055f52ccfef44 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Fri, 30 Oct 2026 00:31:56 +0000
+Subject: [PATCH] Reconstruct Molly appearance carryover, part 1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+Dynamic themes, view colors, wallpapers and UI theme helpers.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/color/ViewColorSet.kt b/app/src/main/java/org/thoughtcrime/securesms/color/ViewColorSet.kt
+index 4f5a3be46f63fff1d13a3a13ddbb27dfa75d4076..6d9ecc24552963f106676fa91a5c0a5b86694305 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/color/ViewColorSet.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/color/ViewColorSet.kt
+@@ -19,10 +19,7 @@ data class ViewColorSet(
+   val background: ViewColor
+ ) : Parcelable {
+   companion object {
+-    val PRIMARY = ViewColorSet(
+-      foreground = ViewColor.ColorResource(CoreUiR.color.signal_light_colorOnPrimary),
+-      background = ViewColor.ColorResource(CoreUiR.color.signal_light_colorPrimary)
+-    )
++    val PRIMARY = forCustomColor(0xFF6448E5.toInt())
+ 
+     fun forCustomColor(@ColorInt customColor: Int): ViewColorSet {
+       return ViewColorSet(
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicConversationSettingsTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicConversationSettingsTheme.java
+index 75411f8dfbb82f66096617e7d9ae40f6beee1eac..f7b07a873ecaa0cd55b193eb1a66f0af18255de7 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicConversationSettingsTheme.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicConversationSettingsTheme.java
+@@ -6,7 +6,11 @@ import org.thoughtcrime.securesms.R;
+ 
+ public class DynamicConversationSettingsTheme extends DynamicTheme {
+ 
+-  protected @StyleRes int getTheme() {
++  protected @StyleRes int getRegularTheme() {
+     return R.style.Signal_DayNight_ConversationSettings;
+   }
++
++  protected @StyleRes int getDynamicTheme() {
++    return R.style.Theme_Molly_Dynamic_ConversationSettings;
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicDarkActionBarTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicDarkActionBarTheme.java
+deleted file mode 100644
+index fbe77ba7da24aef125a2fb5259098e92e62da581..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicDarkActionBarTheme.java
++++ /dev/null
+@@ -1,12 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import androidx.annotation.StyleRes;
+-
+-import org.thoughtcrime.securesms.R;
+-
+-public class DynamicDarkActionBarTheme extends DynamicTheme {
+-
+-  protected @StyleRes int getTheme() {
+-    return R.style.Signal_DayNight_DarkActionBar;
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicDarkToolbarTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicDarkToolbarTheme.java
+deleted file mode 100644
+index b66255b2fed253772acadc5128fa9b8cbee33b2f..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicDarkToolbarTheme.java
++++ /dev/null
+@@ -1,12 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import androidx.annotation.StyleRes;
+-
+-import org.thoughtcrime.securesms.R;
+-
+-public class DynamicDarkToolbarTheme extends DynamicTheme {
+-
+-  protected @StyleRes int getTheme() {
+-    return R.style.Signal_DayNight_DarkNoActionBar;
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicIntroTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicIntroTheme.java
+deleted file mode 100644
+index 889538ead8655ffe9414107366d6c2a1909be63f..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicIntroTheme.java
++++ /dev/null
+@@ -1,12 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import androidx.annotation.StyleRes;
+-
+-import org.thoughtcrime.securesms.R;
+-
+-public class DynamicIntroTheme extends DynamicTheme {
+-
+-  protected @StyleRes int getTheme() {
+-    return R.style.Signal_DayNight_IntroTheme;
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicMediaPreviewTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicMediaPreviewTheme.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..f93bcf0f68adf0d239fdec35e5199712a61b5d7e
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicMediaPreviewTheme.java
+@@ -0,0 +1,16 @@
++package org.thoughtcrime.securesms.util;
++
++import androidx.annotation.StyleRes;
++
++import org.thoughtcrime.securesms.R;
++
++public class DynamicMediaPreviewTheme extends DynamicTheme {
++
++  protected @StyleRes int getRegularTheme() {
++    return R.style.TextSecure_MediaPreview;
++  }
++
++  protected @StyleRes int getDynamicTheme() {
++    return R.style.Theme_Molly_Dynamic_MediaPreview;
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarInviteTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarInviteTheme.java
+deleted file mode 100644
+index c5999d5aad49307ed2dceb78a1544d247a586c6e..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarInviteTheme.java
++++ /dev/null
+@@ -1,12 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import androidx.annotation.StyleRes;
+-
+-import org.thoughtcrime.securesms.R;
+-
+-public class DynamicNoActionBarInviteTheme extends DynamicTheme {
+-
+-  protected @StyleRes int getTheme() {
+-    return R.style.Signal_DayNight_Invite;
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarTheme.java
+index 53e27e72a5f1d020592c84fe71d8311c7ebd8b21..fb8e2dbcd780595fba9e0f85d94f26ced04ff418 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarTheme.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicNoActionBarTheme.java
+@@ -6,7 +6,11 @@ import org.thoughtcrime.securesms.R;
+ 
+ public class DynamicNoActionBarTheme extends DynamicTheme {
+ 
+-  protected @StyleRes int getTheme() {
+-    return R.style.Signal_DayNight_NoActionBar;
++  protected @StyleRes int getRegularTheme() {
++    return R.style.Theme_Signal_DayNight_NoActionBar;
++  }
++
++  protected @StyleRes int getDynamicTheme() {
++    return R.style.Theme_Molly_Dynamic_NoActionBar;
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicRegistrationTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicRegistrationTheme.java
+index f5d5f07b685220a1c57d0ab23e89df37dea58f10..b9885cb076146684f790c7aca6b35bbfca23c211 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicRegistrationTheme.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicRegistrationTheme.java
+@@ -6,7 +6,11 @@ import org.thoughtcrime.securesms.R;
+ 
+ public class DynamicRegistrationTheme extends DynamicTheme {
+ 
+-  protected @StyleRes int getTheme() {
++  protected @StyleRes int getRegularTheme() {
+     return R.style.Signal_DayNight_Registration;
+   }
++
++  protected @StyleRes int getDynamicTheme() {
++    return R.style.Theme_Molly_Dynamic_Registration;
++  }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicTheme.java b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicTheme.java
+index e58338bee0f706355ca255c0f93fe35358b98d45..eadea80d2ac92c714a0ad612f1f3c1ae5e4501b5 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/DynamicTheme.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/DynamicTheme.java
+@@ -4,15 +4,19 @@ import android.app.Activity;
+ import android.content.Context;
+ import android.content.res.Configuration;
+ import android.os.Build;
++import android.view.ContextThemeWrapper;
+ 
++import androidx.annotation.ColorInt;
+ import androidx.annotation.NonNull;
+ import androidx.annotation.StyleRes;
+ import androidx.appcompat.app.AppCompatDelegate;
+ 
++import com.google.android.material.color.DynamicColors;
++
++import org.signal.core.ui.util.ThemeUtil;
+ import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.R;
+ import org.thoughtcrime.securesms.keyvalue.SettingsValues.Theme;
+-import org.thoughtcrime.securesms.keyvalue.SignalStore;
+ import org.signal.core.util.ConfigurationUtil;
+ 
+ public class DynamicTheme {
+@@ -23,13 +27,16 @@ public class DynamicTheme {
+ 
+   private int onCreateNightModeConfiguration;
+ 
++  private static final int regularTheme = R.style.Signal_DayNight;
++  private static final int dynamicTheme = R.style.Theme_Molly_Dynamic;
++
+   public void onCreate(@NonNull Activity activity) {
+     int previousGlobalConfiguration = globalNightModeConfiguration;
+ 
+     onCreateNightModeConfiguration = ConfigurationUtil.getNightModeConfiguration(activity);
+     globalNightModeConfiguration   = onCreateNightModeConfiguration;
+ 
+-    activity.setTheme(getTheme());
++    activity.setTheme(getTheme(activity));
+ 
+     if (previousGlobalConfiguration != globalNightModeConfiguration) {
+       Log.d(TAG, "Previous night mode has changed previous: " + previousGlobalConfiguration + " now: " + globalNightModeConfiguration);
+@@ -39,13 +46,35 @@ public class DynamicTheme {
+ 
+   public void onResume(@NonNull Activity activity) {
+     if (onCreateNightModeConfiguration != ConfigurationUtil.getNightModeConfiguration(activity)) {
+-      Log.d(TAG, "Create configuration different from current previous: " + onCreateNightModeConfiguration + " now: " +  ConfigurationUtil.getNightModeConfiguration(activity));
++      Log.d(TAG, "Create configuration different from current previous: " + onCreateNightModeConfiguration + " now: " + ConfigurationUtil.getNightModeConfiguration(activity));
+       CachedInflater.from(activity).clear();
+     }
+   }
+ 
+-  protected @StyleRes int getTheme() {
+-    return R.style.Signal_DayNight;
++  protected @StyleRes int getRegularTheme() {
++    return regularTheme;
++  }
++
++  protected @StyleRes int getDynamicTheme() {
++    return dynamicTheme;
++  }
++
++  public final @StyleRes int getTheme(@NonNull Context context) {
++    return useDynamicColors(context) ? getDynamicTheme() : getRegularTheme();
++  }
++
++  public static boolean useDynamicColors(@NonNull Context context) {
++    return isDynamicColorsAvailable() && TextSecurePreferences.isDynamicColorsEnabled(context);
++  }
++
++  public static boolean isDynamicColorsAvailable() {
++    return DynamicColors.isDynamicColorAvailable();
++  }
++
++  public static @ColorInt int resolveColor(@NonNull Context context, int colorRef) {
++    int resId = useDynamicColors(context) ? dynamicTheme : regularTheme;
++    ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, resId);
++    return ThemeUtil.getThemedColor(context, colorRef, themeWrapper.getTheme());
+   }
+ 
+   public static boolean systemThemeAvailable() {
+@@ -53,7 +82,7 @@ public class DynamicTheme {
+   }
+ 
+   public static void setDefaultDayNightMode(@NonNull Context context) {
+-    Theme theme = SignalStore.settings().getTheme();
++    Theme theme = Theme.deserialize(TextSecurePreferences.getTheme(context));
+ 
+     if (theme == Theme.SYSTEM) {
+       Log.d(TAG, "Setting to follow system expecting: " + ConfigurationUtil.getNightModeConfiguration(context.getApplicationContext()));
+@@ -73,7 +102,7 @@ public class DynamicTheme {
+    * Takes the system theme into account.
+    */
+   public static boolean isDarkTheme(@NonNull Context context) {
+-    Theme theme = SignalStore.settings().getTheme();
++    Theme theme = Theme.deserialize(TextSecurePreferences.getTheme(context));
+ 
+     if (theme == Theme.SYSTEM && systemThemeAvailable()) {
+       return isSystemInDarkTheme(context);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/SplashScreenUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/SplashScreenUtil.java
+index 4fce4356411daa5d26ac6d914c3e75771982f9b4..ca841feefc419e8bc3e7ee3f57d6e252642d72cc 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/SplashScreenUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/SplashScreenUtil.java
+@@ -16,17 +16,17 @@ public final class SplashScreenUtil {
+   /**
+    * Sets the splash screen for Android 12+ devices based on the passed-in theme.
+    */
+-  public static void setSplashScreenThemeIfNecessary(@Nullable Activity activity, @NonNull SettingsValues.Theme theme) {
++  public static void setSplashScreenThemeIfNecessary(@Nullable Activity activity, @NonNull SettingsValues.Theme theme, boolean useDynamicColors) {
+     if (Build.VERSION.SDK_INT < 31 || activity == null) {
+       return;
+     }
+ 
+     switch (theme) {
+       case LIGHT:
+-        activity.getSplashScreen().setSplashScreenTheme(R.style.Theme_Signal_DayNight_NoActionBar_LightSplash);
++        activity.getSplashScreen().setSplashScreenTheme(R.style.Theme_Molly_Starting_Light);
+         break;
+       case DARK:
+-        activity.getSplashScreen().setSplashScreenTheme(R.style.Theme_Signal_DayNight_NoActionBar_DarkSplash);
++        activity.getSplashScreen().setSplashScreenTheme(R.style.Theme_Molly_Starting_Dark);
+         break;
+       case SYSTEM:
+         activity.getSplashScreen().setSplashScreenTheme(Resources.ID_NULL);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/GradientChatWallpaper.java b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/GradientChatWallpaper.java
+index 028c967267edfa1e34bfb49fccc203eb6bf6f73b..166976f5cab552c3014837e4bc42b7d69eaed852 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/wallpaper/GradientChatWallpaper.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/wallpaper/GradientChatWallpaper.java
+@@ -18,8 +18,8 @@ import java.util.Objects;
+ public final class GradientChatWallpaper implements ChatWallpaper, Parcelable {
+ 
+   public static final GradientChatWallpaper SUNSET     = new GradientChatWallpaper(168f,
+-                                                                                   new int[] { 0xFFF3DC47, 0xFFF3DA47, 0xFFF2D546, 0xFFF2CC46, 0xFFF1C146, 0xFFEFB445, 0xFFEEA544, 0xFFEC9644, 0xFFEB8743, 0xFFE97743, 0xFFE86942, 0xFFE65C41, 0xFFE55041, 0xFFE54841, 0xFFE44240, 0xFFE44040 },
+-                                                                                   new float[] { 0.0f, 0.0807f, 0.1554f, 0.225f, 0.2904f, 0.3526f, 0.4125f, 0.471f, 0.529f, 0.5875f, 0.6474f, 0.7096f, 0.775f, 0.8446f, 0.9193f, 1f },
++                                                                                   new int[] { 0xFF000000, 0xFF000000 },
++                                                                                   new float[] { 0.0f, 0.0f },
+                                                                                    0f);
+   public static final GradientChatWallpaper NOIR       = new GradientChatWallpaper(180f,
+                                                                                    new int[] { 0xFF16161D, 0xFF17171E, 0xFF1A1A22, 0xFF1F1F28, 0xFF26262F, 0xFF2D2D38, 0xFF353542, 0xFF3E3E4C, 0xFF474757, 0xFF4F4F61, 0xFF57576B, 0xFF5F5F74, 0xFF65657C, 0xFF6A6A82, 0xFF6D6D85, 0xFF6E6E87 },
+diff --git a/core/ui/src/main/AndroidManifest.xml b/core/ui/src/main/AndroidManifest.xml
+deleted file mode 100644
+index 7277dc362ab3ecf567018237f72978ac2d92d2fb..0000000000000000000000000000000000000000
+--- a/core/ui/src/main/AndroidManifest.xml
++++ /dev/null
+@@ -1,5 +0,0 @@
+-<?xml version="1.0" encoding="utf-8"?>
+-<manifest
+-    xmlns:android="http://schemas.android.com/apk/res/android">
+-
+-</manifest>
+\ No newline at end of file
+diff --git a/core/ui/src/main/java/org/signal/core/ui/permissions/RationaleDialog.java b/core/ui/src/main/java/org/signal/core/ui/permissions/RationaleDialog.java
+index 2fae55eca707db470bd525f265fe68536ee11ffb..7d383d3d00b80a114e6db7eeabdef819f8d829a1 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/permissions/RationaleDialog.java
++++ b/core/ui/src/main/java/org/signal/core/ui/permissions/RationaleDialog.java
+@@ -37,7 +37,7 @@ public class RationaleDialog {
+ 
+     for (int i = 0; i < drawables.length; i++) {
+       Drawable drawable = Objects.requireNonNull(ContextCompat.getDrawable(context, drawables[i]));
+-      DrawableCompat.setTint(drawable, ContextCompat.getColor(context, R.color.signal_colorOnPrimaryContainer));
++      DrawableCompat.setTint(drawable, ThemeUtil.getThemedColor(context, com.google.android.material.R.attr.colorOnPrimaryContainer));
+ 
+       ImageView imageView = new ImageView(context);
+       imageView.setImageDrawable(drawable);
+diff --git a/core/ui/src/main/java/org/signal/core/ui/util/StorageUtil.java b/core/ui/src/main/java/org/signal/core/ui/util/StorageUtil.java
+index 42e05262da18700b0242ac9857991d5288b53d6b..63c5a1c5157c60ac71e359676e59c7181fd59a99 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/util/StorageUtil.java
++++ b/core/ui/src/main/java/org/signal/core/ui/util/StorageUtil.java
+@@ -26,8 +26,6 @@ import java.util.Objects;
+ 
+ public class StorageUtil {
+ 
+-  private static final String PRODUCTION_PACKAGE_ID = "org.thoughtcrime.securesms";
+-
+   public static File getOrCreateBackupDirectory() throws NoExternalStorageException {
+     File storage = Environment.getExternalStorageDirectory();
+ 
+@@ -46,48 +44,10 @@ public class StorageUtil {
+     return backups;
+   }
+ 
+-  public static File getOrCreateBackupV2Directory() throws NoExternalStorageException {
+-    File storage = Environment.getExternalStorageDirectory();
+-
+-    if (!storage.canWrite()) {
+-      throw new NoExternalStorageException();
+-    }
+-
+-    File backups = getBackupV2Directory();
+-
+-    if (!backups.exists()) {
+-      if (!backups.mkdirs()) {
+-        throw new NoExternalStorageException("Unable to create backup directory...");
+-      }
+-    }
+-
+-    return backups;
+-  }
+-
+   public static File getBackupDirectory() throws NoExternalStorageException {
+-    File   storage   = Environment.getExternalStorageDirectory();
+-    File   signal    = new File(storage, "Signal");
+-    File   backups   = new File(signal, "Backups");
+-    String packageId = CoreUiDependencies.INSTANCE.getPackageId();
+-
+-    //noinspection ConstantConditions
+-    if (packageId.startsWith(PRODUCTION_PACKAGE_ID + ".")) {
+-      backups = new File(backups, packageId.substring(PRODUCTION_PACKAGE_ID.length() + 1));
+-    }
+-
+-    return backups;
+-  }
+-
+-  public static File getBackupV2Directory() throws NoExternalStorageException {
+-    File   storage   = Environment.getExternalStorageDirectory();
+-    File   backups   = new File(storage, "Signal");
+-    String packageId = CoreUiDependencies.INSTANCE.getPackageId();
+-
+-    //noinspection ConstantConditions
+-    if (packageId.startsWith(PRODUCTION_PACKAGE_ID + ".")) {
+-      backups = new File(storage, packageId.substring(PRODUCTION_PACKAGE_ID.length() + 1));
+-    }
+-
++    File storage = Environment.getExternalStorageDirectory();
++    File signal  = new File(storage, CoreUiDependencies.INSTANCE.getBackupBaseDirName());
++    File backups = new File(signal, "Backups");
+     return backups;
+   }
+ 
+diff --git a/core/ui/src/main/java/org/signal/core/ui/util/ThemeUtil.java b/core/ui/src/main/java/org/signal/core/ui/util/ThemeUtil.java
+index 6e038b9c5fc540b336e8b19d213eadaeaa00dd58..a185b0ccf75b60459cddd0d2ffcf223cd7e4cd93 100644
+--- a/core/ui/src/main/java/org/signal/core/ui/util/ThemeUtil.java
++++ b/core/ui/src/main/java/org/signal/core/ui/util/ThemeUtil.java
+@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
+ import androidx.annotation.StyleRes;
+ import androidx.appcompat.content.res.AppCompatResources;
+ import androidx.appcompat.view.ContextThemeWrapper;
++import androidx.core.content.ContextCompat;
+ 
+ import org.signal.core.ui.R;
+ 
+@@ -50,14 +51,29 @@ public class ThemeUtil {
+     return false;
+   }
+ 
+-  public static @ColorInt int getThemedColor(@NonNull Context context, @AttrRes int attr) {
++  // MOLLY: Resolves a color reference (R.color or R.attr) to its final color value
++  public static @ColorInt int getThemedColor(@NonNull Context context, int colorRef) {
++    return getThemedColor(context, colorRef, context.getTheme());
++  }
++
++  public static @ColorInt int getThemedColor(@NonNull Context context, int colorRef, @NonNull Resources.Theme theme) {
+     TypedValue typedValue = new TypedValue();
+-    Resources.Theme theme = context.getTheme();
+ 
+-    if (theme.resolveAttribute(attr, typedValue, true)) {
+-      return typedValue.data;
++    int resId = colorRef;
++
++    if (theme.resolveAttribute(resId, typedValue, true)) {
++      if (typedValue.resourceId != 0) {
++        resId = typedValue.resourceId;
++      } else {
++        return typedValue.data;
++      }
++    }
++
++    try {
++      return ContextCompat.getColor(context, resId);
++    } catch (Resources.NotFoundException e) {
++      return Color.RED;
+     }
+-    return Color.RED;
+   }
+ 
+   public static @Nullable Drawable getThemedDrawable(@NonNull Context context, @AttrRes int attr) {
+
+--------------false--
+
+

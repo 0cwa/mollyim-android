@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="org.thoughtcrime.securesms.backup.v2.ArchiveDatabaseExecutorTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-10-24T17:02:06.706Z" hostname="4f1d1be5db40" time="0.046">
-  <properties/>
-  <testcase name="runBlocking returns the result of the block" classname="org.thoughtcrime.securesms.backup.v2.ArchiveDatabaseExecutorTest" time="0.014"/>
-  <testcase name="runBlocking executes on archive-db thread" classname="org.thoughtcrime.securesms.backup.v2.ArchiveDatabaseExecutorTest" time="0.014"/>
-  <testcase name="nested runBlocking calls do not deadlock" classname="org.thoughtcrime.securesms.backup.v2.ArchiveDatabaseExecutorTest" time="0.015"/>
-  <system-out><![CDATA[]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>

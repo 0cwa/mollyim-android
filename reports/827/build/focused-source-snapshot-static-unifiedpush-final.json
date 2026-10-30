@@ -1,8 +1,0 @@
-{
-  "head": "7eda9c55e0fe124da682f6c2a4e49493cd665d97",
-  "files": {
-    "app/src/main/java/im/molly/unifiedpush/receiver/UnifiedPushReceiver.kt": "2a2cbed61ab7b275dc9493cda77b7c04c9ef9a3d7aabf8cec3d0dd802c5f2f21",
-    "app/src/test/java/org/thoughtcrime/securesms/util/UriUtilTest_isValidExternalUri.java": "b8095173443a1633ed28ad64f7a7d7de9a2964ad30b7ee003932568466dd0ab9",
-    "app/src/test/java/org/thoughtcrime/securesms/keyvalue/UnifiedPushReceiverAvailabilityTest.kt": "94c7d5f785d1a40164c26412d0f709dd2a58e94abb37e859285065aa9bf042b6"
-  }
-}

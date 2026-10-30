@@ -1,0 +1,1850 @@
+From 8925c491c471f62b64c3c8352d50fe1706e25f51 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Fri, 30 Oct 2026 00:31:56 +0000
+Subject: [PATCH] Reconstruct Molly networking-and-proxies adapted, part 2
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+SOCKS/Tor/Orbot, DNS and connectivity monitoring, proxy transport support and removals of replaced Signal proxy code.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, at least one endpoint differs from
+its corresponding origin entry. This includes changed upstream
+inputs, merged results and newly introduced port changes.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: adapted
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java b/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java
+index 59ddcbf7cd8ae4860bb1c96f735c02d610660c7b..19b8ef8ca9c345f38b199e78ddf93abfb15b83a1 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/jobmanager/impl/NetworkConstraintObserver.java
+@@ -9,7 +9,10 @@ import android.net.ConnectivityManager;
+ 
+ import androidx.annotation.NonNull;
+ 
++import org.signal.core.util.eventbus.EventBus;
++import org.signal.core.util.eventbus.ThreadMode;
+ import org.signal.core.util.logging.Log;
++import org.thoughtcrime.securesms.events.NetworkAvailableEvent;
+ import org.thoughtcrime.securesms.jobmanager.ConstraintObserver;
+ 
+ public class NetworkConstraintObserver implements ConstraintObserver {
+@@ -27,12 +30,16 @@ public class NetworkConstraintObserver implements ConstraintObserver {
+     application.registerReceiver(new BroadcastReceiver() {
+       @Override
+       public void onReceive(Context context, Intent intent) {
+-        NetworkConstraint constraint = new NetworkConstraint.Factory(application).create();
+-
+-        if (constraint.isMet()) {
++        if (NetworkConstraint.isMet(application)) {
+           notifier.onConstraintMet(REASON);
+         }
+       }
+     }, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
++
++    EventBus.getDefault().subscribe(NetworkAvailableEvent.class, ThreadMode.MAIN, event -> {
++      if (NetworkConstraint.isMet(application)) {
++        notifier.onConstraintMet(REASON);
++      }
++    });
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ProxyValues.java b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ProxyValues.java
+index 46312e9fe1f4465921da3f79d12baa756844ac9d..282ccbbf80b5439b90eb88e10f4719e9f9659828 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ProxyValues.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/keyvalue/ProxyValues.java
+@@ -1,10 +1,6 @@
+ package org.thoughtcrime.securesms.keyvalue;
+ 
+ import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-
+-import org.signal.core.util.Util;
+-import org.signal.network.config.SignalProxy;
+ 
+ import java.util.Arrays;
+ import java.util.List;
+@@ -28,60 +24,5 @@ public final class ProxyValues extends SignalStoreValues {
+     return Arrays.asList(KEY_PROXY_ENABLED, KEY_HOST, KEY_PORT);
+   }
+ 
+-  public void enableProxy(@NonNull SignalProxy proxy) {
+-    if (Util.isEmpty(proxy.getHost())) {
+-      throw new IllegalArgumentException("Empty host!");
+-    }
+-
+-    getStore().beginWrite()
+-              .putBoolean(KEY_PROXY_ENABLED, true)
+-              .putString(KEY_HOST, proxy.getHost())
+-              .putInteger(KEY_PORT, proxy.getPort())
+-              .apply();
+-  }
+-
+-  /**
+-   * Disables the proxy, but does not clear out the last-chosen host.
+-   */
+-  public void disableProxy() {
+-    putBoolean(KEY_PROXY_ENABLED, false);
+-  }
+-
+-  public boolean isProxyEnabled() {
+-    return getBoolean(KEY_PROXY_ENABLED, false);
+-  }
+-
+-  /**
+-   * Sets the proxy. This does not *enable* the proxy. This is because the user may want to set a
+-   * proxy and then enabled it and disable it at will.
+-   */
+-  public void setProxy(@Nullable SignalProxy proxy) {
+-    if (proxy != null) {
+-      getStore().beginWrite()
+-                .putString(KEY_HOST, proxy.getHost())
+-                .putInteger(KEY_PORT, proxy.getPort())
+-                .apply();
+-    } else {
+-      getStore().beginWrite()
+-                .remove(KEY_HOST)
+-                .remove(KEY_PORT)
+-                .apply();
+-    }
+-  }
+-
+-  public @Nullable SignalProxy getProxy() {
+-    String host = getString(KEY_HOST, null);
+-    int    port = getInteger(KEY_PORT, 0);
+-
+-    if (host != null) {
+-      return new SignalProxy(host, port);
+-    } else {
+-      return null;
+-    }
+-  }
+-
+-  public @Nullable String getProxyHost() {
+-    SignalProxy proxy = getProxy();
+-    return proxy !=  null ? proxy.getHost() : null;
+-  }
++  // MOLLY: Replaced by NetworkManager
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/NetworkManager.java b/app/src/main/java/org/thoughtcrime/securesms/net/NetworkManager.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..ddddac0a43889733bcd9ea9ac5e57103079781a1
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/NetworkManager.java
+@@ -0,0 +1,195 @@
++package org.thoughtcrime.securesms.net;
++
++import android.app.Application;
++import android.content.Context;
++import android.content.Intent;
++import android.widget.Toast;
++
++import androidx.annotation.NonNull;
++import androidx.webkit.ProxyConfig;
++import androidx.webkit.ProxyController;
++import androidx.webkit.WebViewFeature;
++
++import org.signal.core.util.eventbus.EventBus;
++import org.signal.core.util.AppForegroundObserver;
++import org.signal.core.util.concurrent.SignalExecutors;
++import org.signal.core.util.logging.Log;
++import org.thoughtcrime.securesms.R;
++import org.thoughtcrime.securesms.dependencies.AppDependencies;
++import org.thoughtcrime.securesms.events.NetworkAvailableEvent;
++
++import java.util.Objects;
++
++import info.guardianproject.netcipher.proxy.OrbotHelper;
++
++public class NetworkManager {
++
++  private static final String TAG = Log.tag(NetworkManager.class);
++
++  private final Application application;
++  private final OrbotHelper orbotHelper;
++
++  private OrbotStatusCallback orbotStatusCallback;
++
++  private ProxyType proxyType;
++
++  private String proxySocksHost;
++  private int proxySocksPort;
++  private int proxyOrbotPort;
++
++  private SocksProxy existingProxy;
++
++  private NetworkManager(@NonNull Application application,
++                         @NonNull OrbotHelper orbotHelper) {
++    this.application    = application;
++    this.orbotHelper    = orbotHelper;
++    this.proxyType      = ProxyType.NONE;
++    this.proxySocksHost = SocksProxy.LOCAL_HOST;
++    this.proxySocksPort = SocksProxy.INVALID_PORT;
++    this.proxyOrbotPort = SocksProxy.INVALID_PORT;
++  }
++
++  @NonNull
++  public static NetworkManager create(@NonNull Context context) {
++    return new NetworkManager(AppDependencies.getApplication(), OrbotHelper.get(context));
++  }
++
++  public void setNetworkEnabled(boolean enabled) {
++    Networking.setEnabled(enabled);
++    if (enabled) {
++      onNetworkEnabled();
++    }
++  }
++
++  public boolean isProxyEnabled() {
++    return proxyType != ProxyType.NONE;
++  }
++
++  public boolean isOrbotAvailable() {
++    return orbotHelper.init();
++  }
++
++  public synchronized void setProxyChoice(ProxyType type) {
++    if (orbotStatusCallback != null) {
++      orbotHelper.removeStatusCallback(orbotStatusCallback);
++      orbotStatusCallback = null;
++    }
++
++    proxyOrbotPort = SocksProxy.INVALID_PORT;
++    proxyType = type;
++
++    if (type == ProxyType.ORBOT && isOrbotAvailable()) {
++      orbotStatusCallback = new OrbotStatusCallback();
++      orbotHelper.addStatusCallback(orbotStatusCallback);
++      orbotHelper.requestStart(application);
++    }
++  }
++
++  public void setProxySocksPort(int port) {
++    proxySocksPort = port;
++  }
++
++  public void setProxySocksHost(String host) {
++    proxySocksHost = host;
++  }
++
++  public String getDefaultProxySocksHost() {
++    return OrbotHelper.DEFAULT_PROXY_HOST;
++  }
++
++  public int getDefaultProxySocksPort() {
++    return OrbotHelper.DEFAULT_PROXY_SOCKS_PORT;
++  }
++
++  public boolean applyProxyConfig() {
++    SocksProxy newProxy;
++
++    if (proxyType == ProxyType.SOCKS5) {
++      newProxy = new SocksProxy(proxySocksHost, proxySocksPort);
++    } else if (proxyType == ProxyType.ORBOT) {
++      newProxy = new SocksProxy(OrbotHelper.DEFAULT_PROXY_HOST, proxyOrbotPort);
++    } else {
++      newProxy = null;
++    }
++
++    return configureProxy(newProxy);
++  }
++
++  private synchronized boolean configureProxy(SocksProxy newProxy) {
++    if (!hasProxyChanged(existingProxy, newProxy)) {
++      return false;
++    }
++
++    Networking.setSocksProxy(newProxy);
++    existingProxy = newProxy;
++
++    if (WebViewFeature.isFeatureSupported(WebViewFeature.PROXY_OVERRIDE)) {
++      SignalExecutors.UNBOUNDED.execute(() -> {
++        if (newProxy != null) {
++          String newProxyUrl = newProxy.getUrl();
++          if (newProxyUrl == null) {
++            newProxyUrl = "socks://proxy.invalid";
++          }
++          final ProxyConfig proxyConfig = new ProxyConfig.Builder()
++                                                         .addProxyRule(newProxyUrl)
++                                                         .build();
++          ProxyController.getInstance().setProxyOverride(proxyConfig, Runnable::run, this::onProxyOverrideComplete);
++        } else {
++          ProxyController.getInstance().clearProxyOverride(Runnable::run, this::onProxyOverrideComplete);
++        }
++      });
++    }
++
++    return true;
++  }
++
++  private void onProxyOverrideComplete() {
++    Log.d(TAG, "onProxyOverrideComplete");
++  }
++
++  static private boolean hasProxyChanged(SocksProxy existingProxy, SocksProxy newProxy) {
++    return !Objects.equals(existingProxy, newProxy);
++  }
++
++  final class OrbotStatusCallback extends OrbotHelper.SimpleStatusCallback {
++
++    @Override
++    public void onEnabled(Intent statusIntent) {
++      Log.i(TAG, "[OrbotHelper] onEnabled");
++      int socksPort = getSocksPort(statusIntent);
++      synchronized (orbotHelper) {
++        if (proxyOrbotPort != socksPort) {
++          if (proxyType == ProxyType.ORBOT) {
++            if (configureProxy(new SocksProxy(OrbotHelper.DEFAULT_PROXY_HOST, socksPort))) {
++              AppDependencies.resetNetwork(true);
++            }
++          }
++          proxyOrbotPort = socksPort;
++          if (AppForegroundObserver.isForegrounded()) {
++            Toast.makeText(application, R.string.ProxyManager_successfully_started_orbot, Toast.LENGTH_SHORT).show();
++          }
++        }
++      }
++      orbotHelper.removeStatusCallback(this);
++    }
++
++    @Override
++    public void onStatusTimeout() {
++      Log.i(TAG, "[OrbotHelper] onStatusTimeout");
++      if (isOrbotAvailable()) {
++        orbotHelper.requestStart(application);
++      } else {
++        orbotHelper.removeStatusCallback(this);
++      }
++    }
++
++    private int getSocksPort(Intent status) {
++      return status.getIntExtra(OrbotHelper.EXTRA_PROXY_PORT_SOCKS,
++                                OrbotHelper.DEFAULT_PROXY_SOCKS_PORT);
++    }
++  }
++
++  static private void onNetworkEnabled() {
++    EventBus.getDefault().post(new NetworkAvailableEvent());
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/NetworkProxy.kt b/app/src/main/java/org/thoughtcrime/securesms/net/NetworkProxy.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..56d094ff9a7e73e7cd44501c3e942c2fd5e95499
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/NetworkProxy.kt
+@@ -0,0 +1,37 @@
++/*
++ * Copyright 2026 Signal Messenger, LLC
++ * SPDX-License-Identifier: AGPL-3.0-only
++ */
++
++package org.thoughtcrime.securesms.net
++
++import androidx.annotation.WorkerThread
++import org.signal.core.util.net.resolveSystemProxy
++import org.signal.libsignal.net.Network
++import org.signal.network.config.ProxyConfig
++import org.signal.network.config.ProxyConfig.ProxySource
++import org.thoughtcrime.securesms.BuildConfig
++import java.net.Proxy
++import org.signal.network.config.configureProxy as configureCoreProxy
++
++/**
++ * Resolves the appropriate proxy configuration or system defaults.
++ * Falls back to direct connection if no valid proxy is found.
++ *
++ * @return The resolved proxy configuration
++ */
++@WorkerThread
++fun resolveProxyConfig(): ProxyConfig {
++  val userProxy = Networking.proxy
++  if (userProxy == Proxy.NO_PROXY) {
++    val systemProxy = resolveSystemProxy(targetUrl = BuildConfig.SIGNAL_URL)
++    return systemProxy?.let { ProxyConfig.fromProxy(it, ProxySource.SYSTEM) }
++      ?: ProxyConfig.Direct
++  }
++  return checkNotNull(ProxyConfig.fromProxy(userProxy, ProxySource.USER))
++}
++
++/** Applies the shared proxy policy, including fail-closed handling of user-configured proxies. */
++fun Network.configureProxy(config: ProxyConfig) {
++  configureCoreProxy(config)
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyActivity.kt b/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyActivity.kt
+deleted file mode 100644
+index 984c620a93acae298d6812134511517113a7dbab..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyActivity.kt
++++ /dev/null
+@@ -1,49 +0,0 @@
+-/*
+- * Copyright 2026 Signal Messenger, LLC
+- * SPDX-License-Identifier: AGPL-3.0-only
+- */
+-
+-package org.thoughtcrime.securesms.preferences
+-
+-import android.content.Context
+-import android.content.Intent
+-import android.os.Bundle
+-import androidx.navigation.fragment.NavHostFragment
+-import org.thoughtcrime.securesms.BaseActivity
+-import org.thoughtcrime.securesms.R
+-import org.thoughtcrime.securesms.util.DynamicNoActionBarTheme
+-import org.thoughtcrime.securesms.util.DynamicTheme
+-
+-/**
+- * Standalone host for [EditProxyFragment], usable during registration before the user is registered.
+- * Unlike [org.thoughtcrime.securesms.components.settings.app.AppSettingsActivity], this does not extend
+- * PassphraseRequiredActivity, so it won't reroute an unregistered user back into the registration flow.
+- */
+-class EditProxyActivity : BaseActivity() {
+-
+-  private val dynamicTheme: DynamicTheme = DynamicNoActionBarTheme()
+-
+-  override fun onCreate(savedInstanceState: Bundle?) {
+-    dynamicTheme.onCreate(this)
+-
+-    super.onCreate(savedInstanceState)
+-    setContentView(R.layout.nav_graph_host_activity)
+-
+-    if (savedInstanceState == null) {
+-      val fragment = NavHostFragment.create(R.navigation.edit_proxy)
+-      supportFragmentManager.beginTransaction()
+-        .replace(R.id.nav_host_fragment, fragment)
+-        .commitNow()
+-    }
+-  }
+-
+-  override fun onResume() {
+-    super.onResume()
+-    dynamicTheme.onResume(this)
+-  }
+-
+-  companion object {
+-    @JvmStatic
+-    fun intent(context: Context): Intent = Intent(context, EditProxyActivity::class.java)
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyFragment.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyFragment.java
+deleted file mode 100644
+index 9578276ca8d4cb7584a0c42ed172adf9986844e5..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyFragment.java
++++ /dev/null
+@@ -1,244 +0,0 @@
+-package org.thoughtcrime.securesms.preferences;
+-
+-import android.os.Bundle;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-import android.view.WindowManager;
+-import android.widget.EditText;
+-import android.widget.TextView;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-import androidx.appcompat.widget.SwitchCompat;
+-import androidx.appcompat.widget.Toolbar;
+-import androidx.core.app.ShareCompat;
+-import androidx.core.view.WindowInsetsCompat;
+-import androidx.fragment.app.Fragment;
+-import androidx.lifecycle.ViewModelProvider;
+-import androidx.navigation.Navigation;
+-
+-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+-
+-import org.thoughtcrime.securesms.R;
+-import org.thoughtcrime.securesms.contactshare.SimpleTextWatcher;
+-import org.thoughtcrime.securesms.keyvalue.SignalStore;
+-import org.thoughtcrime.securesms.util.CommunicationActions;
+-import org.signal.core.util.concurrent.LifecycleDisposable;
+-import org.thoughtcrime.securesms.util.SignalProxyUtil;
+-import org.thoughtcrime.securesms.util.SystemWindowInsetsSetter;
+-import org.signal.core.util.Util;
+-import org.signal.core.ui.util.ViewUtil;
+-import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
+-import org.thoughtcrime.securesms.util.views.LearnMoreTextView;
+-import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState;
+-import org.signal.network.config.SignalProxy;
+-
+-import java.util.Optional;
+-
+-public class EditProxyFragment extends Fragment {
+-
+-  private SwitchCompat                   proxySwitch;
+-  private EditText                       proxyText;
+-  private TextView                       proxyTitle;
+-  private TextView                       proxyStatus;
+-  private View                           shareButton;
+-  private CircularProgressMaterialButton saveButton;
+-  private EditProxyViewModel             viewModel;
+-  private LifecycleDisposable            lifecycleDisposable;
+-
+-  public static EditProxyFragment newInstance() {
+-    return new EditProxyFragment();
+-  }
+-
+-  @Override
+-  public @Nullable View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+-    return inflater.inflate(R.layout.edit_proxy_fragment, container, false);
+-  }
+-
+-  @Override
+-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+-    Toolbar toolbar = view.findViewById(R.id.toolbar);
+-    toolbar.setNavigationOnClickListener(v -> {
+-      if (!Navigation.findNavController(v).popBackStack()) {
+-        requireActivity().finish();
+-      }
+-    });
+-
+-    toolbar.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+-    SystemWindowInsetsSetter.attach(toolbar, getViewLifecycleOwner(), WindowInsetsCompat.Type.statusBars());
+-
+-    this.proxySwitch = view.findViewById(R.id.edit_proxy_switch);
+-    this.proxyTitle  = view.findViewById(R.id.edit_proxy_address_title);
+-    this.proxyText   = view.findViewById(R.id.edit_proxy_host);
+-    this.proxyStatus = view.findViewById(R.id.edit_proxy_status);
+-    this.saveButton  = view.findViewById(R.id.edit_proxy_save);
+-    this.shareButton = view.findViewById(R.id.edit_proxy_share);
+-
+-    SystemWindowInsetsSetter.attach(saveButton, getViewLifecycleOwner(), WindowInsetsCompat.Type.navigationBars() | WindowInsetsCompat.Type.ime(), SystemWindowInsetsSetter.ApplyMode.MARGIN);
+-
+-    lifecycleDisposable = new LifecycleDisposable();
+-    lifecycleDisposable.bindTo(getViewLifecycleOwner());
+-
+-    proxyText.addTextChangedListener(new SimpleTextWatcher() {
+-      @Override
+-      public void onTextChanged(String text) {
+-        onProxyTextChanged(text);
+-      }
+-    });
+-
+-    this.proxyText.setText(Optional.ofNullable(SignalStore.proxy().getProxy()).map(SignalProxy::getHost).orElse(""));
+-    this.proxySwitch.setChecked(SignalStore.proxy().isProxyEnabled());
+-
+-    initViewModel();
+-
+-    saveButton.setOnClickListener(v -> onSaveClicked());
+-    shareButton.setOnClickListener(v -> onShareClicked());
+-    proxySwitch.setOnCheckedChangeListener((buttonView, isChecked) -> viewModel.onToggleProxy(isChecked, proxyText.getText().toString()));
+-
+-    LearnMoreTextView description = view.findViewById(R.id.edit_proxy_switch_title_description);
+-    description.setLearnMoreVisible(true);
+-    description.setOnLinkClickListener(v -> CommunicationActions.openBrowserLink(requireContext(), "https://support.signal.org/hc/articles/360056052052"));
+-
+-    requireActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+-  }
+-
+-  @Override
+-  public void onResume() {
+-    super.onResume();
+-
+-    SignalProxyUtil.startListeningToWebsocket();
+-  }
+-
+-  private void initViewModel() {
+-    viewModel = new ViewModelProvider(this).get(EditProxyViewModel.class);
+-
+-    lifecycleDisposable.addAll(
+-        viewModel.getUiState().subscribe(this::presentUiState),
+-        viewModel.getProxyState().subscribe(this::presentProxyState),
+-        viewModel.getEvents().subscribe(this::presentEvent),
+-        viewModel.getSaveState().subscribe(this::presentSaveState)
+-    );
+-  }
+-
+-  private void presentUiState(@NonNull EditProxyViewModel.UiState uiState) {
+-    switch (uiState) {
+-      case ALL_ENABLED:
+-        proxyText.setEnabled(true);
+-        proxyText.setAlpha(1);
+-        saveButton.setEnabled(true);
+-        saveButton.setAlpha(1);
+-        proxyTitle.setAlpha(1);
+-        onProxyTextChanged(proxyText.getText().toString());
+-        break;
+-      case ALL_DISABLED:
+-        proxyText.setEnabled(false);
+-        proxyText.setAlpha(0.5f);
+-        saveButton.setEnabled(false);
+-        saveButton.setAlpha(0.5f);
+-        shareButton.setEnabled(false);
+-        shareButton.setAlpha(0.5f);
+-        proxyTitle.setAlpha(0.5f);
+-        proxyStatus.setVisibility(View.INVISIBLE);
+-        break;
+-    }
+-  }
+-
+-  private void presentProxyState(@NonNull WebSocketConnectionState proxyState) {
+-    if (SignalStore.proxy().getProxy() != null) {
+-      switch (proxyState) {
+-        case DISCONNECTED:
+-        case DISCONNECTING:
+-        case CONNECTING:
+-          proxyStatus.setText(R.string.preferences_connecting_to_proxy);
+-          proxyStatus.setTextColor(getResources().getColor(R.color.signal_text_secondary));
+-          break;
+-        case CONNECTED:
+-          proxyStatus.setText(R.string.preferences_connected_to_proxy);
+-          proxyStatus.setTextColor(getResources().getColor(R.color.signal_accent_green));
+-          break;
+-        case AUTHENTICATION_FAILED:
+-        case REMOTE_DEPRECATED:
+-        case FAILED:
+-          proxyStatus.setText(R.string.preferences_connection_failed);
+-          proxyStatus.setTextColor(getResources().getColor(R.color.signal_alert_primary));
+-          break;
+-      }
+-    } else {
+-      proxyStatus.setText("");
+-    }
+-  }
+-
+-  private void presentEvent(@NonNull EditProxyViewModel.Event event) {
+-    switch (event) {
+-      case PROXY_SUCCESS:
+-        proxyStatus.setVisibility(View.VISIBLE);
+-        proxyText.setText(Optional.ofNullable(SignalStore.proxy().getProxy()).map(SignalProxy::getHost).orElse(""));
+-        new MaterialAlertDialogBuilder(requireContext())
+-           .setTitle(R.string.preferences_success)
+-           .setMessage(R.string.preferences_you_are_connected_to_the_proxy)
+-           .setPositiveButton(android.R.string.ok, (d, i) -> {
+-             requireActivity().onBackPressed();
+-             d.dismiss();
+-           })
+-           .show();
+-        break;
+-      case PROXY_FAILURE:
+-        proxyStatus.setVisibility(View.INVISIBLE);
+-        proxyText.setText(Optional.ofNullable(SignalStore.proxy().getProxy()).map(SignalProxy::getHost).orElse(""));
+-        ViewUtil.focusAndMoveCursorToEndAndOpenKeyboard(proxyText);
+-        new MaterialAlertDialogBuilder(requireContext())
+-           .setTitle(R.string.preferences_failed_to_connect)
+-           .setMessage(R.string.preferences_couldnt_connect_to_the_proxy)
+-           .setPositiveButton(android.R.string.ok, (d, i) -> d.dismiss())
+-           .show();
+-        break;
+-    }
+-  }
+-
+-  private void presentSaveState(@NonNull EditProxyViewModel.SaveState state) {
+-    switch (state) {
+-      case IDLE:
+-        saveButton.cancelSpinning();
+-        break;
+-      case IN_PROGRESS:
+-        saveButton.setSpinning();
+-        break;
+-    }
+-  }
+-
+-  private void onSaveClicked() {
+-    String text = proxyText.getText().toString();
+-    if (Util.isEmpty(text)) {
+-      proxySwitch.setChecked(false);
+-    } else {
+-      viewModel.onSaveClicked(text);
+-    }
+-  }
+-
+-  private void onShareClicked() {
+-    String link = SignalProxyUtil.generateProxyUrl(proxyText.getText().toString());
+-    ShareCompat.IntentBuilder.from(requireActivity())
+-                             .setText(link)
+-                             .setType("text/plain")
+-                             .startChooser();
+-  }
+-
+-  private void onProxyTextChanged(@NonNull String text) {
+-    if (Util.isEmpty(text)) {
+-      shareButton.setEnabled(false);
+-      shareButton.setAlpha(0.5f);
+-      proxyStatus.setVisibility(View.INVISIBLE);
+-    } else {
+-      shareButton.setEnabled(true);
+-      shareButton.setAlpha(1);
+-
+-      String trueHost = SignalProxyUtil.convertUserEnteredAddressToHost(proxyText.getText().toString());
+-      if (SignalStore.proxy().isProxyEnabled() && trueHost.equals(SignalStore.proxy().getProxyHost())) {
+-        proxyStatus.setVisibility(View.VISIBLE);
+-      } else {
+-        proxyStatus.setVisibility(View.INVISIBLE);
+-      }
+-    }
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyViewModel.java b/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyViewModel.java
+deleted file mode 100644
+index e0cd70b9dc2fad4e1c9a0b90a4e01ad485077af1..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/preferences/EditProxyViewModel.java
++++ /dev/null
+@@ -1,111 +0,0 @@
+-package org.thoughtcrime.securesms.preferences;
+-
+-import androidx.annotation.NonNull;
+-import androidx.lifecycle.ViewModel;
+-
+-import org.signal.core.util.concurrent.SignalExecutors;
+-import org.thoughtcrime.securesms.dependencies.AppDependencies;
+-import org.thoughtcrime.securesms.keyvalue.SignalStore;
+-import org.thoughtcrime.securesms.util.SignalProxyUtil;
+-import org.signal.core.util.Util;
+-import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState;
+-import org.signal.network.config.SignalProxy;
+-
+-import java.util.concurrent.TimeUnit;
+-
+-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+-import io.reactivex.rxjava3.core.BackpressureStrategy;
+-import io.reactivex.rxjava3.core.Flowable;
+-import io.reactivex.rxjava3.core.Observable;
+-import io.reactivex.rxjava3.subjects.BehaviorSubject;
+-import io.reactivex.rxjava3.subjects.PublishSubject;
+-
+-public class EditProxyViewModel extends ViewModel {
+-
+-  private final PublishSubject<Event>              events;
+-  private final BehaviorSubject<UiState>           uiState;
+-  private final BehaviorSubject<SaveState>         saveState;
+-  private final Flowable<WebSocketConnectionState> pipeState;
+-
+-  public EditProxyViewModel() {
+-    this.events    = PublishSubject.create();
+-    this.uiState   = BehaviorSubject.create();
+-    this.saveState = BehaviorSubject.createDefault(SaveState.IDLE);
+-    this.pipeState = !SignalStore.account().isRegistered() || SignalStore.account().getAci() == null
+-                     ? Flowable.empty()
+-                     : AppDependencies.getWebSocketObserver()
+-                                      .toFlowable(BackpressureStrategy.LATEST);
+-
+-    if (SignalStore.proxy().isProxyEnabled()) {
+-      uiState.onNext(UiState.ALL_ENABLED);
+-    } else {
+-      uiState.onNext(UiState.ALL_DISABLED);
+-    }
+-  }
+-
+-  void onToggleProxy(boolean enabled, String text) {
+-    if (enabled) {
+-      SignalProxy currentProxy = SignalStore.proxy().getProxy();
+-
+-      if (currentProxy != null && !Util.isEmpty(currentProxy.getHost())) {
+-        SignalProxyUtil.enableProxy(currentProxy);
+-      }
+-      uiState.onNext(UiState.ALL_ENABLED);
+-    } else if (Util.isEmpty(text)) {
+-        SignalProxyUtil.disableAndClearProxy();
+-        uiState.onNext(UiState.ALL_DISABLED);
+-    } else {
+-        SignalProxyUtil.disableProxy();
+-        uiState.onNext(UiState.ALL_DISABLED);
+-    }
+-  }
+-
+-  public void onSaveClicked(@NonNull String host) {
+-    String trueHost = SignalProxyUtil.convertUserEnteredAddressToHost(host);
+-
+-    saveState.onNext(SaveState.IN_PROGRESS);
+-
+-    SignalExecutors.BOUNDED.execute(() -> {
+-      SignalProxyUtil.enableProxy(new SignalProxy(trueHost, 443));
+-
+-      boolean success = SignalProxyUtil.testWebsocketConnection(TimeUnit.SECONDS.toMillis(10));
+-
+-      if (success) {
+-        events.onNext(Event.PROXY_SUCCESS);
+-      } else {
+-        SignalProxyUtil.disableProxy();
+-        events.onNext(Event.PROXY_FAILURE);
+-      }
+-
+-      saveState.onNext(SaveState.IDLE);
+-    });
+-  }
+-
+-  @NonNull Observable<UiState> getUiState() {
+-    return uiState.observeOn(AndroidSchedulers.mainThread());
+-  }
+-
+-  public @NonNull Observable<Event> getEvents() {
+-    return events.observeOn(AndroidSchedulers.mainThread());
+-  }
+-
+-  @NonNull Flowable<WebSocketConnectionState> getProxyState() {
+-    return pipeState.observeOn(AndroidSchedulers.mainThread());
+-  }
+-
+-  public @NonNull Observable<SaveState> getSaveState() {
+-    return saveState.observeOn(AndroidSchedulers.mainThread());
+-  }
+-
+-  enum UiState {
+-    ALL_DISABLED, ALL_ENABLED
+-  }
+-
+-  public enum Event {
+-    PROXY_SUCCESS, PROXY_FAILURE
+-  }
+-
+-  public enum SaveState {
+-    IDLE, IN_PROGRESS
+-  }
+-}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/NetworkUtil.java b/app/src/main/java/org/thoughtcrime/securesms/util/NetworkUtil.java
+index 20a4a95d8c437dcebdd66a421d80f586b9105b11..a8a1f7eae6ceb2ae043239bafbf3a4cb4c76754e 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/NetworkUtil.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/NetworkUtil.java
+@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
+ import org.signal.core.util.ServiceUtil;
+ import org.signal.ringrtc.CallManager;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
++import org.thoughtcrime.securesms.net.Networking;
+ import org.webrtc.PeerConnection;
+ 
+ public final class NetworkUtil {
+@@ -148,7 +149,8 @@ public final class NetworkUtil {
+     }
+   }
+ 
+-  private static NetworkInfo getNetworkInfo(@NonNull Context context) {
++  public static NetworkInfo getNetworkInfo(@NonNull Context context) {
++    if (!Networking.isEnabled()) return null;
+     return ServiceUtil.getConnectivityManager(context).getActiveNetworkInfo();
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/util/SignalProxyUtil.kt b/app/src/main/java/org/thoughtcrime/securesms/util/SignalProxyUtil.kt
+index df63c960dd8251dca9399c8dc84d6522873113ab..2da5ef7de81281f0b7c9263f2c8f73252b9ba101 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/util/SignalProxyUtil.kt
++++ b/app/src/main/java/org/thoughtcrime/securesms/util/SignalProxyUtil.kt
+@@ -1,75 +1,22 @@
+ package org.thoughtcrime.securesms.util
+ 
+ import androidx.annotation.WorkerThread
+-import io.reactivex.rxjava3.core.Single
+-import io.reactivex.rxjava3.functions.Function
+-import io.reactivex.rxjava3.functions.Predicate
+-import io.reactivex.rxjava3.schedulers.Schedulers
+-import org.conscrypt.ConscryptSignal
+ import org.signal.core.util.concurrent.SignalExecutors
+-import org.signal.core.util.logging.Log
+ import org.signal.core.util.logging.Log.tag
+ import org.signal.core.util.logging.Log.w
+-import org.signal.network.config.SignalProxy
+ import org.thoughtcrime.securesms.dependencies.AppDependencies
+-import org.thoughtcrime.securesms.keyvalue.SignalStore
+ import org.thoughtcrime.securesms.push.AccountManagerFactory
+ import org.whispersystems.signalservice.api.push.SignalServiceAddress
+-import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState
+ import java.io.IOException
+ import java.util.concurrent.CountDownLatch
+ import java.util.concurrent.TimeUnit
+ import java.util.concurrent.atomic.AtomicBoolean
+-import java.util.regex.Pattern
+ 
+ object SignalProxyUtil {
+   private val TAG = tag(SignalProxyUtil::class.java)
+ 
+   private const val PROXY_LINK_HOST = "signal.tube"
+ 
+-  private val PROXY_LINK_PATTERN: Pattern = Pattern.compile("^(https|sgnl)://$PROXY_LINK_HOST/#([^:]+).*$")
+-  private val HOST_PATTERN: Pattern = Pattern.compile("^([^:]+).*$")
+-
+-  @JvmStatic
+-  fun startListeningToWebsocket() {
+-    if (SignalStore.proxy.isProxyEnabled && AppDependencies.authWebSocket.state.firstOrError().blockingGet().isFailure) {
+-      Log.w(TAG, "Proxy is in a failed state. Restarting.")
+-      AppDependencies.resetNetwork()
+-    }
+-
+-    SignalExecutors.UNBOUNDED.execute { AppDependencies.startNetwork() }
+-  }
+-
+-  /**
+-   * Handles all things related to enabling a proxy, including saving it and resetting the relevant
+-   * network connections.
+-   */
+-  @JvmStatic
+-  fun enableProxy(proxy: SignalProxy) {
+-    SignalStore.proxy.enableProxy(proxy)
+-    ConscryptSignal.setUseEngineSocketByDefault(true)
+-    AppDependencies.resetNetwork()
+-    startListeningToWebsocket()
+-  }
+-
+-  /**
+-   * Handles all things related to disabling a proxy, including saving the change and resetting the
+-   * relevant network connections.
+-   */
+-  @JvmStatic
+-  fun disableProxy() {
+-    SignalStore.proxy.disableProxy()
+-    ConscryptSignal.setUseEngineSocketByDefault(false)
+-    AppDependencies.resetNetwork()
+-    startListeningToWebsocket()
+-  }
+-
+-  @JvmStatic
+-  fun disableAndClearProxy() {
+-    disableProxy()
+-    SignalStore.proxy.proxy = null
+-  }
+-
+   /**
+    * A blocking call that will wait until the websocket either successfully connects, or fails.
+    * It is assumed that the app state is already configured how you would like it, e.g. you've
+@@ -80,78 +27,7 @@ object SignalProxyUtil {
+   @JvmStatic
+   @WorkerThread
+   fun testWebsocketConnection(timeout: Long): Boolean {
+-    startListeningToWebsocket()
+-
+-    if (!SignalStore.account.isRegistered || SignalStore.account.aci == null) {
+-      Log.i(TAG, "User is unregistered! Doing simple check.")
+-      return testWebsocketConnectionUnregistered(timeout)
+-    }
+-
+-    return AppDependencies.authWebSocket
+-      .state
+-      .subscribeOn(Schedulers.trampoline())
+-      .observeOn(Schedulers.trampoline())
+-      .timeout(timeout, TimeUnit.MILLISECONDS)
+-      .skipWhile(Predicate { state: WebSocketConnectionState -> state != WebSocketConnectionState.CONNECTED && !state.isFailure })
+-      .firstOrError()
+-      .flatMap<Boolean>(Function { state: WebSocketConnectionState? -> Single.just(state == WebSocketConnectionState.CONNECTED) })
+-      .onErrorReturn(Function { _: Throwable? -> false })
+-      .blockingGet()
+-  }
+-
+-  /**
+-   * If this is a valid proxy deep link, this will return the embedded host. If not, it will return
+-   * null.
+-   */
+-  @JvmStatic
+-  fun parseHostFromProxyDeepLink(proxyLink: String?): String? {
+-    if (proxyLink == null) {
+-      return null
+-    }
+-
+-    val matcher = PROXY_LINK_PATTERN.matcher(proxyLink)
+-
+-    return when {
+-      matcher.matches() -> matcher.group(2)
+-      else -> null
+-    }
+-  }
+-
+-  /**
+-   * Takes in an address that could be in various formats, and converts it to the format we should
+-   * be storing and connecting to.
+-   */
+-  @JvmStatic
+-  fun convertUserEnteredAddressToHost(host: String): String {
+-    val parsedHost = parseHostFromProxyDeepLink(host)
+-    if (parsedHost != null) {
+-      return parsedHost
+-    }
+-
+-    val matcher = HOST_PATTERN.matcher(host)
+-
+-    return when {
+-      matcher.matches() -> matcher.group(1) ?: ""
+-      else -> host
+-    }
+-  }
+-
+-  @JvmStatic
+-  fun generateProxyUrl(link: String): String {
+-    var host: String = link
+-    val parsed = parseHostFromProxyDeepLink(link)
+-
+-    if (parsed != null) {
+-      host = parsed
+-    }
+-
+-    val matcher = HOST_PATTERN.matcher(host)
+-
+-    if (matcher.matches()) {
+-      host = matcher.group(1)!!
+-    }
+-
+-    return "https://$PROXY_LINK_HOST/#$host"
++    return testWebsocketConnectionUnregistered(timeout)
+   }
+ 
+   private fun testWebsocketConnectionUnregistered(timeout: Long): Boolean {
+diff --git a/core/network/src/main/java/org/signal/network/config/NetworkProxyState.kt b/core/network/src/main/java/org/signal/network/config/NetworkProxyState.kt
+index 6ebbe6e3285a18f77f4b37ec5f884bde2d8ac8d3..d2a6a4b1a260cb6de504de59b17a072020c72272 100644
+--- a/core/network/src/main/java/org/signal/network/config/NetworkProxyState.kt
++++ b/core/network/src/main/java/org/signal/network/config/NetworkProxyState.kt
+@@ -18,7 +18,8 @@ class NetworkProxyState {
+   val currentConfig: ProxyConfig
+     get() = current.get()
+ 
+-  fun update(proxyConfig: ProxyConfig) {
+-    current.set(proxyConfig)
++  /** Returns true if the proxy changed and connections should be restarted. */
++  fun update(proxyConfig: ProxyConfig): Boolean {
++    return current.getAndSet(proxyConfig) != proxyConfig
+   }
+ }
+diff --git a/core/network/src/main/java/org/signal/network/config/ProxyConfig.kt b/core/network/src/main/java/org/signal/network/config/ProxyConfig.kt
+index 7938483687f3fea15027973453d8d3ac54db84c6..84fd9086479984935d38d470a8c88f73d62a40fb 100644
+--- a/core/network/src/main/java/org/signal/network/config/ProxyConfig.kt
++++ b/core/network/src/main/java/org/signal/network/config/ProxyConfig.kt
+@@ -18,16 +18,22 @@ sealed interface ProxyConfig {
+   data class ProxyAddress(
+     val scheme: ProxyScheme,
+     val host: String,
+-    val port: Int
++    val port: Int,
++    val source: ProxySource = ProxySource.SYSTEM
+   ) : ProxyConfig
+ 
+   /** Supported proxy schemes by [Network]. */
+   enum class ProxyScheme(val value: String) {
+     TLS(Network.SIGNAL_TLS_PROXY_SCHEME),
+     SOCKS("socks5"),
++    SOCKS_REMOTE_DNS("socks5h"),
+     HTTP("http")
+   }
+ 
++  enum class ProxySource {
++    USER, SYSTEM
++  }
++
+   companion object {
+     private val TAG = Log.tag(ProxyConfig::class)
+ 
+@@ -36,11 +42,11 @@ sealed interface ProxyConfig {
+     fun resolve(
+       configuration: SignalServiceConfiguration,
+       targetUrl: String,
+-      proxySelector: ProxySelector? = ProxySelector.getDefault()
++      proxySelector: ProxySelector? = ProxySelector.getDefault(),
++      userProxy: Proxy? = null
+     ): ProxyConfig {
+-      val signalProxy = configuration.signalProxy.orElse(null)
+       return when {
+-        signalProxy != null -> signalProxy.toProxyConfig()
++        userProxy != null && userProxy != Proxy.NO_PROXY -> checkNotNull(fromProxy(userProxy, ProxySource.USER))
+         configuration.censored -> Direct
+         else -> resolveSystemProxy(targetUrl, proxySelector)?.let { fromSystemProxy(it) } ?: Direct
+       }
+@@ -60,21 +66,26 @@ sealed interface ProxyConfig {
+       }
+     }
+ 
+-    private fun fromSystemProxy(proxy: Proxy): ProxyConfig? {
++    @JvmStatic
++    fun fromProxy(proxy: Proxy, source: ProxySource): ProxyConfig? {
+       val scheme = when (proxy.type()) {
+         Proxy.Type.HTTP -> ProxyScheme.HTTP
+-        Proxy.Type.SOCKS -> ProxyScheme.SOCKS
++        Proxy.Type.SOCKS -> if (source == ProxySource.USER) ProxyScheme.SOCKS_REMOTE_DNS else ProxyScheme.SOCKS
+         Proxy.Type.DIRECT -> return null
+       }
+ 
+       val socketAddress = proxy.address() as? InetSocketAddress ?: return null
+ 
+-      // Android surfaces a PAC (auto-config) proxy as a loopback bridge. We do not support PAC, so skip it and connect directly.
+-      if (socketAddress.isLoopback()) {
++      return ProxyAddress(scheme, socketAddress.hostString, socketAddress.port, source)
++    }
++
++    private fun fromSystemProxy(proxy: Proxy): ProxyConfig? {
++      // The generic system resolver skips Android's PAC bridge. Molly's explicit proxy resolver uses fromProxy
++      // directly so an existing local SOCKS/HTTP configuration continues to work.
++      if ((proxy.address() as? InetSocketAddress)?.isLoopback() == true) {
+         return null
+       }
+-
+-      return ProxyAddress(scheme, socketAddress.hostString, socketAddress.port)
++      return fromProxy(proxy, ProxySource.SYSTEM)
+     }
+ 
+     /** [ProxySelector] returns unresolved addresses, so [InetSocketAddress.getAddress] is normally null and only the host string is available. */
+diff --git a/core/network/src/main/java/org/signal/network/config/SignalProxy.kt b/core/network/src/main/java/org/signal/network/config/SignalProxy.kt
+index 81a7950674ebb1d278b950216650ddc52289efa8..d9af3187d6665eb2f9a0d8a9791b7c4a930e1361 100644
+--- a/core/network/src/main/java/org/signal/network/config/SignalProxy.kt
++++ b/core/network/src/main/java/org/signal/network/config/SignalProxy.kt
+@@ -6,5 +6,5 @@
+ package org.signal.network.config
+ 
+ class SignalProxy(val host: String, val port: Int) {
+-  fun toProxyConfig(): ProxyConfig = ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.TLS, host, port)
++  fun toProxyConfig(): ProxyConfig = ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.TLS, host, port, ProxyConfig.ProxySource.USER)
+ }
+diff --git a/core/network/src/main/java/org/signal/network/util/TlsProxySocketFactory.kt b/core/network/src/main/java/org/signal/network/util/TlsProxySocketFactory.kt
+deleted file mode 100644
+index b39669197b922d796d292ebc8270add4cb1841ac..0000000000000000000000000000000000000000
+--- a/core/network/src/main/java/org/signal/network/util/TlsProxySocketFactory.kt
++++ /dev/null
+@@ -1,282 +0,0 @@
+-package org.signal.network.util
+-
+-import okhttp3.Dns
+-import java.io.IOException
+-import java.io.InputStream
+-import java.io.OutputStream
+-import java.net.InetAddress
+-import java.net.Socket
+-import java.net.SocketAddress
+-import java.net.SocketException
+-import java.net.UnknownHostException
+-import java.nio.channels.SocketChannel
+-import java.security.KeyManagementException
+-import java.security.NoSuchAlgorithmException
+-import java.util.Optional
+-import javax.net.SocketFactory
+-import javax.net.ssl.SSLContext
+-import javax.net.ssl.SSLSocket
+-import javax.net.ssl.SSLSocketFactory
+-
+-class TlsProxySocketFactory(
+-  private val proxyHost: String?,
+-  private val proxyPort: Int,
+-  private val dns: Optional<Dns>
+-) : SocketFactory() {
+-
+-  private val system: SSLSocketFactory = try {
+-    val context = SSLContext.getInstance("TLS")
+-    context.init(null, null, null)
+-
+-    context.socketFactory
+-  } catch (e: NoSuchAlgorithmException) {
+-    throw AssertionError(e)
+-  } catch (e: KeyManagementException) {
+-    throw AssertionError(e)
+-  }
+-
+-  @Throws(IOException::class, UnknownHostException::class)
+-  override fun createSocket(host: String, port: Int): Socket {
+-    if (dns.isPresent) {
+-      val resolved = dns.get().lookup(host)
+-
+-      if (resolved.isNotEmpty()) {
+-        return createSocket(resolved[0], port)
+-      }
+-    }
+-
+-    return ProxySocket(system.createSocket(proxyHost, proxyPort).enableHostnameVerification())
+-  }
+-
+-  @Throws(IOException::class, UnknownHostException::class)
+-  override fun createSocket(host: String, port: Int, localHost: InetAddress, localPort: Int): Socket {
+-    if (dns.isPresent) {
+-      val resolved = dns.get().lookup(host)
+-
+-      if (resolved.isNotEmpty()) {
+-        return createSocket(resolved[0], port, localHost, localPort)
+-      }
+-    }
+-
+-    return ProxySocket(system.createSocket(proxyHost, proxyPort, localHost, localPort).enableHostnameVerification())
+-  }
+-
+-  @Throws(IOException::class)
+-  override fun createSocket(host: InetAddress, port: Int): Socket {
+-    return ProxySocket(system.createSocket(proxyHost, proxyPort).enableHostnameVerification())
+-  }
+-
+-  @Throws(IOException::class)
+-  override fun createSocket(address: InetAddress, port: Int, localAddress: InetAddress, localPort: Int): Socket {
+-    return ProxySocket(system.createSocket(proxyHost, proxyPort, localAddress, localPort).enableHostnameVerification())
+-  }
+-
+-  @Throws(IOException::class)
+-  override fun createSocket(): Socket {
+-    val socket = system.createSocket(proxyHost, proxyPort).enableHostnameVerification()
+-    socket.startHandshake()
+-
+-    return ProxySocket(socket)
+-  }
+-
+-  private fun Socket.enableHostnameVerification(): SSLSocket {
+-    val sslSocket = this as SSLSocket
+-    sslSocket.sslParameters = sslSocket.sslParameters.apply {
+-      endpointIdentificationAlgorithm = "HTTPS"
+-    }
+-    return sslSocket
+-  }
+-
+-  private class ProxySocket(private val delegate: Socket) : Socket() {
+-    @Throws(IOException::class)
+-    override fun connect(endpoint: SocketAddress) {
+-      // Already connected
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun connect(endpoint: SocketAddress, timeout: Int) {
+-      // Already connected
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun bind(bindpoint: SocketAddress) {
+-      delegate.bind(bindpoint)
+-    }
+-
+-    override fun getInetAddress(): InetAddress {
+-      return delegate.inetAddress
+-    }
+-
+-    override fun getLocalAddress(): InetAddress {
+-      return delegate.localAddress
+-    }
+-
+-    override fun getPort(): Int {
+-      return delegate.port
+-    }
+-
+-    override fun getLocalPort(): Int {
+-      return delegate.localPort
+-    }
+-
+-    override fun getRemoteSocketAddress(): SocketAddress {
+-      return delegate.remoteSocketAddress
+-    }
+-
+-    override fun getLocalSocketAddress(): SocketAddress {
+-      return delegate.localSocketAddress
+-    }
+-
+-    override fun getChannel(): SocketChannel {
+-      return delegate.channel
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun getInputStream(): InputStream {
+-      return delegate.getInputStream()
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun getOutputStream(): OutputStream {
+-      return delegate.getOutputStream()
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setTcpNoDelay(on: Boolean) {
+-      delegate.tcpNoDelay = on
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getTcpNoDelay(): Boolean {
+-      return delegate.tcpNoDelay
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setSoLinger(on: Boolean, linger: Int) {
+-      delegate.setSoLinger(on, linger)
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getSoLinger(): Int {
+-      return delegate.soLinger
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun sendUrgentData(data: Int) {
+-      delegate.sendUrgentData(data)
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setOOBInline(on: Boolean) {
+-      delegate.oobInline = on
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getOOBInline(): Boolean {
+-      return delegate.oobInline
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setSoTimeout(timeout: Int) {
+-      delegate.soTimeout = timeout
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getSoTimeout(): Int {
+-      return delegate.soTimeout
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setSendBufferSize(size: Int) {
+-      delegate.sendBufferSize = size
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getSendBufferSize(): Int {
+-      return delegate.sendBufferSize
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setReceiveBufferSize(size: Int) {
+-      delegate.receiveBufferSize = size
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getReceiveBufferSize(): Int {
+-      return delegate.receiveBufferSize
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setKeepAlive(on: Boolean) {
+-      delegate.keepAlive = on
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getKeepAlive(): Boolean {
+-      return delegate.keepAlive
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setTrafficClass(tc: Int) {
+-      delegate.trafficClass = tc
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getTrafficClass(): Int {
+-      return delegate.trafficClass
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun setReuseAddress(on: Boolean) {
+-      delegate.reuseAddress = on
+-    }
+-
+-    @Throws(SocketException::class)
+-    override fun getReuseAddress(): Boolean {
+-      return delegate.reuseAddress
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun close() {
+-      delegate.close()
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun shutdownInput() {
+-      delegate.shutdownInput()
+-    }
+-
+-    @Throws(IOException::class)
+-    override fun shutdownOutput() {
+-      delegate.shutdownOutput()
+-    }
+-
+-    override fun toString(): String {
+-      return delegate.toString()
+-    }
+-
+-    override fun isConnected(): Boolean {
+-      return delegate.isConnected
+-    }
+-
+-    override fun isBound(): Boolean {
+-      return delegate.isBound
+-    }
+-
+-    override fun isClosed(): Boolean {
+-      return delegate.isClosed
+-    }
+-
+-    override fun isInputShutdown(): Boolean {
+-      return delegate.isInputShutdown
+-    }
+-
+-    override fun isOutputShutdown(): Boolean {
+-      return delegate.isOutputShutdown
+-    }
+-
+-    override fun setPerformancePreferences(connectionTime: Int, latency: Int, bandwidth: Int) {
+-      delegate.setPerformancePreferences(connectionTime, latency, bandwidth)
+-    }
+-  }
+-}
+diff --git a/core/network/src/test/java/org/signal/network/config/LibSignalProxyPolicyTest.kt b/core/network/src/test/java/org/signal/network/config/LibSignalProxyPolicyTest.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..17e0f3b6e18605e3f89fd56a9eeaffa8ced1713c
+--- /dev/null
++++ b/core/network/src/test/java/org/signal/network/config/LibSignalProxyPolicyTest.kt
+@@ -0,0 +1,38 @@
++/*
++ * Copyright 2026 Molly Project
++ * SPDX-License-Identifier: AGPL-3.0-only
++ */
++
++package org.signal.network.config
++
++import io.mockk.every
++import io.mockk.mockk
++import io.mockk.verify
++import org.junit.Test
++import org.signal.libsignal.net.Network
++import java.io.IOException
++
++class LibSignalProxyPolicyTest {
++
++  @Test
++  fun `a rejected user SOCKS proxy fails closed without a direct fallback`() {
++    val network = mockk<Network>(relaxed = true)
++    every { network.setProxy("socks5h", "localhost", 9050, null, null) } throws IOException("Invalid proxy")
++
++    network.configureProxy(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.SOCKS_REMOTE_DNS, "localhost", 9050, ProxyConfig.ProxySource.USER))
++
++    verify(exactly = 1) { network.setInvalidProxy() }
++    verify(exactly = 0) { network.clearProxy() }
++  }
++
++  @Test
++  fun `an unavailable optional system proxy retains the existing direct fallback`() {
++    val network = mockk<Network>(relaxed = true)
++    every { network.setProxy("http", "proxy.example.com", 8080, null, null) } throws IOException("Invalid proxy")
++
++    network.configureProxy(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.HTTP, "proxy.example.com", 8080))
++
++    verify(exactly = 1) { network.clearProxy() }
++    verify(exactly = 0) { network.setInvalidProxy() }
++  }
++}
+diff --git a/core/network/src/test/java/org/signal/network/config/ProxyConfigTest.kt b/core/network/src/test/java/org/signal/network/config/ProxyConfigTest.kt
+index ea455830d6738aee2af5d0370ae57b1c9c7e7256..4970fa05572a01dd4aa7c186e5923375708419fe 100644
+--- a/core/network/src/test/java/org/signal/network/config/ProxyConfigTest.kt
++++ b/core/network/src/test/java/org/signal/network/config/ProxyConfigTest.kt
+@@ -8,13 +8,14 @@ package org.signal.network.config
+ import assertk.assertThat
+ import assertk.assertions.isEqualTo
+ import org.junit.Test
++import okhttp3.Dns
++import javax.net.SocketFactory
+ import java.io.IOException
+ import java.net.InetSocketAddress
+ import java.net.Proxy
+ import java.net.ProxySelector
+ import java.net.SocketAddress
+ import java.net.URI
+-import java.util.Optional
+ 
+ class ProxyConfigTest {
+ 
+@@ -71,10 +72,10 @@ class ProxyConfigTest {
+   }
+ 
+   @Test
+-  fun `resolve prefers an explicit signal proxy over the system proxy`() {
++  fun `resolve prefers a user SOCKS proxy with remote DNS over the system proxy`() {
+     val system = Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved("proxy.example.com", 8080))
+-    val config = ProxyConfig.resolve(configuration(censored = false, signalProxy = SignalProxy("signal.tls.proxy", 443)), TARGET_URL, StubProxySelector(system))
+-    assertThat(config).isEqualTo(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.TLS, "signal.tls.proxy", 443))
++    val config = ProxyConfig.resolve(configuration(censored = false), TARGET_URL, StubProxySelector(system), userProxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress.createUnresolved("localhost", 9050)))
++    assertThat(config).isEqualTo(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.SOCKS_REMOTE_DNS, "localhost", 9050, ProxyConfig.ProxySource.USER))
+   }
+ 
+   @Test
+@@ -92,13 +93,30 @@ class ProxyConfigTest {
+   }
+ 
+   @Test
+-  fun `resolve prefers an explicit signal proxy over a censored configuration`() {
++  fun `resolve preserves a user proxy when censorship circumvention is enabled`() {
+     val system = Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved("proxy.example.com", 8080))
+-    val config = ProxyConfig.resolve(configuration(censored = true, signalProxy = SignalProxy("signal.tls.proxy", 443)), TARGET_URL, StubProxySelector(system))
+-    assertThat(config).isEqualTo(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.TLS, "signal.tls.proxy", 443))
++    val config = ProxyConfig.resolve(configuration(censored = true), TARGET_URL, StubProxySelector(system), userProxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress.createUnresolved("localhost", 9050)))
++    assertThat(config).isEqualTo(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.SOCKS_REMOTE_DNS, "localhost", 9050, ProxyConfig.ProxySource.USER))
+   }
+ 
+-  private fun configuration(censored: Boolean, signalProxy: SignalProxy? = null): SignalServiceConfiguration {
++  @Test
++  fun `system SOCKS proxy uses local DNS`() {
++    val proxy = Proxy(Proxy.Type.SOCKS, InetSocketAddress.createUnresolved("localhost", 1080))
++    assertThat(ProxyConfig.fromProxy(proxy, ProxyConfig.ProxySource.SYSTEM))
++      .isEqualTo(ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.SOCKS, "localhost", 1080))
++  }
++
++  @Test
++  fun `proxy source changes restart native connections`() {
++    val state = NetworkProxyState()
++    val system = ProxyConfig.ProxyAddress(ProxyConfig.ProxyScheme.HTTP, "proxy.example.com", 8080)
++    assertThat(state.update(system)).isEqualTo(true)
++    assertThat(state.update(system)).isEqualTo(false)
++    assertThat(state.update(system.copy(source = ProxyConfig.ProxySource.USER))).isEqualTo(true)
++    assertThat(state.update(ProxyConfig.Direct)).isEqualTo(true)
++  }
++
++  private fun configuration(censored: Boolean): SignalServiceConfiguration {
+     return SignalServiceConfiguration(
+       signalServiceUrls = emptyArray(),
+       signalCdnUrlMap = emptyMap(),
+@@ -106,8 +124,9 @@ class ProxyConfigTest {
+       signalCdsiUrls = emptyArray(),
+       signalSvr2Urls = emptyArray(),
+       networkInterceptors = emptyList(),
+-      dns = Optional.empty(),
+-      signalProxy = Optional.ofNullable(signalProxy),
++      dns = Dns.SYSTEM,
++      socketFactory = SocketFactory.getDefault(),
++      proxySelector = StubProxySelector(Proxy.NO_PROXY),
+       zkGroupServerPublicParams = ByteArray(0),
+       genericServerPublicParams = ByteArray(0),
+       backupServerPublicParams = ByteArray(0),
+diff --git a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/websocket/OkHttpWebSocketConnection.java b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/websocket/OkHttpWebSocketConnection.java
+index b32713c84c6e56de002ec16b532a277d62e2f2b1..6803653710d662c148df6d0b87fff5dad913cd57 100644
+--- a/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/websocket/OkHttpWebSocketConnection.java
++++ b/lib/libsignal-service/src/main/java/org/whispersystems/signalservice/internal/websocket/OkHttpWebSocketConnection.java
+@@ -11,16 +11,15 @@ import org.signal.network.config.TrustStore;
+ import org.signal.network.exceptions.NonSuccessfulResponseCodeException;
+ import org.whispersystems.signalservice.api.util.CredentialsProvider;
+ import org.signal.network.util.Tls12SocketFactory;
+-import org.signal.network.util.TlsProxySocketFactory;
+ import org.whispersystems.signalservice.api.websocket.HealthMonitor;
+ import org.whispersystems.signalservice.api.websocket.WebSocketConnectionState;
+-import org.signal.network.config.SignalProxy;
+ import org.signal.network.config.SignalServiceConfiguration;
+ import org.signal.network.config.SignalServiceUrl;
+ import org.whispersystems.signalservice.internal.util.BlacklistingTrustManager;
+ import org.whispersystems.signalservice.internal.util.Util;
+ 
+ import java.io.IOException;
++import java.net.ProxySelector;
+ import java.net.SocketException;
+ import java.security.KeyManagementException;
+ import java.security.NoSuchAlgorithmException;
+@@ -36,6 +35,7 @@ import java.util.Set;
+ import java.util.concurrent.TimeUnit;
+ import java.util.concurrent.TimeoutException;
+ 
++import javax.net.SocketFactory;
+ import javax.net.ssl.SSLContext;
+ import javax.net.ssl.SSLSocketFactory;
+ import javax.net.ssl.TrustManager;
+@@ -74,8 +74,9 @@ public class OkHttpWebSocketConnection extends WebSocketListener implements WebS
+   private final String                                    signalAgent;
+   private final HealthMonitor                             healthMonitor;
+   private final List<Interceptor>                         interceptors;
+-  private final Optional<Dns>                             dns;
+-  private final Optional<SignalProxy>                     signalProxy;
++  private final Dns                                       dns;
++  private final SocketFactory                             socketFactory;
++  private final ProxySelector                             proxySelector;
+   private final BehaviorSubject<WebSocketConnectionState> webSocketState;
+   private final boolean                                   allowStories;
+   private final SignalServiceUrl[]                        serviceUrls;
+@@ -107,7 +108,8 @@ public class OkHttpWebSocketConnection extends WebSocketListener implements WebS
+     this.signalAgent         = signalAgent;
+     this.interceptors        = serviceConfiguration.getNetworkInterceptors();
+     this.dns                 = serviceConfiguration.getDns();
+-    this.signalProxy         = serviceConfiguration.getSignalProxy();
++    this.socketFactory       = serviceConfiguration.getSocketFactory();
++    this.proxySelector       = serviceConfiguration.getProxySelector();
+     this.healthMonitor       = healthMonitor;
+     this.webSocketState      = BehaviorSubject.createDefault(WebSocketConnectionState.DISCONNECTED);
+     this.allowStories        = allowStories;
+@@ -137,23 +139,21 @@ public class OkHttpWebSocketConnection extends WebSocketListener implements WebS
+       SignalServiceUrl               serviceUrl     = connectionInfo.getFirst();
+       String                         wsUri          = connectionInfo.getSecond();
+ 
+-      Pair<SSLSocketFactory, X509TrustManager> socketFactory = createTlsSocketFactory(trustStore);
++      Pair<SSLSocketFactory, X509TrustManager> sslSocketFactory = createTlsSocketFactory(trustStore);
+ 
+-      OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().sslSocketFactory(new Tls12SocketFactory(socketFactory.getFirst()),
+-                                                                                       socketFactory.getSecond())
++      OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().socketFactory(socketFactory)
++                                                                     .proxySelector(proxySelector)
++                                                                     .dns(dns)
++                                                                     .sslSocketFactory(new Tls12SocketFactory(sslSocketFactory.getFirst()),
++                                                                                       sslSocketFactory.getSecond())
+                                                                      .connectionSpecs(serviceUrl.getConnectionSpecs().orElse(Util.immutableList(ConnectionSpec.RESTRICTED_TLS)))
+                                                                      .readTimeout(KEEPALIVE_FREQUENCY_SECONDS + 10, TimeUnit.SECONDS)
+-                                                                     .dns(dns.orElse(Dns.SYSTEM))
+                                                                      .connectTimeout(KEEPALIVE_FREQUENCY_SECONDS + 10, TimeUnit.SECONDS);
+ 
+       for (Interceptor interceptor : interceptors) {
+         clientBuilder.addInterceptor(interceptor);
+       }
+ 
+-      if (signalProxy.isPresent()) {
+-        clientBuilder.socketFactory(new TlsProxySocketFactory(signalProxy.get().getHost(), signalProxy.get().getPort(), dns));
+-      }
+-
+       OkHttpClient okHttpClient = clientBuilder.build();
+ 
+       Request.Builder requestBuilder = new Request.Builder().url(wsUri);
+diff --git a/lib/network/src/main/java/org/signal/network/api/CallingApi.kt b/lib/network/src/main/java/org/signal/network/api/CallingApi.kt
+index e0fad94f1a682766fcb5da54d469c0f272cd6c38..76836b47ca8dfa3d727cf3a38e50fc67bdd2514a 100644
+--- a/lib/network/src/main/java/org/signal/network/api/CallingApi.kt
++++ b/lib/network/src/main/java/org/signal/network/api/CallingApi.kt
+@@ -11,8 +11,6 @@ import org.signal.network.NetworkResult
+ import org.signal.network.websocket.WebSocketRequestMessage
+ import org.signal.network.websocket.get
+ import org.signal.network.websocket.post
+-import org.signal.network.websocket.putCustom
+-import org.signal.storageservice.protos.calls.quality.SubmitCallQualitySurveyRequest
+ import org.whispersystems.signalservice.api.fromWebSocketRequest
+ import org.whispersystems.signalservice.api.messages.calls.CallingResponse
+ import org.whispersystems.signalservice.api.messages.calls.TurnServerInfo
+@@ -32,24 +30,6 @@ class CallingApi(
+ ) {
+ 
+   /**
+-   * Submit call quality information (with the user's permission) to the server on an unauthenticated channel.
+-   *
+-   * PUT /v1/call_quality_survey
+-   * - 204: The survey response was submitted successfully
+-   * - 422: The survey response could not be parsed
+-   * - 429: Too many attempts, try after Retry-After seconds.
+-   */
+-  fun submitCallQualitySurvey(request: SubmitCallQualitySurveyRequest): NetworkResult<Unit> {
+-    val webSocketRequestMessage = WebSocketRequestMessage.putCustom(
+-      path = "/v1/call_quality_survey",
+-      body = request.encode(),
+-      headers = mapOf("Content-Type" to "application/octet-stream")
+-    )
+-
+-    return NetworkResult.fromWebSocketRequest(unAuth, webSocketRequestMessage)
+-  }
+-
+-  /**
+    * Get 1:1 relay addresses in IpV4, Ipv6, and URL formats.
+    *
+    * GET /v2/calling/relays
+diff --git a/lib/network/src/main/java/org/signal/network/rest/SignalRestClient.kt b/lib/network/src/main/java/org/signal/network/rest/SignalRestClient.kt
+index ad79ff65eb2d4696228c652d31d50dcb2f0976e4..a4d1ff5c28853e9f144b8e4514b5dcdfec772455 100644
+--- a/lib/network/src/main/java/org/signal/network/rest/SignalRestClient.kt
++++ b/lib/network/src/main/java/org/signal/network/rest/SignalRestClient.kt
+@@ -28,13 +28,11 @@ import okio.buffer
+ import org.signal.core.util.logging.Log
+ import org.signal.libsignal.net.BadRequestError
+ import org.signal.libsignal.net.RequestResult
+-import org.signal.network.config.SignalProxy
+ import org.signal.network.config.SignalServiceConfiguration
+ import org.signal.network.config.SignalUrl
+ import org.signal.network.rest.RequestSpec.Host
+ import org.signal.network.util.JsonUtil
+ import org.signal.network.util.Tls12SocketFactory
+-import org.signal.network.util.TlsProxySocketFactory
+ import org.whispersystems.signalservice.api.messages.AttachmentTransferProgress
+ import org.whispersystems.signalservice.api.messages.SignalServiceAttachment.ProgressListener
+ import org.whispersystems.signalservice.api.push.SignalServiceAddress
+@@ -42,12 +40,14 @@ import org.whispersystems.signalservice.api.util.CredentialsProvider
+ import org.whispersystems.signalservice.internal.util.BlacklistingTrustManager
+ import java.io.IOException
+ import java.io.OutputStream
++import java.net.ProxySelector
+ import java.security.KeyManagementException
+ import java.security.NoSuchAlgorithmException
+ import java.security.SecureRandom
+ import java.util.Optional
+ import java.util.Random
+ import java.util.concurrent.TimeUnit
++import javax.net.SocketFactory
+ import javax.net.ssl.SSLContext
+ import javax.net.ssl.X509TrustManager
+ import kotlin.jvm.Throws
+@@ -91,13 +91,14 @@ class SignalRestClient @JvmOverloads constructor(
+     private fun createConnectionHolders(
+       urls: Array<out SignalUrl>,
+       interceptors: List<Interceptor>,
+-      dns: Optional<Dns>,
+-      proxy: Optional<SignalProxy>,
++      dns: Dns,
++      socketFactory: SocketFactory,
++      proxySelector: ProxySelector,
+       clientOverride: OkHttpClient?
+     ): Array<ConnectionHolder> {
+       return urls.map { url ->
+         ConnectionHolder(
+-          client = clientOverride ?: buildClient(url, interceptors, dns, proxy),
++          client = clientOverride ?: buildClient(url, interceptors, dns, socketFactory, proxySelector),
+           url = url.url,
+           hostHeader = url.hostHeader
+         )
+@@ -107,24 +108,23 @@ class SignalRestClient @JvmOverloads constructor(
+     private fun buildClient(
+       url: SignalUrl,
+       interceptors: List<Interceptor>,
+-      dns: Optional<Dns>,
+-      proxy: Optional<SignalProxy>
++      dns: Dns,
++      socketFactory: SocketFactory,
++      proxySelector: ProxySelector,
+     ): OkHttpClient {
+       try {
+         val trustManagers = BlacklistingTrustManager.createFor(url.trustStore)
+         val sslContext = SSLContext.getInstance("TLS").apply { init(null, trustManagers, null) }
+ 
+         val builder = OkHttpClient.Builder()
++          .socketFactory(socketFactory)
++          .proxySelector(proxySelector)
+           .sslSocketFactory(Tls12SocketFactory(sslContext.socketFactory), trustManagers[0] as X509TrustManager)
+           .connectionSpecs(url.connectionSpecs.orElse(listOf(ConnectionSpec.RESTRICTED_TLS))!!)
+-          .dns(dns.orElse(Dns.SYSTEM)!!)
++          .dns(dns)
+           .connectionPool(ConnectionPool(5, 45, TimeUnit.SECONDS))
+           .dispatcher(Dispatcher().apply { maxRequestsPerHost = 32 })
+ 
+-        if (proxy.isPresent) {
+-          builder.socketFactory(TlsProxySocketFactory(proxy.get().host, proxy.get().port, dns))
+-        }
+-
+         for (interceptor in interceptors) {
+           builder.addInterceptor(interceptor)
+         }
+@@ -142,7 +142,8 @@ class SignalRestClient @JvmOverloads constructor(
+     configuration.signalServiceUrls,
+     configuration.networkInterceptors,
+     configuration.dns,
+-    configuration.signalProxy,
++    socketFactory = configuration.socketFactory,
++    proxySelector = configuration.proxySelector,
+     clientOverride
+   )
+ 
+@@ -152,7 +153,8 @@ class SignalRestClient @JvmOverloads constructor(
+         urls = urls,
+         interceptors = configuration.networkInterceptors,
+         dns = configuration.dns,
+-        proxy = configuration.signalProxy,
++        socketFactory = configuration.socketFactory,
++        proxySelector = configuration.proxySelector,
+         clientOverride = clientOverride
+       )
+     }
+@@ -161,7 +163,8 @@ class SignalRestClient @JvmOverloads constructor(
+     configuration.signalStorageUrls,
+     configuration.networkInterceptors,
+     configuration.dns,
+-    configuration.signalProxy,
++    socketFactory = configuration.socketFactory,
++    proxySelector = configuration.proxySelector,
+     clientOverride
+   )
+ 
+@@ -169,7 +172,14 @@ class SignalRestClient @JvmOverloads constructor(
+   private val directCdnClientsMap: Map<Int, Array<ConnectionHolder>> by lazy {
+     if (uncensoredConfiguration !== configuration) {
+       uncensoredConfiguration.signalCdnUrlMap.mapValues { (_, urls) ->
+-        createConnectionHolders(urls, uncensoredConfiguration.networkInterceptors, uncensoredConfiguration.dns, uncensoredConfiguration.signalProxy, clientOverride)
++        createConnectionHolders(
++          urls = urls,
++          interceptors = uncensoredConfiguration.networkInterceptors,
++          dns = uncensoredConfiguration.dns,
++          socketFactory = uncensoredConfiguration.socketFactory,
++          proxySelector = uncensoredConfiguration.proxySelector,
++          clientOverride = clientOverride
++        )
+       }
+     } else {
+       cdnClientsMap
+@@ -178,7 +188,14 @@ class SignalRestClient @JvmOverloads constructor(
+ 
+   private val directStorageClients: Array<ConnectionHolder> by lazy {
+     if (uncensoredConfiguration !== configuration) {
+-      createConnectionHolders(uncensoredConfiguration.signalStorageUrls, uncensoredConfiguration.networkInterceptors, uncensoredConfiguration.dns, uncensoredConfiguration.signalProxy, clientOverride)
++      createConnectionHolders(
++        urls = uncensoredConfiguration.signalStorageUrls,
++        interceptors = uncensoredConfiguration.networkInterceptors,
++        dns = uncensoredConfiguration.dns,
++        socketFactory = uncensoredConfiguration.socketFactory,
++        proxySelector = uncensoredConfiguration.proxySelector,
++        clientOverride = clientOverride
++      )
+     } else {
+       storageClients
+     }
+diff --git a/lib/network/src/test/java/org/signal/network/api/CdnApiTest.kt b/lib/network/src/test/java/org/signal/network/api/CdnApiTest.kt
+index 103ec690dedc18db6e6644fb6d30aaae44076fd9..a95eb394f38840764dbcfd002fcbe6b3fa91f13b 100644
+--- a/lib/network/src/test/java/org/signal/network/api/CdnApiTest.kt
++++ b/lib/network/src/test/java/org/signal/network/api/CdnApiTest.kt
+@@ -11,6 +11,7 @@ import assertk.assertions.isEqualTo
+ import assertk.assertions.isInstanceOf
+ import assertk.assertions.isNull
+ import kotlinx.coroutines.test.runTest
++import okhttp3.Dns
+ import okhttp3.Interceptor
+ import okhttp3.MediaType.Companion.toMediaType
+ import okhttp3.OkHttpClient
+@@ -34,8 +35,9 @@ import org.signal.network.rest.SignalRestClient
+ import org.whispersystems.signalservice.internal.push.AttachmentUploadForm
+ import java.io.ByteArrayInputStream
+ import java.io.IOException
+-import java.util.Optional
++import java.net.ProxySelector
+ import java.util.Random
++import javax.net.SocketFactory
+ import kotlin.time.Duration.Companion.seconds
+ 
+ class CdnApiTest {
+@@ -404,8 +406,9 @@ class CdnApiTest {
+       signalCdsiUrls = emptyArray<SignalCdsiUrl>(),
+       signalSvr2Urls = emptyArray<SignalSvr2Url>(),
+       networkInterceptors = emptyList(),
+-      dns = Optional.empty(),
+-      signalProxy = Optional.empty(),
++      dns = Dns.SYSTEM,
++      socketFactory = SocketFactory.getDefault(),
++      proxySelector = ProxySelector.getDefault(),
+       zkGroupServerPublicParams = ByteArray(0),
+       genericServerPublicParams = ByteArray(0),
+       backupServerPublicParams = ByteArray(0),
+diff --git a/lib/network/src/test/java/org/signal/network/rest/SignalRestClientTest.kt b/lib/network/src/test/java/org/signal/network/rest/SignalRestClientTest.kt
+index c7cb0f1b47fada7ff5b70689b02fe2433411d0cc..83ae3645f4d0b53b6e7b1fe84698b957dcf466ca 100644
+--- a/lib/network/src/test/java/org/signal/network/rest/SignalRestClientTest.kt
++++ b/lib/network/src/test/java/org/signal/network/rest/SignalRestClientTest.kt
+@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
+ import kotlinx.coroutines.async
+ import kotlinx.coroutines.coroutineScope
+ import kotlinx.coroutines.runBlocking
++import okhttp3.Dns
+ import okhttp3.ConnectionSpec
+ import okhttp3.Interceptor
+ import okhttp3.MediaType.Companion.toMediaType
+@@ -36,8 +37,10 @@ import org.signal.network.rest.RequestSpec.Host
+ import org.signal.network.rest.RequestSpec.Method
+ import java.io.ByteArrayInputStream
+ import java.io.IOException
++import java.net.ProxySelector
+ import java.util.Optional
+ import java.util.Random
++import javax.net.SocketFactory
+ import java.util.concurrent.CountDownLatch
+ import java.util.concurrent.TimeUnit
+ 
+@@ -331,8 +334,9 @@ class SignalRestClientTest {
+       signalCdsiUrls = emptyArray<SignalCdsiUrl>(),
+       signalSvr2Urls = emptyArray<SignalSvr2Url>(),
+       networkInterceptors = emptyList(),
+-      dns = Optional.empty(),
+-      signalProxy = Optional.empty(),
++      dns = Dns.SYSTEM,
++      socketFactory = SocketFactory.getDefault(),
++      proxySelector = ProxySelector.getDefault(),
+       zkGroupServerPublicParams = ByteArray(0),
+       genericServerPublicParams = ByteArray(0),
+       backupServerPublicParams = ByteArray(0),
+
+--------------false--
+
+

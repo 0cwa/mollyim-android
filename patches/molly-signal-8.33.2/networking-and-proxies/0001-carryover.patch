@@ -1,0 +1,2092 @@
+From dba3155ac9e567cd5e8fe7d74831268f7764e196 Mon Sep 17 00:00:00 2001
+From: Molly Patch Reconstruction <molly-patch-reconstruction@example.invalid>
+Date: Fri, 30 Oct 2026 00:31:56 +0000
+Subject: [PATCH] Reconstruct Molly networking-and-proxies carryover, part 1
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="------------false"
+
+This is a multi-part message in MIME format.
+--------------false
+Content-Type: text/plain; charset=UTF-8; format=fixed
+Content-Transfer-Encoding: 8bit
+
+
+SOCKS/Tor/Orbot, DNS and connectivity monitoring, proxy transport support and removals of replaced Signal proxy code.
+
+Export the complete file deltas for this review batch from
+6e9dddc01f1b26e608ac683807c51e139c141ed2 to cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c.
+This reconstructed snapshot retains the target tree, including merge
+resolutions and retained backports. The group is a review partition,
+not an independently optional runtime feature.
+
+Source-Commit identifies the pinned source-tree snapshot, not the
+historical author of these changes. The mailbox identity records
+this mechanical reconstruction.
+
+For every path in this batch, the new base entry equals the origin
+base entry, and the port target entry equals the origin target entry.
+Entries compare file mode, object type and object ID, including absence.
+The category describes whole-file deltas, not conflict history or
+build/runtime compatibility.
+
+Source-Commit: cb8173a9ed5a4965d433e10e1a0a64e241b2ce4c
+Origin-Base: c47a74ba0961903eeaeda6d22347a990056c3e83
+Origin-Target: 0e202dda90785771ff8c87526eaaf30c655f54f3
+Port-Category: carryover
+
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/events/NetworkAvailableEvent.java b/app/src/main/java/org/thoughtcrime/securesms/events/NetworkAvailableEvent.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..45d3120f8ac50b05d1abb09d237fa02f3f760232
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/events/NetworkAvailableEvent.java
+@@ -0,0 +1,4 @@
++package org.thoughtcrime.securesms.events;
++
++public class NetworkAvailableEvent {
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java b/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java
+index 5b60d903dd5f05ded1c0fe554a3705ead0fd0bb7..2d2c29b8f449067135ed81e3ee1ba8b70837340f 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/DeviceTransferBlockingInterceptor.java
+@@ -2,7 +2,6 @@ package org.thoughtcrime.securesms.net;
+ 
+ import androidx.annotation.NonNull;
+ 
+-import org.signal.core.util.concurrent.SignalExecutors;
+ import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
+ import org.thoughtcrime.securesms.keyvalue.SignalStore;
+@@ -55,11 +54,11 @@ public final class DeviceTransferBlockingInterceptor implements Interceptor {
+ 
+   public void blockNetwork() {
+     blockNetworking = true;
+-    AppDependencies.resetNetwork();
++    AppDependencies.resetNetwork(false);
+   }
+ 
+   public void unblockNetwork() {
+     blockNetworking = false;
+-    AppDependencies.resetNetwork();
++    AppDependencies.resetNetwork(true);
+   }
+ }
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/DohClient.java b/app/src/main/java/org/thoughtcrime/securesms/net/DohClient.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..9687d37e8a5605f83bd0d2709d083947d038eeee
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/DohClient.java
+@@ -0,0 +1,41 @@
++package org.thoughtcrime.securesms.net;
++
++import androidx.annotation.NonNull;
++
++import java.net.InetAddress;
++import java.net.ProxySelector;
++import java.net.UnknownHostException;
++import java.util.List;
++
++import javax.net.SocketFactory;
++
++import okhttp3.Dns;
++import okhttp3.HttpUrl;
++import okhttp3.OkHttpClient;
++import okhttp3.dnsoverhttps.DnsOverHttps;
++
++public class DohClient implements Dns {
++
++  private final DnsOverHttps client;
++
++  public DohClient(@NonNull String url, SocketFactory socketFactory, ProxySelector proxySelector) {
++    this.client = new DnsOverHttps.Builder()
++                                  .url(HttpUrl.get(url))
++                                  .client(buildHttpClient(socketFactory, proxySelector))
++                                  .includeIPv6(false)
++                                  .build();
++  }
++
++  @Override
++  public @NonNull List<InetAddress> lookup(@NonNull String hostname) throws UnknownHostException {
++    return client.lookup(hostname);
++  }
++
++  static private OkHttpClient buildHttpClient(SocketFactory socketFactory, ProxySelector proxySelector) {
++    return new OkHttpClient.Builder()
++                           .socketFactory(socketFactory)
++                           .proxySelector(proxySelector)
++                           .cache(null)
++                           .build();
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/Networking.kt b/app/src/main/java/org/thoughtcrime/securesms/net/Networking.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..6bce95c2f3637839910047e0073ce874ec3cb338
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/Networking.kt
+@@ -0,0 +1,95 @@
++package org.thoughtcrime.securesms.net
++
++import okhttp3.Dns
++import java.io.IOException
++import java.net.InetAddress
++import java.net.InetSocketAddress
++import java.net.Proxy
++import java.net.ProxySelector
++import java.net.SocketAddress
++import java.net.URI
++import javax.net.SocketFactory
++
++object Networking {
++
++  @JvmStatic
++  var isEnabled: Boolean = false
++
++  @JvmStatic
++  val socketFactory: SocketFactory = ProxySocketFactory {
++    ensureNetworkEnabled()
++    proxy.also { validateProxyAddress(it) }
++  }
++
++  @JvmStatic
++  var socksProxy: SocksProxy? = null
++
++  /**
++   * A SOCKS [Proxy] instance pointing to the "discard" service on localhost (port 9),
++   * effectively a black hole for outgoing network traffic.
++   */
++  @JvmStatic
++  val DUMMY_PROXY = Proxy(Proxy.Type.SOCKS, InetSocketAddress.createUnresolved("localhost", 9))
++
++  /**
++   * Retrieves the current proxy configuration.
++   *
++   * It checks if a proxy is configured and attempts to create a [Proxy] instance
++   * using the specified socket address. If the address is invalid or unavailable,
++   * it defaults to [DUMMY_PROXY] to prevent IP leaks.
++   *
++   * If no proxy is configured, it returns [Proxy.NO_PROXY] to indicate direct
++   * connection without a proxy.
++   */
++  @JvmStatic
++  val proxy: Proxy
++    get() {
++      val currentSocksProxy = socksProxy ?: return Proxy.NO_PROXY
++      return currentSocksProxy.makeProxy() ?: DUMMY_PROXY
++    }
++
++  @JvmStatic
++  val proxySelectorForSocks = object : ProxySelector() {
++    private val systemDefault = getDefault()
++
++    override fun select(uri: URI?): List<Proxy> {
++      return if (socksProxy != null) {
++        // Do not chain to system proxy if SOCKS proxy is selected
++        listOf(Proxy.NO_PROXY)
++      } else {
++        systemDefault.select(uri)
++      }
++    }
++
++    override fun connectFailed(uri: URI?, sa: SocketAddress?, ioe: IOException?) =
++      systemDefault.connectFailed(uri, sa, ioe)
++  }
++
++  @JvmStatic
++  val dns: Dns = DnsProxyAware()
++
++  private fun ensureNetworkEnabled() {
++    if (!isEnabled) throw IOException("Network is disabled")
++  }
++
++  private fun validateProxyAddress(proxy: Proxy) {
++    if (proxy == DUMMY_PROXY) throw IOException("Proxy socket address not available yet")
++  }
++
++  private class DnsProxyAware : Dns {
++    private val cloudflare: Dns = DohClient("https://1.1.1.1/dns-query", socketFactory, proxySelectorForSocks)
++    private val quad9: Dns = DohClient("https://9.9.9.9/dns-query", socketFactory, proxySelectorForSocks)
++
++    private val systemDnsResolver: Dns = SequentialDns(Dns.SYSTEM, cloudflare, quad9)
++    private val dohDnsResolver: Dns = SequentialDns(cloudflare, quad9)
++
++    override fun lookup(hostname: String): List<InetAddress> {
++      ensureNetworkEnabled()
++      return if (socksProxy == null) {
++        systemDnsResolver.lookup(hostname)
++      } else {
++        dohDnsResolver.lookup(hostname)
++      }
++    }
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/ProxyProvider.java b/app/src/main/java/org/thoughtcrime/securesms/net/ProxyProvider.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c3e25e675dc42ebbf0021242617cd2abdcfe0378
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/ProxyProvider.java
+@@ -0,0 +1,8 @@
++package org.thoughtcrime.securesms.net;
++
++import java.io.IOException;
++import java.net.Proxy;
++
++public interface ProxyProvider {
++  Proxy getProxy() throws IOException;
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/ProxySocketFactory.java b/app/src/main/java/org/thoughtcrime/securesms/net/ProxySocketFactory.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..b6b3f1992e2665adfca55028d734b27592fe461d
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/ProxySocketFactory.java
+@@ -0,0 +1,44 @@
++package org.thoughtcrime.securesms.net;
++
++import androidx.annotation.NonNull;
++
++import java.io.IOException;
++import java.net.InetAddress;
++import java.net.Socket;
++import java.net.UnknownHostException;
++
++import javax.net.SocketFactory;
++
++public class ProxySocketFactory extends SocketFactory {
++
++  final @NonNull ProxyProvider proxyProvider;
++
++  public ProxySocketFactory(@NonNull ProxyProvider proxyProvider) {
++    this.proxyProvider = proxyProvider;
++  }
++
++  @Override
++  public Socket createSocket() throws IOException {
++    return new Socket(proxyProvider.getProxy());
++  }
++
++  @Override
++  public Socket createSocket(String host, int port) throws IOException, UnknownHostException {
++    throw new UnsupportedOperationException();
++  }
++
++  @Override
++  public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException, UnknownHostException {
++    throw new UnsupportedOperationException();
++  }
++
++  @Override
++  public Socket createSocket(InetAddress host, int port) throws IOException {
++    throw new UnsupportedOperationException();
++  }
++
++  @Override
++  public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException {
++    throw new UnsupportedOperationException();
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/ProxyType.java b/app/src/main/java/org/thoughtcrime/securesms/net/ProxyType.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..49b0dfa50b6402846b0420ab307e8c457be8a5f7
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/ProxyType.java
+@@ -0,0 +1,39 @@
++package org.thoughtcrime.securesms.net;
++
++import androidx.annotation.Nullable;
++import androidx.annotation.StringRes;
++
++import org.thoughtcrime.securesms.R;
++
++public enum ProxyType {
++  NONE  ("none",  R.string.arrays__none),
++  ORBOT ("orbot", R.string.arrays__tor_via_orbot),
++  SOCKS5("socks5", R.string.arrays__socks5);
++
++  private final String code;
++
++  private final int stringResource;
++
++  ProxyType(String code, @StringRes int stringResource) {
++    this.code           = code;
++    this.stringResource = stringResource;
++  }
++
++  public String getCode() {
++    return code;
++  }
++
++  public @StringRes int getStringResource() {
++    return stringResource;
++  }
++
++  public static ProxyType fromCode(@Nullable String code) {
++    for (ProxyType type : ProxyType.values()) {
++      if (type.code.equals(code)) {
++        return type;
++      }
++    }
++
++    return NONE;
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/SequentialDns.java b/app/src/main/java/org/thoughtcrime/securesms/net/SequentialDns.java
+index 9a8ae334a1d4d7c673c62937b515a353dfbc677c..e83b0a8a82d36f34421d044fd282585f82885fe3 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/net/SequentialDns.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/SequentialDns.java
+@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
+ 
+ import org.signal.core.util.logging.Log;
+ import org.thoughtcrime.securesms.dependencies.AppDependencies;
++import org.thoughtcrime.securesms.push.SignalServiceNetworkAccess;
++import org.thoughtcrime.securesms.util.Environment;
+ import org.thoughtcrime.securesms.util.NetworkUtil;
+ 
+ import java.net.InetAddress;
+ import java.net.UnknownHostException;
+ import java.util.Arrays;
++import java.util.LinkedList;
+ import java.util.List;
+ import java.util.Locale;
+ 
+@@ -21,7 +24,7 @@ public class SequentialDns implements Dns {
+ 
+   private static final String TAG = Log.tag(SequentialDns.class);
+ 
+-  private List<Dns> dnsList;
++  private final List<Dns> dnsList;
+ 
+   public SequentialDns(Dns... dns) {
+     this.dnsList = Arrays.asList(dns);
+@@ -29,9 +32,20 @@ public class SequentialDns implements Dns {
+ 
+   @Override
+   public @NonNull List<InetAddress> lookup(@NonNull String hostname) throws UnknownHostException {
++    boolean isServiceHost = SignalServiceNetworkAccess.HOSTNAMES.contains(hostname);
++
+     for (Dns dns : dnsList) {
+       try {
+-        List<InetAddress> addresses = dns.lookup(hostname);
++        LinkedList<InetAddress> addresses = new LinkedList<>(dns.lookup(hostname));
++        // MOLLY: Filter out invalid addresses for Signal service hosts, except in the Dev environment
++        if (isServiceHost && !Environment.IS_DEV) {
++          if (addresses.removeIf(InetAddress::isAnyLocalAddress)) {
++            Log.w(TAG, "Ignore invalid address 0.0.0.0 while resolving hostname " + hostname);
++          }
++          if (addresses.removeIf(InetAddress::isLoopbackAddress)) {
++            Log.w(TAG, "Ignore loopback address while resolving hostname " + hostname);
++          }
++        }
+         if (addresses.size() > 0) {
+           return addresses;
+         } else {
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/SocksProxy.java b/app/src/main/java/org/thoughtcrime/securesms/net/SocksProxy.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..1abdd469a058d7cbca11fc999dafa68f347cb58b
+--- /dev/null
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/SocksProxy.java
+@@ -0,0 +1,97 @@
++package org.thoughtcrime.securesms.net;
++
++import androidx.annotation.Nullable;
++
++import java.net.InetSocketAddress;
++import java.net.MalformedURLException;
++import java.net.Proxy;
++import java.net.URI;
++import java.net.URISyntaxException;
++import java.util.Objects;
++
++public class SocksProxy {
++
++  public static final int LOCAL_PORT   = -1;
++  public static final int INVALID_PORT = -2;
++
++  public static final String LOCAL_HOST = "localhost";
++
++  private final String host;
++
++  private final int port;
++
++  public SocksProxy() {
++    this(LOCAL_HOST, INVALID_PORT);
++  }
++
++  public SocksProxy(String host, int port) {
++    this.host = host;
++    this.port = port;
++  }
++
++  public String getHost() {
++    return host;
++  }
++
++  public int getPort() {
++    return port;
++  }
++
++  @Nullable
++  public String getUrl() {
++    String url = null;
++    try {
++      url = new URI("socks", null, host, port, null, null, null).toString();
++    } catch (URISyntaxException ignored) {}
++    return url;
++  }
++
++  @Nullable
++  public InetSocketAddress getSocketAddress() {
++    InetSocketAddress address = null;
++    try {
++      address = InetSocketAddress.createUnresolved(host, port);
++    } catch (IllegalArgumentException ignored) {}
++    return address;
++  }
++
++  public static boolean isValidHost(String host) {
++    if (host == null || host.isEmpty()) {
++      return false;
++    }
++    try {
++      new URI("socks", host, null, null);
++    } catch (URISyntaxException e) {
++      return false;
++    }
++    return true;
++  }
++
++  public static boolean isValidPort(int port) {
++    return !(port < 0 || port > 0xFFFF);
++  }
++
++  /**
++   * Creates a SOCKS proxy with the configured socket address.
++   *
++   * @return A SOCKS proxy instance, or null if the address is invalid.
++   */
++  @Nullable
++  public Proxy makeProxy() {
++    InetSocketAddress address = getSocketAddress();
++    return address != null ? new Proxy(Proxy.Type.SOCKS, address) : null;
++  }
++
++  @Override
++  public boolean equals(Object o) {
++    if (this == o) return true;
++    if (o == null || getClass() != o.getClass()) return false;
++    SocksProxy socksProxy = (SocksProxy) o;
++    return Objects.equals(host, socksProxy.host) && port == socksProxy.port;
++  }
++
++  @Override
++  public int hashCode() {
++    return Objects.hash(host, port);
++  }
++}
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/net/StandardUserAgentInterceptor.java b/app/src/main/java/org/thoughtcrime/securesms/net/StandardUserAgentInterceptor.java
+index d4484e2ba2545b779d58bb3bfd38854967844ef8..41d5de62619bcb05bbe1f4e3b22592571097ba16 100644
+--- a/app/src/main/java/org/thoughtcrime/securesms/net/StandardUserAgentInterceptor.java
++++ b/app/src/main/java/org/thoughtcrime/securesms/net/StandardUserAgentInterceptor.java
+@@ -2,14 +2,14 @@ package org.thoughtcrime.securesms.net;
+ 
+ import android.os.Build;
+ 
+-import org.thoughtcrime.securesms.BuildConfig;
++import im.molly.app.base.ApkInfo;
+ 
+ /**
+  * The user agent that should be used by default -- includes app name, version, etc.
+  */
+ public class StandardUserAgentInterceptor extends UserAgentInterceptor {
+ 
+-  public static final String USER_AGENT = "Signal-Android/" + BuildConfig.VERSION_NAME + " Android/" + Build.VERSION.SDK_INT;
++  public static final String USER_AGENT = "Signal-Android/" + ApkInfo.signalCanonicalVersionName + " Android/" + Build.VERSION.SDK_INT;
+ 
+   public StandardUserAgentInterceptor() {
+     super(USER_AGENT);
+diff --git a/app/src/main/java/org/thoughtcrime/securesms/proxy/ProxyBottomSheetFragment.java b/app/src/main/java/org/thoughtcrime/securesms/proxy/ProxyBottomSheetFragment.java
+deleted file mode 100644
+index 7eb494a8c5024a0a67356d410a882ce8bd1b8945..0000000000000000000000000000000000000000
+--- a/app/src/main/java/org/thoughtcrime/securesms/proxy/ProxyBottomSheetFragment.java
++++ /dev/null
+@@ -1,132 +0,0 @@
+-package org.thoughtcrime.securesms.proxy;
+-
+-import android.os.Bundle;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-import android.widget.TextView;
+-import android.widget.Toast;
+-
+-import androidx.annotation.NonNull;
+-import androidx.annotation.Nullable;
+-import androidx.fragment.app.DialogFragment;
+-import androidx.fragment.app.FragmentManager;
+-import androidx.lifecycle.ViewModelProvider;
+-
+-import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+-
+-import org.signal.core.util.logging.Log;
+-import org.thoughtcrime.securesms.R;
+-import org.thoughtcrime.securesms.preferences.EditProxyViewModel;
+-import org.signal.core.ui.BottomSheetUtil;
+-import org.signal.core.util.concurrent.LifecycleDisposable;
+-import org.signal.core.ui.util.ThemeUtil;
+-import org.thoughtcrime.securesms.util.WindowUtil;
+-import org.thoughtcrime.securesms.util.views.CircularProgressMaterialButton;
+-
+-/**
+- * A bottom sheet shown in response to a deep link. Allows a user to set a proxy.
+- */
+-public final class ProxyBottomSheetFragment extends BottomSheetDialogFragment {
+-
+-  private static final String TAG = Log.tag(ProxyBottomSheetFragment.class);
+-
+-  private static final String ARG_PROXY_LINK = "proxy_link";
+-
+-  private TextView                       proxyText;
+-  private View                           cancelButton;
+-  private CircularProgressMaterialButton useProxyButton;
+-  private EditProxyViewModel             viewModel;
+-  private LifecycleDisposable            lifecycleDisposable;
+-
+-  public static void showForProxy(@NonNull FragmentManager manager, @NonNull String proxyLink) {
+-    ProxyBottomSheetFragment fragment = new ProxyBottomSheetFragment();
+-
+-    Bundle args = new Bundle();
+-    args.putString(ARG_PROXY_LINK, proxyLink);
+-    fragment.setArguments(args);
+-
+-    fragment.show(manager, BottomSheetUtil.STANDARD_BOTTOM_SHEET_FRAGMENT_TAG);
+-  }
+-
+-  @Override
+-  public void onCreate(@Nullable Bundle savedInstanceState) {
+-    setStyle(DialogFragment.STYLE_NORMAL,
+-             ThemeUtil.isDarkTheme(requireContext()) ? R.style.Theme_Signal_RoundedBottomSheet
+-                                                     : R.style.Theme_Signal_RoundedBottomSheet_Light);
+-
+-    super.onCreate(savedInstanceState);
+-  }
+-
+-  @Override
+-  public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+-    return inflater.inflate(R.layout.proxy_bottom_sheet, container, false);
+-  }
+-
+-  @Override
+-  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+-    this.proxyText      = view.findViewById(R.id.proxy_sheet_host);
+-    this.useProxyButton = view.findViewById(R.id.proxy_sheet_use_proxy);
+-    this.cancelButton   = view.findViewById(R.id.proxy_sheet_cancel);
+-
+-    lifecycleDisposable = new LifecycleDisposable();
+-    lifecycleDisposable.bindTo(getViewLifecycleOwner());
+-
+-    String host = getArguments().getString(ARG_PROXY_LINK);
+-    proxyText.setText(host);
+-
+-    initViewModel();
+-
+-    useProxyButton.setOnClickListener(v -> viewModel.onSaveClicked(host));
+-    cancelButton.setOnClickListener(v -> dismiss());
+-  }
+-
+-  @Override
+-  public void onResume() {
+-    super.onResume();
+-    WindowUtil.initializeScreenshotSecurity(requireContext(), requireDialog().getWindow());
+-  }
+-
+-  private void initViewModel() {
+-    this.viewModel = new ViewModelProvider(this).get(EditProxyViewModel.class);
+-
+-    lifecycleDisposable.addAll(
+-        viewModel.getSaveState().subscribe(this::presentSaveState),
+-        viewModel.getEvents().subscribe(this::presentEvents)
+-    );
+-  }
+-
+-  private void presentSaveState(@NonNull EditProxyViewModel.SaveState state) {
+-    switch (state) {
+-      case IDLE:
+-        useProxyButton.cancelSpinning();
+-        break;
+-      case IN_PROGRESS:
+-        useProxyButton.setSpinning();
+-        break;
+-    }
+-  }
+-
+-  private void presentEvents(@NonNull EditProxyViewModel.Event event) {
+-    if (isStateSaved()) {
+-      Log.w(TAG, "Got an event after state had been saved. Dropping. " + event.name());
+-      return;
+-    }
+-
+-    switch (event) {
+-      case PROXY_SUCCESS:
+-        Toast.makeText(requireContext(), R.string.ProxyBottomSheetFragment_successfully_connected_to_proxy, Toast.LENGTH_LONG).show();
+-        dismiss();
+-        break;
+-      case PROXY_FAILURE:
+-        new MaterialAlertDialogBuilder(requireContext())
+-                       .setTitle(R.string.preferences_failed_to_connect)
+-                       .setMessage(R.string.preferences_couldnt_connect_to_the_proxy)
+-                       .setPositiveButton(android.R.string.ok, (d, i) -> d.dismiss())
+-                       .show();
+-        dismiss();
+-        break;
+-    }
+-  }
+-}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_convertUserEnteredAddressToHost.java b/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_convertUserEnteredAddressToHost.java
+deleted file mode 100644
+index e6caea92b0136ff462dec46dd1878db5d6bddb30..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_convertUserEnteredAddressToHost.java
++++ /dev/null
+@@ -1,41 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import org.junit.Test;
+-import org.junit.runner.RunWith;
+-import org.junit.runners.Parameterized;
+-
+-import java.util.Arrays;
+-import java.util.Collection;
+-
+-import static org.junit.Assert.assertEquals;
+-
+-@RunWith(Parameterized.class)
+-public class SignalProxyUtilText_convertUserEnteredAddressToHost {
+-
+-  private final String input;
+-  private final String output;
+-
+-  @Parameterized.Parameters
+-  public static Collection<Object[]> data() {
+-    return Arrays.asList(new Object[][]{
+-        { "https://signal.tube/#proxy.parker.org",     "proxy.parker.org" },
+-        { "https://signal.tube/#proxy.parker.org:443", "proxy.parker.org" },
+-        { "sgnl://signal.tube/#proxy.parker.org",      "proxy.parker.org" },
+-        { "sgnl://signal.tube/#proxy.parker.org:443",  "proxy.parker.org" },
+-        { "proxy.parker.org",                          "proxy.parker.org" },
+-        { "proxy.parker.org:443",                      "proxy.parker.org" },
+-        { "x",                                         "x" },
+-        { "",                                          "" }
+-    });
+-  }
+-
+-  public SignalProxyUtilText_convertUserEnteredAddressToHost(String input, String output) {
+-    this.input  = input;
+-    this.output = output;
+-  }
+-
+-  @Test
+-  public void parse() {
+-    assertEquals(output, SignalProxyUtil.convertUserEnteredAddressToHost(input));
+-  }
+-}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_generateProxyUrl.java b/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_generateProxyUrl.java
+deleted file mode 100644
+index 07fe132a74fbe883c2e82f0a259590b45e3edf42..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_generateProxyUrl.java
++++ /dev/null
+@@ -1,41 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import org.junit.Test;
+-import org.junit.runner.RunWith;
+-import org.junit.runners.Parameterized;
+-
+-import java.util.Arrays;
+-import java.util.Collection;
+-
+-import static org.junit.Assert.assertEquals;
+-
+-@RunWith(Parameterized.class)
+-public class SignalProxyUtilText_generateProxyUrl {
+-
+-  private final String input;
+-  private final String output;
+-
+-  @Parameterized.Parameters
+-  public static Collection<Object[]> data() {
+-    return Arrays.asList(new Object[][]{
+-        { "https://signal.tube/#proxy.parker.org",     "https://signal.tube/#proxy.parker.org" },
+-        { "https://signal.tube/#proxy.parker.org:443", "https://signal.tube/#proxy.parker.org" },
+-        { "sgnl://signal.tube/#proxy.parker.org",      "https://signal.tube/#proxy.parker.org" },
+-        { "sgnl://signal.tube/#proxy.parker.org:443",  "https://signal.tube/#proxy.parker.org" },
+-        { "proxy.parker.org",                          "https://signal.tube/#proxy.parker.org" },
+-        { "proxy.parker.org:443",                      "https://signal.tube/#proxy.parker.org" },
+-        { "x",                                         "https://signal.tube/#x" },
+-        { "",                                          "https://signal.tube/#" }
+-    });
+-  }
+-
+-  public SignalProxyUtilText_generateProxyUrl(String input, String output) {
+-    this.input  = input;
+-    this.output = output;
+-  }
+-
+-  @Test
+-  public void parse() {
+-    assertEquals(output, SignalProxyUtil.generateProxyUrl(input));
+-  }
+-}
+diff --git a/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_parseHostFromProxyDeepLink.java b/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_parseHostFromProxyDeepLink.java
+deleted file mode 100644
+index 644e01f48583ec8c6e1bb3333d205275a873834b..0000000000000000000000000000000000000000
+--- a/app/src/test/java/org/thoughtcrime/securesms/util/SignalProxyUtilText_parseHostFromProxyDeepLink.java
++++ /dev/null
+@@ -1,45 +0,0 @@
+-package org.thoughtcrime.securesms.util;
+-
+-import org.junit.Test;
+-import org.junit.runner.RunWith;
+-import org.junit.runners.Parameterized;
+-
+-import java.util.Arrays;
+-import java.util.Collection;
+-
+-import static org.junit.Assert.assertEquals;
+-
+-@RunWith(Parameterized.class)
+-public class SignalProxyUtilText_parseHostFromProxyDeepLink {
+-
+-  private final String input;
+-  private final String output;
+-
+-  @Parameterized.Parameters
+-  public static Collection<Object[]> data() {
+-    return Arrays.asList(new Object[][]{
+-        { "https://signal.tube/#proxy.parker.org",     "proxy.parker.org" },
+-        { "https://signal.tube/#proxy.parker.org:443", "proxy.parker.org" },
+-        { "sgnl://signal.tube/#proxy.parker.org",      "proxy.parker.org" },
+-        { "sgnl://signal.tube/#proxy.parker.org:443",  "proxy.parker.org" },
+-        { "https://signal.tube/",                       null },
+-        { "https://signal.tube/#",                      null },
+-        { "sgnl://signal.tube/",                        null },
+-        { "sgnl://signal.tube/#",                       null },
+-        { "http://signal.tube/#proxy.parker.org",       null },
+-        { "signal.tube/#proxy.parker.org",              null },
+-        { "",                                           null },
+-        { null,                                         null }
+-    });
+-  }
+-
+-  public SignalProxyUtilText_parseHostFromProxyDeepLink(String input, String output) {
+-    this.input  = input;
+-    this.output = output;
+-  }
+-
+-  @Test
+-  public void parse() {
+-    assertEquals(output, SignalProxyUtil.parseHostFromProxyDeepLink(input));
+-  }
+-}
+diff --git a/core/util/src/main/java/org/signal/core/util/net/SystemProxy.kt b/core/util/src/main/java/org/signal/core/util/net/SystemProxy.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..19dab31761af345181574dd3b39abbcf32f6c64a
+--- /dev/null
++++ b/core/util/src/main/java/org/signal/core/util/net/SystemProxy.kt
+@@ -0,0 +1,25 @@
++/*
++ * Copyright 2026 Signal Messenger, LLC
++ * SPDX-License-Identifier: AGPL-3.0-only
++ */
++
++package org.signal.core.util.net
++
++import androidx.annotation.WorkerThread
++import java.net.Proxy
++import java.net.ProxySelector
++import java.net.URI
++
++/**
++ * Resolves the system-configured [Proxy] for the given URL using [ProxySelector].
++ *
++ * @return null if no proxy is configured.
++ */
++@WorkerThread
++fun resolveSystemProxy(
++  targetUrl: String,
++  proxySelector: ProxySelector? = ProxySelector.getDefault()
++): Proxy? {
++  val proxyList = proxySelector?.select(URI.create(targetUrl))
++  return proxyList?.firstOrNull()
++}
+diff --git a/lib/netcipher/src/main/AndroidManifest.xml b/lib/netcipher/src/main/AndroidManifest.xml
+new file mode 100644
+index 0000000000000000000000000000000000000000..6662137b0eb9f76e169207f50b8d13352ac24e70
+--- /dev/null
++++ b/lib/netcipher/src/main/AndroidManifest.xml
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="utf-8"?>
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++    <queries>
++        <package android:name="org.torproject.android" />
++    </queries>
++</manifest>
+diff --git a/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/OrbotHelper.java b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/OrbotHelper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..6a768d42236d2df5b93d07dc84549346c5376ee5
+--- /dev/null
++++ b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/OrbotHelper.java
+@@ -0,0 +1,606 @@
++/*
++ * Copyright 2014-2016 Hans-Christoph Steiner
++ * Copyright 2012-2016 Nathan Freitas
++ * Portions Copyright (c) 2016 CommonsWare, LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package info.guardianproject.netcipher.proxy;
++
++import android.app.Activity;
++import android.content.BroadcastReceiver;
++import android.content.Context;
++import android.content.Intent;
++import android.content.IntentFilter;
++import android.content.pm.PackageManager;
++import android.content.pm.ResolveInfo;
++import android.net.Uri;
++import android.os.Handler;
++import android.os.Looper;
++import android.text.TextUtils;
++
++import androidx.annotation.Nullable;
++import androidx.core.content.ContextCompat;
++
++import org.signal.core.util.logging.Log;
++
++import java.net.MalformedURLException;
++import java.net.URL;
++import java.util.ArrayList;
++import java.util.Collections;
++import java.util.List;
++import java.util.Set;
++import java.util.WeakHashMap;
++
++/**
++ * Utility class to simplify setting up a proxy connection
++ * to Orbot.
++ * <p>
++ * If you are using classes in the info.guardianproject.netcipher.client
++ * package, call OrbotHelper.get(this).init(); from onCreate()
++ * of a custom Application subclass, or from some other guaranteed
++ * entry point to your app. At that point, the
++ * info.guardianproject.netcipher.client classes will be ready
++ * for use.
++ */
++public class OrbotHelper implements ProxyHelper {
++
++    private static final String TAG = Log.tag(OrbotHelper.class);
++
++    private final static int REQUEST_CODE_STATUS = 100;
++
++    public final static String ORBOT_PACKAGE_NAME = "org.torproject.android";
++    public final static String ORBOT_MARKET_URI = "market://details?id=" + ORBOT_PACKAGE_NAME;
++
++    public final static String ORBOT_INSTALL_URL = "https://www.torproject.org/docs/android.html";
++
++    public final static String DEFAULT_PROXY_HOST = "localhost";//"127.0.0.1";
++    public final static int DEFAULT_PROXY_HTTP_PORT = 8118;
++    public final static int DEFAULT_PROXY_SOCKS_PORT = 9050;
++
++    /**
++     * A request to Orbot to transparently start Tor services
++     */
++    public final static String ACTION_START = "org.torproject.android.intent.action.START";
++
++    /**
++     * {@link Intent} send by Orbot with {@code ON/OFF/STARTING/STOPPING} status
++     * included as an {@link #EXTRA_STATUS} {@code String}.  Your app should
++     * always receive {@code ACTION_STATUS Intent}s since any other app could
++     * start Orbot.  Also, user-triggered starts and stops will also cause
++     * {@code ACTION_STATUS Intent}s to be broadcast.
++     */
++    public final static String ACTION_STATUS = "org.torproject.android.intent.action.STATUS";
++
++    /**
++     * {@code String} that contains a status constant: {@link #STATUS_ON},
++     * {@link #STATUS_OFF}, {@link #STATUS_STARTING}, or
++     * {@link #STATUS_STOPPING}
++     */
++    public final static String EXTRA_STATUS = "org.torproject.android.intent.extra.STATUS";
++    /**
++     * A {@link String} {@code packageName} for Orbot to direct its status reply
++     * to, used in {@link #ACTION_START} {@link Intent}s sent to Orbot
++     */
++    public final static String EXTRA_PACKAGE_NAME = "org.torproject.android.intent.extra.PACKAGE_NAME";
++
++    public final static String EXTRA_PROXY_PORT_HTTP = "org.torproject.android.intent.extra.HTTP_PROXY_PORT";
++    public final static String EXTRA_PROXY_PORT_SOCKS = "org.torproject.android.intent.extra.SOCKS_PROXY_PORT";
++
++
++    /**
++     * All tor-related services and daemons are stopped
++     */
++    public final static String STATUS_OFF = "OFF";
++    /**
++     * All tor-related services and daemons have completed starting
++     */
++    public final static String STATUS_ON = "ON";
++    public final static String STATUS_STARTING = "STARTING";
++    public final static String STATUS_STOPPING = "STOPPING";
++    /**
++     * The user has disabled the ability for background starts triggered by
++     * apps. Fallback to the old Intent that brings up Orbot.
++     */
++    public final static String STATUS_STARTS_DISABLED = "STARTS_DISABLED";
++
++    public final static String ACTION_START_TOR = "org.torproject.android.START_TOR";
++    public final static String ACTION_REQUEST_HS = "org.torproject.android.REQUEST_HS_PORT";
++    public final static int START_TOR_RESULT = 0x9234;
++    public final static int HS_REQUEST_CODE = 9999;
++
++
++/*
++    private OrbotHelper() {
++        // only static utility methods, do not instantiate
++    }
++*/
++
++    /**
++     * Test whether a {@link URL} is a Tor Hidden Service host name, also known
++     * as an ".onion address".
++     *
++     * @return whether the host name is a Tor .onion address
++     */
++    public static boolean isOnionAddress(URL url) {
++        return url.getHost().endsWith(".onion");
++    }
++
++    /**
++     * Test whether a URL {@link String} is a Tor Hidden Service host name, also known
++     * as an ".onion address".
++     *
++     * @return whether the host name is a Tor .onion address
++     */
++    public static boolean isOnionAddress(String urlString) {
++        try {
++            return isOnionAddress(new URL(urlString));
++        } catch (MalformedURLException e) {
++            return false;
++        }
++    }
++
++    /**
++     * Test whether a {@link Uri} is a Tor Hidden Service host name, also known
++     * as an ".onion address".
++     *
++     * @return whether the host name is a Tor .onion address
++     */
++    public static boolean isOnionAddress(Uri uri) {
++        return uri.getHost().endsWith(".onion");
++    }
++
++    public static boolean isOrbotInstalled(Context context) {
++        return isAppInstalled(context, ORBOT_PACKAGE_NAME);
++    }
++
++    private static boolean isAppInstalled(Context context, String uri) {
++        try {
++            PackageManager pm = context.getPackageManager();
++            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
++            return true;
++        } catch (PackageManager.NameNotFoundException e) {
++            return false;
++        }
++    }
++
++    public static void requestHiddenServiceOnPort(Activity activity, int port) {
++        Intent intent = new Intent(ACTION_REQUEST_HS);
++        intent.setPackage(ORBOT_PACKAGE_NAME);
++        intent.putExtra("hs_port", port);
++
++        activity.startActivityForResult(intent, HS_REQUEST_CODE);
++    }
++
++    /**
++     * First, checks whether Orbot is installed. If Orbot is installed, then a
++     * broadcast {@link Intent} is sent to request Orbot to start
++     * transparently in the background. When Orbot receives this {@code
++     * Intent}, it will immediately reply to the app that called this method
++     * with an {@link #ACTION_STATUS} {@code Intent} that is broadcast to the
++     * {@code packageName} of the provided {@link Context} (i.e.  {@link
++     * Context#getPackageName()}.
++     * <p>
++     * That reply {@link #ACTION_STATUS} {@code Intent} could say that the user
++     * has disabled background starts with the status
++     * {@link #STATUS_STARTS_DISABLED}. That means that Orbot ignored this
++     * request.
++     *
++     * @param context the app {@link Context} will receive the reply
++     * @return whether the start request was sent to Orbot
++     */
++    public static boolean requestStartTor(Context context) {
++        if (OrbotHelper.isOrbotInstalled(context)) {
++            Log.i(TAG, "requestStartTor " + context.getPackageName());
++            Intent intent = getOrbotStartIntent(context);
++            context.sendBroadcast(intent);
++            return true;
++        }
++        return false;
++    }
++
++    /**
++     * Gets an {@link Intent} for starting Orbot.  Orbot will reply with the
++     * current status to the {@code packageName} of the app in the provided
++     * {@link Context} (i.e.  {@link Context#getPackageName()}.
++     */
++    public static Intent getOrbotStartIntent(Context context) {
++        Intent intent = new Intent(ACTION_START);
++        intent.setPackage(ORBOT_PACKAGE_NAME);
++        intent.putExtra(EXTRA_PACKAGE_NAME, context.getPackageName());
++        return intent;
++    }
++
++    /**
++     * Gets a barebones {@link Intent} for starting Orbot.  This is deprecated
++     * in favor of {@link #getOrbotStartIntent(Context)}.
++     */
++    @Deprecated
++    public static Intent getOrbotStartIntent() {
++        Intent intent = new Intent(ACTION_START);
++        intent.setPackage(ORBOT_PACKAGE_NAME);
++        return intent;
++    }
++
++    public static Intent getShowOrbotStartIntent() {
++        Intent intent = new Intent(ACTION_START_TOR);
++        intent.setPackage(ORBOT_PACKAGE_NAME);
++        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
++        return intent;
++    }
++
++    public static Intent getOrbotInstallIntent(Context context) {
++        final Intent intent = new Intent(Intent.ACTION_VIEW);
++        intent.setData(Uri.parse(ORBOT_MARKET_URI));
++
++        PackageManager pm = context.getPackageManager();
++        List<ResolveInfo> resInfos = pm.queryIntentActivities(intent, 0);
++
++        String foundPackageName = null;
++        for (ResolveInfo r : resInfos) {
++            Log.i(TAG, "market: " + r.activityInfo.packageName);
++            if (TextUtils.equals(r.activityInfo.packageName, FDROID_PACKAGE_NAME)
++                    || TextUtils.equals(r.activityInfo.packageName, PLAY_PACKAGE_NAME)) {
++                foundPackageName = r.activityInfo.packageName;
++                break;
++            }
++        }
++
++        if (foundPackageName == null) {
++            intent.setData(Uri.parse(ORBOT_INSTALL_URL));
++        } else {
++            intent.setPackage(foundPackageName);
++        }
++        return intent;
++    }
++
++    @Override
++    public boolean isInstalled(Context context) {
++        return isOrbotInstalled(context);
++    }
++
++    @Override
++    public boolean requestStart(Context context) {
++        return requestStartTor(context);
++    }
++
++    @Override
++    public Intent getInstallIntent(Context context) {
++        return getOrbotInstallIntent(context);
++    }
++
++    @Override
++    public Intent getStartIntent(Context context) {
++        return getOrbotStartIntent();
++    }
++
++    @Override
++    public String getName() {
++        return "Orbot";
++    }
++
++    /* MLM additions */
++
++    private final Context context;
++    private final Handler handler;
++    private boolean isInstalled = false;
++    @Nullable
++    private Intent lastStatusIntent = null;
++    private final Set<StatusCallback> statusCallbacks =
++            Collections.newSetFromMap(new WeakHashMap<>());
++    private final Set<InstallCallback> installCallbacks =
++            Collections.newSetFromMap(new WeakHashMap<>());
++    private long statusTimeoutMs = 30000L;
++    private long installTimeoutMs = 60000L;
++    private boolean validateOrbot = true;
++
++    abstract public static class SimpleStatusCallback
++            implements StatusCallback {
++        @Override
++        public void onEnabled(Intent statusIntent) {
++            // no-op; extend and override if needed
++        }
++
++        @Override
++        public void onStarting() {
++            // no-op; extend and override if needed
++        }
++
++        @Override
++        public void onStopping() {
++            // no-op; extend and override if needed
++        }
++
++        @Override
++        public void onDisabled() {
++            // no-op; extend and override if needed
++        }
++
++        @Override
++        public void onNotYetInstalled() {
++            // no-op; extend and override if needed
++        }
++    }
++
++    /**
++     * Callback interface used for reporting the results of an
++     * attempt to install Orbot
++     */
++    public interface InstallCallback {
++        void onInstalled();
++
++        void onInstallTimeout();
++    }
++
++    private static volatile OrbotHelper instance;
++
++    /**
++     * Retrieves the singleton, initializing if if needed
++     *
++     * @param context any Context will do, as we will hold onto
++     *                the Application
++     * @return the singleton
++     */
++    synchronized public static OrbotHelper get(Context context) {
++        if (instance == null) {
++            instance = new OrbotHelper(context);
++        }
++
++        return (instance);
++    }
++
++    /**
++     * Standard constructor
++     *
++     * @param context any Context will do; OrbotInitializer will hold
++     *                onto the Application context
++     */
++    private OrbotHelper(Context context) {
++        this.context = context.getApplicationContext();
++        this.handler = new Handler(Looper.getMainLooper());
++    }
++
++    /**
++     * Adds a StatusCallback to be called when we find out that
++     * Orbot is ready. If Orbot is ready for use, your callback
++     * will be called with onEnabled() immediately, before this
++     * method returns.
++     *
++     * @param cb a callback
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper addStatusCallback(StatusCallback cb) {
++        statusCallbacks.add(cb);
++
++        if (lastStatusIntent != null) {
++            String status =
++                    lastStatusIntent.getStringExtra(OrbotHelper.EXTRA_STATUS);
++
++            if (status.equals(OrbotHelper.STATUS_ON)) {
++                cb.onEnabled(lastStatusIntent);
++            }
++        }
++
++        return (this);
++    }
++
++    /**
++     * Removes an existing registered StatusCallback.
++     *
++     * @param cb the callback to remove
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper removeStatusCallback(StatusCallback cb) {
++        statusCallbacks.remove(cb);
++
++        return (this);
++    }
++
++
++    /**
++     * Adds an InstallCallback to be called when we find out that
++     * Orbot is installed
++     *
++     * @param cb a callback
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper addInstallCallback(InstallCallback cb) {
++        installCallbacks.add(cb);
++
++        return (this);
++    }
++
++    /**
++     * Removes an existing registered InstallCallback.
++     *
++     * @param cb the callback to remove
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper removeInstallCallback(InstallCallback cb) {
++        installCallbacks.remove(cb);
++
++        return (this);
++    }
++
++    /**
++     * Sets how long of a delay, in milliseconds, after trying
++     * to get a status from Orbot before we give up.
++     * Defaults to 30000ms = 30 seconds = 0.000347222 days
++     *
++     * @param timeoutMs delay period in milliseconds
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper statusTimeout(long timeoutMs) {
++        statusTimeoutMs = timeoutMs;
++
++        return (this);
++    }
++
++    /**
++     * Sets how long of a delay, in milliseconds, after trying
++     * to install Orbot do we assume that it's not happening.
++     * Defaults to 60000ms = 60 seconds = 1 minute = 1.90259e-6 years
++     *
++     * @param timeoutMs delay period in milliseconds
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper installTimeout(long timeoutMs) {
++        installTimeoutMs = timeoutMs;
++
++        return (this);
++    }
++
++    /**
++     * By default, NetCipher ensures that the Orbot on the
++     * device is one of the official builds. Call this method
++     * to skip that validation. Mostly, this is for developers
++     * who have their own custom Orbot builds (e.g., for
++     * dedicated hardware).
++     *
++     * @return the singleton, for chaining
++     */
++    public OrbotHelper skipOrbotValidation() {
++        validateOrbot = false;
++
++        return (this);
++    }
++
++    /**
++     * @return true if Orbot is installed (the last time we checked),
++     * false otherwise
++     */
++    public boolean isInstalled() {
++        return (isInstalled);
++    }
++
++    /**
++     * Initializes the connection to Orbot, revalidating that it is installed
++     * and requesting fresh status broadcasts.  This is best run in your app's
++     * {@link android.app.Application} subclass, in its
++     * {@link android.app.Application#onCreate()} method.
++     *
++     * @return true if initialization is proceeding, false if Orbot is not installed,
++     * or version of Orbot with a unofficial signing key is present.
++     */
++    public boolean init() {
++        Intent orbot = OrbotHelper.getOrbotStartIntent(context);
++
++        if (validateOrbot) {
++            ArrayList<String> hashes = new ArrayList<String>();
++
++            // Tor Project signing key
++            hashes.add("A4:54:B8:7A:18:47:A8:9E:D7:F5:E7:0F:BA:6B:BA:96:F3:EF:29:C2:6E:09:81:20:4F:E3:47:BF:23:1D:FD:5B");
++            // f-droid.org signing key
++            hashes.add("A7:02:07:92:4F:61:FF:09:37:1D:54:84:14:5C:4B:EE:77:2C:55:C1:9E:EE:23:2F:57:70:E1:82:71:F7:CB:AE");
++
++            orbot =
++                    SignatureUtils.validateBroadcastIntent(context, orbot,
++                            hashes, false);
++        }
++
++        if (orbot != null) {
++            isInstalled = true;
++            handler.postDelayed(onStatusTimeout, statusTimeoutMs);
++            ContextCompat.registerReceiver(context, orbotStatusReceiver,
++                                           new IntentFilter(OrbotHelper.ACTION_STATUS),
++                                           ContextCompat.RECEIVER_EXPORTED);
++            context.sendBroadcast(orbot);
++        } else {
++            isInstalled = false;
++
++            for (StatusCallback cb : statusCallbacks) {
++                cb.onNotYetInstalled();
++            }
++        }
++
++        return (isInstalled);
++    }
++
++    private BroadcastReceiver orbotStatusReceiver = new BroadcastReceiver() {
++        @Override
++        public void onReceive(Context context, Intent intent) {
++            if (TextUtils.equals(intent.getAction(),
++                    OrbotHelper.ACTION_STATUS)) {
++                String status = intent.getStringExtra(OrbotHelper.EXTRA_STATUS);
++
++                if (status.equals(OrbotHelper.STATUS_ON)) {
++                    lastStatusIntent = intent;
++                    handler.removeCallbacks(onStatusTimeout);
++
++                    for (StatusCallback cb : statusCallbacks) {
++                        cb.onEnabled(intent);
++                    }
++                } else if (status.equals(OrbotHelper.STATUS_OFF)) {
++                    for (StatusCallback cb : statusCallbacks) {
++                        cb.onDisabled();
++                    }
++                } else if (status.equals(OrbotHelper.STATUS_STARTING)) {
++                    for (StatusCallback cb : statusCallbacks) {
++                        cb.onStarting();
++                    }
++                } else if (status.equals(OrbotHelper.STATUS_STOPPING)) {
++                    for (StatusCallback cb : statusCallbacks) {
++                        cb.onStopping();
++                    }
++                }
++            }
++        }
++    };
++
++    private final Runnable onStatusTimeout = new Runnable() {
++        @Override
++        public void run() {
++            try {
++                context.unregisterReceiver(orbotStatusReceiver);
++            } catch (IllegalArgumentException ignored) {}
++
++            for (StatusCallback cb : statusCallbacks) {
++                cb.onStatusTimeout();
++            }
++        }
++    };
++
++    private final BroadcastReceiver orbotInstallReceiver = new BroadcastReceiver() {
++        @Override
++        public void onReceive(Context context, Intent intent) {
++            if (TextUtils.equals(intent.getAction(),
++                    Intent.ACTION_PACKAGE_ADDED)) {
++                String pkgName = intent.getData().getEncodedSchemeSpecificPart();
++
++                if (OrbotHelper.ORBOT_PACKAGE_NAME.equals(pkgName)) {
++                    isInstalled = true;
++                    handler.removeCallbacks(onInstallTimeout);
++                    context.unregisterReceiver(orbotInstallReceiver);
++
++                    for (InstallCallback cb : installCallbacks) {
++                        cb.onInstalled();
++                    }
++
++                    init();
++                }
++            }
++        }
++    };
++
++    private final Runnable onInstallTimeout = new Runnable() {
++        @Override
++        public void run() {
++            context.unregisterReceiver(orbotInstallReceiver);
++
++            for (InstallCallback cb : installCallbacks) {
++                cb.onInstallTimeout();
++            }
++        }
++    };
++}
+diff --git a/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/ProxyHelper.java b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/ProxyHelper.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..c78ede3092e74ee2c812ae8bab3dd9ffc91f55fb
+--- /dev/null
++++ b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/ProxyHelper.java
+@@ -0,0 +1,77 @@
++/*
++ * Copyright 2012-2016 Nathan Freitas
++
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++package info.guardianproject.netcipher.proxy;
++
++import android.content.Context;
++import android.content.Intent;
++
++public interface ProxyHelper {
++
++    public boolean isInstalled(Context context);
++
++    public boolean requestStart(Context context);
++
++    public Intent getInstallIntent(Context context);
++
++    public Intent getStartIntent(Context context);
++
++    public String getName();
++
++    public final static String FDROID_PACKAGE_NAME = "org.fdroid.fdroid";
++    public final static String PLAY_PACKAGE_NAME = "com.android.vending";
++
++    /**
++     * A request to Orbot to transparently start Tor services
++     */
++    public final static String ACTION_START = "android.intent.action.PROXY_START";
++    /**
++     * {@link Intent} send by Orbot with {@code ON/OFF/STARTING/STOPPING} status
++     */
++    public final static String ACTION_STATUS = "android.intent.action.PROXY_STATUS";
++    /**
++     * {@code String} that contains a status constant: {@link #STATUS_ON},
++     * {@link #STATUS_OFF}, {@link #STATUS_STARTING}, or
++     * {@link #STATUS_STOPPING}
++     */
++    public final static String EXTRA_STATUS = "android.intent.extra.PROXY_STATUS";
++
++    public final static String EXTRA_PROXY_PORT_HTTP = "android.intent.extra.PROXY_PORT_HTTP";
++    public final static String EXTRA_PROXY_PORT_SOCKS = "android.intent.extra.PROXY_PORT_SOCKS";
++
++    /**
++     * A {@link String} {@code packageName} for Orbot to direct its status reply
++     * to, used in {@link #ACTION_START} {@link Intent}s sent to Orbot
++     */
++    public final static String EXTRA_PACKAGE_NAME = "android.intent.extra.PROXY_PACKAGE_NAME";
++
++    /**
++     * All tor-related services and daemons are stopped
++     */
++    public final static String STATUS_OFF = "OFF";
++    /**
++     * All tor-related services and daemons have completed starting
++     */
++    public final static String STATUS_ON = "ON";
++    public final static String STATUS_STARTING = "STARTING";
++    public final static String STATUS_STOPPING = "STOPPING";
++    /**
++     * The user has disabled the ability for background starts triggered by
++     * apps. Fallback to the old Intent that brings up Orbot.
++     */
++    public final static String STATUS_STARTS_DISABLED = "STARTS_DISABLED";
++}
++
+diff --git a/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/SignatureUtils.java b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/SignatureUtils.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..1975697d4a121d66daf50644668e38d653edeb9b
+--- /dev/null
++++ b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/SignatureUtils.java
+@@ -0,0 +1,487 @@
++/*
++ * Copyright (c) 2014 CommonsWare, LLC
++ * <p>
++ * Licensed under the Apache License, Version 2.0 (the "License"); you may
++ * not use this file except in compliance with the License. You may obtain
++ * a copy of the License at
++ * http://www.apache.org/licenses/LICENSE-2.0
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package info.guardianproject.netcipher.proxy;
++
++import android.annotation.SuppressLint;
++import android.content.ComponentName;
++import android.content.Context;
++import android.content.Intent;
++import android.content.pm.PackageInfo;
++import android.content.pm.PackageManager;
++import android.content.pm.PackageManager.NameNotFoundException;
++import android.content.pm.ResolveInfo;
++import android.content.pm.Signature;
++
++import androidx.annotation.Nullable;
++
++import org.signal.core.util.logging.Log;
++
++import java.security.MessageDigest;
++import java.security.NoSuchAlgorithmException;
++import java.util.ArrayList;
++import java.util.List;
++
++public class SignatureUtils {
++
++    private static final String TAG = Log.tag(SignatureUtils.class);
++
++    private SignatureUtils() {
++        // this is a utility class with only static methods
++    }
++
++    public static List<String> getOwnSignatureHash(Context context)
++            throws
++            NameNotFoundException {
++        return (getSignatureHash(context, context.getPackageName()));
++    }
++
++    @SuppressLint("PackageManagerGetSignatures")
++    public static List<String> getSignatureHash(Context context, String packageName)
++            throws
++            NameNotFoundException {
++        MessageDigest md = getMessageDigestOrThrow();
++        PackageInfo packageInfo =
++                context.getPackageManager()
++                        .getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
++
++        List<String> hashSet = new ArrayList<>();
++        for (Signature sig : packageInfo.signatures) {
++            hashSet.add(toHexStringWithColons(md.digest(sig.toByteArray())));
++        }
++        return (hashSet);
++    }
++
++    private static MessageDigest getMessageDigestOrThrow() {
++        try {
++            return MessageDigest.getInstance("SHA-256");
++        } catch (NoSuchAlgorithmException e) {
++            throw new AssertionError(e);
++        }
++    }
++
++    // based on https://stackoverflow.com/a/2197650/115145
++
++    public static String toHexStringWithColons(byte[] bytes) {
++        char[] hexArray =
++                {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B',
++                        'C', 'D', 'E', 'F'};
++        char[] hexChars = new char[(bytes.length * 3) - 1];
++        int v;
++
++        for (int j = 0; j < bytes.length; j++) {
++            v = bytes[j] & 0xFF;
++            hexChars[j * 3] = hexArray[v / 16];
++            hexChars[j * 3 + 1] = hexArray[v % 16];
++
++            if (j < bytes.length - 1) {
++                hexChars[j * 3 + 2] = ':';
++            }
++        }
++
++        return new String(hexChars);
++    }
++
++    /**
++     * Confirms that the broadcast receiver for a given Intent
++     * has the desired signature hash.
++     * <p>
++     * If you know the package name of the receiver, call
++     * setPackage() on the Intent before passing into this method.
++     * That will validate whether the package is installed and whether
++     * it has the proper signature hash. You can distinguish between
++     * these cases by passing true for the failIfHack parameter.
++     * <p>
++     * In general, there are three possible outcomes of calling
++     * this method:
++     * <p>
++     * 1. You get a SecurityException, because failIfHack is true,
++     * and we found some receiver whose app does not match the
++     * desired hash. The user may have installed a repackaged
++     * version of this app that is signed by the wrong key.
++     * <p>
++     * 2. You get null. If failIfHack is true, this means that no
++     * receiver was found that matches the Intent. If failIfHack
++     * is false, this means that no receiver was found that matches
++     * the Intent and has a valid matching signature.
++     * <p>
++     * 3. You get an Intent. This means we found a matching receiver
++     * that has a matching signature. The Intent will be a copy of
++     * the passed-in Intent, with the component name set to the
++     * matching receiver, so the "broadcast" will only go to this
++     * one component.
++     *
++     * @param context    any Context will do; the value is not retained
++     * @param toValidate the Intent that you intend to broadcast
++     * @param sigHash    the signature hash of the app that you expect
++     *                   to handle this broadcast
++     * @param failIfHack true if you want a SecurityException if
++     *                   a matching receiver is found but it has
++     *                   the wrong signature hash, false otherwise
++     * @return null if there is no matching receiver with the correct
++     * hash, or a copy of the toValidate parameter with the full component
++     * name of the target receiver added to the Intent
++     */
++    @Nullable
++    public static Intent validateBroadcastIntent(Context context,
++                                                 Intent toValidate,
++                                                 String sigHash,
++                                                 boolean failIfHack) {
++        ArrayList<String> sigHashes = new ArrayList<String>();
++
++        sigHashes.add(sigHash);
++
++        return (validateBroadcastIntent(context, toValidate, sigHashes,
++                failIfHack));
++    }
++
++    /**
++     * Confirms that the broadcast receiver for a given Intent
++     * has a desired signature hash.
++     * <p>
++     * If you know the package name of the receiver, call
++     * setPackage() on the Intent before passing into this method.
++     * That will validate whether the package is installed and whether
++     * it has a proper signature hash. You can distinguish between
++     * these cases by passing true for the failIfHack parameter.
++     * <p>
++     * In general, there are three possible outcomes of calling
++     * this method:
++     * <p>
++     * 1. You get a SecurityException, because failIfHack is true,
++     * and we found some receiver whose app does not match the
++     * desired hash. The user may have installed a repackaged
++     * version of this app that is signed by the wrong key.
++     * <p>
++     * 2. You get null. If failIfHack is true, this means that no
++     * receiver was found that matches the Intent. If failIfHack
++     * is false, this means that no receiver was found that matches
++     * the Intent and has a valid matching signature.
++     * <p>
++     * 3. You get an Intent. This means we found a matching receiver
++     * that has a matching signature. The Intent will be a copy of
++     * the passed-in Intent, with the component name set to the
++     * matching receiver, so the "broadcast" will only go to this
++     * one component.
++     *
++     * @param context    any Context will do; the value is not retained
++     * @param toValidate the Intent that you intend to broadcast
++     * @param sigHashes  the possible signature hashes of the app
++     *                   that you expect to handle this broadcast
++     * @param failIfHack true if you want a SecurityException if
++     *                   a matching receiver is found but it has
++     *                   the wrong signature hash, false otherwise
++     * @return null if there is no matching receiver with the correct
++     * hash, or a copy of the toValidate parameter with the full component
++     * name of the target receiver added to the Intent
++     */
++    @Nullable
++    public static Intent validateBroadcastIntent(Context context,
++                                                 Intent toValidate,
++                                                 List<String> sigHashes,
++                                                 boolean failIfHack) {
++        PackageManager pm = context.getPackageManager();
++        Intent result = null;
++        List<ResolveInfo> receivers =
++                pm.queryBroadcastReceivers(toValidate, 0);
++
++        if (receivers != null) {
++            for (ResolveInfo info : receivers) {
++                try {
++                    List<String> hashSet = getSignatureHash(context, info.activityInfo.packageName);
++                    if (hashSet.size() == 1 && sigHashes.contains(hashSet.get(0))) {
++                        ComponentName cn =
++                                new ComponentName(info.activityInfo.packageName,
++                                        info.activityInfo.name);
++
++                        result = new Intent(toValidate).setComponent(cn);
++                        break;
++                    } else if (failIfHack) {
++                        throw new SecurityException(
++                                "Package has signature hash mismatch: " +
++                                        info.activityInfo.packageName);
++                    }
++                } catch (NameNotFoundException e) {
++                    Log.w(TAG,
++                            "Exception when computing signature hash", e);
++                }
++            }
++        }
++
++        return (result);
++    }
++
++    /**
++     * Confirms that the activity for a given Intent has the
++     * desired signature hash.
++     * <p>
++     * If you know the package name of the activity, call
++     * setPackage() on the Intent before passing into this method.
++     * That will validate whether the package is installed and whether
++     * it has the proper signature hash. You can distinguish between
++     * these cases by passing true for the failIfHack parameter.
++     * <p>
++     * In general, there are three possible outcomes of calling
++     * this method:
++     * <p>
++     * 1. You get a SecurityException, because failIfHack is true,
++     * and we found some activity whose app does not match the
++     * desired hash. The user may have installed a repackaged
++     * version of this app that is signed by the wrong key.
++     * <p>
++     * 2. You get null. If failIfHack is true, this means that no
++     * activity was found that matches the Intent. If failIfHack
++     * is false, this means that no activity was found that matches
++     * the Intent and has a valid matching signature.
++     * <p>
++     * 3. You get an Intent. This means we found a matching activity
++     * that has a matching signature. The Intent will be a copy of
++     * the passed-in Intent, with the component name set to the
++     * matching activity, so a call to startActivity() for this
++     * Intent is guaranteed to go to this specific activity.
++     *
++     * @param context    any Context will do; the value is not retained
++     * @param toValidate the Intent that you intend to use with
++     *                   startActivity()
++     * @param sigHash    the signature hash of the app that you expect
++     *                   to handle this activity
++     * @param failIfHack true if you want a SecurityException if
++     *                   a matching activity is found but it has
++     *                   the wrong signature hash, false otherwise
++     * @return null if there is no matching activity with the correct
++     * hash, or a copy of the toValidate parameter with the full component
++     * name of the target activity added to the Intent
++     */
++    @Nullable
++    public static Intent validateActivityIntent(Context context,
++                                                Intent toValidate,
++                                                String sigHash,
++                                                boolean failIfHack) {
++        ArrayList<String> sigHashes = new ArrayList<String>();
++
++        sigHashes.add(sigHash);
++
++        return (validateActivityIntent(context, toValidate, sigHashes,
++                failIfHack));
++    }
++
++    /**
++     * Confirms that the activity for a given Intent has the
++     * desired signature hash.
++     * <p>
++     * If you know the package name of the activity, call
++     * setPackage() on the Intent before passing into this method.
++     * That will validate whether the package is installed and whether
++     * it has the proper signature hash. You can distinguish between
++     * these cases by passing true for the failIfHack parameter.
++     * <p>
++     * In general, there are three possible outcomes of calling
++     * this method:
++     * <p>
++     * 1. You get a SecurityException, because failIfHack is true,
++     * and we found some activity whose app does not match the
++     * desired hash. The user may have installed a repackaged
++     * version of this app that is signed by the wrong key.
++     * <p>
++     * 2. You get null. If failIfHack is true, this means that no
++     * activity was found that matches the Intent. If failIfHack
++     * is false, this means that no activity was found that matches
++     * the Intent and has a valid matching signature.
++     * <p>
++     * 3. You get an Intent. This means we found a matching activity
++     * that has a matching signature. The Intent will be a copy of
++     * the passed-in Intent, with the component name set to the
++     * matching activity, so a call to startActivity() for this
++     * Intent is guaranteed to go to this specific activity.
++     *
++     * @param context    any Context will do; the value is not retained
++     * @param toValidate the Intent that you intend to use with
++     *                   startActivity()
++     * @param sigHashes  the signature hashes of the app that you expect
++     *                   to handle this activity
++     * @param failIfHack true if you want a SecurityException if
++     *                   a matching activity is found but it has
++     *                   the wrong signature hash, false otherwise
++     * @return null if there is no matching activity with the correct
++     * hash, or a copy of the toValidate parameter with the full component
++     * name of the target activity added to the Intent
++     */
++    @Nullable
++    public static Intent validateActivityIntent(Context context,
++                                                Intent toValidate,
++                                                List<String> sigHashes,
++                                                boolean failIfHack) {
++        PackageManager pm = context.getPackageManager();
++        Intent result = null;
++        List<ResolveInfo> activities =
++                pm.queryIntentActivities(toValidate, 0);
++
++        if (activities != null) {
++            for (ResolveInfo info : activities) {
++                try {
++                    List<String> hashSet = getSignatureHash(context, info.activityInfo.packageName);
++                    if (hashSet.size() == 1 && sigHashes.contains(hashSet.get(0))) {
++                        ComponentName cn =
++                                new ComponentName(info.activityInfo.packageName,
++                                        info.activityInfo.name);
++
++                        result = new Intent(toValidate).setComponent(cn);
++                        break;
++                    } else if (failIfHack) {
++                        throw new SecurityException(
++                                "Package has signature hash mismatch: " +
++                                        info.activityInfo.packageName);
++                    }
++                } catch (NameNotFoundException e) {
++                    Log.w(TAG,
++                            "Exception when computing signature hash", e);
++                }
++            }
++        }
++
++        return (result);
++    }
++
++    /**
++     * Confirms that the service for a given Intent has the
++     * desired signature hash.
++     * <p>
++     * If you know the package name of the service, call
++     * setPackage() on the Intent before passing into this method.
++     * That will validate whether the package is installed and whether
++     * it has the proper signature hash. You can distinguish between
++     * these cases by passing true for the failIfHack parameter.
++     * <p>
++     * In general, there are three possible outcomes of calling
++     * this method:
++     * <p>
++     * 1. You get a SecurityException, because failIfHack is true,
++     * and we found some service whose app does not match the
++     * desired hash. The user may have installed a repackaged
++     * version of this app that is signed by the wrong key.
++     * <p>
++     * 2. You get null. If failIfHack is true, this means that no
++     * service was found that matches the Intent. If failIfHack
++     * is false, this means that no service was found that matches
++     * the Intent and has a valid matching signature.
++     * <p>
++     * 3. You get an Intent. This means we found a matching service
++     * that has a matching signature. The Intent will be a copy of
++     * the passed-in Intent, with the component name set to the
++     * matching service, so a call to startService() or
++     * bindService() for this Intent is guaranteed to go to this
++     * specific service.
++     *
++     * @param context    any Context will do; the value is not retained
++     * @param toValidate the Intent that you intend to use with
++     *                   startService() or bindService()
++     * @param sigHash    the signature hash of the app that you expect
++     *                   to handle this service
++     * @param failIfHack true if you want a SecurityException if
++     *                   a matching service is found but it has
++     *                   the wrong signature hash, false otherwise
++     * @return null if there is no matching service with the correct
++     * hash, or a copy of the toValidate parameter with the full component
++     * name of the target service added to the Intent
++     */
++    @Nullable
++    public static Intent validateServiceIntent(Context context,
++                                               Intent toValidate,
++                                               String sigHash,
++                                               boolean failIfHack) {
++        ArrayList<String> sigHashes = new ArrayList<String>();
++
++        sigHashes.add(sigHash);
++
++        return (validateServiceIntent(context, toValidate, sigHashes,
++                failIfHack));
++    }
++
++    /**
++     * Confirms that the service for a given Intent has the
++     * desired signature hash.
++     * <p>
++     * If you know the package name of the service, call
++     * setPackage() on the Intent before passing into this method.
++     * That will validate whether the package is installed and whether
++     * it has the proper signature hash. You can distinguish between
++     * these cases by passing true for the failIfHack parameter.
++     * <p>
++     * In general, there are three possible outcomes of calling
++     * this method:
++     * <p>
++     * 1. You get a SecurityException, because failIfHack is true,
++     * and we found some service whose app does not match the
++     * desired hash. The user may have installed a repackaged
++     * version of this app that is signed by the wrong key.
++     * <p>
++     * 2. You get null. If failIfHack is true, this means that no
++     * service was found that matches the Intent. If failIfHack
++     * is false, this means that no service was found that matches
++     * the Intent and has a valid matching signature.
++     * <p>
++     * 3. You get an Intent. This means we found a matching service
++     * that has a matching signature. The Intent will be a copy of
++     * the passed-in Intent, with the component name set to the
++     * matching service, so a call to startService() or
++     * bindService() for this Intent is guaranteed to go to this
++     * specific service.
++     *
++     * @param context    any Context will do; the value is not retained
++     * @param toValidate the Intent that you intend to use with
++     *                   startService() or bindService()
++     * @param sigHashes  the signature hash of the app that you expect
++     *                   to handle this service
++     * @param failIfHack true if you want a SecurityException if
++     *                   a matching service is found but it has
++     *                   the wrong signature hash, false otherwise
++     * @return null if there is no matching service with the correct
++     * hash, or a copy of the toValidate parameter with the full component
++     * name of the target service added to the Intent
++     */
++    @Nullable
++    public static Intent validateServiceIntent(Context context,
++                                               Intent toValidate,
++                                               List<String> sigHashes,
++                                               boolean failIfHack) {
++        PackageManager pm = context.getPackageManager();
++        Intent result = null;
++        List<ResolveInfo> services =
++                pm.queryIntentServices(toValidate, 0);
++
++        if (services != null) {
++            for (ResolveInfo info : services) {
++                try {
++                    List<String> hashSet = getSignatureHash(context, info.activityInfo.packageName);
++                    if (hashSet.size() == 1 && sigHashes.contains(hashSet.get(0))) {
++                        ComponentName cn =
++                                new ComponentName(info.serviceInfo.packageName,
++                                        info.serviceInfo.name);
++
++                        result = new Intent(toValidate).setComponent(cn);
++                        break;
++                    } else if (failIfHack) {
++                        throw new SecurityException(
++                                "Package has signature hash mismatch: " +
++                                        info.activityInfo.packageName);
++                    }
++                } catch (NameNotFoundException e) {
++                    Log.w(TAG, e);
++                }
++            }
++        }
++
++        return result;
++    }
++}
+diff --git a/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/StatusCallback.java b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/StatusCallback.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..0616a498eeecc888a5c85d79fee62ea11e8b70e6
+--- /dev/null
++++ b/lib/netcipher/src/main/java/info/guardianproject/netcipher/proxy/StatusCallback.java
+@@ -0,0 +1,64 @@
++/*
++ * Copyright (c) 2016 CommonsWare, LLC
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ * http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
++package info.guardianproject.netcipher.proxy;
++
++import android.content.Intent;
++
++/**
++ * Callback interface used for reporting Orbot status
++ */
++public interface StatusCallback {
++    /**
++     * Called when Orbot is operational
++     *
++     * @param statusIntent an Intent containing information about
++     *                     Orbot, including proxy ports
++     */
++    void onEnabled(Intent statusIntent);
++
++    /**
++     * Called when Orbot reports that it is starting up
++     */
++    void onStarting();
++
++    /**
++     * Called when Orbot reports that it is shutting down
++     */
++    void onStopping();
++
++    /**
++     * Called when Orbot reports that it is no longer running
++     */
++    void onDisabled();
++
++    /**
++     * Called if our attempt to get a status from Orbot failed
++     * after a defined period of time. See statusTimeout() on
++     * OrbotInitializer.
++     */
++    void onStatusTimeout();
++
++    /**
++     * Called if Orbot is not yet installed. Usually, you handle
++     * this by checking the return value from init() on OrbotInitializer
++     * or calling isInstalled() on OrbotInitializer. However, if
++     * you have need for it, if a callback is registered before
++     * an init() call determines that Orbot is not installed, your
++     * callback will be called with onNotYetInstalled().
++     */
++    void onNotYetInstalled();
++}
+
+--------------false--
+
+
