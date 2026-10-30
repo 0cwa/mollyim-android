@@ -124,7 +124,7 @@ AI compatibility decision. Every conflict must be covered by a resolution
 or an explicit unchanged-content decision.
 
 The final source must equal tree
-`5aaf121bd0e62d9e1964ecb36b7f26b2684a4a5`, the tree of synthetic source
+`5aaf121bd0e62d9e1964aecb36b7f26b2684a4a5`, the tree of synthetic source
 commit `a3e91de532e3448e2732bd298fce56a01352ee97`. It extends donation
 checkpoint `04b003190e7befd08606c6a82a5aa7d5ba62fb19` (tree
 `9de2713f0b4dfd77539613cb27b6f80abee708fd`) with channel-checked cleanup of
@@ -179,7 +179,7 @@ The tree commands must print, in order, `2533afec2fe2d7f9fc682f699fc21d762452188
 `0e5c581b7db3f4429256630011790f3ed4ad141f`,
 `febafe3aa084d0ca6219e4f10a27ee66fbecfe4e`,
 `9de2713f0b4dfd77539613cb27b6f80abee708fd`, and
-`5aaf121bd0e62d9e1964ecb36b7f26b2684a4a5`. The bundles do not carry their
+`5aaf121bd0e62d9e1964aecb36b7f26b2684a4a5`. The bundles do not carry their
 prerequisites; a fresh clone cannot verify or fetch a later bundle until the
 earlier checkpoints are materialized.
 
