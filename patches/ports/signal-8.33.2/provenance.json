@@ -154,6 +154,33 @@
       ],
       "mailbox_bytes": 249467,
       "after_tree": "1ca1e7226a4197aee01630afe7ba1e95a21fde22"
+    },
+    {
+      "id": "initial/resources-and-branding",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Resolve shared resource conflicts and relocated resources, retaining the port source's Molly branding and translations.",
+      "ai_generated": true,
+      "before_tree": "1ca1e7226a4197aee01630afe7ba1e95a21fde22",
+      "paths": 545,
+      "conflict_paths": 268,
+      "patches": [
+        "initial/resources-and-branding/0001-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0002-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0003-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0004-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0005-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0006-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0007-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0008-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0009-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0010-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0011-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0012-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0013-resolve-resources-and-branding.patch",
+        "initial/resources-and-branding/0014-resolve-resources-and-branding.patch"
+      ],
+      "mailbox_bytes": 7272520,
+      "after_tree": "51b1e9f4d40975ad2b4b8a2f043bb90f86e25551"
     }
   ],
   "mailbox_sha256": {
@@ -173,6 +200,20 @@
     "initial/payments-and-donations/0001-resolve-payments-and-donations.patch": "1837d9342eada42d7e2b1dc764a45a67ba82061ee7dc00579d1c9b73ade51a42",
     "initial/privacy-controls/0001-resolve-privacy-controls.patch": "0dd065b86ab9969905669074fa298ffa62e36768ee77e31b60085e9b7b85c213",
     "initial/registration-and-linking/0001-resolve-registration-and-linking.patch": "cee0bc37c7d2fb467c515e3590140441fba7d2f00fcd3b6cd43a01458411e2e0",
-    "initial/registration-and-linking/0002-resolve-registration-and-linking.patch": "2a41ff62220e59693f2ea31247fda0ecb89c96a32ba0f1d141b21c4e46a6019f"
+    "initial/registration-and-linking/0002-resolve-registration-and-linking.patch": "2a41ff62220e59693f2ea31247fda0ecb89c96a32ba0f1d141b21c4e46a6019f",
+    "initial/resources-and-branding/0001-resolve-resources-and-branding.patch": "21df31fcd190db322fccd116efe9643e1e12691b2a33a07bcb7d6bf0db25d8e3",
+    "initial/resources-and-branding/0002-resolve-resources-and-branding.patch": "c067836e65545b09bfd365044d4be3c86465d9c5eb29ee57fd742b061138b11f",
+    "initial/resources-and-branding/0003-resolve-resources-and-branding.patch": "b8714589ca4503eda76f93f1a8b13b7994ecebc8abb190fde951fbc989658617",
+    "initial/resources-and-branding/0004-resolve-resources-and-branding.patch": "21912192dd07949f83943297746cf720bc64bd3cd0c1ed091e9d2a62e56e8fdb",
+    "initial/resources-and-branding/0005-resolve-resources-and-branding.patch": "15c824dc4f2ddf5bd8dff6cd69655575573a82d1140886fad280b97d90b54c2d",
+    "initial/resources-and-branding/0006-resolve-resources-and-branding.patch": "928a2eccbfec7004bc865a916f5d6446078b91f38b6448c8e0b5d8ea1ddf1335",
+    "initial/resources-and-branding/0007-resolve-resources-and-branding.patch": "58047007f428df12b1c7aed29eb3a2882ef590c540d72e5412445216a8ad2188",
+    "initial/resources-and-branding/0008-resolve-resources-and-branding.patch": "c2db2d779aa5c4b669a46f11278f9cfeb4e695f86620cce9c8fde2af1cf8036b",
+    "initial/resources-and-branding/0009-resolve-resources-and-branding.patch": "fbb7d557a9ade946c852ebd0e53cdf1e5fa194015a9b5d26f1b55ade6a5aff73",
+    "initial/resources-and-branding/0010-resolve-resources-and-branding.patch": "e56a875ada2caddddb17ebadf094313d4cea5de95abf3ceb1c639414d888cb80",
+    "initial/resources-and-branding/0011-resolve-resources-and-branding.patch": "c92f3af00e7c2fa1fe92a3f565c08fd7f94e3033a44d17012d0e8e95da1ccf77",
+    "initial/resources-and-branding/0012-resolve-resources-and-branding.patch": "0701fffc7026d20eba8d82f38394de1d580a206625c45ac2a0dba08fc3c1f039",
+    "initial/resources-and-branding/0013-resolve-resources-and-branding.patch": "d7df242a03f9d62a294b4d0e31884e14e0909f191ded940eac25bd64ec2affdc",
+    "initial/resources-and-branding/0014-resolve-resources-and-branding.patch": "3c9bd0d09d61c6e3071c0c535e08a27f46962beefa97fecc56c4b4d5b1e6e932"
   }
 }
