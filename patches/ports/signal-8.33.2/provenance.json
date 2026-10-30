@@ -125,6 +125,20 @@
       ],
       "mailbox_bytes": 278119,
       "after_tree": "6c7d63cc94e14b50e157d40d2f6e140f8837b389"
+    },
+    {
+      "id": "initial/privacy-controls",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Retain Molly privacy policies for calls, unknown contacts and logging in the updated upstream code.",
+      "ai_generated": true,
+      "before_tree": "6c7d63cc94e14b50e157d40d2f6e140f8837b389",
+      "paths": 6,
+      "conflict_paths": 5,
+      "patches": [
+        "initial/privacy-controls/0001-resolve-privacy-controls.patch"
+      ],
+      "mailbox_bytes": 22816,
+      "after_tree": "9136333e998bff4ea5904e1b7141fa091c9c94fc"
     }
   ],
   "mailbox_sha256": {
@@ -141,6 +155,7 @@
     "initial/module-pruning/0007-resolve-module-pruning.patch": "ce1b413c6b935a3f6a5568c73793e17d1c3768353ab2c0f8de8a16301e529549",
     "initial/networking-and-proxies/0001-resolve-networking-and-proxies.patch": "3cf3cf933d19a18334234e46868366d36bd5d769431dae844e82e889f96811a1",
     "initial/notifications-and-unifiedpush/0001-resolve-notifications-and-unifiedpush.patch": "8a29f1e92ee9ee883a48a64a3352231674d56f9176afbf7c9b77402b09d766f2",
-    "initial/payments-and-donations/0001-resolve-payments-and-donations.patch": "1837d9342eada42d7e2b1dc764a45a67ba82061ee7dc00579d1c9b73ade51a42"
+    "initial/payments-and-donations/0001-resolve-payments-and-donations.patch": "1837d9342eada42d7e2b1dc764a45a67ba82061ee7dc00579d1c9b73ade51a42",
+    "initial/privacy-controls/0001-resolve-privacy-controls.patch": "0dd065b86ab9969905669074fa298ffa62e36768ee77e31b60085e9b7b85c213"
   }
 }
