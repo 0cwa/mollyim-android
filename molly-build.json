@@ -12,7 +12,7 @@
   },
   "port": null,
   "target_tree": "3cd0bb01cf840e4b702187085432020d163d80ce",
-  "native": null,
+  "native": "native-ringrtc.json",
   "android": {
     "sdk": "36.1",
     "build_tools": "36.0.0",

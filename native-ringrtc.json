@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "base_repository": "https://github.com/mollyim/ringrtc.git",
+  "upstream_repository": "https://github.com/signalapp/ringrtc.git",
+  "base_commit": "8d81a87adcb08b77446b691be3692ff7ed53d580",
+  "upstream_commit": "4b1b6fa53c9f30c87c8ea78e44675d4a13e1e4d3",
+  "source_commit": "645198948ced5ee39db0e7c58cb739ba4f594bf5",
+  "source_tree": "f310c13efdb82ff6123f05df6e232a74babb7d33",
+  "production_patch_id": "1f743de061369a320a4f2b7b7d46882c30530247",
+  "commit_date": "2026-09-04T20:15:36Z",
+  "artifact_group": "im.molly",
+  "artifact_name": "ringrtc-android",
+  "original_version": "2.69.5-1",
+  "artifact_version": "2.69.5-1-signal-hotfix-4b1b6fa53c9f",
+  "test_import_resolution": {
+    "path": "src/rust/tests/common/mod.rs",
+    "ancestor_blob": "00a1bac3d769751f142884c5ad98b864452c9c25",
+    "ours_blob": "e60981e0f751d87d1a70feb31a743f4468eb1f93",
+    "theirs_blob": "627acad2fa3987415c21b1fe1207369e297116f3",
+    "resolved_blob": "2b94bd526b53ddb42d09252b0aec6aa73ab85a30"
+  }
+}
