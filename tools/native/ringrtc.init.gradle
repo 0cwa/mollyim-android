@@ -1,0 +1,72 @@
+// Generated with exact paths and hashes after a successful native source build.
+// This runs only for the reconstructed application's main build.
+import groovy.json.JsonSlurper
+import java.security.MessageDigest
+
+def nativeInputs = new JsonSlurper().parseText(new String('NATIVE_INPUTS_BASE64'.decodeBase64(), 'UTF-8'))
+def application = new File(nativeInputs.application).canonicalFile
+def verifyFile = { String filename, String expected ->
+    def file = new File(filename)
+    if (!file.isFile() || java.nio.file.Files.isSymbolicLink(file.toPath())) {
+        throw new GradleException("Missing native hotfix input: ${filename}")
+    }
+    def digest = MessageDigest.getInstance('SHA-256')
+    file.withInputStream { stream ->
+        byte[] buffer = new byte[65536]
+        int count
+        while ((count = stream.read(buffer)) > 0) {
+            digest.update(buffer, 0, count)
+        }
+    }
+    if (digest.digest().encodeHex().toString() != expected) {
+        throw new GradleException("Changed native hotfix input: ${filename}")
+    }
+}
+
+gradle.settingsEvaluated { settings ->
+    if (settings.settingsDir.canonicalFile == application) {
+        if (gradle.startParameter.dependencyVerificationMode.toString() != 'STRICT') {
+            throw new GradleException('The native hotfix requires strict dependency verification')
+        }
+        if (!gradle.startParameter.writeDependencyVerifications.empty) {
+            throw new GradleException('Do not regenerate unrelated dependency checksums during the hotfix build')
+        }
+        nativeInputs.files.each { path, digest -> verifyFile(path, digest) }
+        verifyFile(nativeInputs.verification, nativeInputs.verificationSha256)
+        def repositories = settings.dependencyResolutionManagement.repositories
+        repositories.exclusiveContent {
+            forRepository {
+                repositories.maven {
+                    name = 'verifiedLocalRingRtcHotfix'
+                    url = new File(nativeInputs.repository).toURI()
+                }
+            }
+            filter {
+                includeVersion(nativeInputs.group, nativeInputs.name, nativeInputs.version)
+            }
+        }
+    }
+}
+
+gradle.beforeProject { project ->
+    if (project.rootDir.canonicalFile == application) {
+        project.configurations.configureEach { configuration ->
+            configuration.resolutionStrategy.eachDependency { details ->
+                if (details.requested.name == nativeInputs.name) {
+                    if (details.requested.group != nativeInputs.group ||
+                        !(details.requested.version in [nativeInputs.originalVersion, nativeInputs.version])) {
+                        throw new GradleException("Unexpected RingRTC dependency: ${details.requested}")
+                    }
+                    details.useTarget("${nativeInputs.group}:${nativeInputs.name}:${nativeInputs.version}")
+                    details.because('Signal native teardown hotfix on the pinned Molly API')
+                }
+            }
+            configuration.resolutionStrategy.componentSelection.all { selection ->
+                if (selection.candidate.module == nativeInputs.name &&
+                    (selection.candidate.group != nativeInputs.group || selection.candidate.version != nativeInputs.version)) {
+                    selection.reject('Only the verified local Molly RingRTC hotfix is allowed')
+                }
+            }
+        }
+    }
+}

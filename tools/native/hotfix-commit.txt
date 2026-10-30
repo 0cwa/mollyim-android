@@ -1,0 +1,27 @@
+Ensure calls terminate completely in corner cases
+
+Backport Signal's native call-teardown fix to Molly RingRTC v2.69.5-1
+(8d81a87adcb08b77446b691be3692ff7ed53d580). This keeps Molly's existing
+Android API, proxy support and WebRTC fork while preventing a full FSM
+queue or a notification error from leaving call media alive after hangup.
+
+The production change and all six regression tests come from Signal
+commit 4b1b6fa53c9f30c87c8ea78e44675d4a13e1e4d3. This backport does not
+upgrade the Android application to a newer RingRTC API.
+
+Git resolved every production hunk. Resolve only two test-import
+conflicts in src/rust/tests/common/mod.rs: retain the older lazy_static,
+rand and CallManager imports, then add the upstream hotfix's Arc,
+Condvar, Mutex, DataMode, EVENT_QUEUE_SIZE and ConnectionObserverEvent
+imports. LazyLock and CreateGroupCallParams belong to newer upstream
+refactors and are not used by this base. No test behavior is changed.
+
+Source-diff verification confirms the production patch-id matches the
+upstream commit. Native compilation, simulation tests and device call
+acceptance remain separate build/release gates.
+
+Upstream-Repository: https://github.com/signalapp/ringrtc
+Upstream-Commit: 4b1b6fa53c9f30c87c8ea78e44675d4a13e1e4d3
+Molly-Base: 8d81a87adcb08b77446b691be3692ff7ed53d580
+Related: https://github.com/mollyim/mollyim-android/issues/843
+(cherry picked from commit 4b1b6fa53c9f30c87c8ea78e44675d4a13e1e4d3)
