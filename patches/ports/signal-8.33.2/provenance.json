@@ -35,10 +35,25 @@
       ],
       "mailbox_bytes": 13503,
       "after_tree": "1fcff6ea474e0d0e559277c61922356202abf355"
+    },
+    {
+      "id": "initial/backup-and-restore",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Resolve backup and restore API changes while retaining Molly backup preferences and serialization behavior.",
+      "ai_generated": true,
+      "before_tree": "1fcff6ea474e0d0e559277c61922356202abf355",
+      "paths": 14,
+      "conflict_paths": 10,
+      "patches": [
+        "initial/backup-and-restore/0001-resolve-backup-and-restore.patch"
+      ],
+      "mailbox_bytes": 39853,
+      "after_tree": "d3c88755f81f839cb5da84ea466b0b39305bbe97"
     }
   ],
   "mailbox_sha256": {
     "initial/app-updates/0001-resolve-app-updates.patch": "71fddbdb14debf342c20fc86e79bb61d61a77a5598f2e9847738335332fbb6b8",
-    "initial/appearance/0001-resolve-appearance.patch": "946fbcfee80da8736fe1a4b9777a448df348ac3e8db88f9c0427a089f5667321"
+    "initial/appearance/0001-resolve-appearance.patch": "946fbcfee80da8736fe1a4b9777a448df348ac3e8db88f9c0427a089f5667321",
+    "initial/backup-and-restore/0001-resolve-backup-and-restore.patch": "90b329aec26b42354b48e7b936af941f6e856e3b01b49147437aa0796cda1a99"
   }
 }
