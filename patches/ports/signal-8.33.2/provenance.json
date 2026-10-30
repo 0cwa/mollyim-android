@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "mechanical_tree": "759ef1c309d93aa7e4ac7217b144c04545562f11",
+  "signal": "6e9dddc01f1b26e608ac683807c51e139c141ed2",
+  "origin_base": "c47a74ba0961903eeaeda6d22347a990056c3e83",
+  "origin_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
+  "initial_source": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+  "complete_source_checkpoint": false,
+  "target_tree": null,
+  "layers": [
+    {
+      "id": "initial/app-updates",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Retain the Molly updater and update preferences on the updated Signal application structure.",
+      "ai_generated": true,
+      "before_tree": "759ef1c309d93aa7e4ac7217b144c04545562f11",
+      "paths": 8,
+      "conflict_paths": 6,
+      "patches": [
+        "initial/app-updates/0001-resolve-app-updates.patch"
+      ],
+      "mailbox_bytes": 28233,
+      "after_tree": "1951338ed748a50ab19e5067c83b1b351e91db2d"
+    }
+  ],
+  "mailbox_sha256": {
+    "initial/app-updates/0001-resolve-app-updates.patch": "71fddbdb14debf342c20fc86e79bb61d61a77a5598f2e9847738335332fbb6b8"
+  }
+}
