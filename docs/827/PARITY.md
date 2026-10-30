@@ -83,6 +83,17 @@ documentation, reports, and workflow metadata. The projection uses a private Git
 index and leaves the checkout's index intact. The expected application tree is a
 validation target, not a statement that a particular current run passed.
 
+The PR's later runner-compatibility changes to `.github/workflows/android.yml`
+and `.github/workflows/diffuse.yml` are **CI-only source overrides**, not
+changes to the pilot application snapshot. For the source comparison, the
+validator records the raw, unmodified HEAD projection and separately restores
+only these two workflow entries from pinned commit `d9987626` in its *private*
+index. It reports the actual workflow overrides and requires the normalized
+application projection to equal immutable tree `e783cf54`. Neither the checkout
+nor the replayed application tree is modified. Other CI files, build scripts,
+and Android source paths remain covered by exact projection equality; these
+workflow changes require independent review and are not evidence of APK parity.
+
 The authored forest selects and orders mailbox patches. The separate
 [`parity-evidence.json`](parity-evidence.json) records application assertions;
 it cannot override forest topology or patch selection.

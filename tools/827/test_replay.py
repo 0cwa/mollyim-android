@@ -137,6 +137,62 @@ class ReplaySafetyTests(unittest.TestCase):
                                                      text=True, env=clean_git_env()).strip(), head_before)
             self.assertEqual((repo / 'app/main.kt').read_text(), 'unstaged app change')
 
+    def test_source_projection_normalizes_only_pinned_ci_workflow_changes(self):
+        with tempfile.TemporaryDirectory() as temp:
+            repo = Path(temp)
+            subprocess.run(['git', 'init', '-q', str(repo)], check=True, env=clean_git_env())
+
+            def git(*args):
+                return subprocess.check_output(['git', '-C', str(repo), *args],
+                                               text=True, env=clean_git_env()).strip()
+
+            git('config', 'user.email', 'test@example.invalid')
+            git('config', 'user.name', 'Test')
+            for directory in ('app', '.github/workflows', 'docs/827'):
+                (repo / directory).mkdir(parents=True)
+            (repo / 'app/main.kt').write_text('application source')
+            for path in replay.SOURCE_ONLY_CI_WORKFLOWS:
+                (repo / path).write_text('original workflow')
+            git('add', '.')
+            git('commit', '-qm', 'Pinned application')
+            pinned = git('rev-parse', 'HEAD')
+            expected = project_tree(repo, pinned, ['docs/827'])
+
+            (repo / '.github/workflows/android.yml').write_text('CI runner update')
+            (repo / 'docs/827/report.md').write_text('tooling metadata')
+            git('add', '.')
+            git('commit', '-qm', 'CI-only workflow changes')
+            ci_head = git('rev-parse', 'HEAD')
+            index_before = (repo / '.git/index').read_bytes()
+            self.assertNotEqual(project_tree(repo, ci_head, ['docs/827']), expected)
+            normalized = project_tree(
+                repo, ci_head, ['docs/827'], restore_from=pinned,
+                restored_paths=replay.SOURCE_ONLY_CI_WORKFLOWS
+            )
+            self.assertEqual(normalized, expected)
+            self.assertEqual((repo / '.git/index').read_bytes(), index_before)
+            self.assertEqual((repo / '.github/workflows/android.yml').read_text(), 'CI runner update')
+            with self.assertRaisesRegex(replay.ReplayError, 'supplied together'):
+                project_tree(repo, ci_head, [], restored_paths=replay.SOURCE_ONLY_CI_WORKFLOWS)
+
+            # Neither changes to Android sources nor extra, unapproved CI files
+            # can be normalized by the two-path workflow allowlist.
+            (repo / 'app/main.kt').write_text('unexpected application change')
+            git('add', '.')
+            git('commit', '-qm', 'Application change')
+            self.assertNotEqual(project_tree(
+                repo, 'HEAD', ['docs/827'], restore_from=pinned,
+                restored_paths=replay.SOURCE_ONLY_CI_WORKFLOWS
+            ), expected)
+            git('reset', '--hard', ci_head)
+            (repo / '.github/workflows/other.yml').write_text('unapproved CI workflow')
+            git('add', '.')
+            git('commit', '-qm', 'Other CI change')
+            self.assertNotEqual(project_tree(
+                repo, 'HEAD', ['docs/827'], restore_from=pinned,
+                restored_paths=replay.SOURCE_ONLY_CI_WORKFLOWS
+            ), expected)
+
     def test_residual_diff_compression_is_deterministic_and_lossless(self):
         payload = b'@@ -1 +1 @@\n-signal\n+molly\n'
         first = replay.deterministic_gzip(payload)

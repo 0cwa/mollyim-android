@@ -19,6 +19,9 @@ HEX64 = re.compile(r'^[a-f0-9]{64}$')
 PINNED_SIGNAL_BASE = 'c47a74ba0961903eeaeda6d22347a990056c3e83'
 PINNED_MOLLY_TARGET = '0e202dda90785771ff8c87526eaaf30c655f54f3'
 ALLOWED_METADATA_EXCLUSIONS = {'.github/workflows/827-poc.yml', '.github/workflows/827-patch-forest.yml', '.github/workflows/molly-signal-port.yml', 'docs/827', 'patches/827', 'patches/molly', 'patches/molly-signal-8.33.2', 'reports/827', 'tools/827'}
+# Existing CI configurations changed after the pinned application snapshot.
+# Restore only these two CI files for source parity; never mask build/app changes.
+SOURCE_ONLY_CI_WORKFLOWS = ('.github/workflows/android.yml', '.github/workflows/diffuse.yml')
 class ReplayError(RuntimeError):
     pass
 
@@ -323,6 +326,17 @@ def run_replay(args):
     if expected_source_tree != manifest['expected_tree_sha']:
         raise ReplayError('expected_tree_sha does not match projected expected_application_commit tree')
     source_projection_tree = project_tree(source, 'HEAD', metadata_exclusions)
+    changed_ci_workflows = [
+        path for path in SOURCE_ONLY_CI_WORKFLOWS
+        if git(source, 'diff', '--name-only', expected_application_commit, 'HEAD',
+               '--', path).output.strip()
+    ]
+    source_application_tree = (
+        project_tree(source, 'HEAD', metadata_exclusions,
+                     restore_from=expected_application_commit,
+                     restored_paths=changed_ci_workflows)
+        if changed_ci_workflows else source_projection_tree
+    )
 
     for feature in manifest['features']:
         for patch in feature['patches']:
@@ -347,6 +361,8 @@ def run_replay(args):
         'expected_application_commit': manifest['expected_application_commit'],
         'source_head_sha': git(source, 'rev-parse', 'HEAD').output.strip(),
         'source_projected_tree_sha': source_projection_tree,
+        'source_application_projected_tree_sha': source_application_tree,
+        'source_ci_workflow_overrides': changed_ci_workflows,
         'metadata_exclusions': manifest['metadata_exclusions'], 'features': [], 'warnings': [
             'Full parity is checked only on declared parity_paths; this is not full application or APK equivalence.'
         ],
@@ -399,7 +415,7 @@ def run_replay(args):
             raise ReplayError('carrier .hangar state must not enter a release tree')
         report['tree_sha'] = git(worktree, 'rev-parse', 'HEAD^{tree}').output.strip()
         report['expected_tree_match'] = (report['tree_sha'] == manifest['expected_tree_sha']) if manifest.get('expected_tree_sha') else None
-        report['source_projection_match'] = report['source_projected_tree_sha'] == report['tree_sha']
+        report['source_projection_match'] = report['source_application_projected_tree_sha'] == report['tree_sha']
         changed = named_paths(worktree, manifest['signal_base'], 'HEAD')
         report['changed_paths'] = changed
         scopes = [scope for feature in features for scope in feature['scopes']]
