@@ -6,7 +6,7 @@
   "origin_target": "0e202dda90785771ff8c87526eaaf30c655f54f3",
   "initial_source": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
   "complete_source_checkpoint": true,
-  "target_tree": "9364c2f59f8a5557dfc51aa8deef52fd6103089c",
+  "target_tree": "48776ef81992b2b2c5418d8d55d9113094fe9124",
   "layers": [
     {
       "id": "initial/app-updates",
@@ -225,6 +225,19 @@
       ],
       "mailbox_bytes": 511325,
       "after_tree": "9364c2f59f8a5557dfc51aa8deef52fd6103089c"
+    },
+    {
+      "id": "followups/restore-preference-import",
+      "source_commit": "1dc39842dfad7c31be516556f8da95556d6c810f",
+      "description": "Restore the Molly preference import in ported megaphones",
+      "ai_generated": true,
+      "before_tree": "9364c2f59f8a5557dfc51aa8deef52fd6103089c",
+      "after_tree": "48776ef81992b2b2c5418d8d55d9113094fe9124",
+      "paths": 1,
+      "patches": [
+        "followups/restore-preference-import/0001-restore-preference-import.patch"
+      ],
+      "mailbox_bytes": 1416
     }
   ],
   "mailbox_sha256": {
@@ -263,6 +276,7 @@
     "initial/integration/0001-resolve-integration.patch": "0263667814598fd974307790e08486c1f774f76ad19cb2eafb858af12dadc88d",
     "initial/integration/0002-resolve-integration.patch": "b01431f4cc448ea2459fef50e2df5f31247b569ebf000378176acfb81bcb5310",
     "initial/integration/0003-resolve-integration.patch": "e9ad67c593976a98a5b350dd75ed9af21a813375f30d1bfae16c1d39ee0d2efa",
-    "initial/build-and-release/0001-resolve-build-and-release.patch": "0bf52a330cb901cd0c691485d42d2ee6f97ba68e407c3a384cb6b5b2fae274c3"
+    "initial/build-and-release/0001-resolve-build-and-release.patch": "0bf52a330cb901cd0c691485d42d2ee6f97ba68e407c3a384cb6b5b2fae274c3",
+    "followups/restore-preference-import/0001-restore-preference-import.patch": "2d0c57f013dda458075626f1de1ce20a6cf807d736ee54f3caed1d2c3b57a6d5"
   }
 }
