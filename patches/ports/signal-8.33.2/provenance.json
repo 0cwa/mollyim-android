@@ -195,6 +195,22 @@
       ],
       "mailbox_bytes": 24596,
       "after_tree": "1848d93a46f676fc2c204ffbf73214abcc631a3e"
+    },
+    {
+      "id": "initial/integration",
+      "source_commit": "90a0bb917ecc49a62236d539f4e7faae01b1d9fe",
+      "description": "Resolve shared application, account, service and core integration files whose APIs or feature boundaries changed upstream.",
+      "ai_generated": true,
+      "before_tree": "1848d93a46f676fc2c204ffbf73214abcc631a3e",
+      "paths": 286,
+      "conflict_paths": 215,
+      "patches": [
+        "initial/integration/0001-resolve-integration.patch",
+        "initial/integration/0002-resolve-integration.patch",
+        "initial/integration/0003-resolve-integration.patch"
+      ],
+      "mailbox_bytes": 1080774,
+      "after_tree": "fe4831c8cc4ec42087dfdce740b1169cbec3bc3a"
     }
   ],
   "mailbox_sha256": {
@@ -229,6 +245,9 @@
     "initial/resources-and-branding/0012-resolve-resources-and-branding.patch": "0701fffc7026d20eba8d82f38394de1d580a206625c45ac2a0dba08fc3c1f039",
     "initial/resources-and-branding/0013-resolve-resources-and-branding.patch": "d7df242a03f9d62a294b4d0e31884e14e0909f191ded940eac25bd64ec2affdc",
     "initial/resources-and-branding/0014-resolve-resources-and-branding.patch": "3c9bd0d09d61c6e3071c0c535e08a27f46962beefa97fecc56c4b4d5b1e6e932",
-    "initial/security-and-locking/0001-resolve-security-and-locking.patch": "7e8abe74a830ef900ae9d5c6fafe60026be9816d6055b1446342500d963c1c28"
+    "initial/security-and-locking/0001-resolve-security-and-locking.patch": "7e8abe74a830ef900ae9d5c6fafe60026be9816d6055b1446342500d963c1c28",
+    "initial/integration/0001-resolve-integration.patch": "0263667814598fd974307790e08486c1f774f76ad19cb2eafb858af12dadc88d",
+    "initial/integration/0002-resolve-integration.patch": "b01431f4cc448ea2459fef50e2df5f31247b569ebf000378176acfb81bcb5310",
+    "initial/integration/0003-resolve-integration.patch": "e9ad67c593976a98a5b350dd75ed9af21a813375f30d1bfae16c1d39ee0d2efa"
   }
 }
