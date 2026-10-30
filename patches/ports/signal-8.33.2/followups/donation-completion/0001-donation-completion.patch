@@ -10,6 +10,7 @@ For long-running donations, stop showing the loading indicator after the badge l
 AI-Generated: true
 
 Based-On-Source-Commit: 266d0185d021b2b6a98882205f6b6242152d146e
+Source-Commit: 04b003190e7befd08606c6a82a5aa7d5ba62fb19
 ---
  .../completed/TerminalDonationBottomSheet.kt  | 10 ++-
  ...ForYourSupportBottomSheetDialogFragment.kt | 32 +++++++

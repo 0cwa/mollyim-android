@@ -321,7 +321,7 @@
       "patches": [
         "followups/donation-completion/0001-donation-completion.patch"
       ],
-      "mailbox_bytes": 13382,
+      "mailbox_bytes": 13438,
       "source_bundle": "followups/donation-completion/source-checkpoint.bundle",
       "source_bundle_prerequisite": "266d0185d021b2b6a98882205f6b6242152d146e",
       "source_bundle_sha256": "caa0f3fa2c35cef9a3f1edd38e9faa09177a8fb46345d9d562e3589cf4129c1d"
@@ -370,6 +370,6 @@
     "followups/cdn-transport-test-fixture/0001-cdn-transport-test-fixture.patch": "52234ff291e7843f20dc040a83f61e306566e2858899a3ad88aade741ca16a90",
     "followups/reregistration-linked-devices-reminder/0001-reregistration-linked-devices-reminder.patch": "04f2c62a65efe3f6f2c293721f791106517321ffb0b210fb5f3e68c6e55ef1f1",
     "followups/legacy-backup-precedence/0001-legacy-backup-precedence.patch": "2db0f4c241474580b6ad0d99591eff73d72642d3bb4da09c4756d1f8918b2890",
-    "followups/donation-completion/0001-donation-completion.patch": "f0cd9838b000778cff9fd82cc515c4608a5b570a25a8fc9d5a9cb10da870e4e4"
+    "followups/donation-completion/0001-donation-completion.patch": "1191020cf89ebb0d9479b928f6c03e6aab4365f27ef242340bc04a45e68b7dd9"
   }
 }
