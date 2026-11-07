@@ -59,7 +59,11 @@ class ReleaseArtifactsTests(unittest.TestCase):
 
     def test_unsigned_dispatch_passes_override_to_version_guard(self):
         root = Path(__file__).resolve().parents[2]
-        workflow = (root / '.github/workflows/molly-unsigned-release.yml').read_text()
+        path = root / '.github/workflows/molly-unsigned-release.yml'
+        if not path.exists():
+            # Engineering archives legacy workflows as inert historical fixtures.
+            path = root / 'docs/legacy-workflows/molly-unsigned-release.yml'
+        workflow = path.read_text()
         step = workflow.split('      - name: Validate the dispatch and prepare proof\n', 1)[1].split('      - name:', 1)[0]
         self.assertIn('VERSION_CODE: ${{ inputs.version_code }}', step)
         commands = [line.strip() for line in step.splitlines() if 'a.validate_version_code(' in line]
@@ -93,12 +97,37 @@ class ReleaseArtifactsTests(unittest.TestCase):
             self.assertEqual(release_sign.main(), 1)
             run.assert_not_called()
 
+    def test_current_signer_rejects_legacy_profiles_before_keys(self):
+        for mode in (None,'five-profiles'):
+            m=dict(self.manifest)
+            if mode: m['artifact_mode']=mode
+            manifest=self.root/'manifest.json';manifest.write_text(json.dumps(m))
+            args=['release_sign','--manifest',str(manifest),'--manifest-sha256',a.sha256(manifest),
+                  '--approved-commit',self.commit,'--approved-run','123','--certificate-sha256',self.cert,
+                  '--apks',str(self.root),'--output',str(self.root/'out'),'--build-tools',str(self.root),'--scratch',str(self.root)]
+            with patch('sys.argv',args), patch.object(release_sign,'run') as run, patch.object(release_sign.getpass,'getpass') as prompt:
+                self.assertEqual(release_sign.main(),1)
+                run.assert_not_called();prompt.assert_not_called()
+
+    def test_own_repository_publisher_rejects_legacy_profiles_before_api(self):
+        final=self.root/'final.json'
+        final.write_text(json.dumps({'schema':1,'rehearsal':False,'commit':self.commit,'version_code':177703}))
+        args=['release_publish','draft','--repo','0cwa/collieim-android','--tag','vnext','--approved-commit',self.commit,
+              '--final-manifest',str(final),'--final-manifest-sha256',a.sha256(final),'--provenance',str(self.root/'unused'),
+              '--notes',str(self.root/'unused'),'--scratch',str(self.root)]
+        with patch('sys.argv',args),patch.object(release_publish,'command') as command:
+            self.assertEqual(release_publish.main(),1)
+            command.assert_not_called()
+
     def test_sign_records_the_unsigned_to_signed_mapping(self):
         for entry in self.entries:
             apk = self.root / entry['file']
             apk.write_bytes(entry['profile'].encode())
             entry['sha256'] = a.sha256(apk)
-        self.manifest.update(build_tools='36.0.0', input_pins={'android': {'build_tools': '36.0.0'}})
+        self.manifest.update(artifact_mode='single-collie', source_profile='collie')
+        for entry in self.entries:
+            entry['sha256'] = a.sha256(self.root / 'collie.apk')
+        self.manifest.update(version_code=177703, build_tools='36.0.0', input_pins={'android': {'build_tools': '36.0.0'}})
         manifest = self.root / 'manifest.json'
         manifest.write_text(json.dumps(self.manifest))
         output = self.root / 'signed'
@@ -110,6 +139,9 @@ class ReleaseArtifactsTests(unittest.TestCase):
                 '--approved-commit', self.commit, '--approved-run', '123', '--certificate-sha256', self.cert,
                 '--apks', str(self.root), '--output', str(output), '--build-tools', str(self.root / '36.0.0'),
                 '--scratch', str(self.root), '--instrumentation-checklist', str(checklist)]
+        inventory=self.root / 'published.json'
+        inventory.write_text(json.dumps([{'release':'v8.35.1-1-rc1','code':177702,'sha256':'a'*64}]))
+        args += ['--version-ledger',str(self.root/'versions.json'),'--published-inventory',str(inventory),'--published-inventory-sha256',a.sha256(inventory)]
         snapshot = a.snapshot
         class TrackingStream(io.StringIO):
             def __init__(self):
@@ -295,7 +327,7 @@ class ReleaseArtifactsTests(unittest.TestCase):
                         names = [p.name for p in inputs.iterdir()]
                         if failure == 'missing': names.pop()
                         if failure == 'extra': names.append('extra.apk')
-                        return types.SimpleNamespace(stdout=json.dumps({'isDraft': failure != 'non-draft',
+                        return types.SimpleNamespace(stdout=json.dumps({'isDraft': failure != 'non-draft' and not any(c[1:3] == ['release', 'edit'] for c in commands),
                                                                          'isPrerelease': (not prerelease if failure == 'wrong-prerelease' else prerelease),
                                                                          'assets': [{'name': n} for n in names]}))
                     if command[2] == 'download':
@@ -312,7 +344,7 @@ class ReleaseArtifactsTests(unittest.TestCase):
                      patch.object(release_publish, 'create_signed_tag'), \
                      patch.object(release_publish, 'verify_remote_tag',
                                   side_effect=ValueError('wrong tag') if failure == 'tag' else None):
-                    self.assertEqual(release_publish.main(), 0 if failure == 'none' else 1)
+                    self.assertEqual(release_publish.main(), 0 if failure in ('none', 'non-draft') else 1)
                 self.assertEqual(any(len(c) > 2 and c[1:3] == ['release', 'edit'] for c in commands),
                                  action == 'publish' and failure == 'none')
 
